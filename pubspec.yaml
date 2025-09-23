@@ -31,6 +31,7 @@ dependencies:
   build_runner: ^2.5.4
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
+  easy_localization: ^3.0.8
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -52,27 +53,73 @@ dev_dependencies:
   hive_generator: ^2.0.1
 flutter:
   uses-material-design: true
-  # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/svgs/
-    - assets/images/png/
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+    - assets/images/
+    - assets/images/svg/
+    - assets/translations/
+    - assets/fonts/manrope/
+    - assets/fonts/news_reader/
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/manrope/Manrope-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/manrope/Manrope-Light.ttf
+          weight: 300
+        - asset: assets/fonts/manrope/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/manrope/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/manrope/Manrope-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/manrope/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/manrope/Manrope-ExtraBold.ttf
+          weight: 800
+
+    - family: Newsreader
+      fonts:
+        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-Light.ttf
+          weight: 300
+        - asset: assets/fonts/news_reader/Newsreader_60pt-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/news_reader/Newsreader_60pt-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/news_reader/Newsreader_60pt-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/news_reader/Newsreader_60pt-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/news_reader/Newsreader_60pt-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/news_reader/Newsreader_36pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/news_reader/Newsreader_36pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/news_reader/Newsreader_36pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/news_reader/Newsreader_36pt-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
