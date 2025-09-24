@@ -88,8 +88,6 @@ class HomeScreen extends StatelessWidget {
               ],
             ).paddingSymmetric(horizontal: 22.sp),
             20.ph,
-
-            //! GridView of first 4
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -103,7 +101,7 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    if (index == 2) {
+                    if (index == 1) {
                       context.push(RoutesName.financeScreen);
                     } else {
                       context.push(RoutesName.projectDetails);

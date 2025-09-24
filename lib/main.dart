@@ -5,6 +5,7 @@ import 'package:diyar_app/feature/app/diyar_app.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
   await ScreenUtil.ensureScreenSize();
@@ -12,6 +13,7 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await HiveHelper.init();
   await DioHelper.init();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
     EasyLocalization(
       supportedLocales: AppConstants.supportedLocales,
@@ -22,4 +24,5 @@ Future<void> main() async {
       child: const DiyarApp(),
     ),
   );
+  FlutterNativeSplash.remove();
 }
