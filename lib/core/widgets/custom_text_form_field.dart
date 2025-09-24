@@ -23,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.hintStyle,
     this.isDense,
+    this.maxLength, this.maxLines,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -40,9 +41,13 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final TextStyle? hintStyle;
   final bool? isDense;
+  final int? maxLength;
+  final int ?maxLines;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines:maxLines ,
+      maxLength: maxLength,
       obscureText: obscureText ?? false,
       focusNode: focusNode,
       cursorColor: AppColors.primaryColor,

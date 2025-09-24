@@ -94,7 +94,8 @@
   "transactions":"Transactions",
   "received_payment":"Received Payment",
   "sent_payment":"Sent Payment",
-  "phone":"Phone"
-
-
+  "phone":"Phone",
+  "project_details":"Project Details",
+  "master_plan":"Master Plan",
+  "unit_events":"Unit Events"
 }

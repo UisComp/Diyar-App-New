@@ -11,6 +11,7 @@ import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
@@ -51,14 +52,16 @@ class ContactUsScreen extends StatelessWidget {
             ),
             24.ph,
             CustomTextFormField(
-              contentPadding: EdgeInsets.all(50.sp),
+              maxLines: 10,
               isDense: true,
             ),
             24.ph,
             CustomButton(
               buttonColor: AppColors.primaryColor,
               buttonText: LocaleKeys.submit.tr(),
-              onPressed: () {},
+              onPressed: () {
+                context.pop();
+              },
             ).paddingSymmetric(horizontal: 16.w),
             28.ph,
             Text(

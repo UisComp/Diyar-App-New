@@ -99,5 +99,8 @@ abstract class  LocaleKeys {
   static const received_payment = 'received_payment';
   static const sent_payment = 'sent_payment';
   static const phone = 'phone';
+  static const project_details = 'project_details';
+  static const master_plan = 'master_plan';
+  static const unit_events = 'unit_events';
 
 }

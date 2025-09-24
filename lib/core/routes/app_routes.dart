@@ -1,19 +1,24 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/feature/auth/view/login_screen.dart';
 import 'package:diyar_app/feature/auth/view/register_screen.dart';
+import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
+import 'package:diyar_app/feature/news/view/news_details_screen.dart';
+import 'package:diyar_app/feature/news/view/news_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
+import 'package:diyar_app/feature/project/view/project_details.dart';
 import 'package:diyar_app/feature/settings/view/app_preferences.dart';
 import 'package:diyar_app/feature/settings/view/change_password.dart';
 import 'package:diyar_app/feature/settings/view/contact_us_screen.dart';
 import 'package:diyar_app/feature/settings/view/personal_information.dart';
 import 'package:diyar_app/feature/settings/view/privacy_policy.dart';
+import 'package:diyar_app/feature/unit_event/view/unit_event.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: RoutesName.homeLayout,
+  initialLocation: RoutesName.onBoarding,
   routes: <RouteBase>[
     GoRoute(
       name: RoutesName.onBoarding,
@@ -78,18 +83,46 @@ final GoRouter router = GoRouter(
         return const AppPreferencesScreen();
       },
     ),
-    // GoRoute(
-    //   name: RoutesName.helpSupportScreen,
-    //   path: RoutesName.helpSupportScreen,
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return const HelpSupportScreen();
-    //   },
-    // ),
+    GoRoute(
+      name: RoutesName.financeScreen,
+      path: RoutesName.financeScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return const FinanceScreen();
+      },
+    ),
     GoRoute(
       name: RoutesName.contactUsScreen,
       path: RoutesName.contactUsScreen,
       builder: (BuildContext context, GoRouterState state) {
         return const ContactUsScreen();
+      },
+    ),
+    GoRoute(
+      name: RoutesName.projectDetails,
+      path: RoutesName.projectDetails,
+      builder: (BuildContext context, GoRouterState state) {
+        return const ProjectDetails();
+      },
+    ),
+    GoRoute(
+      name: RoutesName.unitEvents,
+      path: RoutesName.unitEvents,
+      builder: (BuildContext context, GoRouterState state) {
+        return const UnitEvent();
+      },
+    ),
+    GoRoute(
+      name: RoutesName.newsScreen,
+      path: RoutesName.newsScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return const NewsScreen();
+      },
+    ),
+    GoRoute(
+      name: RoutesName.newsDetailsScreen,
+      path: RoutesName.newsDetailsScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return const NewsDetailsScreen();
       },
     ),
   ],

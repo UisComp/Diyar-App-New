@@ -22,6 +22,10 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/background_card.png
+  AssetGenImage get backgroundCard =>
+      const AssetGenImage('assets/images/background_card.png');
+
   /// File path: assets/images/diyar_native_splash.png
   AssetGenImage get diyarNativeSplash =>
       const AssetGenImage('assets/images/diyar_native_splash.png');
@@ -30,11 +34,16 @@ class $AssetsImagesGen {
   AssetGenImage get diyarPmc =>
       const AssetGenImage('assets/images/diyar_pmc.png');
 
+  /// File path: assets/images/project_details.PNG
+  AssetGenImage get projectDetails =>
+      const AssetGenImage('assets/images/project_details.PNG');
+
   /// Directory path: assets/images/svg
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [diyarNativeSplash, diyarPmc];
+  List<AssetGenImage> get values =>
+      [backgroundCard, diyarNativeSplash, diyarPmc, projectDetails];
 }
 
 class $AssetsTranslationsGen {

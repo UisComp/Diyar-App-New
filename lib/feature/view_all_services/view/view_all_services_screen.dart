@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -10,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ViewAllServicesScreen extends StatelessWidget {
   final List<String> services;
@@ -48,34 +50,50 @@ class ViewAllServicesScreen extends StatelessWidget {
             padding: EdgeInsets.all(16.sp),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 149.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: AppColors.secondaryColor,
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Assets.images.diyarPmc.image(
-                        width: 80.w,
-                        height: 70.h,
-                      ),
+                return InkWell(
+                   onTap: () {
+                    context.push(RoutesName.projectDetails);
+                  },
+                  child: Card(
+                    color: AppColors.whiteColor,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 7,
+                          child: Container(
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryColor,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.r),
+                                topLeft: Radius.circular(12.r),
+                              ),
+                            ),
+                            child: Assets.images.diyarPmc.image(
+                              width: 80.w,
+                              height: 70.h,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                            child: Text(
+                              services[index],
+                              style: AppStyle.fontSize16Regular.copyWith(
+                                color: AppColors.blackColor,
+                                fontSize: 14.sp,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    8.ph,
-                    Text(
-                      services[index],
-                      style: AppStyle.fontSize16Regular.copyWith(
-                        color: AppColors.blackColor,
-                        fontSize: 14.sp,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 );
               }, childCount: services.length),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
