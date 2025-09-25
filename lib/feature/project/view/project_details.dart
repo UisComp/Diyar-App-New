@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ProjectDetails extends StatelessWidget {
-  const ProjectDetails({super.key});
+  const ProjectDetails({super.key,});
 
   @override
   Widget build(BuildContext context) {

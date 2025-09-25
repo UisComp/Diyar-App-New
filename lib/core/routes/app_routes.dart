@@ -101,7 +101,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.projectDetails,
       path: RoutesName.projectDetails,
       builder: (BuildContext context, GoRouterState state) {
-        return const ProjectDetails();
+    return const ProjectDetails();
       },
     ),
     GoRoute(

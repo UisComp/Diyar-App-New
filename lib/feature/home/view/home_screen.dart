@@ -1,6 +1,6 @@
+import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -12,22 +12,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  final List<String> services = const [
-    "Service 1",
-    "Service 2",
-    "Service 3",
-    "Service 4",
-    "Service 5",
-    "Service 6",
-    "Service 7",
-    "Service 8",
-    "Service 9",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +90,20 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    if (index == 1) {
-                      context.push(RoutesName.financeScreen);
+                    final service = limitedServices[index];
+                    final type = service["type"] as int?;
+                    final screenName = getScreenNameByType(type);
+
+                    if (screenName != null) {
+                      context.push(screenName, extra: service);
                     } else {
-                      context.push(RoutesName.projectDetails);
+                      Fluttertoast.showToast(
+                        msg: "This service is not available yet",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: AppColors.redColor,
+                        textColor: Colors.white,
+                      );
                     }
                   },
                   child: Card(
@@ -123,7 +122,8 @@ class HomeScreen extends StatelessWidget {
                                 topLeft: Radius.circular(12.r),
                               ),
                             ),
-                            child: Assets.images.diyarPmc.image(
+                            child: Image.asset(
+                              limitedServices[index]['image'],
                               width: 80.w,
                               height: 70.h,
                             ),
@@ -133,7 +133,7 @@ class HomeScreen extends StatelessWidget {
                           flex: 3,
                           child: Center(
                             child: Text(
-                              limitedServices[index],
+                              limitedServices[index]['name'],
                               style: AppStyle.fontSize16Regular.copyWith(
                                 color: AppColors.blackColor,
                                 fontSize: 14.sp,

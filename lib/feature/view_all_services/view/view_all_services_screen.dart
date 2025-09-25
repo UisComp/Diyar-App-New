@@ -1,6 +1,6 @@
+import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -11,10 +11,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class ViewAllServicesScreen extends StatelessWidget {
-  final List<String> services;
+  final List<Map<String, dynamic>> services;
 
   const ViewAllServicesScreen({super.key, required this.services});
 
@@ -51,8 +52,22 @@ class ViewAllServicesScreen extends StatelessWidget {
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
                 return InkWell(
-                   onTap: () {
-                    context.push(RoutesName.projectDetails);
+                  onTap: () {
+                    final service = services[index];
+                    final type = service["type"] as int?;
+                    final screenName = getScreenNameByType(type);
+
+                    if (screenName != null) {
+                      context.push(screenName, extra: service);
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "This service is not available yet",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: AppColors.redColor,
+                        textColor: Colors.white,
+                      );
+                    }
                   },
                   child: Card(
                     color: AppColors.whiteColor,
@@ -70,7 +85,9 @@ class ViewAllServicesScreen extends StatelessWidget {
                                 topLeft: Radius.circular(12.r),
                               ),
                             ),
-                            child: Assets.images.diyarPmc.image(
+                            child: Image.asset(
+                              services[index]["image"],
+                              fit: BoxFit.cover,
                               width: 80.w,
                               height: 70.h,
                             ),
@@ -80,7 +97,7 @@ class ViewAllServicesScreen extends StatelessWidget {
                           flex: 3,
                           child: Center(
                             child: Text(
-                              services[index],
+                              services[index]['name'],
                               style: AppStyle.fontSize16Regular.copyWith(
                                 color: AppColors.blackColor,
                                 fontSize: 14.sp,
