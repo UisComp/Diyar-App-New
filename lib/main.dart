@@ -1,9 +1,11 @@
+import 'package:diyar_app/bloc_observer.dart';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -14,6 +16,7 @@ Future<void> main() async {
   await HiveHelper.init();
   await DioHelper.init();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Bloc.observer = AppBlocObserver();
   runApp(
     EasyLocalization(
       supportedLocales: AppConstants.supportedLocales,

@@ -1,20 +1,27 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
+import 'package:diyar_app/feature/auth/view/forget_password_screen.dart';
 import 'package:diyar_app/feature/auth/view/login_screen.dart';
+import 'package:diyar_app/feature/auth/view/otp_screen.dart';
 import 'package:diyar_app/feature/auth/view/register_screen.dart';
+import 'package:diyar_app/feature/auth/view/reset_password_screen.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
+import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
+import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/feature/settings/view/app_preferences.dart';
 import 'package:diyar_app/feature/settings/view/change_password.dart';
 import 'package:diyar_app/feature/settings/view/contact_us_screen.dart';
-import 'package:diyar_app/feature/settings/view/personal_information.dart';
+import 'package:diyar_app/feature/profile/view/personal_information.dart';
 import 'package:diyar_app/feature/settings/view/privacy_policy.dart';
 import 'package:diyar_app/feature/unit_event/view/unit_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
@@ -34,18 +41,55 @@ final GoRouter router = GoRouter(
         return const HomeLayout();
       },
     ),
+    //!Auth
     GoRoute(
       name: RoutesName.login,
       path: RoutesName.login,
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginScreen();
+        return BlocProvider(
+          create: (context) => AuthController(),
+          child: const LoginScreen(),
+        );
       },
     ),
     GoRoute(
       name: RoutesName.register,
       path: RoutesName.register,
       builder: (BuildContext context, GoRouterState state) {
-        return const RegisterScreen();
+        return BlocProvider(
+          create: (context) => AuthController(),
+          child: const RegisterScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.forgetPasswordScreen,
+      path: RoutesName.forgetPasswordScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (context) => AuthController(),
+          child: const ForgetPasswordScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.resetPasswordScreen,
+      path: RoutesName.resetPasswordScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (context) => AuthController(),
+          child: const ResetPasswordScreen(),
+        );
+      },
+    ),
+     GoRoute(
+      name: RoutesName.otpScreen,
+      path: RoutesName.otpScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return BlocProvider(
+          create: (context) => AuthController(),
+          child: const OtpScreen(),
+        );
       },
     ),
     GoRoute(
@@ -59,7 +103,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.personalInformation,
       path: RoutesName.personalInformation,
       builder: (BuildContext context, GoRouterState state) {
-        return const PersonalInformation();
+        return BlocProvider(
+          create: (context) => ProfileController(),
+          child: const PersonalInformation(),
+        );
       },
     ),
     GoRoute(
@@ -73,7 +120,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.changePasswordScreen,
       path: RoutesName.changePasswordScreen,
       builder: (BuildContext context, GoRouterState state) {
-        return const ChangePasswordScreen();
+        return BlocProvider(
+          create: (context) => SettingsController(),
+          child: const ChangePasswordScreen(),
+        );
       },
     ),
     GoRoute(
@@ -101,7 +151,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.projectDetails,
       path: RoutesName.projectDetails,
       builder: (BuildContext context, GoRouterState state) {
-    return const ProjectDetails();
+        return const ProjectDetails();
       },
     ),
     GoRoute(

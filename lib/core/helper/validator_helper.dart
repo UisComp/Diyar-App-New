@@ -28,4 +28,19 @@ class ValidatorHelper {
     }
     return null;
   }
+
+  static String? validatePasswordConfirmation(
+    String? confirmPassword, {
+    required String originalPassword,
+    required String emptyMessage,
+    required String notMatchMessage,
+  }) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return emptyMessage;
+    }
+    if (confirmPassword != originalPassword) {
+      return notMatchMessage;
+    }
+    return null;
+  }
 }

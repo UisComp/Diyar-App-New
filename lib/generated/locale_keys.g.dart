@@ -102,5 +102,28 @@ abstract class  LocaleKeys {
   static const project_details = 'project_details';
   static const master_plan = 'master_plan';
   static const unit_events = 'unit_events';
+  static const login_successfully = 'login_successfully';
+  static const login_failed = 'login_failed';
+  static const password_confirmation = 'password_confirmation';
+  static const passwords_do_not_match = 'passwords_do_not_match';
+  static const account_created_successfully = 'account_created_successfully';
+  static const account_created_failed = 'account_created_failed';
+  static const update_profile_successfully = 'update_profile_successfully';
+  static const update_profile_failure = 'update_profile_failure';
+  static const change_password_successfully = 'change_password_successfully';
+  static const change_password_failed = 'change_password_failed';
+  static const message_sent_password_successfully = 'message_sent_password_successfully';
+  static const message_sent_password_failed = 'message_sent_password_failed';
+  static const verify = 'verify';
+  static const otp_verification = 'otp_verification';
+  static const enter_the_code_sent_to_your_email = 'enter_the_code_sent_to_your_email';
+  static const please_enter_otp = 'please_enter_otp';
+  static const otp_must_be_4_digits = 'otp_must_be_4_digits';
+  static const resend_code_in = 'resend_code_in';
+  static const did_not_get_the_code = 'did_not_get_the_code';
+  static const resend_otp = 'resend_otp';
+  static const reset_password = 'reset_password';
+  static const otp_verify_successfully = 'otp_verify_successfully';
+  static const otp_verify_failed = 'otp_verify_failed';
 
 }

@@ -15,4 +15,7 @@ class RoutesName {
   static const String unitEvents = '/unitEvents';
   static const String newsScreen = '/newsScreen';
   static const String newsDetailsScreen = '/newsDetailsScreen';
+ static const String forgetPasswordScreen = "/forgetPasswordScreen";
+ static const String resetPasswordScreen="/resetPasswordScreen";
+ static const String otpScreen="/otpScreen";
 }
