@@ -16,8 +16,13 @@ class AppFunctions {
     ).show(context);
   }
 
-  static void errorMessage(BuildContext context, {required String message}) {
+  static void errorMessage(
+    BuildContext context, {
+    required String message,
+    String? description,
+  }) {
     CherryToast.error(
+      description: Text(description  ?? ''),
       height: 60.h,
       animationType: AnimationType.fromRight,
       borderRadius: 10.r,

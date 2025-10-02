@@ -85,6 +85,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 40.ph,
                 CustomButton(
+                  isLoading: authState is ForgetPasswordLoadingState,
                   buttonColor: AppColors.primaryColor,
                   buttonText: LocaleKeys.forgot_password.tr().replaceAll(
                     "?",
@@ -92,7 +93,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                   onPressed: () async {
                     // context.push(RoutesName.otpScreen);
-            
                     if (formKey.currentState!.validate()) {
                       await authController.forgetPassword();
                     }

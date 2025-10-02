@@ -1,5 +1,6 @@
 import 'package:diyar_app/bloc_observer.dart';
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
@@ -17,6 +18,8 @@ Future<void> main() async {
   await DioHelper.init();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Bloc.observer = AppBlocObserver();
+userModel = await HiveHelper.getUserModel(AppConstants.userModelKey);
+
   runApp(
     EasyLocalization(
       supportedLocales: AppConstants.supportedLocales,

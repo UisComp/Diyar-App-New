@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-  static final formKey = GlobalKey<FormState>();
+   LoginScreen({super.key});
+   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

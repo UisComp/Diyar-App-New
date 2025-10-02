@@ -125,5 +125,10 @@ abstract class  LocaleKeys {
   static const reset_password = 'reset_password';
   static const otp_verify_successfully = 'otp_verify_successfully';
   static const otp_verify_failed = 'otp_verify_failed';
+  static const password_must_be_at_least_8_characters = 'password_must_be_at_least_8_characters';
+  static const valid_phone_number = 'valid_phone_number';
+  static const logout = 'logout';
+  static const logout_successfully = 'logout_successfully';
+  static const logout_failure = 'logout_failure';
 
 }

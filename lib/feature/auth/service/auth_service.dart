@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/request_model.dart';
+import 'package:diyar_app/core/model/general_response_model.dart';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:diyar_app/feature/auth/model/register_response_model.dart';
 import 'package:diyar_app/feature/auth/model/reset_or_forget_password_response_model.dart';
@@ -21,7 +22,8 @@ class AuthService {
       log('loginResponse==> ${response?.data}');
       if (response != null &&
           response.statusCode == 200 &&
-          response.data != null) {
+          response.data != null &&
+          response.data['success'] == true) {
         return LoginResponseModel.fromJson(response.data);
       }
     } catch (e, st) {
@@ -92,6 +94,7 @@ class AuthService {
     }
     return ResetOrForgetPasswordResponseModel.fromJson(resetPassword?.data);
   }
+
   static Future<OtpVerificationResponse> verifyOtp({
     required String email,
     required String otpCode,
@@ -99,10 +102,7 @@ class AuthService {
     final verifyOtp = await DioHelper.postData(
       needHeader: false,
       path: ApiPaths.verifyOtp,
-      data: {
-        "email": email,
-        "otp_code": otpCode
-      },
+      data: {"email": email, "otp_code": otpCode},
     );
     try {
       log('verifyOtp==> ${verifyOtp?.data}');
@@ -115,5 +115,24 @@ class AuthService {
       log('Error While verify Otp: $e\n$st');
     }
     return OtpVerificationResponse.fromJson(verifyOtp?.data);
+  }
+
+ static Future<GeneralResponseModel> logOut() async {
+    final responseLogOut = await DioHelper.postData(
+      needHeader: true,
+      path: ApiPaths.logOut,
+    );
+    try {
+      log('responseLogOut==> ${responseLogOut?.data}');
+      if (responseLogOut != null &&
+          responseLogOut.statusCode == 200 &&
+          responseLogOut.data != null &&
+          responseLogOut.data['success'] == true) {
+        return GeneralResponseModel.fromJson(responseLogOut.data);
+      }
+    } catch (e, st) {
+      log('Error While Log Out: $e\n$st');
+    }
+    return GeneralResponseModel.fromJson(responseLogOut?.data);
   }
 }

@@ -19,12 +19,17 @@ class ValidatorHelper {
     String? password, {
     required String emptyMessage,
     required String spaceMessage,
+    String? minLengthMessage,
+    int minLength = 8,
   }) {
     if (password == null || password.isEmpty) {
       return emptyMessage;
     }
     if (password.contains(' ')) {
       return spaceMessage;
+    }
+    if (password.length < minLength) {
+      return minLengthMessage;
     }
     return null;
   }

@@ -60,7 +60,7 @@ class DioHelper {
       );
     } on SocketException catch (_) {
     } on DioException catch (e) {
-      String errorMsg = _handleResponse(e.response!);
+      String errorMsg = _handleResponse(e.response);
       log(errorMsg);
     }
     return null;

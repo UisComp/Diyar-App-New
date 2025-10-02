@@ -120,5 +120,10 @@
   "resend_otp": "إعادة إرسال رمز التحقق",
   "reset_password": "اعادة تعيين كلمة المرور",
   "otp_verify_successfully": "تم التحقق من OTP بنجاح",
-  "otp_verify_failed": "فشل في التحقق من OTP"
+  "otp_verify_failed": "فشل في التحقق من OTP",
+  "password_must_be_at_least_8_characters": "كلمة المرور يجب ان تكون على الاقل 8 حروف",
+  "valid_phone_number": "يرجى ادخال رقم هاتف صالح",
+  "logout": "تسجيل الخروج",
+  "logout_successfully": "تم تسجيل الخروج بنجاح",
+  "logout_failure": "فشل تسجيل الخروج"
 }

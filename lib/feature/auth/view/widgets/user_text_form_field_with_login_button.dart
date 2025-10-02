@@ -34,20 +34,13 @@ class _UserTextFormFieldWithLoginButtonState
   void initState() {
     super.initState();
     authController = AuthController.get(context);
+    authController.initController();
   }
 
   void toggleVisibilityPassword() {
     setState(() {
       isObscurePassword = !isObscurePassword;
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    authController.emailControllerForLogin.dispose();
-    authController.passwordControllerForLogin.dispose();
-    authController.close();
   }
 
   @override
@@ -63,12 +56,14 @@ class _UserTextFormFieldWithLoginButtonState
         }
         if (authState is LoginFailureState) {
           AppFunctions.errorMessage(
+            description: authController.loginResponseModel.message,
             context,
             message: LocaleKeys.login_failed.tr(),
           );
         }
       },
       builder: (context, authState) {
+        final isLoading = authState is LoginLoadingState;
         return Column(
           children: [
             CustomTextFormField(
@@ -95,6 +90,10 @@ class _UserTextFormFieldWithLoginButtonState
                 password,
                 emptyMessage: LocaleKeys.please_enter_your_password.tr(),
                 spaceMessage: LocaleKeys.please_enter_valid_password.tr(),
+                minLength: 8,
+                minLengthMessage: LocaleKeys
+                    .password_must_be_at_least_8_characters
+                    .tr(),
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               contentPadding: EdgeInsets.all(20.sp),
@@ -127,13 +126,24 @@ class _UserTextFormFieldWithLoginButtonState
             CustomButton(
               buttonHeight: 50.h,
               buttonText: LocaleKeys.login.tr(),
+              isLoading: isLoading,
               onPressed: () async {
-                if (widget.formKey.currentState!.validate()) {
+                if (!isLoading && widget.formKey.currentState!.validate()) {
                   await authController.login();
                 }
               },
               buttonColor: AppColors.primaryColor,
             ).paddingSymmetric(horizontal: 16.sp),
+            // CustomButton(
+            //   buttonHeight: 50.h,
+            //   buttonText: LocaleKeys.login.tr(),
+            //   onPressed: () async {
+            //     if (widget.formKey.currentState!.validate()) {
+            //       await authController.login();
+            //     }
+            //   },
+            //   buttonColor: AppColors.primaryColor,
+            // ).paddingSymmetric(horizontal: 16.sp),
           ],
         );
       },

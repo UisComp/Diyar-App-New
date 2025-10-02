@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/view/forget_password_screen.dart';
@@ -25,7 +26,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: RoutesName.onBoarding,
+  initialLocation: userModel?.data?.accessToken != null
+      ? RoutesName.homeLayout
+      : RoutesName.onBoarding,
   routes: <RouteBase>[
     GoRoute(
       name: RoutesName.onBoarding,
@@ -48,7 +51,7 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return BlocProvider(
           create: (context) => AuthController(),
-          child: const LoginScreen(),
+          child: LoginScreen(),
         );
       },
     ),
@@ -58,7 +61,7 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return BlocProvider(
           create: (context) => AuthController(),
-          child: const RegisterScreen(),
+          child: RegisterScreen(),
         );
       },
     ),
@@ -82,7 +85,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-     GoRoute(
+    GoRoute(
       name: RoutesName.otpScreen,
       path: RoutesName.otpScreen,
       builder: (BuildContext context, GoRouterState state) {

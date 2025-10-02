@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/core/model/request_model.dart';
+import 'package:diyar_app/core/model/general_response_model.dart';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:diyar_app/feature/auth/model/register_response_model.dart';
 import 'package:diyar_app/feature/auth/model/reset_or_forget_password_response_model.dart';
@@ -10,14 +14,14 @@ import 'package:diyar_app/feature/auth/model/verify_otp_response_model.dart';
 import 'package:diyar_app/feature/auth/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 class AuthController extends Cubit<AuthState> {
   AuthController() : super(AuthInitialState());
   static AuthController get(BuildContext context) => BlocProvider.of(context);
   //! login
-  final TextEditingController emailControllerForLogin = TextEditingController();
-  final TextEditingController passwordControllerForLogin =
-      TextEditingController();
+  TextEditingController emailControllerForLogin = TextEditingController();
+  TextEditingController passwordControllerForLogin = TextEditingController();
   //!=============================================================================
   //! Register
   final TextEditingController nameController = TextEditingController();
@@ -27,7 +31,7 @@ class AuthController extends Cubit<AuthState> {
       TextEditingController();
   final TextEditingController passwordConfirmationControllerForRegister =
       TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  // final TextEditingController phoneController = TextEditingController();
   //!==========================================================================
 
   final TextEditingController emailForForgetPasswordController =
@@ -47,6 +51,14 @@ class AuthController extends Cubit<AuthState> {
   ResetOrForgetPasswordResponseModel resetOrForgetPasswordResponseModel =
       ResetOrForgetPasswordResponseModel();
   TextEditingController otpController = TextEditingController();
+  final phoneController = PhoneController(
+    initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
+  );
+  GeneralResponseModel logoutResponseModel = GeneralResponseModel();
+  void initController() {
+    emailControllerForLogin.clear();
+    passwordControllerForLogin.clear();
+  }
 
   Future<void> login() async {
     emit(LoginLoadingState());
@@ -56,9 +68,15 @@ class AuthController extends Cubit<AuthState> {
             password: passwordControllerForLogin.text,
           ),
         )
-        .then((value) {
+        .then((value) async {
           loginResponseModel = value;
-          emit(LoginSuccessState());
+          if (value.success == true) {
+            emit(LoginSuccessState());
+            await updateUserModel(value);
+            await HiveHelper.storeUserModel(value, AppConstants.userModelKey);
+          } else {
+            emit(LoginFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Login is $error');
@@ -70,7 +88,7 @@ class AuthController extends Cubit<AuthState> {
     emit(RegisterLoadingState());
     await AuthService.register(
           authRequestModel: RequestModel(
-            phoneNumber: phoneController.text,
+            phoneNumber: phoneController.value.international,
             passwordConfirmation:
                 passwordConfirmationControllerForRegister.text,
             name: nameController.text,
@@ -80,7 +98,11 @@ class AuthController extends Cubit<AuthState> {
         )
         .then((value) {
           registerResponseModel = value;
-          emit(RegisterSuccessState());
+          if (value.success == true) {
+            emit(RegisterSuccessState());
+          } else {
+            emit(RegisterFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Register is $error');
@@ -95,10 +117,15 @@ class AuthController extends Cubit<AuthState> {
         )
         .then((value) {
           forgetPasswordResponseModel = value;
-          emit(ForgetPasswordSuccessState());
+          log('forgetPasswordResponseModel: $forgetPasswordResponseModel');
+          if (value.success == true) {
+            emit(ForgetPasswordSuccessState());
+          } else {
+            emit(ForgetPasswordFailureState(error: value.message));
+          }
         })
         .catchError((error) {
-          log('Error Happen While Forget Password is $error');
+          log('Error Happen While Forget Password is ${error.toString()}');
           emit(ForgetPasswordFailureState(error: error.toString()));
         });
   }
@@ -164,6 +191,25 @@ class AuthController extends Cubit<AuthState> {
         .catchError((error) {
           log('Error Happen While Verify Otp is $error');
           emit(VerifyOtpFailureState(error: error.toString()));
+        });
+  }
+
+  Future<void> logOut() async {
+    emit(LogOutLoadingState());
+    await AuthService.logOut()
+        .then((value) async {
+          logoutResponseModel = value;
+          if (value.success == true) {
+            emit(LogOutSuccessState());
+            await updateUserModel(null);
+            await HiveHelper.clearAllData();
+          } else {
+            emit(LogOutFailureState(error: value.message));
+          }
+        })
+        .catchError((error) {
+          log('Error Happen While log out is $error');
+          emit(LoginFailureState(error: error.toString()));
         });
   }
 }

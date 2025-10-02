@@ -15,8 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
-  static final formKey = GlobalKey<FormState>();
+  RegisterScreen({super.key});
+   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +50,15 @@ class RegisterScreen extends StatelessWidget {
                       24.ph,
                       BlocBuilder<AuthController, AuthState>(
                         builder: (context, state) {
+                          final isLoading = state is RegisterLoadingState;
                           final authController = AuthController.get(context);
                           return CustomButton(
                             buttonHeight: 50.h,
                             buttonText: LocaleKeys.sign_up.tr(),
+                            isLoading: isLoading,
                             onPressed: () async {
-                              if (formKey.currentState!.validate()) {
+                              if (!isLoading &&
+                                  formKey.currentState!.validate()) {
                                 await authController.register();
                               }
                             },

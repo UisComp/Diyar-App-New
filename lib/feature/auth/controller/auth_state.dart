@@ -63,3 +63,13 @@ class VerifyOtpFailureState extends AuthState {
 }
 
 class VerifyOtpLoadingState extends AuthState {}
+
+class LogOutLoadingState extends AuthState {}
+
+class LogOutSuccessState extends AuthState {}
+
+class LogOutFailureState extends AuthState {
+  final String? error;
+
+  LogOutFailureState({this.error});
+}

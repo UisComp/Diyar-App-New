@@ -1,10 +1,202 @@
+// import 'package:diyar_app/core/constants/app_constants.dart';
+// import 'package:diyar_app/core/style/app_color.dart';
+// import 'package:diyar_app/gen/assets.gen.dart';
+// import 'package:diyar_app/generated/locale_keys.g.dart';
+// import 'package:easy_localization/easy_localization.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+
+// class HomeLayout extends StatefulWidget {
+//   const HomeLayout({super.key});
+
+//   @override
+//   State<HomeLayout> createState() => _HomeLayoutState();
+// }
+
+// class _HomeLayoutState extends State<HomeLayout> {
+//   int _currentIndex = 1;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: IndexedStack(
+//           index: _currentIndex,
+//           children: AppConstants.screens,
+//         ),
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         type: BottomNavigationBarType.fixed,
+//         backgroundColor: AppColors.whiteColor,
+//         currentIndex: _currentIndex,
+//         onTap: (index) {
+//           setState(() {
+//             _currentIndex = index;
+//           });
+//         },
+//         selectedItemColor: AppColors.primaryColor,
+//         unselectedItemColor: Colors.grey,
+//         showUnselectedLabels: true,
+//         items: [
+//           BottomNavigationBarItem(
+//             icon: SvgPicture.asset(
+//               Assets.images.svg.settings,
+//               colorFilter: ColorFilter.mode(
+//                 _currentIndex == 0 ? AppColors.primaryColor : Colors.grey,
+//                 BlendMode.srcIn,
+//               ),
+//               height: 24,
+//               width: 24,
+//             ),
+//             label: LocaleKeys.settings.tr(),
+//           ),
+//           BottomNavigationBarItem(
+//             icon:  SvgPicture.asset(
+//               Assets.images.svg.home,
+//               colorFilter: ColorFilter.mode(
+//                 _currentIndex == 1 ? AppColors.primaryColor : Colors.grey,
+//                 BlendMode.srcIn,
+//               ),
+//             ),
+//             label: LocaleKeys.home.tr(),
+//           ),
+//           BottomNavigationBarItem(
+//             icon: SvgPicture.asset(
+//               Assets.images.svg.person,
+//               colorFilter: ColorFilter.mode(
+//                 _currentIndex == 2 ? AppColors.primaryColor : Colors.grey,
+//                 BlendMode.srcIn,
+//               ),
+//             ),
+//             label: LocaleKeys.profile.tr(),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:diyar_app/core/constants/app_constants.dart';
+// import 'package:diyar_app/core/style/app_color.dart';
+// import 'package:diyar_app/gen/assets.gen.dart';
+// import 'package:diyar_app/generated/locale_keys.g.dart';
+// import 'package:easy_localization/easy_localization.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+
+// class HomeLayout extends StatefulWidget {
+//   const HomeLayout({super.key});
+
+//   @override
+//   State<HomeLayout> createState() => _HomeLayoutState();
+// }
+
+// class _HomeLayoutState extends State<HomeLayout> {
+//   int _currentIndex = 1;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: IndexedStack(
+//           index: _currentIndex,
+//           children: AppConstants.screens,
+//         ),
+//       ),
+//       bottomNavigationBar: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           BottomNavigationBar(
+//             type: BottomNavigationBarType.fixed,
+//             backgroundColor: AppColors.whiteColor,
+//             currentIndex: _currentIndex,
+//             onTap: (index) {
+//               setState(() {
+//                 _currentIndex = index;
+//               });
+//             },
+//             selectedItemColor: AppColors.primaryColor,
+//             unselectedItemColor: Colors.grey,
+//             showUnselectedLabels: true,
+//             items: [
+//               BottomNavigationBarItem(
+//                 icon: SvgPicture.asset(
+//                   Assets.images.svg.settings,
+//                   colorFilter: ColorFilter.mode(
+//                     _currentIndex == 0 ? AppColors.primaryColor : Colors.grey,
+//                     BlendMode.srcIn,
+//                   ),
+//                   height: 24,
+//                   width: 24,
+//                 ),
+//                 label: LocaleKeys.settings.tr(),
+//               ),
+//               BottomNavigationBarItem(
+//                 icon: SvgPicture.asset(
+//                   Assets.images.svg.home,
+//                   colorFilter: ColorFilter.mode(
+//                     _currentIndex == 1 ? AppColors.primaryColor : Colors.grey,
+//                     BlendMode.srcIn,
+//                   ),
+//                 ),
+//                 label: LocaleKeys.home.tr(),
+//               ),
+//               BottomNavigationBarItem(
+//                 icon: SvgPicture.asset(
+//                   Assets.images.svg.person,
+//                   colorFilter: ColorFilter.mode(
+//                     _currentIndex == 2 ? AppColors.primaryColor : Colors.grey,
+//                     BlendMode.srcIn,
+//                   ),
+//                 ),
+//                 label: LocaleKeys.profile.tr(),
+//               ),
+//             ],
+//           ),
+
+//           if (_currentIndex == 2)
+//             Container(
+//               color: AppColors.whiteColor,
+//               padding: const EdgeInsets.all(12),
+//               child: ElevatedButton.icon(
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: Colors.red,
+//                   foregroundColor: Colors.white,
+//                   minimumSize: const Size(double.infinity, 45),
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(10),
+//                   ),
+//                 ),
+//                 icon: const Icon(Icons.logout),
+//                 label: Text("LocaleKeys.logout.tr()"),
+//                 onPressed: () async {
+//                   // await HiveHelper.clearAllData();
+//                   // context.go(RoutesName.login);
+//                 },
+//               ),
+//             ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/extension/padding.dart';
+import 'package:diyar_app/core/functions/app_functions.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/custom_button.dart';
+import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
+import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -51,7 +243,7 @@ class _HomeLayoutState extends State<HomeLayout> {
             label: LocaleKeys.settings.tr(),
           ),
           BottomNavigationBarItem(
-            icon:  SvgPicture.asset(
+            icon: SvgPicture.asset(
               Assets.images.svg.home,
               colorFilter: ColorFilter.mode(
                 _currentIndex == 1 ? AppColors.primaryColor : Colors.grey,
@@ -72,6 +264,50 @@ class _HomeLayoutState extends State<HomeLayout> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: _currentIndex == 2
+          ? BlocProvider(
+              create: (context) => AuthController(),
+              child: BlocConsumer<AuthController, AuthState>(
+                listener: (context, authState) {
+                  if (authState is LogOutSuccessState) {
+                    AppFunctions.successMessage(
+                      context,
+                      message:
+                          context
+                              .read<AuthController>()
+                              .logoutResponseModel
+                              .message ??
+                          LocaleKeys.logout_successfully.tr(),
+                    );
+                    context.go(RoutesName.login);
+                  }
+                  if (authState is LogOutFailureState) {
+                    AppFunctions.errorMessage(
+                      context,
+                      message:
+                          context
+                              .read<AuthController>()
+                              .logoutResponseModel
+                              .message ??
+                          LocaleKeys.logout_failure.tr(),
+                    );
+                  }
+                },
+                builder: (context, authState) {
+                  return CustomButton(
+                    isLoading: authState is LogOutLoadingState,
+                    borderRadius: 12.r,
+                    buttonText: LocaleKeys.logout.tr(),
+                    onPressed: () async {
+                      await context.read<AuthController>().logOut();
+                    },
+                    buttonColor: AppColors.redColor,
+                  );
+                },
+              ),
+            ).paddingOnly(bottom: 60.h, right: 16.w, left: 16.w)
+          : null,
     );
   }
 }

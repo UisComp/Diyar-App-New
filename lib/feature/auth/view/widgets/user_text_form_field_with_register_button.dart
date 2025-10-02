@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 class UserTextFormFieldForRegister extends StatefulWidget {
   const UserTextFormFieldForRegister({super.key});
@@ -47,11 +49,11 @@ class _UserTextFormFieldForRegisterState
   @override
   void dispose() {
     super.dispose();
-    authController.emailControllerForRegister.dispose();
-    authController.passwordControllerForRegister.dispose();
-    authController.passwordConfirmationControllerForRegister.dispose();
-    authController.nameController.dispose();
-    authController.phoneController.dispose();
+    // authController.emailControllerForRegister.dispose();
+    // authController.passwordControllerForRegister.dispose();
+    // authController.passwordConfirmationControllerForRegister.dispose();
+    // authController.nameController.dispose();
+    // authController.phoneController.dispose();
     authController.close();
   }
 
@@ -68,6 +70,7 @@ class _UserTextFormFieldForRegisterState
         }
         if (authState is RegisterFailureState) {
           AppFunctions.errorMessage(
+            description: "${authController.registerResponseModel.message}",
             context,
             message: LocaleKeys.account_created_failed.tr(),
           );
@@ -115,6 +118,10 @@ class _UserTextFormFieldForRegisterState
                 password,
                 emptyMessage: LocaleKeys.please_enter_your_password.tr(),
                 spaceMessage: LocaleKeys.please_enter_valid_password.tr(),
+                minLength: 8,
+                minLengthMessage: LocaleKeys
+                    .password_must_be_at_least_8_characters
+                    .tr(),
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               contentPadding: EdgeInsets.all(20.sp),
@@ -156,26 +163,56 @@ class _UserTextFormFieldForRegisterState
               prefixIcon: Icon(Icons.lock, color: AppColors.blackColor),
             ),
             24.ph,
-            CustomTextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (password) => ValidatorHelper.validatePhoneOrPassword(
-                password,
-                emptyMessage: LocaleKeys.please_enter_your_phone.tr(),
-                spaceMessage: LocaleKeys.please_enter_valid_phone.tr(),
-              ),
-              contentPadding: EdgeInsets.all(20.sp),
-              controller: authController.phoneController,
-              labelText: LocaleKeys.contact_mobile_number.tr(),
-              keyboardType: TextInputType.number,
-              prefixIcon: Icon(
-                Icons.phone_android_rounded,
-                color: AppColors.blackColor,
-              ),
-            ),
-           
+            CustomPhoneField(authController: authController),
           ],
         );
       },
     );
+  }
+}
+
+class CustomPhoneField extends StatelessWidget {
+  const CustomPhoneField({super.key, required this.authController});
+
+  final AuthController authController;
+
+  @override
+  Widget build(BuildContext context) {
+    return PhoneFormField(
+      cursorColor: AppColors.primaryColor,
+      controller: authController.phoneController,
+      decoration: InputDecoration(
+        helperMaxLines: 8,
+        labelStyle: const TextStyle(color: AppColors.greyColor),
+        labelText: LocaleKeys.contact_mobile_number.tr(),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.redColor),
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.redColor),
+          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+        ),
+      ),
+      validator: PhoneValidator.compose([
+        PhoneValidator.required(context),
+        PhoneValidator.validMobile(context),
+      ]),
+      countrySelectorNavigator: const CountrySelectorNavigator.bottomSheet(),
+      isCountrySelectionEnabled: true,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+    ).paddingSymmetric(horizontal: 16.w);
   }
 }

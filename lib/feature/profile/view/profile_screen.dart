@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -21,7 +22,6 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            
             children: [
               37.ph,
               CircleAvatar(
@@ -35,31 +35,34 @@ class ProfileScreen extends StatelessWidget {
                   child: SvgPicture.asset(Assets.images.svg.person),
                 ),
               ),
-              Text("Eyad Mohamed", style: AppStyle.fontSize22Bold),
+              Text(
+                userModel?.data?.user.name ?? 'Guest',
+                style: AppStyle.fontSize22Bold,
+              ),
               5.ph,
               Text(
-                "eyadmohamed@gmail.com",
+                userModel?.data?.user.email ?? '',
                 style: AppStyle.fontSize16Regular.copyWith(
                   color: AppColors.descContainerColor,
                 ),
               ),
               5.ph,
               Text(
-                "+201010076119",
+                userModel?.data?.user.phoneNumber ?? '',
                 style: AppStyle.fontSize16Regular.copyWith(
                   color: AppColors.descContainerColor,
                 ),
               ),
               32.ph,
               Align(
-                 alignment: Alignment.centerLeft,
+                alignment: Alignment.centerLeft,
                 child: Text(
                   textAlign: TextAlign.start,
                   "Linked Units",
                   style: AppStyle.fontSize22Bold.copyWith(fontSize: 18.sp),
                 ),
               ).paddingSymmetric(horizontal: 16.w),
-                8.ph,
+              8.ph,
               CustomContainerInformation(
                 titleContainer: 'Diyar Residence',
                 descriptionContainer: "Apartment 101, Building A",

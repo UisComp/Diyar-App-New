@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
@@ -79,7 +80,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       8.ph,
                       CustomTextFormField(
                         controller: profileController.nameProfileController,
-                        hintText: 'Eyad Mohamed',
+                        hintText: userModel?.data?.user.name ?? '',
                         hintStyle: AppStyle.fontSize14RegularNewsReader
                             .copyWith(
                               fontSize: 16.sp,
@@ -98,7 +99,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       8.ph,
                       CustomTextFormField(
                         controller: profileController.emailProfileController,
-                        hintText: 'eyadmohamed@gmail.com',
+                        hintText: userModel?.data?.user.email ?? '',
                         hintStyle: AppStyle.fontSize14RegularNewsReader
                             .copyWith(
                               fontSize: 16.sp,
@@ -112,7 +113,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       ).paddingSymmetric(horizontal: 16.w),
                       8.ph,
                       CustomTextFormField(
-                        hintText: '+201010076119',
+                        hintText: userModel?.data?.user.phoneNumber ?? '',
                         hintStyle: AppStyle.fontSize14RegularNewsReader
                             .copyWith(
                               fontSize: 16.sp,
