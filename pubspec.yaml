@@ -3,7 +3,6 @@ description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
@@ -17,7 +16,6 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
-
 environment:
   sdk: ^3.8.1
 
@@ -28,7 +26,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  build_runner: ^2.5.4
+  build_runner: ^2.4.13
   carousel_slider: ^5.1.1
   cherry_toast: ^1.13.0
   cupertino_icons: ^1.0.8
@@ -43,11 +41,11 @@ dependencies:
   flutter_svg: ^2.2.1
   fluttertoast: ^9.0.0
   go_router: ^16.2.1
-  hive_flutter: ^1.1.0
+  hive_flutter: any #^1.1.0
   image_picker: ^1.2.0
   internet_connection_checker: ^3.0.1
   json_annotation: ^4.9.0
-  json_serializable: ^6.9.0
+  json_serializable: ^6.8.0
   phone_form_field: ^10.0.11+13
   pin_code_fields: ^8.0.1
   rename_app: ^1.6.5
@@ -60,7 +58,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  hive_generator: ^2.0.1
+  hive_generator: any #^2.0.1
 flutter:
   uses-material-design: true
   assets:
