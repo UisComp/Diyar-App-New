@@ -27,18 +27,20 @@ class ContactUsScreen extends StatelessWidget {
             20.ph,
             Text(
               LocaleKeys.we_are_here_to_help.tr(),
-              style: AppStyle.fontSize22Bold.copyWith(fontSize: 24.sp),
+              style: AppStyle.fontSize22Bold(context)
+              // .copyWith(fontSize: 24.sp),
             ).paddingSymmetric(horizontal: 16.w),
             12.ph,
             Text(
               LocaleKeys.desc_we_are_here_to_help.tr(),
-              style: AppStyle.fontSize16Regular,
+              style: AppStyle.fontSize16Regular(context),
               textAlign: TextAlign.center,
             ).paddingSymmetric(horizontal: 16.w),
             28.ph,
             Text(
               LocaleKeys.contact_form.tr(),
-              style: AppStyle.fontSize22Bold.copyWith(fontSize: 24.sp),
+              style: AppStyle.fontSize22Bold(context)
+              // .copyWith(fontSize: 24.sp),
             ).paddingSymmetric(horizontal: 16.w),
             20.ph,
             CustomTextFormField(
@@ -51,10 +53,7 @@ class ContactUsScreen extends StatelessWidget {
               keyboardType: TextInputType.name,
             ),
             24.ph,
-            CustomTextFormField(
-              maxLines: 10,
-              isDense: true,
-            ),
+            CustomTextFormField(maxLines: 10, isDense: true),
             24.ph,
             CustomButton(
               buttonColor: AppColors.primaryColor,
@@ -66,7 +65,8 @@ class ContactUsScreen extends StatelessWidget {
             28.ph,
             Text(
               LocaleKeys.other_contact_methods.tr(),
-              style: AppStyle.fontSize22Bold.copyWith(fontSize: 18.sp),
+              style: AppStyle.fontSize22Bold(context)
+              // .copyWith(fontSize: 18.sp),
             ).paddingSymmetric(horizontal: 16.w),
             CustomContainerInformation(
               titleContainer: LocaleKeys.email.tr(),
@@ -79,6 +79,7 @@ class ContactUsScreen extends StatelessWidget {
               descriptionContainer: '+201010076119',
               svgIcon: Assets.images.svg.phoneCall,
             ),
+            40.ph,
           ],
         ),
       ),

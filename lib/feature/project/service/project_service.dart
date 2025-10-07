@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
-import 'package:diyar_app/feature/project/model/project_details_response.dart';
+import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/model/projects_response_model.dart';
 
 class ProjectService {
@@ -19,7 +19,7 @@ class ProjectService {
     return ProjectsResponseModel.fromJson(projectResponse?.data);
   }
 
-  static Future<ProjectDetailsResponse> getProjectDetails({
+  static Future<ProjectDetailsResponseModel> getProjectDetails({
     required String id,
   }) async {
     final projectResponseDetails = await DioHelper.getData(
@@ -29,11 +29,11 @@ class ProjectService {
       log("projectResponseDetails==>$projectResponseDetails");
       if (projectResponseDetails != null &&
           projectResponseDetails.statusCode == 200) {
-        return ProjectDetailsResponse.fromJson(projectResponseDetails.data);
+        return ProjectDetailsResponseModel.fromJson(projectResponseDetails.data);
       }
     } catch (e) {
       log('Error Happen While Get Project Details is $e');
     }
-    return ProjectDetailsResponse.fromJson(projectResponseDetails?.data);
+    return ProjectDetailsResponseModel.fromJson(projectResponseDetails?.data);
   }
 }

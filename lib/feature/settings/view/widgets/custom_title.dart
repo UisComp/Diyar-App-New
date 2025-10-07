@@ -11,7 +11,7 @@ class CustomTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: AppStyle.fontSize22BoldNewsReader,
+      style: AppStyle.fontSize22BoldNewsReader(context),
     ).paddingSymmetric(horizontal: 16.w);
   }
 }

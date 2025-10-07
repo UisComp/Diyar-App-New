@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
@@ -25,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
     this.isDense,
     this.maxLength,
     this.maxLines = 1,
+    this.enabled,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -44,8 +46,11 @@ class CustomTextFormField extends StatelessWidget {
   final bool? isDense;
   final int? maxLength;
   final int? maxLines;
+  final bool? enabled;
   @override
   Widget build(BuildContext context) {
+     final darkTheme =
+        AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
     return TextFormField(
       maxLines: maxLines,
       maxLength: maxLength,
@@ -63,21 +68,21 @@ class CustomTextFormField extends StatelessWidget {
         contentPadding: contentPadding,
         labelStyle:
             labelStyle ??
-            AppStyle.fontSize16Regular.copyWith(color: AppColors.greyColor),
+            AppStyle.fontSize16Regular(context),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        enabled: true,
+        enabled: enabled ?? true,
         helperText: helperText,
         helperStyle: helperStyle,
-        fillColor: AppColors.secondaryColor,
+        fillColor:darkTheme? Colors.black45:AppColors.secondaryColor,
         filled: true,
         labelText: labelText,
         border: OutlineInputBorder(
-          borderSide:  BorderSide(color: AppColors.primaryColor),
+          borderSide: BorderSide(color: AppColors.primaryColor),
           borderRadius: BorderRadius.all(Radius.circular(8.r)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide:  BorderSide(color: AppColors.primaryColor),
+          borderSide: BorderSide(color: AppColors.primaryColor),
           borderRadius: BorderRadius.all(Radius.circular(8.r)),
         ),
         errorBorder: OutlineInputBorder(

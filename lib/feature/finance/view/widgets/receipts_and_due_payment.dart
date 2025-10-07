@@ -1,6 +1,5 @@
 
 import 'package:diyar_app/core/extension/padding.dart';
-import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,15 +18,13 @@ class ReceiptsAndDuePayment extends StatelessWidget {
       children: [
         Text(
           LocaleKeys.receipts.tr(),
-          style: AppStyle.fontSize22Bold.copyWith(
-            color: AppColors.blackColor,
+          style: AppStyle.fontSize22Bold(context).copyWith(
             fontSize: 14.sp,
           ),
         ),
         Text(
           LocaleKeys.due_payments.tr(),
-          style: AppStyle.fontSize22Bold.copyWith(
-            color: AppColors.blackColor,
+          style: AppStyle.fontSize22Bold(context).copyWith(
             fontSize: 14.sp,
           ),
         ),

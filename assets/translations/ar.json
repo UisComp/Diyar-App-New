@@ -125,5 +125,14 @@
   "valid_phone_number": "يرجى ادخال رقم هاتف صالح",
   "logout": "تسجيل الخروج",
   "logout_successfully": "تم تسجيل الخروج بنجاح",
-  "logout_failure": "فشل تسجيل الخروج"
+  "logout_failure": "فشل تسجيل الخروج",
+  "tool_tip_phone_number": "لا يمكن تغيير رقم الهاتف هذا بسبب عقدك",
+  "delete_account": "حذف الحساب",
+  "delete_account_desc": "هل أنت متأكد أنك تريد حذف حسابك؟",
+  "delete_account_success": "تم حذف الحساب بنجاح",
+  "delete_account_failure": "فشل في حذف الحساب",
+  "delete": "حذف",
+  "cancel": "إلغاء",
+  "erase_all_data":"حذف كل البيانات",
+  "no_details_found":"لم يتم العثور على تفاصيل"
 }

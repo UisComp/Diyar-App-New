@@ -73,3 +73,13 @@ class LogOutFailureState extends AuthState {
 
   LogOutFailureState({this.error});
 }
+
+class ResendOtpLoadingState extends AuthState {}
+
+class ResendOtpSuccessState extends AuthState {}
+
+class ResendOtpFailureState extends AuthState {
+  final String? error;
+
+  ResendOtpFailureState({this.error});
+}

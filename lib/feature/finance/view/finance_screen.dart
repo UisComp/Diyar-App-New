@@ -26,15 +26,15 @@ class FinanceScreen extends StatelessWidget {
             20.ph,
             Text(
               LocaleKeys.account_statements.tr(),
-              style: AppStyle.fontSize22Bold.copyWith(
+              style: AppStyle.fontSize22Bold(context).copyWith(
                 color: AppColors.primaryColor,
               ),
             ),
             20.ph,
             BalanceCard(),
-            30.ph,
+            15.ph,
             const ReceiptsAndDuePayment(),
-            20.ph,
+            10.ph,
             const TransactionsFilter(),
             const TransactionItem(),
             10.ph,

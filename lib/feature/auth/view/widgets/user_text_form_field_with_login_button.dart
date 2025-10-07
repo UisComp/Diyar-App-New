@@ -116,10 +116,11 @@ class _UserTextFormFieldWithLoginButtonState
                 child: Text(
                   textAlign: TextAlign.start,
                   LocaleKeys.forgot_password.tr(),
-                  style: AppStyle.fontSize16Regular.copyWith(
-                    fontSize: 14.sp,
-                    color: AppColors.greyColor,
-                  ),
+                  style: AppStyle.fontSize16Regular(context)
+                  // .copyWith(
+                  //   fontSize: 14.sp,
+                  //   color: AppColors.greyColor,
+                  // ),
                 ),
               ),
             ).paddingSymmetric(horizontal: 16.sp),

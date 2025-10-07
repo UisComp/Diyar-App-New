@@ -4,6 +4,7 @@ import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
+import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 
 class ProfileService {
   static Future<ProfileResponseModel> getProfile() async {
@@ -39,12 +40,16 @@ class ProfileService {
     }
     return ProfileResponseModel.fromJson(editProfileResponse?.data);
   }
-   static Future<ProfileResponseModel> getUserProjects() async {
-    final userProjectsResponse = await DioHelper.getData(path: ApiPaths.getUserProjects);
+
+  static Future<ProfileResponseModel> getUserProjects() async {
+    final userProjectsResponse = await DioHelper.getData(
+      path: ApiPaths.getUserProjects,
+    );
 
     try {
       log("userProjectsResponse==>$userProjectsResponse");
-      if (userProjectsResponse != null && userProjectsResponse.statusCode == 200) {
+      if (userProjectsResponse != null &&
+          userProjectsResponse.statusCode == 200) {
         return ProfileResponseModel.fromJson(userProjectsResponse.data);
       }
     } catch (e) {
@@ -53,4 +58,20 @@ class ProfileService {
     return ProfileResponseModel.fromJson(userProjectsResponse?.data);
   }
 
+  static Future<UserUnitsResponseModel> getLinkedUnitsForUser() async {
+    final response = await DioHelper.getData(
+      path: ApiPaths.getLinkedUnitsForUser,
+    );
+    try {
+      log('getLinkedUnitsForUser==> ${response?.data}');
+      if (response != null && response.statusCode == 200) {
+        return UserUnitsResponseModel.fromJson(response.data);
+      } else {
+        return UserUnitsResponseModel.fromJson(response?.data);
+      }
+    } catch (e) {
+      log('Error Happen While Get Linked Units For User is $e');
+      return UserUnitsResponseModel.fromJson(response?.data);
+    }
+  }
 }

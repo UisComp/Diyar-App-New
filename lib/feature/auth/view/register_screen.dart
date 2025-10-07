@@ -41,9 +41,7 @@ class RegisterScreen extends StatelessWidget {
                       30.ph,
                       Text(
                         LocaleKeys.create_account.tr(),
-                        style: AppStyle.fontSize22Bold.copyWith(
-                          fontSize: 24.sp,
-                        ),
+                        style: AppStyle.fontSize22Bold(context)
                       ),
                       24.ph,
                       const UserTextFormFieldForRegister(),

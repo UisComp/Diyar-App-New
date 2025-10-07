@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
-
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 class DioHelper {
   static Dio? dio;
   static Future<void> init() async {
@@ -16,6 +16,20 @@ class DioHelper {
         receiveTimeout: ApiPaths.timeOutDuration,
         sendTimeout: ApiPaths.timeOutDuration,
         responseType: ResponseType.json,
+      ),
+    );
+
+    dio!.interceptors.add(
+      PrettyDioLogger(
+        enabled: true,
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        compact: true,
+        error: true,
+        request: true,
+        maxWidth: 120,
       ),
     );
   }
@@ -89,7 +103,8 @@ class DioHelper {
     }
     return null;
   }
-    static Future<Response?> patchData({
+
+  static Future<Response?> patchData({
     required String path,
     data,
     needHeader = true,

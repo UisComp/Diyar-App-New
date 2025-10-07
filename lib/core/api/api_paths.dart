@@ -11,12 +11,15 @@ class ApiPaths {
   static const String forgetPassword = "password/request-otp";
   static const String verifyOtp = "password/verify-otp";
   static const String resetPassword = "reset-password";
-  //========================================================
+  static const String getAllServices = "services/user";
+  static const String getLinkedUnitsForUser = "units";
   static const String getUserProjects = "profile/projects";
   static const String getProjects = "projects";
-  static const String getAllNews = "news";
+  static const String getAllNews = "news/user?per_page=15"; //! paginate
   static String getProjectDetails({required String id}) => "projects/$id";
-  static String getNewsByUnit({required String id}) => "news/unit/$id";
+  static String getNewsByUnit({required String id}) =>
+      "news/project/$id?per_page=15"; //! paginate
+  static String newsDetails({required String id}) => "news/$id";
   static Future<Map<String, dynamic>> getHeaders() async {
     return {
       'Content-Type': 'application/json',

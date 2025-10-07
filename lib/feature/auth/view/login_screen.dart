@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                           15.ph,
                       Text(
                         LocaleKeys.login_message.tr(),
-                        style: AppStyle.fontSize16Regular,
+                        style: AppStyle.fontSize16Regular(context),
                       ),
                       24.ph,
                       UserTextFormFieldWithLoginButton(formKey: formKey),

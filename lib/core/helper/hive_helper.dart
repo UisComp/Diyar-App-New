@@ -15,6 +15,7 @@ abstract class HiveHelper {
       Hive.registerAdapter(UserAdapter());
     }
   }
+
   static dynamic boxList;
   static dynamic boxVars;
   static Future<void> storeList<T>(List<T> list, String listKey) async {
@@ -35,25 +36,24 @@ abstract class HiveHelper {
     final box = await Hive.openBox<LoginResponseModel>('userModelBox');
     await box.put(key, userModel);
   }
-  
 
   static Future<LoginResponseModel?> getUserModel(String key) async {
     final box = await Hive.openBox<LoginResponseModel>('userModelBox');
     return box.get(key);
   }
 
-  static Future<void> addToHive<T>({
-    required String key,
-    required T value,
-  }) async {
-    final box = await Hive.openBox<T>('modelBox');
-    await box.put(key, value);
-  }
+  // static Future<void> addToHive<T>({
+  //   required String key,
+  //   required T value,
+  // }) async {
+  //   final box = await Hive.openBox<T>('modelBox');
+  //   await box.put(key, value);
+  // }
 
-  static Future<T?> getFromHive<T>({required String key}) async {
-    final box = await Hive.openBox<T>('modelBox');
-    return box.get(key);
-  }
+  // static Future<T?> getFromHive<T>({required String key}) async {
+  //   final box = await Hive.openBox<T>('modelBox');
+  //   return box.get(key);
+  // }
 
   static Future<void> removeFromHive({required String key}) async {
     final box = await Hive.openBox('modelBox');
@@ -66,5 +66,30 @@ abstract class HiveHelper {
 
     final modelBox = await Hive.openBox('modelBox');
     await modelBox.clear();
+  }
+
+  static Box? _box;
+
+  static Future<Box> _openBox() async {
+    _box ??= await Hive.openBox('modelbox');
+    return _box!;
+  }
+
+  static Future<void> addToHive({
+    required String key,
+    required dynamic value,
+  }) async {
+    final box = await _openBox();
+    await box.put(key, value);
+  }
+
+  static Future<dynamic> getFromHive({required String key}) async {
+    final box = await _openBox();
+    return box.get(key);
+  }
+
+  static Future<void> clearHive() async {
+    final box = await _openBox();
+    await box.clear();
   }
 }

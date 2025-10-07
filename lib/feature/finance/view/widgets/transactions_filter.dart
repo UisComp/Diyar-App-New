@@ -19,7 +19,7 @@ class TransactionsFilter extends StatelessWidget {
       children: [
         Text(
           LocaleKeys.transactions.tr(),
-          style: AppStyle.fontSize22Bold.copyWith(
+          style: AppStyle.fontSize22Bold(context).copyWith(
             color: AppColors.primaryColor,
           ),
         ),

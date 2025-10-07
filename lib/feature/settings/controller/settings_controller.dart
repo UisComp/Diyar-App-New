@@ -27,7 +27,11 @@ class SettingsController extends Cubit<SettingsState> {
         )
         .then((value) {
           changePasswordResponseModel = value;
-          emit(ChangePasswordSuccessfullyState());
+          if (value.success == true) {
+            emit(ChangePasswordSuccessfullyState());
+          } else {
+            emit(ChangePasswordFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Change Password is $error');

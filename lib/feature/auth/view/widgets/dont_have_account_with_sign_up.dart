@@ -1,7 +1,6 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,10 +18,8 @@ class DontHaveAccountWithSignUp extends StatelessWidget {
       children: [
         Text(
           LocaleKeys.donnot_have_account.tr(),
-          style: AppStyle.fontSize16Regular.copyWith(
-            fontSize: 14.sp,
-            color: AppColors.primaryColor,
-          ),
+          style: AppStyle.fontSize16Regular(context)
+         
         ),
         5.pw,
         InkWell(
@@ -31,10 +28,8 @@ class DontHaveAccountWithSignUp extends StatelessWidget {
           },
           child: Text(
             LocaleKeys.sign_up.tr(),
-            style: AppStyle.fontSize16Regular.copyWith(
-              fontSize: 14.sp,
-              color: AppColors.primaryColor,
-            ),
+            style: AppStyle.fontSize16Regular(context)
+            
           ),
         ),
       ],

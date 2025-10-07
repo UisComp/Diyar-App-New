@@ -44,7 +44,6 @@ class AuthController extends Cubit<AuthState> {
   //!============================================================================
   LoginResponseModel loginResponseModel = LoginResponseModel();
   RegisterResponseModel registerResponseModel = RegisterResponseModel();
-
   ResetOrForgetPasswordResponseModel forgetPasswordResponseModel =
       ResetOrForgetPasswordResponseModel();
   OtpVerificationResponse otpVerifyResponseModel = OtpVerificationResponse();
@@ -115,7 +114,8 @@ class AuthController extends Cubit<AuthState> {
     await AuthService.forgetPassword(
           email: emailForForgetPasswordController.text,
         )
-        .then((value) {
+        .then((value) async {
+          await saveEmail(emailForForgetPasswordController.text);
           forgetPasswordResponseModel = value;
           log('forgetPasswordResponseModel: $forgetPasswordResponseModel');
           if (value.success == true) {
@@ -128,6 +128,25 @@ class AuthController extends Cubit<AuthState> {
           log('Error Happen While Forget Password is ${error.toString()}');
           emit(ForgetPasswordFailureState(error: error.toString()));
         });
+  }
+
+  Future<void> resendOtp() async {
+    if (savedEmail == null || savedEmail!.isEmpty) {
+      emit(ResendOtpFailureState(error: "Missing email for resend."));
+      return;
+    }
+    emit(ResendOtpLoadingState());
+    try {
+      final value = await AuthService.forgetPassword(email: savedEmail!);
+      if (value.success == true) {
+        await startTimer();
+        emit(ResendOtpSuccessState());
+      } else {
+        emit(ResendOtpFailureState(error: value.message));
+      }
+    } catch (e) {
+      emit(ResendOtpFailureState(error: e.toString()));
+    }
   }
 
   late Timer timer;

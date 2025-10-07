@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:diyar_app/feature/project/controller/project_state.dart';
-import 'package:diyar_app/feature/project/model/project_details_response.dart';
+import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/model/projects_response_model.dart';
 import 'package:diyar_app/feature/project/service/project_service.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +11,19 @@ class ProjectController extends Cubit<ProjectState> {
   static ProjectController get(BuildContext context) =>
       BlocProvider.of(context);
   ProjectsResponseModel projectsResponseModel = ProjectsResponseModel();
-  ProjectDetailsResponse projectDetailsResponseModel = ProjectDetailsResponse();
+  ProjectDetailsResponseModel projectDetailsResponseModel =
+      ProjectDetailsResponseModel();
   Future<void> getProjects() async {
     emit(GetProjectsLoadingState());
     await ProjectService.getProjects()
         .then((value) {
           projectsResponseModel = value;
-          emit(GetProjectsSuccessfullyState());
+          if (value.success == true) {
+            log('projectsResponseModel: ${projectsResponseModel.toJson()}');
+            emit(GetProjectsSuccessfullyState());
+          } else {
+            emit(GetProjectsFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Get Projects is $error');
@@ -30,10 +36,17 @@ class ProjectController extends Cubit<ProjectState> {
     await ProjectService.getProjectDetails(id: id)
         .then((value) {
           projectDetailsResponseModel = value;
-          emit(GetProjectDetailsSuccessfullyState());
+          log(
+            'projectDetailsResponseModel: ${projectDetailsResponseModel.toJson()}',
+          );
+          if (value.success == true) {
+            emit(GetProjectDetailsSuccessfullyState());
+          } else {
+            emit(GetProjectDetailsFailureState(error: value.message));
+          }
         })
         .catchError((error) {
-          log('Error Happen While Get Projects is $error');
+          log('Error Happen While Get Project Details is $error');
           emit(GetProjectDetailsFailureState(error: error.toString()));
         });
   }

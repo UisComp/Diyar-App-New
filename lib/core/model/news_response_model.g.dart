@@ -11,7 +11,7 @@ NewsResponseModel _$NewsResponseModelFromJson(Map<String, dynamic> json) =>
       success: json['success'] as bool?,
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => NewsData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => AllNewsData.fromJson(e as Map<String, dynamic>))
           .toList(),
       meta: json['meta'] == null
           ? null
@@ -22,19 +22,17 @@ Map<String, dynamic> _$NewsResponseModelToJson(NewsResponseModel instance) =>
     <String, dynamic>{
       'success': instance.success,
       'message': instance.message,
-      'data': instance.data,
-      'meta': instance.meta,
+      'data': instance.data?.map((e) => e.toJson()).toList(),
+      'meta': instance.meta?.toJson(),
     };
 
-NewsData _$NewsDataFromJson(Map<String, dynamic> json) => NewsData(
+AllNewsData _$AllNewsDataFromJson(Map<String, dynamic> json) => AllNewsData(
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
       content: json['content'] as String?,
-      newsDate: json['news_date'] == null
-          ? null
-          : DateTime.parse(json['news_date'] as String),
+      newsDate: json['news_date'] as String?,
       media: (json['media'] as List<dynamic>?)
-          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MediaForAllNews.fromJson(e as Map<String, dynamic>))
           .toList(),
       unit: json['unit'] == null
           ? null
@@ -44,26 +42,29 @@ NewsData _$NewsDataFromJson(Map<String, dynamic> json) => NewsData(
           : Project.fromJson(json['project'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$NewsDataToJson(NewsData instance) => <String, dynamic>{
+Map<String, dynamic> _$AllNewsDataToJson(AllNewsData instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'content': instance.content,
-      'news_date': instance.newsDate?.toIso8601String(),
-      'media': instance.media,
-      'unit': instance.unit,
-      'project': instance.project,
+      'news_date': instance.newsDate,
+      'media': instance.media?.map((e) => e.toJson()).toList(),
+      'unit': instance.unit?.toJson(),
+      'project': instance.project?.toJson(),
     };
 
-Media _$MediaFromJson(Map<String, dynamic> json) => Media(
+MediaForAllNews _$MediaForAllNewsFromJson(Map<String, dynamic> json) =>
+    MediaForAllNews(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: (json['size'] as num?)?.toInt(),
+      size: json['size'] as String?,
       mimeType: json['mime_type'] as String?,
     );
 
-Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
+Map<String, dynamic> _$MediaForAllNewsToJson(MediaForAllNews instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'file_name': instance.fileName,
@@ -75,11 +76,15 @@ Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
 Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
+      projectId: json['project_id'] as String?,
+      userId: json['user_id'] as String?,
     );
 
 Map<String, dynamic> _$UnitToJson(Unit instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'project_id': instance.projectId,
+      'user_id': instance.userId,
     };
 
 Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
@@ -87,17 +92,18 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       name: json['name'] as String?,
       mainImage: json['main_image'] == null
           ? null
-          : Media.fromJson(json['main_image'] as Map<String, dynamic>),
+          : MediaForAllNews.fromJson(
+              json['main_image'] as Map<String, dynamic>),
       media: (json['media'] as List<dynamic>?)
-          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MediaForAllNews.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'main_image': instance.mainImage,
-      'media': instance.media,
+      'main_image': instance.mainImage?.toJson(),
+      'media': instance.media?.map((e) => e.toJson()).toList(),
     };
 
 Meta _$MetaFromJson(Map<String, dynamic> json) => Meta(

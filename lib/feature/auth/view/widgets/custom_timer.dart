@@ -48,8 +48,7 @@ class _CustomTimerState extends State<CustomTimer> {
             if (authController.remainingSeconds == 0)
               InkWell(
                 onTap: () async {
-                  await authController.forgetPassword();
-                  await authController.startTimer();
+                  await authController.resendOtp();
                 },
                 child: Text(
                   LocaleKeys.resend_otp.tr(),

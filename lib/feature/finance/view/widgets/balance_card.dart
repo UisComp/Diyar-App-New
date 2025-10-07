@@ -1,4 +1,4 @@
-
+import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,13 +20,6 @@ class BalanceCard extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(12.0.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +33,7 @@ class BalanceCard extends StatelessWidget {
               color: Colors.brown[800],
             ),
           ),
-          SizedBox(height: 10.h),
+          10.ph,
           Text(
             '\$12,345.67',
             style: TextStyle(

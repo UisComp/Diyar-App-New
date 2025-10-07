@@ -543,8 +543,14 @@ class $AssetsFontsNewsReaderGen {
 class $AssetsImagesSvgGen {
   const $AssetsImagesSvgGen();
 
+  /// File path: assets/images/svg/biometric.svg
+  String get biometric => 'assets/images/svg/biometric.svg';
+
   /// File path: assets/images/svg/contact_us.svg
   String get contactUs => 'assets/images/svg/contact_us.svg';
+
+  /// File path: assets/images/svg/delete_user.svg
+  String get deleteUser => 'assets/images/svg/delete_user.svg';
 
   /// File path: assets/images/svg/help.svg
   String get help => 'assets/images/svg/help.svg';
@@ -578,7 +584,9 @@ class $AssetsImagesSvgGen {
 
   /// List of all assets
   List<String> get values => [
+        biometric,
         contactUs,
+        deleteUser,
         help,
         home,
         lock,
@@ -593,7 +601,7 @@ class $AssetsImagesSvgGen {
 }
 
 class Assets {
-  const Assets._();
+  Assets._();
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
@@ -633,7 +641,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.medium,
+    FilterQuality filterQuality = FilterQuality.low,
     int? cacheWidth,
     int? cacheHeight,
   }) {

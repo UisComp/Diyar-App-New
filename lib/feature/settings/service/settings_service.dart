@@ -11,6 +11,7 @@ class SettingsService {
   }) async {
     final changePasswordResponse = await DioHelper.postData(
       path: ApiPaths.changePassword,
+      data: changePasswordRequestModel.toJson(),
     );
     log("changePasswordResponse $changePasswordResponse");
     try {

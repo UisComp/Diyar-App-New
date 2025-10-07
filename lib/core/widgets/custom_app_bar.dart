@@ -23,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ]
           : null,
-      title: Text(titleAppBar, style: AppStyle.fontSize18Bold),
+      title: Text(titleAppBar, style: AppStyle.fontSize18Bold(context)),
     );
   }
 

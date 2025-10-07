@@ -26,8 +26,18 @@ class Project {
 
   Project({this.id, this.name, this.mainImage, this.media});
 
-  factory Project.fromJson(Map<String, dynamic> json) =>
-      _$ProjectFromJson(json);
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return Project(
+      id: _toInt(json['id']),
+      name: json['name'] as String?,
+      mainImage: json['main_image'] == null
+          ? null
+          : Media.fromJson(json['main_image'] as Map<String, dynamic>),
+      media: (json['media'] as List<dynamic>?)
+          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 }
@@ -52,7 +62,16 @@ class Media {
     this.mimeType,
   });
 
-  factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
+  factory Media.fromJson(Map<String, dynamic> json) {
+    return Media(
+      id: _toInt(json['id']),
+      name: json['name'] as String?,
+      fileName: json['file_name'] as String?,
+      url: json['url'] as String?,
+      size: _toInt(json['size']),
+      mimeType: json['mime_type'] as String?,
+    );
+  }
 
   Map<String, dynamic> toJson() => _$MediaToJson(this);
 }
@@ -66,7 +85,21 @@ class Meta {
 
   Meta({this.limit, this.total, this.totalPages, this.page});
 
-  factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
+  factory Meta.fromJson(Map<String, dynamic> json) {
+    return Meta(
+      limit: _toInt(json['limit']),
+      total: _toInt(json['total']),
+      totalPages: _toInt(json['totalPages']),
+      page: _toInt(json['page']),
+    );
+  }
 
   Map<String, dynamic> toJson() => _$MetaToJson(this);
+}
+int? _toInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
 }

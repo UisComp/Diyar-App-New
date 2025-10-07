@@ -125,5 +125,14 @@
   "valid_phone_number": "Please enter a valid phone number",
   "logout": "Log Out",
   "logout_successfully": "Logout Successfully",
-  "logout_failure": "Logout Failed"
+  "logout_failure": "Logout Failed",
+  "tool_tip_phone_number": "This Phone Number Can't Be Changed Due To Your Contract",
+  "delete_account": "Delete Account",
+  "delete_account_desc": "Are you sure you want to delete your account?",
+  "delete_account_success": "Account Deleted Successfully",
+  "delete_account_failure": "Failed To Delete Account",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "erase_all_data":"Erase all data",
+  "no_details_found":"No details found"
 }

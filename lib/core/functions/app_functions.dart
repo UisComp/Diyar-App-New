@@ -7,12 +7,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppFunctions {
   static void successMessage(BuildContext context, {required String message}) {
     CherryToast.success(
-      height: 60.h,
-      borderRadius: 10.r,
       animationType: AnimationType.fromRight,
+      toastPosition: Position.top,
+      borderRadius: 12.r,
       displayCloseButton: true,
       backgroundColor: AppColors.greenColor,
-      title: Text(message, style: TextStyle(color: AppColors.blackColor)),
+      toastDuration: const Duration(seconds: 3),
+      title: Text(
+        message,
+        style: TextStyle(
+          color: AppColors.blackColor,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+      ),
     ).show(context);
   }
 
@@ -22,13 +32,30 @@ class AppFunctions {
     String? description,
   }) {
     CherryToast.error(
-      description: Text(description  ?? ''),
-      height: 60.h,
-      animationType: AnimationType.fromRight,
-      borderRadius: 10.r,
-
+      animationType: AnimationType.fromLeft,
+      toastPosition: Position.top,
+      borderRadius: 12.r,
       displayCloseButton: true,
-      title: Text(message, style: TextStyle(color: AppColors.blackColor)),
+      backgroundColor: AppColors.redColor,
+      toastDuration: const Duration(seconds: 4),
+      title: Text(
+        message,
+        style: TextStyle(
+          color: AppColors.blackColor,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      description: description != null && description.isNotEmpty
+          ? Text(
+              description,
+              style: TextStyle(color: AppColors.blackColor, fontSize: 12.sp),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            )
+          : null,
     ).show(context);
   }
 }

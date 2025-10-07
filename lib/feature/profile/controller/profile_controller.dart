@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
+import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 import 'package:diyar_app/feature/profile/service/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 class ProfileController extends Cubit<ProfileState> {
   ProfileController() : super(ProfileInitialState());
@@ -15,13 +16,25 @@ class ProfileController extends Cubit<ProfileState> {
       BlocProvider.of(context);
   ProfileResponseModel profileResponseModel = ProfileResponseModel();
   ProfileResponseModel editProfileResponseModel = ProfileResponseModel();
-  final TextEditingController emailProfileController = TextEditingController();
-  final TextEditingController nameProfileController = TextEditingController();
+  TextEditingController emailProfileController = TextEditingController();
+  TextEditingController nameProfileController = TextEditingController();
+  final phoneProfileController = PhoneController(
+    initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
+  );
+  UserUnitsResponseModel userLinkedUnitsResponseModel = UserUnitsResponseModel();
   Future<void> getMyProfile() async {
     emit(GetMyProfileLoadingState());
     await ProfileService.getProfile()
         .then((value) {
           profileResponseModel = value;
+          if (value.data != null) {
+            nameProfileController.text = value.data!.name ?? '';
+            emailProfileController.text = value.data!.email ?? '';
+            phoneProfileController.value = PhoneNumber(
+              isoCode: IsoCode.EG,
+              nsn: value.data!.phoneNumber ?? '',
+            );
+          }
           emit(GetMyProfileSuccessState());
         })
         .catchError((error) {
@@ -55,15 +68,38 @@ class ProfileController extends Cubit<ProfileState> {
           authRequestModel: RequestModel(
             email: emailProfileController.text,
             name: nameProfileController.text,
+            phoneNumber: phoneProfileController.value.international,
           ),
         )
         .then((value) {
           profileResponseModel = value;
-          emit(EditingProfileSuccessfullyState());
+          if (value.success == true) {
+            emit(EditingProfileSuccessfullyState());
+          } else {
+            emit(EditingProfileFailureState());
+          }
         })
         .catchError((error) {
           log('Error Happen While Editing My Profile is $error');
           emit(EditingProfileFailureState());
+        });
+  }
+
+Future<void> getUserLinkedUnits() async {
+    emit(GetUserLinkedUnitsLoadingState());
+    await ProfileService.getLinkedUnitsForUser()
+        .then((value) {
+          userLinkedUnitsResponseModel = value;
+          log('getUserLinkedUnits==> ${value.data}');
+          if (value.success == true) {
+            emit(GetUserLinkedUnitsSuccessfullyState());
+          } else {
+            emit(GetUserLinkedUnitsFailureState());
+          }
+        })
+        .catchError((error) {
+          log('Error Happen While Get User Linked Units is $error');
+          emit(GetUserLinkedUnitsFailureState());
         });
   }
 }

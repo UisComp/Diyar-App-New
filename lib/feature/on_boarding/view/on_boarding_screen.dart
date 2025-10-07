@@ -32,12 +32,12 @@ class OnBoardingScreen extends StatelessWidget {
                     20.ph,
                     Text(
                       LocaleKeys.welcome_message.tr(),
-                      style: AppStyle.fontSize22Bold,
+                      style: AppStyle.fontSize22Bold(context),
                     ),
                     Text(
                       LocaleKeys.discover_message.tr(),
                       textAlign: TextAlign.center,
-                      style: AppStyle.fontSize16Regular,
+                      style: AppStyle.fontSize16Regular(context),
                     ).paddingAll(16.sp),
                     24.ph,
                     CustomButton(
@@ -63,7 +63,7 @@ class OnBoardingScreen extends StatelessWidget {
             Text(
               LocaleKeys.by_continue.tr(),
               textAlign: TextAlign.center,
-              style: AppStyle.fontSize16Regular.copyWith(
+              style: AppStyle.fontSize16Regular(context).copyWith(
                 fontSize: 14.sp,
                 color: Colors.grey,
               ),

@@ -18,11 +18,13 @@ class PrivacyPolicy extends StatelessWidget {
       body: SingleChildScrollView(
         child: Text(
           textAlign: TextAlign.center,
-          LocaleKeys.privacy_policy.tr(),style: AppStyle.fontSize14RegularNewsReader.copyWith(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w400,
-          height: 1.5.h,
-        ),).paddingSymmetric(horizontal: 16.w),
+          LocaleKeys.privacy_policy.tr(),style: AppStyle.fontSize14RegularNewsReader(context)
+        //   .copyWith(
+        //   fontSize: 16.sp,
+        //   fontWeight: FontWeight.w400,
+        //   height: 1.5.h,
+        // )
+        ,).paddingSymmetric(horizontal: 16.w),
       ),
     );
   }

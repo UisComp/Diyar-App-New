@@ -35,7 +35,7 @@ class TransactionItem extends StatelessWidget {
             children: [
               Text(
                 isReceived?"Received Payment" : "Sent Payment",
-                style: AppStyle.fontSize22BoldNewsReader.copyWith(
+                style: AppStyle.fontSize22BoldNewsReader(context).copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: 16.sp,
                 ),
@@ -43,7 +43,7 @@ class TransactionItem extends StatelessWidget {
               5.ph,
               Text(
                 "2023-08-15",
-                style: AppStyle.fontSize14RegularNewsReader.copyWith(
+                style: AppStyle.fontSize14RegularNewsReader(context).copyWith(
                   color: AppColors.descContainerColor,
                 ),
               ),
@@ -52,7 +52,7 @@ class TransactionItem extends StatelessWidget {
           const Spacer(),
           Text(
             "+ \$5000.00",
-            style: AppStyle.fontSize22BoldNewsReader.copyWith(
+            style: AppStyle.fontSize22BoldNewsReader(context).copyWith(
               fontWeight: FontWeight.w500,
               fontSize: 16.sp,
             ),

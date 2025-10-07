@@ -130,5 +130,14 @@ abstract class  LocaleKeys {
   static const logout = 'logout';
   static const logout_successfully = 'logout_successfully';
   static const logout_failure = 'logout_failure';
+  static const tool_tip_phone_number = 'tool_tip_phone_number';
+  static const delete_account = 'delete_account';
+  static const delete_account_desc = 'delete_account_desc';
+  static const delete_account_success = 'delete_account_success';
+  static const delete_account_failure = 'delete_account_failure';
+  static const delete = 'delete';
+  static const cancel = 'cancel';
+  static const erase_all_data = 'erase_all_data';
+  static const no_details_found = 'no_details_found';
 
 }
