@@ -31,6 +31,15 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
     super.initState();
     homeController = HomeController.get(context);
     homeController.getAllServices();
+    homeController.searchController.addListener(() {
+      homeController.filterServices();
+    });
+  }
+
+  @override
+  void dispose() {
+    homeController.searchController.removeListener(() {});
+    super.dispose();
   }
 
   @override
@@ -38,9 +47,8 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
     final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
     final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
-    final cardImageColor = darkTheme
-        ? AppColors.black87
-        : AppColors.secondaryColor;
+    final cardImageColor =
+        darkTheme ? AppColors.black87 : AppColors.secondaryColor;
     final textColor = darkTheme ? AppColors.containerColor : AppColors.black87;
 
     return Scaffold(
@@ -52,6 +60,11 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
         builder: (context, state) {
           final homeController = HomeController.get(context);
           final isLoading = state is GetAllServicesLoadingState;
+          final services = homeController.filteredServices.isNotEmpty ||
+                  homeController.searchController.text.isNotEmpty
+              ? homeController.filteredServices
+              : (homeController.userServicesResponse.data ?? []);
+
           return Skeletonizer(
             enabled: isLoading,
             child: CustomScrollView(
@@ -60,6 +73,7 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                   child: Column(
                     children: [
                       CustomTextFormField(
+                        controller: homeController.searchController,
                         hintStyle: AppStyle.fontSize16Regular(context),
                         hintText: LocaleKeys.search_services.tr(),
                         prefixIcon: SvgPicture.asset(
@@ -68,7 +82,7 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                           width: 24.w,
                           fit: BoxFit.scaleDown,
                         ),
-                      ).paddingOnly(top: 15.h),
+                      ).paddingOnly(top: 15.h, left: 16.w, right: 16.w),
                     ],
                   ),
                 ),
@@ -77,17 +91,25 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
+                        if (isLoading || services.isEmpty) {
+                          return GridViewServiceItem(
+                            cardColor: cardColor,
+                            cardImageColor: cardImageColor,
+                            textColor: textColor,
+                            service: null,
+                          );
+                        }
+
+                        final service = services[index];
                         return GridViewServiceItem(
-                          index: index,
+                          service: service,
                           cardColor: cardColor,
                           cardImageColor: cardImageColor,
                           textColor: textColor,
                         );
                       },
-                      childCount: isLoading
-                          ? 8 // number of skeleton items while loading
-                          : (homeController.userServicesResponse.data?.length ??
-                                0),
+                      childCount:
+                          isLoading ? 8 : (services.length),
                     ),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -97,6 +119,21 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                     ),
                   ),
                 ),
+
+                if (!isLoading && services.isEmpty)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 50.h),
+                      child: Center(
+                        child: Text(
+                          LocaleKeys.no_results_found.tr(),
+                          style: AppStyle.fontSize16Regular(context).copyWith(
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           );

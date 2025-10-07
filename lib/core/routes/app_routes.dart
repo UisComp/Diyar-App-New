@@ -30,6 +30,146 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+CustomTransitionPage<T> buildAnimatedPage<T>({
+  required Widget child,
+  required Widget Function(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  )
+  transition,
+}) {
+  return CustomTransitionPage<T>(
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 300),
+    child: child,
+    transitionsBuilder: transition,
+  );
+}
+
+SlideTransition slideFromRight(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween(
+      begin: const Offset(1, 0),
+      end: Offset.zero,
+    ).chain(CurveTween(curve: Curves.easeInOut)).animate(animation),
+    child: child,
+  );
+}
+
+SlideTransition slideFromLeft(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween(
+      begin: const Offset(-1, 0),
+      end: Offset.zero,
+    ).chain(CurveTween(curve: Curves.easeOutCubic)).animate(animation),
+    child: child,
+  );
+}
+
+SlideTransition slideFromBottom(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).chain(CurveTween(curve: Curves.easeInOut)).animate(animation),
+    child: child,
+  );
+}
+
+FadeTransition fadeIn(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return FadeTransition(opacity: animation, child: child);
+}
+
+ScaleTransition scaleIn(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return ScaleTransition(
+    scale: Tween(begin: 0.9, end: 1.0)
+        .chain(CurveTween(curve: Curves.easeOutBack))
+        .animate(animation),
+    child: child,
+  );
+}
+
+AnimatedBuilder rotateY(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return AnimatedBuilder(
+    animation: animation,
+    builder: (context, child) {
+      final rotate = (1 - animation.value) * 1.2;
+      return Transform(
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001)
+          ..rotateY(rotate),
+        alignment: Alignment.center,
+        child: child,
+      );
+    },
+    child: child,
+  );
+}
+
+FadeTransition zoomFadeIn(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return FadeTransition(
+    opacity: animation,
+    child: ScaleTransition(
+      scale: Tween(begin: 0.95, end: 1.0).animate(
+        CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+      ),
+      child: child,
+    ),
+  );
+}
+
+
+SlideTransition elasticSlideUp(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return SlideTransition(
+    position: Tween(begin: const Offset(0, 1.2), end: Offset.zero)
+        .chain(CurveTween(curve: Curves.elasticOut))
+        .animate(animation),
+    child: child,
+  );
+}
+
 final GoRouter router = GoRouter(
   initialLocation: userModel?.data?.accessToken != null
       ? RoutesName.homeLayout
@@ -38,184 +178,173 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: RoutesName.onBoarding,
       path: RoutesName.onBoarding,
-      builder: (BuildContext context, GoRouterState state) {
-        return const OnBoardingScreen();
-      },
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const OnBoardingScreen(), transition: zoomFadeIn),
     ),
     GoRoute(
       name: RoutesName.homeLayout,
       path: RoutesName.homeLayout,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => HomeController(),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => HomeController(),
           child: const HomeLayout(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.login,
-      path: RoutesName.login,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => AuthController(),
-          child: LoginScreen(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.register,
-      path: RoutesName.register,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => AuthController(),
-          child: RegisterScreen(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.forgetPasswordScreen,
-      path: RoutesName.forgetPasswordScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => AuthController(),
-          child: const ForgetPasswordScreen(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.resetPasswordScreen,
-      path: RoutesName.resetPasswordScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => AuthController(),
-          child: const ResetPasswordScreen(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.otpScreen,
-      path: RoutesName.otpScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => AuthController(),
-          child: const OtpScreen(),
-        );
-      },
+        ),
+        transition: slideFromLeft,
+      ),
     ),
     GoRoute(
       name: RoutesName.home,
       path: RoutesName.home,
-      builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen();
-      },
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const HomeScreen(), transition: fadeIn),
+    ),
+    GoRoute(
+      name: RoutesName.login,
+      path: RoutesName.login,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => AuthController(), child: LoginScreen()),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.register,
+      path: RoutesName.register,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => AuthController(), child: RegisterScreen()),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.forgetPasswordScreen,
+      path: RoutesName.forgetPasswordScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => AuthController(), child: const ForgetPasswordScreen()),
+        transition: slideFromBottom,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.resetPasswordScreen,
+      path: RoutesName.resetPasswordScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => AuthController(), child: const ResetPasswordScreen()),
+        transition: slideFromBottom,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.otpScreen,
+      path: RoutesName.otpScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => AuthController(), child: const OtpScreen()),
+        transition: scaleIn,
+      ),
     ),
     GoRoute(
       name: RoutesName.personalInformation,
       path: RoutesName.personalInformation,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => ProfileController(),
-          child: const PersonalInformation(),
-        );
-      },
-    ),
-    GoRoute(
-      name: RoutesName.privacyPolicy,
-      path: RoutesName.privacyPolicy,
-      builder: (BuildContext context, GoRouterState state) {
-        return const PrivacyPolicy();
-      },
-    ),
-    GoRoute(
-      name: RoutesName.changePasswordScreen,
-      path: RoutesName.changePasswordScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => SettingsController(),
-          child: const ChangePasswordScreen(),
-        );
-      },
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => ProfileController(), child: const PersonalInformation()),
+        transition: slideFromRight,
+      ),
     ),
     GoRoute(
       name: RoutesName.appPreferencesScreen,
       path: RoutesName.appPreferencesScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return const AppPreferencesScreen();
-      },
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const AppPreferencesScreen(), transition: fadeIn),
     ),
     GoRoute(
-      name: RoutesName.financeScreen,
-      path: RoutesName.financeScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return const FinanceScreen();
-      },
+      name: RoutesName.changePasswordScreen,
+      path: RoutesName.changePasswordScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(create: (_) => SettingsController(), child: const ChangePasswordScreen()),
+        transition: slideFromRight,
+      ),
     ),
     GoRoute(
       name: RoutesName.contactUsScreen,
       path: RoutesName.contactUsScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return const ContactUsScreen();
-      },
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const ContactUsScreen(), transition: fadeIn),
+    ),
+    GoRoute(
+      name: RoutesName.privacyPolicy,
+      path: RoutesName.privacyPolicy,
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const PrivacyPolicy(), transition: fadeIn),
     ),
     GoRoute(
       name: RoutesName.projectDetails,
       path: RoutesName.projectDetails,
-      builder: (BuildContext context, GoRouterState state) {
+      pageBuilder: (context, state) {
         final projectId = state.extra as String?;
-
-        return BlocProvider(
-          create: (context) =>
-              ProjectController()..getProjectDetails(id: projectId ?? ''),
-          child: const ProjectDetails(),
+        return buildAnimatedPage(
+          child: BlocProvider(
+            create: (_) =>
+                ProjectController()..getProjectDetails(id: projectId ?? ''),
+            child: const ProjectDetails(),
+          ),
+          transition: scaleIn,
         );
       },
     ),
     GoRoute(
       name: RoutesName.unitEvents,
       path: RoutesName.unitEvents,
-      builder: (BuildContext context, GoRouterState state) {
+      pageBuilder: (context, state) {
         final projectId = state.extra as int;
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => UnitEventController()),
-            BlocProvider(create: (context) => ProjectController()),
-          ],
-          child: UnitEvent(projectId: projectId),
+        return buildAnimatedPage(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => UnitEventController()),
+              BlocProvider(create: (_) => ProjectController()),
+            ],
+            child: UnitEvent(projectId: projectId),
+          ),
+          transition: elasticSlideUp,
         );
       },
     ),
-
     GoRoute(
       name: RoutesName.newsScreen,
       path: RoutesName.newsScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => NewsController()..getAllNews(),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => NewsController()..getAllNews(),
           child: const NewsScreen(),
-        );
-      },
+        ),
+        transition: fadeIn,
+      ),
     ),
     GoRoute(
       name: RoutesName.newsDetailsScreen,
       path: RoutesName.newsDetailsScreen,
-      builder: (BuildContext context, GoRouterState state) {
+      pageBuilder: (context, state) {
         final newsId = state.extra?.toString() ?? '';
-        return BlocProvider(
-          create: (context) => NewsController()..getNewsDetails(id: newsId),
-          child: const NewsDetailsScreen(),
+        return buildAnimatedPage(
+          child: BlocProvider(
+            create: (_) => NewsController()..getNewsDetails(id: newsId),
+            child: const NewsDetailsScreen(),
+          ),
+          transition: rotateY,
         );
       },
     ),
-
     GoRoute(
       name: RoutesName.viewAllServicesScreen,
       path: RoutesName.viewAllServicesScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(
-          create: (context) => HomeController(),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => HomeController(),
           child: const ViewAllServicesScreen(),
-        );
-      },
+        ),
+        transition: zoomFadeIn,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.financeScreen,
+      path: RoutesName.financeScreen,
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const FinanceScreen(), transition: slideFromBottom),
     ),
   ],
 );

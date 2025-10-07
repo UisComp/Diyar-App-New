@@ -26,14 +26,16 @@ class CustomGridViewForServices extends StatelessWidget {
       builder: (context, state) {
         final homeController = HomeController.get(context);
         final isLoading = state is GetAllServicesLoadingState;
-        final services = homeController.userServicesResponse.data ?? [];
-
+        final services = homeController.filteredServices.isNotEmpty
+            ? homeController.filteredServices
+            : (homeController.userServicesResponse.data ?? []);
+        final showSkeleton = isLoading || services.isEmpty;
         return Skeletonizer(
-          enabled: isLoading,
+          enabled: showSkeleton,
           child: GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: isLoading ? 5 : services.take(5).length,
+            itemCount: showSkeleton ? 5 : services.take(5).length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 10.h,
@@ -41,11 +43,15 @@ class CustomGridViewForServices extends StatelessWidget {
               childAspectRatio: .95,
             ),
             itemBuilder: (context, index) {
+              if (!showSkeleton && index >= services.length) {
+                return const SizedBox.shrink();
+              }
+              final service = showSkeleton ? null : services[index];
               return GridViewServiceItem(
                 cardColor: cardColor,
                 cardImageColor: cardImageColor,
                 textColor: textColor,
-                index: index,
+                service: service,
               );
             },
           ),

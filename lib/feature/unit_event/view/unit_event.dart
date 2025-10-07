@@ -120,25 +120,46 @@ class UnitEventState extends State<UnitEvent> {
                                 0),
                       itemBuilder: (context, index) {
                         if (state is GetUnitsByEventLoadingState) {
-                          return EventItem(
-                            title: 'Loading...',
-                            description: 'Loading...',
-                            imageUrl: '',
-                            newsId: 0,
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      height: 16.h,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    8.ph,
+                                    Container(
+                                      width: double.infinity,
+                                      height: 14.h,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              10.pw,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Container(
+                                  width: 100.w,
+                                  height: 100.h,
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                            ],
                           );
                         }
+
                         final news = unitEventController
                             .newByProjectUnitEventResponseModel
                             .data?[index];
-                        // return EventItem(
-                        //   title: news?.title ?? '',
-                        //   description: news?.content ?? '',
-                        //   imageUrl: news?.media?.isNotEmpty == true
-                        //       ? news!.media![0].url ?? ''
-                        //       : '',
-                        // );
+
                         return EventItem(
-                          newsId: news?.id ?? 0, // ✅ هنا نمرر ID الحدث
+                          newsId: news?.id ?? 0,
                           title: news?.title ?? '',
                           description: news?.content ?? '',
                           imageUrl: news?.media?.isNotEmpty == true

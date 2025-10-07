@@ -134,5 +134,7 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "erase_all_data":"Erase all data",
-  "no_details_found":"No details found"
+  "no_details_found":"No details found",
+  "service_not_available":"This service is not available yet",
+  "no_results_found":"No results found"
 }

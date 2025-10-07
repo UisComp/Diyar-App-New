@@ -35,11 +35,12 @@ class ProjectDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   20.ph,
+
+                  /// ======= الصورة الرئيسية =======
                   InkWell(
                     onTap: () {
-                      final projectId = ProjectController.get(
-                        context,
-                      ).projectDetailsResponseModel.data?.id;
+                      final projectId =
+                          controller.projectDetailsResponseModel.data?.id;
 
                       if (projectId != null) {
                         context.push(RoutesName.unitEvents, extra: projectId);
@@ -47,21 +48,23 @@ class ProjectDetails extends StatelessWidget {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.r),
-                      child: project.data?.mainImage?.url != null
-                          ? CustomCachedNetworkImage(
+                      child: isLoading
+                          ? Container(
+                              width: double.infinity,
+                              height: 250.h,
+                              color: Colors.grey.shade300,
+                            )
+                          : CustomCachedNetworkImage(
                               imageUrl: project.data?.mainImage?.url,
                               width: double.infinity,
                               height: 250.h,
-                            )
-                          : Assets.images.projectDetails.image(
-                              width: double.infinity,
-                              height: 250.h,
-                              fit: BoxFit.cover,
                             ),
                     ),
                   ),
 
                   20.ph,
+
+                  /// ======= اسم المشروع =======
                   Text(
                     LocaleKeys.master_plan.tr(),
                     style: AppStyle.fontSize22Bold(context),
@@ -74,12 +77,15 @@ class ProjectDetails extends StatelessWidget {
                         context,
                       ).copyWith(color: AppColors.greyColor),
                     ),
+
                   20.ph,
                   Text(
                     LocaleKeys.master_plan.tr(),
                     style: AppStyle.fontSize18Bold(context),
                   ),
                   20.ph,
+
+                  /// ======= الصور الإضافية =======
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -101,16 +107,22 @@ class ProjectDetails extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12.r),
-                          child: imageUrl != null
-                              ? CustomCachedNetworkImage(
-                                  imageUrl: imageUrl,
+                          child: isLoading
+                              ? Container(
                                   width: double.infinity,
                                   height: double.infinity,
+                                  color: Colors.grey.shade300,
                                 )
-                              : Assets.images.diyarPmc.image(
-                                  width: 80.w,
-                                  height: 70.h,
-                                ),
+                              : (imageUrl != null
+                                    ? CustomCachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      )
+                                    : Assets.images.diyarPmc.image(
+                                        width: 80.w,
+                                        height: 70.h,
+                                      )),
                         ),
                       );
                     },

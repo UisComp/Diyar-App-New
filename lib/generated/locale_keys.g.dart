@@ -139,5 +139,7 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const erase_all_data = 'erase_all_data';
   static const no_details_found = 'no_details_found';
+  static const service_not_available = 'service_not_available';
+  static const no_results_found = 'no_results_found';
 
 }

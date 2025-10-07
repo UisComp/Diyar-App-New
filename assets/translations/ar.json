@@ -133,6 +133,8 @@
   "delete_account_failure": "فشل في حذف الحساب",
   "delete": "حذف",
   "cancel": "إلغاء",
-  "erase_all_data":"حذف كل البيانات",
-  "no_details_found":"لم يتم العثور على تفاصيل"
+  "erase_all_data": "حذف كل البيانات",
+  "no_details_found": "لم يتم العثور على تفاصيل",
+  "service_not_available": "هذا الخدمة غير متوفرة حتى الان",
+  "no_results_found": "لم يتم العثور على نتايج"
 }

@@ -22,40 +22,13 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/account.png
-  AssetGenImage get account => const AssetGenImage('assets/images/account.png');
-
-  /// File path: assets/images/account_statement.png
-  AssetGenImage get accountStatement =>
-      const AssetGenImage('assets/images/account_statement.png');
-
-  /// File path: assets/images/active_work.png
-  AssetGenImage get activeWork =>
-      const AssetGenImage('assets/images/active_work.png');
-
-  /// File path: assets/images/add_property.png
-  AssetGenImage get addProperty =>
-      const AssetGenImage('assets/images/add_property.png');
-
-  /// File path: assets/images/add_tenant.png
-  AssetGenImage get addTenant =>
-      const AssetGenImage('assets/images/add_tenant.png');
-
-  /// File path: assets/images/announcement.png
-  AssetGenImage get announcement =>
-      const AssetGenImage('assets/images/announcement.png');
+  /// File path: assets/images/android_12.png
+  AssetGenImage get android12 =>
+      const AssetGenImage('assets/images/android_12.png');
 
   /// File path: assets/images/background_card.png
   AssetGenImage get backgroundCard =>
       const AssetGenImage('assets/images/background_card.png');
-
-  /// File path: assets/images/committee.png
-  AssetGenImage get committee =>
-      const AssetGenImage('assets/images/committee.png');
-
-  /// File path: assets/images/complain.png
-  AssetGenImage get complain =>
-      const AssetGenImage('assets/images/complain.png');
 
   /// File path: assets/images/diyar_native_splash.png
   AssetGenImage get diyarNativeSplash =>
@@ -65,72 +38,16 @@ class $AssetsImagesGen {
   AssetGenImage get diyarPmc =>
       const AssetGenImage('assets/images/diyar_pmc.png');
 
-  /// File path: assets/images/em.png
-  AssetGenImage get em => const AssetGenImage('assets/images/em.png');
-
-  /// File path: assets/images/facility_booking.png
-  AssetGenImage get facilityBooking =>
-      const AssetGenImage('assets/images/facility_booking.png');
-
   /// File path: assets/images/forget_password.png
   AssetGenImage get forgetPassword =>
       const AssetGenImage('assets/images/forget_password.png');
 
-  /// File path: assets/images/inquiry.png
-  AssetGenImage get inquiry => const AssetGenImage('assets/images/inquiry.png');
-
-  /// File path: assets/images/new_work.png
-  AssetGenImage get newWork =>
-      const AssetGenImage('assets/images/new_work.png');
-
-  /// File path: assets/images/news.png
-  AssetGenImage get news => const AssetGenImage('assets/images/news.png');
-
-  /// File path: assets/images/panic.png
-  AssetGenImage get panic => const AssetGenImage('assets/images/panic.png');
-
-  /// File path: assets/images/project_details.PNG
-  AssetGenImage get projectDetails =>
-      const AssetGenImage('assets/images/project_details.PNG');
-
-  /// File path: assets/images/report.png
-  AssetGenImage get report => const AssetGenImage('assets/images/report.png');
-
-  /// File path: assets/images/service_providers.png
-  AssetGenImage get serviceProviders =>
-      const AssetGenImage('assets/images/service_providers.png');
-
   /// Directory path: assets/images/svg
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 
-  /// File path: assets/images/visitor.png
-  AssetGenImage get visitor => const AssetGenImage('assets/images/visitor.png');
-
   /// List of all assets
-  List<AssetGenImage> get values => [
-        account,
-        accountStatement,
-        activeWork,
-        addProperty,
-        addTenant,
-        announcement,
-        backgroundCard,
-        committee,
-        complain,
-        diyarNativeSplash,
-        diyarPmc,
-        em,
-        facilityBooking,
-        forgetPassword,
-        inquiry,
-        newWork,
-        news,
-        panic,
-        projectDetails,
-        report,
-        serviceProviders,
-        visitor
-      ];
+  List<AssetGenImage> get values =>
+      [android12, backgroundCard, diyarNativeSplash, diyarPmc, forgetPassword];
 }
 
 class $AssetsTranslationsGen {

@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,72 @@ Future<void> showDeleteAccountDialog(BuildContext context) async {
               ),
             ],
           ),
+        ),
+      );
+    },
+  );
+}
+
+void showImagePreview(BuildContext context, String imageUrl) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'ImagePreview',
+    transitionDuration: const Duration(milliseconds: 300),
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return Scaffold(
+        backgroundColor: Colors.black.withValues(alpha: 0.9),
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Center(
+              child: Hero(
+                tag: imageUrl,
+                child: InteractiveViewer(
+                  panEnabled: true,
+                  minScale: 0.8,
+                  maxScale: 4,
+                  child: CustomCachedNetworkImage(
+                    imageUrl: imageUrl,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 50.h,
+              right: 20.w,
+              child: AnimatedOpacity(
+                opacity: 1,
+                duration: const Duration(milliseconds: 500),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(50.r),
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black54,
+                    ),
+                    child: Icon(
+                      Icons.close_rounded,
+                      color: Colors.white,
+                      size: 30.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+          child: child,
         ),
       );
     },

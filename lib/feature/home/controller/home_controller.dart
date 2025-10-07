@@ -10,12 +10,15 @@ class HomeController extends Cubit<HomeState> {
   HomeController() : super(HomeInitial());
   static HomeController get(BuildContext context) => BlocProvider.of(context);
   int currentIndex = 1;
+  final TextEditingController searchController = TextEditingController();
+
   void changeIndexBottomNavBar(int index) {
     currentIndex = index;
     emit(ChangeIndexBottomNavBarState());
   }
 
   UserServicesResponse userServicesResponse = UserServicesResponse();
+  List<UserServiceData> filteredServices = [];
   Future<void> getAllServices() async {
     emit(GetAllServicesLoadingState());
     await HomeService.getAllServices()
@@ -33,5 +36,22 @@ class HomeController extends Cubit<HomeState> {
           log('Error Happen While Get All Services is $error');
           emit(GetAllServicesErrorState(error: error.toString()));
         });
+  }
+
+ Future<void> filterServices() async {
+    final query = searchController.text.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      filteredServices = List.from(userServicesResponse.data ?? []);
+    } else {
+      filteredServices = (userServicesResponse.data ?? [])
+          .where((service) {
+            final name = (service.name ?? '').toLowerCase();
+            return name.contains(query);
+          })
+          .toList();
+    }
+
+    emit(FilteredServicesState());
   }
 }

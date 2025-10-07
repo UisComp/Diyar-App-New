@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class NewsDetailsScreen extends StatefulWidget {
   const NewsDetailsScreen({super.key});
@@ -36,42 +37,72 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
         builder: (context, state) {
           final isLoading = state is GetNewsDetailsLoadingState;
           final newsDetails = newsController.newsDetailsResponseModel.data;
-          if (isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (newsDetails == null) {
-            return Center(child: Text(LocaleKeys.no_details_found.tr()));
-          }
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (newsDetails.media != null && newsDetails.media!.isNotEmpty)
-                  CarouselImageSilder(
-                    newsDetails: newsDetails,
-                    newsController: newsController,
+
+          return Skeletonizer(
+            enabled: isLoading,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (isLoading)
+                    Container(
+                      height: 220.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    )
+                  else if (newsDetails?.media != null &&
+                      newsDetails!.media!.isNotEmpty)
+                    CarouselImageSilder(
+                      newsDetails: newsDetails,
+                      newsController: newsController,
+                    ),
+
+                  30.ph,
+                  SizedBox(
+                    width: isLoading ? 200.w : null,
+                    child: Text(
+                      newsDetails?.title ?? '',
+                      style: AppStyle.fontSize22Bold(context),
+                    ),
                   ),
-                30.ph,
-                Text(
-                  newsDetails.title ?? '',
-                  style: AppStyle.fontSize22Bold(context),
-                ),
-                10.ph,
-                Text(
-                  newsDetails.newsDate?.substring(0, 10) ?? '',
-                  style: AppStyle.fontSize14RegularNewsReader(
-                    context,
-                  ).copyWith(color: AppColors.descContainerColor),
-                ),
-                16.ph,
-                Text(
-                  newsDetails.content ?? '',
-                  style: AppStyle.fontSize14RegularNewsReader(
-                    context,
-                  ).copyWith(fontSize: 16.sp),
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 16.w),
+
+                  10.ph,
+                  SizedBox(
+                    width: isLoading ? 120.w : null,
+                    child: Text(
+                      newsDetails?.newsDate?.substring(0, 10) ?? '',
+                      style: AppStyle.fontSize14RegularNewsReader(
+                        context,
+                      ).copyWith(color: AppColors.descContainerColor),
+                    ),
+                  ),
+
+                  16.ph,
+                  if (isLoading)
+                    Column(
+                      children: List.generate(
+                        6,
+                        (index) => Container(
+                          height: 14.h,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(bottom: 8.h),
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      newsDetails?.content ?? '',
+                      style: AppStyle.fontSize14RegularNewsReader(
+                        context,
+                      ).copyWith(fontSize: 16.sp),
+                    ),
+                ],
+              ).paddingSymmetric(horizontal: 16.w),
+            ),
           );
         },
       ),

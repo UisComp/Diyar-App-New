@@ -30,6 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     homeController = HomeController.get(context);
     homeController.getAllServices();
+    homeController.searchController.addListener(() {
+      homeController.filterServices();
+    });
   }
 
   @override
@@ -50,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             CustomTextFormField(
+              controller: homeController.searchController,
               hintStyle: AppStyle.fontSize16Regular(
                 context,
               ).copyWith(color: AppColors.primaryColor),

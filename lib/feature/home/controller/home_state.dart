@@ -7,3 +7,4 @@ class GetAllServicesErrorState extends HomeState{
   final String ?error; 
   GetAllServicesErrorState({this.error});
 }
+class FilteredServicesState extends HomeState{}
