@@ -24,7 +24,7 @@ class CustomSwitchListTile extends StatelessWidget {
       ),
       value: value,
       onChanged: onChanged,
-      activeThumbColor : AppColors.primaryColor,
+      // activeThumbColor : AppColors.primaryColor,
       inactiveThumbColor: AppColors.whiteColor,
       activeTrackColor: AppColors.primaryColor.withValues(alpha: 0.3),
       inactiveTrackColor: AppColors.greyColor.withValues(alpha: 0.4),
