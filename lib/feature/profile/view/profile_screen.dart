@@ -41,12 +41,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    initProfileAndLinkedUnits();
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     log("Helpppp");
     return Scaffold(

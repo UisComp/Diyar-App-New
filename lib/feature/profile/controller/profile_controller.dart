@@ -93,8 +93,6 @@ class ProfileController extends Cubit<ProfileState> {
       }
 
       image = compressedImage;
-
-      // ✅ Emit immediately to refresh UI
       if (!isClosed) emit(PickingImageProfileSuccessfully());
     } catch (e, stack) {
       log('Error Happen While Picking Image $e\n$stack');
@@ -103,8 +101,6 @@ class ProfileController extends Cubit<ProfileState> {
       }
     }
   }
-
-  // ✅ Edit Profile
   Future<void> editProfile() async {
     emit(EditingProfileLoadingState());
     await ProfileService.editProfile(
@@ -116,10 +112,8 @@ class ProfileController extends Cubit<ProfileState> {
           image: image,
         )
         .then((value) async {
-          // profileResponseModel = value;
           if (value.success == true) {
-            image = null; // reset to show server image
-
+            image = null; 
             emit(EditingProfileSuccessfullyState());
           } else {
             emit(EditingProfileFailureState());
