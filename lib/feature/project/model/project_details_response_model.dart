@@ -8,11 +8,7 @@ class ProjectDetailsResponseModel extends Equatable {
   final String? message;
   final ProjectData? data;
 
-  const ProjectDetailsResponseModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  const ProjectDetailsResponseModel({this.success, this.message, this.data});
 
   factory ProjectDetailsResponseModel.fromJson(Map<String, dynamic> json) =>
       _$ProjectDetailsResponseModelFromJson(json);
@@ -27,8 +23,11 @@ class ProjectDetailsResponseModel extends Equatable {
 class ProjectData extends Equatable {
   final int? id;
   final String? name;
+  final String? description;
+
   @JsonKey(name: 'main_image')
   final ProjectMedia? mainImage;
+
   final List<ProjectMedia>? media;
 
   const ProjectData({
@@ -36,6 +35,7 @@ class ProjectData extends Equatable {
     this.name,
     this.mainImage,
     this.media,
+    this.description,
   });
 
   factory ProjectData.fromJson(Map<String, dynamic> json) =>

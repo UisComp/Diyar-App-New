@@ -29,11 +29,15 @@ UserUnit _$UserUnitFromJson(Map<String, dynamic> json) => UserUnit(
       name: json['name'] as String?,
       userId: (json['user_id'] as num?)?.toInt(),
       projectId: (json['project_id'] as num?)?.toInt(),
+      imageUrl: json['imageUrl'] == null
+          ? null
+          : ProfilePicture.fromJson(json['imageUrl'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserUnitToJson(UserUnit instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'imageUrl': instance.imageUrl,
       'user_id': instance.userId,
       'project_id': instance.projectId,
     };

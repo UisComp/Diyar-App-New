@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/request_model.dart';
@@ -21,41 +23,62 @@ class ProfileService {
     return ProfileResponseModel.fromJson(profileResponse?.data);
   }
 
+  // static Future<ProfileResponseModel> editProfile({
+  //   RequestModel? authRequestModel,
+  // }) async {
+  //   final editProfileResponse = await DioHelper.postData(
+  //     path: ApiPaths.profile,
+  //     data: authRequestModel?.toJson(),
+  //     isFormData: true
+  //   );
+  //   try {
+  //     log("editProfileResponse==>$editProfileResponse");
+  //     if (editProfileResponse != null &&
+  //         editProfileResponse.statusCode == 200) {
+  //       return ProfileResponseModel.fromJson(editProfileResponse.data);
+  //     }
+  //   } catch (e) {
+  //     log('Error Happen While Get Profile is $e');
+  //   }
+  //   return ProfileResponseModel.fromJson(editProfileResponse?.data);
+  // }
+
   static Future<ProfileResponseModel> editProfile({
     RequestModel? authRequestModel,
+    File? image,
   }) async {
-    final editProfileResponse = await DioHelper.patchData(
-      path: ApiPaths.profile,
-      data: authRequestModel?.toJson(),
-    );
-
     try {
-      log("editProfileResponse==>$editProfileResponse");
-      if (editProfileResponse != null &&
-          editProfileResponse.statusCode == 200) {
-        return ProfileResponseModel.fromJson(editProfileResponse.data);
-      }
-    } catch (e) {
-      log('Error Happen While Get Profile is $e');
-    }
-    return ProfileResponseModel.fromJson(editProfileResponse?.data);
-  }
+      final formData = FormData.fromMap({
+        "_method": "PUT",
+        "name": authRequestModel?.name,
+        "email": authRequestModel?.email,
+        "phone_number": authRequestModel?.phoneNumber,
+        if (image != null)
+          "profile_picture": await MultipartFile.fromFile(
+            image.path,
+            filename: image.path.split('/').last,
+          ),
+      });
 
-  static Future<ProfileResponseModel> getUserProjects() async {
-    final userProjectsResponse = await DioHelper.getData(
-      path: ApiPaths.getUserProjects,
-    );
+      final response = await DioHelper.postData(
+        path: ApiPaths.profile,
+        data: formData,
+        isFormData: true,
+        sendTimeout: const Duration(seconds: 20),
+        receiveTimeout: const Duration(seconds: 20),
+      );
 
-    try {
-      log("userProjectsResponse==>$userProjectsResponse");
-      if (userProjectsResponse != null &&
-          userProjectsResponse.statusCode == 200) {
-        return ProfileResponseModel.fromJson(userProjectsResponse.data);
+      log("editProfileResponse==>${response?.data}");
+
+      if (response != null && response.statusCode == 200) {
+        return ProfileResponseModel.fromJson(response.data);
+      } else {
+        return ProfileResponseModel.fromJson(response?.data);
       }
-    } catch (e) {
-      log('Error Happen While Get Profile is $e');
+    } catch (e, stack) {
+      log('Error Happen While Editing Profile $e\n$stack');
+      return ProfileResponseModel(success: false, message: e.toString());
     }
-    return ProfileResponseModel.fromJson(userProjectsResponse?.data);
   }
 
   static Future<UserUnitsResponseModel> getLinkedUnitsForUser() async {

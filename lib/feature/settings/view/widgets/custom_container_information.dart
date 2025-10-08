@@ -16,13 +16,18 @@ class CustomContainerInformation extends StatelessWidget {
     this.imageUrl,
     this.onTap,
     this.svgIcon,
+    this.width,
+    this.height,
+    this.projectName,
   });
   final String titleContainer;
   final String descriptionContainer;
   final String? imageUrl;
   final String? svgIcon;
   final VoidCallback? onTap;
-
+  final double? width;
+  final double? height;
+  final String? projectName;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,8 +46,8 @@ class CustomContainerInformation extends StatelessWidget {
                 }
               },
               child: Container(
-                width: 48.w,
-                height: 48.h,
+                width: width ?? 70.w,
+                height: height ?? 70.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: AppColors.containerColor,
@@ -51,17 +56,22 @@ class CustomContainerInformation extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                   child: imageUrl != null
                       ? CustomCachedNetworkImage(
+                          fit: BoxFit.cover,
                           imageUrl: imageUrl!,
-                          width: 56.w,
-                          height: 56.h,
+                          width: 60.w,
+                          height: 60.h,
                         )
                       : (svgIcon != null
                             ? Center(
                                 child: SvgPicture.asset(
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.primaryColor,
+                                    BlendMode.srcIn,
+                                  ),
                                   svgIcon!,
-                                  width: 28.w,
-                                  height: 28.h,
-                                  fit: BoxFit.scaleDown,
+                                  width: 30.w,
+                                  height: 30.h,
+                                  fit: BoxFit.cover,
                                 ),
                               )
                             : Icon(
@@ -85,15 +95,25 @@ class CustomContainerInformation extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  if (projectName != null && projectName!.isNotEmpty)
+                    Text(
+                      "(${projectName??''})",
+                      style: AppStyle.fontSize22BoldNewsReader(
+                        context,
+                      ).copyWith(fontSize: 13.sp,fontWeight: FontWeight.w400),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   5.ph,
-                  Text(
-                    descriptionContainer,
-                    style: AppStyle.fontSize14RegularNewsReader(
-                      context,
-                    ).copyWith(color: AppColors.greyColor),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  if (descriptionContainer.isNotEmpty)
+                    Text(
+                      descriptionContainer,
+                      style: AppStyle.fontSize14RegularNewsReader(
+                        context,
+                      ).copyWith(color: AppColors.greyColor),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                 ],
               ),
             ),

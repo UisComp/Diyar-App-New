@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_variable.dart';
 
 class ApiPaths {
   static Duration timeOutDuration = const Duration(seconds: 10);
+  static Duration sendTimeOutDuration = const Duration(seconds: 10);
   static const String baseUrl = "https://diyar.sherif-elzeny.com/api/";
   static const String register = "register";
   static const String login = "login";

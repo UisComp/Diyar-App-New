@@ -15,6 +15,7 @@ import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
+import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
 import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
@@ -109,9 +110,10 @@ ScaleTransition scaleIn(
   Widget child,
 ) {
   return ScaleTransition(
-    scale: Tween(begin: 0.9, end: 1.0)
-        .chain(CurveTween(curve: Curves.easeOutBack))
-        .animate(animation),
+    scale: Tween(
+      begin: 0.9,
+      end: 1.0,
+    ).chain(CurveTween(curve: Curves.easeOutBack)).animate(animation),
     child: child,
   );
 }
@@ -147,14 +149,14 @@ FadeTransition zoomFadeIn(
   return FadeTransition(
     opacity: animation,
     child: ScaleTransition(
-      scale: Tween(begin: 0.95, end: 1.0).animate(
-        CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
-      ),
+      scale: Tween(
+        begin: 0.95,
+        end: 1.0,
+      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutBack)),
       child: child,
     ),
   );
 }
-
 
 SlideTransition elasticSlideUp(
   BuildContext context,
@@ -163,9 +165,10 @@ SlideTransition elasticSlideUp(
   Widget child,
 ) {
   return SlideTransition(
-    position: Tween(begin: const Offset(0, 1.2), end: Offset.zero)
-        .chain(CurveTween(curve: Curves.elasticOut))
-        .animate(animation),
+    position: Tween(
+      begin: const Offset(0, 1.2),
+      end: Offset.zero,
+    ).chain(CurveTween(curve: Curves.elasticOut)).animate(animation),
     child: child,
   );
 }
@@ -178,8 +181,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: RoutesName.onBoarding,
       path: RoutesName.onBoarding,
-      pageBuilder: (context, state) =>
-          buildAnimatedPage(child: const OnBoardingScreen(), transition: zoomFadeIn),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const OnBoardingScreen(),
+        transition: zoomFadeIn,
+      ),
     ),
     GoRoute(
       name: RoutesName.homeLayout,
@@ -202,7 +207,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.login,
       path: RoutesName.login,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => AuthController(), child: LoginScreen()),
+        child: BlocProvider(
+          create: (_) => AuthController(),
+          child: LoginScreen(),
+        ),
         transition: slideFromRight,
       ),
     ),
@@ -210,7 +218,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.register,
       path: RoutesName.register,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => AuthController(), child: RegisterScreen()),
+        child: BlocProvider(
+          create: (_) => AuthController(),
+          child: RegisterScreen(),
+        ),
         transition: slideFromRight,
       ),
     ),
@@ -218,7 +229,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.forgetPasswordScreen,
       path: RoutesName.forgetPasswordScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => AuthController(), child: const ForgetPasswordScreen()),
+        child: BlocProvider(
+          create: (_) => AuthController(),
+          child: const ForgetPasswordScreen(),
+        ),
         transition: slideFromBottom,
       ),
     ),
@@ -226,7 +240,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.resetPasswordScreen,
       path: RoutesName.resetPasswordScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => AuthController(), child: const ResetPasswordScreen()),
+        child: BlocProvider(
+          create: (_) => AuthController(),
+          child: const ResetPasswordScreen(),
+        ),
         transition: slideFromBottom,
       ),
     ),
@@ -234,7 +251,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.otpScreen,
       path: RoutesName.otpScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => AuthController(), child: const OtpScreen()),
+        child: BlocProvider(
+          create: (_) => AuthController(),
+          child: const OtpScreen(),
+        ),
         transition: scaleIn,
       ),
     ),
@@ -242,21 +262,40 @@ final GoRouter router = GoRouter(
       name: RoutesName.personalInformation,
       path: RoutesName.personalInformation,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => ProfileController(), child: const PersonalInformation()),
+        child: BlocProvider(
+          create: (_) => ProfileController(),
+          child: const PersonalInformation(),
+        ),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.profileScreen,
+      path: RoutesName.profileScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => ProfileController(),
+          child: const ProfileScreen(),
+        ),
         transition: slideFromRight,
       ),
     ),
     GoRoute(
       name: RoutesName.appPreferencesScreen,
       path: RoutesName.appPreferencesScreen,
-      pageBuilder: (context, state) =>
-          buildAnimatedPage(child: const AppPreferencesScreen(), transition: fadeIn),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const AppPreferencesScreen(),
+        transition: fadeIn,
+      ),
     ),
     GoRoute(
       name: RoutesName.changePasswordScreen,
       path: RoutesName.changePasswordScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(create: (_) => SettingsController(), child: const ChangePasswordScreen()),
+        child: BlocProvider(
+          create: (_) => SettingsController(),
+          child: const ChangePasswordScreen(),
+        ),
         transition: slideFromRight,
       ),
     ),
@@ -343,8 +382,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: RoutesName.financeScreen,
       path: RoutesName.financeScreen,
-      pageBuilder: (context, state) =>
-          buildAnimatedPage(child: const FinanceScreen(), transition: slideFromBottom),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const FinanceScreen(),
+        transition: slideFromBottom,
+      ),
     ),
   ],
 );

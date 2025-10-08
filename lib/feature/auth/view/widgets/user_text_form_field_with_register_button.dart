@@ -48,11 +48,6 @@ class _UserTextFormFieldForRegisterState
   @override
   void dispose() {
     super.dispose();
-    // authController.emailControllerForRegister.dispose();
-    // authController.passwordControllerForRegister.dispose();
-    // authController.passwordConfirmationControllerForRegister.dispose();
-    // authController.nameController.dispose();
-    // authController.phoneController.dispose();
     authController.close();
   }
 
@@ -162,7 +157,10 @@ class _UserTextFormFieldForRegisterState
               prefixIcon: Icon(Icons.lock, color: AppColors.blackColor),
             ),
             24.ph,
-            CustomPhoneField(controller: authController.phoneController),
+            CustomPhoneField(
+              controller: authController.phoneController,
+              hintText: LocaleKeys.phone_number_in_your_contract.tr(),
+            ),
           ],
         );
       },

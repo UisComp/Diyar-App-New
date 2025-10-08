@@ -35,6 +35,20 @@ class _NewsScreenState extends State<NewsScreen> {
         builder: (context, state) {
           final isLoading = state is GetAllNewsLoadingState;
           final newsList = newsController.newsResponseModel.data ?? [];
+
+          // 🟡 حالة لا يوجد بيانات بعد التحميل
+          if (!isLoading && newsList.isEmpty) {
+            return Center(
+              child: Text(
+                LocaleKeys.no_news_found.tr(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+
           return Skeletonizer(
             enabled: isLoading,
             child: ListView.separated(
@@ -45,6 +59,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 final item = isLoading ? null : newsList[index];
 
                 return CustomContainerInformation(
+                  projectName: item?.project?.name,
                   onTap: () {
                     if (!isLoading && item?.project?.id != null) {
                       context.push(
@@ -53,7 +68,6 @@ class _NewsScreenState extends State<NewsScreen> {
                       );
                     }
                   },
-
                   descriptionContainer: item?.content ?? "2 days ago",
                   titleContainer: item?.title ?? "Loading...",
                   imageUrl: item?.media?[0].url,

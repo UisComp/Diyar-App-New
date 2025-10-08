@@ -1,3 +1,4 @@
+import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,11 +10,7 @@ class UserUnitsResponseModel extends Equatable {
   final String? message;
   final List<UserUnit>? data;
 
-  const UserUnitsResponseModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  const UserUnitsResponseModel({this.success, this.message, this.data});
 
   factory UserUnitsResponseModel.fromJson(Map<String, dynamic> json) =>
       _$UserUnitsResponseModelFromJson(json);
@@ -40,6 +37,7 @@ class UserUnitsResponseModel extends Equatable {
 class UserUnit extends Equatable {
   final int? id;
   final String? name;
+  final ProfilePicture? imageUrl;
   @JsonKey(name: 'user_id')
   final int? userId;
   @JsonKey(name: 'project_id')
@@ -50,6 +48,7 @@ class UserUnit extends Equatable {
     this.name,
     this.userId,
     this.projectId,
+    this.imageUrl,
   });
 
   factory UserUnit.fromJson(Map<String, dynamic> json) {
@@ -58,15 +57,19 @@ class UserUnit extends Equatable {
       name: json['name'] as String?,
       userId: _toInt(json['user_id']),
       projectId: _toInt(json['project_id']),
+      imageUrl: json['main_image'] != null
+          ? ProfilePicture.fromJson(json['main_image'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'user_id': userId,
-        'project_id': projectId,
-      };
+    'id': id,
+    'name': name,
+    'user_id': userId,
+    'project_id': projectId,
+    'main_image': imageUrl,
+  };
 
   static int? _toInt(dynamic value) {
     if (value == null) return null;
@@ -84,15 +87,17 @@ class UserUnit extends Equatable {
     String? name,
     int? userId,
     int? projectId,
+    ProfilePicture? imageUrl,
   }) {
     return UserUnit(
       id: id ?? this.id,
       name: name ?? this.name,
       userId: userId ?? this.userId,
       projectId: projectId ?? this.projectId,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, userId, projectId];
+  List<Object?> get props => [id, name, userId, projectId, imageUrl];
 }

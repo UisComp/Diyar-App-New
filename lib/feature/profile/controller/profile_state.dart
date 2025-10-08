@@ -37,3 +37,4 @@ class GetUserLinkedUnitsFailureState extends ProfileState {
 
   GetUserLinkedUnitsFailureState({this.error});
 }
+class PickingImageProfileLoadingState  extends ProfileState {}

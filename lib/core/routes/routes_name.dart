@@ -19,4 +19,5 @@ class RoutesName {
  static const String resetPasswordScreen="/resetPasswordScreen";
  static const String otpScreen="/otpScreen";
  static const String viewAllServicesScreen="/viewAllServicesScreen";
+ static const String profileScreen="/profileScreen";
 }

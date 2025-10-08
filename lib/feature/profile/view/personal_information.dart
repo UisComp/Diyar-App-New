@@ -40,111 +40,129 @@ class _PersonalInformationState extends State<PersonalInformation> {
     super.dispose();
     profileController.emailProfileController.dispose();
     profileController.nameProfileController.dispose();
-    profileController.close();
   }
 
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(titleAppBar: LocaleKeys.personal_information.tr()),
-      body: BlocConsumer<ProfileController, ProfileState>(
-        listener: (context, profileState) {
-          if (profileState is EditingProfileSuccessfullyState) {
-            AppFunctions.successMessage(
-              context,
-              message:
-                  profileController.editProfileResponseModel.message ??
-                  LocaleKeys.update_profile_successfully.tr(),
-            );
-            context.pop();
-          }
-          if (profileState is EditingProfileFailureState) {
-            AppFunctions.errorMessage(
-              context,
-              message:
-                  profileController.editProfileResponseModel.message ??
-                  LocaleKeys.update_profile_failure.tr(),
-            );
-          }
-        },
-        builder: (context, profileState) {
-          final isLoading = profileState is GetMyProfileLoadingState;
+    return BlocConsumer<ProfileController, ProfileState>(
+      listener: (context, profileState) {
+        if (profileState is EditingProfileSuccessfullyState) {
+          onEditProfileSuccess(context);
+        }
+        if (profileState is EditingProfileFailureState) {
+          AppFunctions.errorMessage(
+            context,
+            message:
+                profileState.error ?? LocaleKeys.update_profile_failure.tr(),
+          );
+        }
+      },
+      builder: (context, profileState) {
+        final isLoading = profileState is GetMyProfileLoadingState;
 
-          return Skeletonizer(
-            enabled: isLoading,
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          32.ph,
-                          const ProfileImage(),
-                          Text(
-                            LocaleKeys.name.tr(),
-                          ).paddingSymmetric(horizontal: 16.w),
-                          8.ph,
-                          CustomTextFormField(
-                            controller: profileController.nameProfileController,
-                          ),
-                          24.ph,
-                          Text(
-                            LocaleKeys.email.tr(),
-                            style: AppStyle.fontSize14RegularNewsReader
-                              (context)  .copyWith(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ).paddingSymmetric(horizontal: 16.w),
-                          8.ph,
-                          CustomTextFormField(
-                            validator: (emailProfile) =>
-                                ValidatorHelper.validateEmail(
-                                  emailProfile,
-                                  emptyMessage: LocaleKeys
-                                      .please_enter_your_email
-                                      .tr(),
-                                  invalidMessage: LocaleKeys
-                                      .please_enter_a_valid_email
-                                      .tr(),
-                                ),
-                            controller:
-                                profileController.emailProfileController,
-                          ),
-                          24.ph,
-                          Text(
-                            LocaleKeys.contact_mobile_number.tr(),
-                          ).paddingSymmetric(horizontal: 16.w),
-                          8.ph,
-                          CustomPhoneField(
-                            enabled: false,
-                            controller:
-                                profileController.phoneProfileController,
-                          ),
-                        ],
+        return PopScope(
+          canPop:
+              !(profileState is PickingImageProfileLoadingState ||
+                  profileState is EditingProfileLoadingState),
+          child: Scaffold(
+            appBar: CustomAppBar(
+              titleAppBar: LocaleKeys.personal_information.tr(),
+            ),
+            body: Skeletonizer(
+              enabled: isLoading,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            32.ph,
+                            const ProfileImage(),
+                            Text(
+                              LocaleKeys.name.tr(),
+                            ).paddingSymmetric(horizontal: 16.w),
+                            8.ph,
+                            CustomTextFormField(
+                              controller:
+                                  profileController.nameProfileController,
+                            ),
+                            24.ph,
+                            Text(
+                              LocaleKeys.email.tr(),
+                              style:
+                                  AppStyle.fontSize14RegularNewsReader(
+                                    context,
+                                  ).copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ).paddingSymmetric(horizontal: 16.w),
+                            8.ph,
+                            CustomTextFormField(
+                              validator: (emailProfile) =>
+                                  ValidatorHelper.validateEmail(
+                                    emailProfile,
+                                    emptyMessage: LocaleKeys
+                                        .please_enter_your_email
+                                        .tr(),
+                                    invalidMessage: LocaleKeys
+                                        .please_enter_a_valid_email
+                                        .tr(),
+                                  ),
+                              controller:
+                                  profileController.emailProfileController,
+                            ),
+                            24.ph,
+                            Text(
+                              LocaleKeys.contact_mobile_number.tr(),
+                            ).paddingSymmetric(horizontal: 16.w),
+                            8.ph,
+                            CustomPhoneField(
+                              isEdit: true,
+                              enabled: false,
+                              controller:
+                                  profileController.phoneProfileController,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  CustomButton(
-                    isLoading: profileState is EditingProfileLoadingState,
-                    buttonColor: AppColors.primaryColor,
-                    buttonText: LocaleKeys.save_changes.tr(),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        await profileController.editProfile();
-                      }
-                    },
-                  ).paddingSymmetric(horizontal: 16.w, vertical: 16.h),
-                ],
+                    CustomButton(
+                      isLoading: profileState is EditingProfileLoadingState,
+                      buttonColor:
+                          profileState is PickingImageProfileLoadingState
+                          ? Colors.grey
+                          : AppColors.primaryColor,
+                      buttonText: LocaleKeys.save_changes.tr(),
+                      onPressed: profileState is PickingImageProfileLoadingState
+                          ? null
+                          : () async {
+                              if (formKey.currentState!.validate()) {
+                                await profileController.editProfile();
+                              }
+                            },
+                    ).paddingSymmetric(horizontal: 16.w, vertical: 16.h),
+                  ],
+                ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
+  }
+
+  Future<void> onEditProfileSuccess(BuildContext context) async {
+    AppFunctions.successMessage(
+      context,
+      message: LocaleKeys.update_profile_successfully.tr(),
+    );
+    await profileController.getMyProfile();
+
+    context.pop();
   }
 }

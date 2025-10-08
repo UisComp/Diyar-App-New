@@ -133,8 +133,14 @@
   "delete_account_failure": "Failed To Delete Account",
   "delete": "Delete",
   "cancel": "Cancel",
-  "erase_all_data":"Erase all data",
-  "no_details_found":"No details found",
-  "service_not_available":"This service is not available yet",
-  "no_results_found":"No results found"
+  "erase_all_data": "Erase all data",
+  "no_details_found": "No details found",
+  "service_not_available": "This service is not available yet",
+  "no_results_found": "No results found",
+  "service_not_active": "Service Not Active",
+  "phone_number_in_your_contract": "Enter Phone Number in Your Contract",
+  "linked_units": "Linked Units",
+  "project_gallery": "Project Gallery",
+  "no_news_found": "No news found",
+  "no_new_unit_available": "No Units Available"
 }

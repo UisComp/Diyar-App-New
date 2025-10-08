@@ -63,29 +63,26 @@ class ProjectDetails extends StatelessWidget {
                   ),
 
                   20.ph,
-
-                  /// ======= اسم المشروع =======
-                  Text(
-                    LocaleKeys.master_plan.tr(),
-                    style: AppStyle.fontSize22Bold(context),
-                  ),
-                  10.ph,
                   if (project.data?.name != null)
                     Text(
                       project.data!.name!,
+                      style: AppStyle.fontSize22Bold(
+                        context,
+                      ).copyWith(fontSize: 18.sp, fontWeight: FontWeight.w700),
+                    ),
+                  if (project.data?.description != null)
+                    Text(
+                    project.data!.description??'',
                       style: AppStyle.fontSize16Regular(
                         context,
-                      ).copyWith(color: AppColors.greyColor),
+                      ).copyWith( fontWeight: FontWeight.w400),
                     ),
-
                   20.ph,
                   Text(
-                    LocaleKeys.master_plan.tr(),
+                    LocaleKeys.project_gallery.tr(),
                     style: AppStyle.fontSize18Bold(context),
                   ),
                   20.ph,
-
-                  /// ======= الصور الإضافية =======
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

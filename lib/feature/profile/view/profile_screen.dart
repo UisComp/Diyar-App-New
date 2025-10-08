@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/settings/view/widgets/custom_container_information.dart';
@@ -29,87 +32,151 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     profileController = ProfileController.get(context);
-    profileController.getMyProfile();
-    profileController.getUserLinkedUnits();
+    initProfileAndLinkedUnits();
+  }
+
+  Future<void> initProfileAndLinkedUnits() async {
+    await profileController.getMyProfile();
+    await profileController.getUserLinkedUnits();
+  }
+
+  @override
+  void didChangeDependencies() {
+    initProfileAndLinkedUnits();
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    log("Helpppp");
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.profile.tr()),
-      body: BlocBuilder<ProfileController, ProfileState>(
+      body: BlocConsumer<ProfileController, ProfileState>(
+        listener: (context, state) {},
         builder: (context, state) {
-          final isLoading = state is GetUserLinkedUnitsLoadingState ||
+          log(
+            "at build in Profile profileResponseModel: ${profileController.profileResponseModel.toJson()}",
+          );
+          final isLoading =
+              state is GetUserLinkedUnitsLoadingState ||
               state is GetMyProfileLoadingState;
 
           final profile = profileController.profileResponseModel.data;
-          final linkedUnits = profileController.userLinkedUnitsResponseModel.data ?? [];
-
+          final linkedUnits =
+              profileController.userLinkedUnitsResponseModel.data ?? [];
+          log("profileController.image ${profileController.image}");
+          log("profile?.profilePicture?.url ${profile?.profilePicture?.url}");
           return Skeletonizer(
             enabled: isLoading,
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    37.ph,
-                    CircleAvatar(
-                      radius: 50.r,
-                      backgroundColor: AppColors.containerColor,
-                      child: SvgPicture.asset(
-                        Assets.images.svg.person,
-                        width: 50.w,
-                        height: 50.h,
-                      ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  20.ph,
+                  BlocBuilder<ProfileController, ProfileState>(
+                    builder: (context, state) {
+                      return CircleAvatar(
+                        radius: 50.r,
+                        backgroundColor: AppColors.containerColor,
+                        child: profileController.image != null
+                            ? ClipOval(
+                                child: Image.file(
+                                  profileController.image!,
+                                  width: 100.r,
+                                  height: 100.r,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : (profile?.profilePicture?.url != null
+                                  ? ClipOval(
+                                      child: CustomCachedNetworkImage(
+                                        imageUrl: profile!.profilePicture!.url!,
+                                        width: 100.r,
+                                        height: 100.r,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : SvgPicture.asset(
+                                      Assets.images.svg.person,
+                                      width: 50.w,
+                                      height: 50.h,
+                                    )),
+                      );
+                    },
+                  ),
+
+                  10.ph,
+                  Text(
+                    profile?.name ?? 'Guest',
+                    style: AppStyle.fontSize22Bold(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  5.ph,
+                  Text(
+                    profile?.email ?? '',
+                    style: AppStyle.fontSize16Regular(
+                      context,
+                    ).copyWith(color: AppColors.descContainerColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  5.ph,
+                  Text(
+                    profile?.phoneNumber ?? '',
+                    style: AppStyle.fontSize16Regular(
+                      context,
+                    ).copyWith(color: AppColors.descContainerColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  20.ph,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      LocaleKeys.linked_units.tr(),
+                      style: AppStyle.fontSize22Bold(
+                        context,
+                      ).copyWith(fontSize: 18.sp),
                     ),
-                    10.ph,
-                    Text(
-                      profile?.name ?? 'Guest',
-                      style: AppStyle.fontSize22Bold(context),
-                    ),
-                    5.ph,
-                    Text(
-                      profile?.email ?? '',
-                      style: AppStyle.fontSize16Regular(context).copyWith(
-                        color: AppColors.descContainerColor,
-                      ),
-                    ),
-                    5.ph,
-                    Text(
-                      profile?.phoneNumber ?? '',
-                      style: AppStyle.fontSize16Regular(context).copyWith(
-                        color: AppColors.descContainerColor,
-                      ),
-                    ),
-                    32.ph,
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Linked Units",
-                        style: AppStyle.fontSize22Bold(context).copyWith(
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                    ).paddingSymmetric(horizontal: 16.w),
-                    8.ph,
-                    ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: isLoading ? 3 : linkedUnits.length,
-                      separatorBuilder: (_, _) => 10.ph,
-                      itemBuilder: (context, index) {
-                        final unit = isLoading ? null : linkedUnits[index];
-                        return CustomContainerInformation(
-                          titleContainer: unit?.name ?? 'Loading...',
-                          descriptionContainer:
-                              "",
-                          svgIcon: Assets.images.svg.home,
-                          onTap: () {},
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                  10.ph,
+                  Expanded(
+                    child: isLoading
+                        ? ListView.builder(
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return CustomContainerInformation(
+                                width: 50.w,
+                                height: 50.h,
+                                titleContainer: 'Loading...',
+                                descriptionContainer: '',
+                              ).paddingOnly(bottom: 10.h);
+                            },
+                          )
+                        : linkedUnits.isEmpty
+                        ? Center(
+                            child: Text(
+                              LocaleKeys.no_new_unit_available.tr(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: linkedUnits.length,
+                            itemBuilder: (context, index) {
+                              final unit = linkedUnits[index];
+                              return CustomContainerInformation(
+                                width: 50.w,
+                                height: 50.h,
+                                titleContainer: unit.name ?? '',
+                                descriptionContainer: "",
+                                imageUrl: unit.imageUrl?.url,
+                              ).paddingOnly(bottom: 10.h);
+                            },
+                          ),
+                  ),
+                ],
               ),
             ),
           );

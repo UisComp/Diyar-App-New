@@ -11,21 +11,27 @@ class CustomPhoneField extends StatelessWidget {
     super.key,
     this.controller,
     this.enabled = true,
+    this.hintText,
+    this.isEdit = false,
   });
 
+  final bool? isEdit;
   final PhoneController? controller;
   final bool? enabled;
+  final String? hintText;
+
   @override
   Widget build(BuildContext context) {
     return Tooltip(
       enableTapToDismiss: true,
       triggerMode: TooltipTriggerMode.tap,
-       message: LocaleKeys.tool_tip_phone_number.tr(),
+      message: LocaleKeys.tool_tip_phone_number.tr(),
       child: PhoneFormField(
         cursorColor: AppColors.primaryColor,
         controller: controller,
         enabled: enabled!,
         decoration: InputDecoration(
+          hintText: hintText,
           helperMaxLines: 8,
           border: OutlineInputBorder(
             borderSide: BorderSide(color: AppColors.primaryColor),
@@ -48,13 +54,17 @@ class CustomPhoneField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(8.r)),
           ),
         ),
-        validator: PhoneValidator.compose([
-          PhoneValidator.required(context),
-          PhoneValidator.validMobile(context),
-        ]),
+        validator: (isEdit == null || !isEdit!)
+            ? PhoneValidator.compose([
+                PhoneValidator.required(context),
+                PhoneValidator.validMobile(context),
+              ])
+            : null,
         countrySelectorNavigator: const CountrySelectorNavigator.bottomSheet(),
         isCountrySelectionEnabled: true,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode: (isEdit == null || !isEdit!)
+            ? AutovalidateMode.onUserInteraction
+            : AutovalidateMode.disabled,
       ).paddingSymmetric(horizontal: 16.w),
     );
   }

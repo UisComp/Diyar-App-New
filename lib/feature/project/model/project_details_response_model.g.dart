@@ -33,12 +33,14 @@ ProjectData _$ProjectDataFromJson(Map<String, dynamic> json) => ProjectData(
       media: (json['media'] as List<dynamic>?)
           ?.map((e) => ProjectMedia.fromJson(e as Map<String, dynamic>))
           .toList(),
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$ProjectDataToJson(ProjectData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'description': instance.description,
       'main_image': instance.mainImage,
       'media': instance.media,
     };

@@ -1,11 +1,10 @@
-
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 class ProfileImage extends StatelessWidget {
   const ProfileImage({super.key});
 
@@ -14,29 +13,41 @@ class ProfileImage extends StatelessWidget {
     return BlocConsumer<ProfileController, ProfileState>(
       listener: (context, state) {},
       builder: (context, state) {
-        final ProfileController profileController = ProfileController.get(
-          context,
-        );
+        final profileController = ProfileController.get(context);
+        final profile = profileController.profileResponseModel.data;
+        Widget imageWidget;
+        if (profileController.image != null) {
+          imageWidget = ClipOval(
+            child: Image.file(
+              profileController.image!,
+              width: 100.r,
+              height: 100.r,
+              fit: BoxFit.cover,
+            ),
+          );
+        } else if (profile?.profilePicture?.url != null) {
+          imageWidget = ClipOval(
+            child: CustomCachedNetworkImage(
+              imageUrl: profile!.profilePicture!.url!,
+              width: 100.r,
+              height: 100.r,
+              fit: BoxFit.cover,
+            ),
+          );
+        } else {
+          imageWidget = Icon(
+            Icons.person,
+            size: 50.r,
+            color: AppColors.primaryColor,
+          );
+        }
         return Center(
           child: Stack(
             children: [
               CircleAvatar(
                 radius: 50.r,
                 backgroundColor: AppColors.containerColor,
-                child: profileController.image != null
-                    ? ClipOval(
-                        child: Image.file(
-                          profileController.image!,
-                          width: 100.r,
-                          height: 100.r,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Icon(
-                        Icons.person,
-                        size: 50.r,
-                        color: AppColors.primaryColor,
-                      ),
+                child: imageWidget,
               ),
               Positioned(
                 bottom: 5.h,

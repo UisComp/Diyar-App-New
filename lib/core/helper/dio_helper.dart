@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
 class DioHelper {
   static Dio? dio;
   static Future<void> init() async {
@@ -14,7 +15,7 @@ class DioHelper {
         headers: {"content-type": 'application/json; charset=utf-8'},
         connectTimeout: ApiPaths.timeOutDuration,
         receiveTimeout: ApiPaths.timeOutDuration,
-        sendTimeout: ApiPaths.timeOutDuration,
+        sendTimeout: ApiPaths.sendTimeOutDuration,
         responseType: ResponseType.json,
       ),
     );
@@ -60,6 +61,9 @@ class DioHelper {
     required String path,
     data,
     needHeader = true,
+    isFormData = false,
+    Duration? sendTimeout,
+    Duration? receiveTimeout,
   }) async {
     try {
       return await dio!.post(
@@ -67,9 +71,11 @@ class DioHelper {
         data: data,
         options: Options(
           validateStatus: (_) => true,
-          contentType: 'application/json',
+          contentType: isFormData ? "multipart/form-data" : 'application/json',
           headers: needHeader ? await ApiPaths.getHeaders() : null,
           followRedirects: false,
+          sendTimeout: sendTimeout,
+          receiveTimeout: receiveTimeout,
         ),
       );
     } on SocketException catch (_) {
