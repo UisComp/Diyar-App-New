@@ -35,8 +35,6 @@ class ProjectDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   20.ph,
-
-                  /// ======= الصورة الرئيسية =======
                   InkWell(
                     onTap: () {
                       final projectId =
@@ -55,6 +53,7 @@ class ProjectDetails extends StatelessWidget {
                               color: Colors.grey.shade300,
                             )
                           : CustomCachedNetworkImage(
+                              isProjectDetails: true,
                               imageUrl: project.data?.mainImage?.url,
                               width: double.infinity,
                               height: 250.h,
@@ -72,10 +71,10 @@ class ProjectDetails extends StatelessWidget {
                     ),
                   if (project.data?.description != null)
                     Text(
-                    project.data!.description??'',
+                      project.data!.description ?? '',
                       style: AppStyle.fontSize16Regular(
                         context,
-                      ).copyWith( fontWeight: FontWeight.w400),
+                      ).copyWith(fontWeight: FontWeight.w400),
                     ),
                   20.ph,
                   Text(
