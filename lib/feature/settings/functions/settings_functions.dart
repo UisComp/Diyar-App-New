@@ -121,6 +121,7 @@ void showImagePreview(BuildContext context, String imageUrl) {
                   minScale: 0.8,
                   maxScale: 4,
                   child: CustomCachedNetworkImage(
+                    isProjectDetails: true,
                     imageUrl: imageUrl,
                     fit: BoxFit.contain,
                   ),

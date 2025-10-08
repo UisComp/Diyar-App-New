@@ -3,7 +3,6 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
@@ -93,8 +92,7 @@ class _HomeLayoutState extends State<HomeLayout> {
               ),
             ],
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: homeController.currentIndex == 2
               ? BlocProvider(
                   create: (context) => AuthController(),
@@ -125,18 +123,29 @@ class _HomeLayoutState extends State<HomeLayout> {
                       }
                     },
                     builder: (context, authState) {
-                      return CustomButton(
-                        isLoading: authState is LogOutLoadingState,
-                        borderRadius: 12.r,
-                        buttonText: LocaleKeys.logout.tr(),
-                        onPressed: () async {
-                          await context.read<AuthController>().logOut();
-                        },
-                        buttonColor: AppColors.redColor,
-                      );
+                      final isLoading = authState is LogOutLoadingState;
+
+                      return FloatingActionButton(
+                        onPressed: isLoading
+                            ? null
+                            : () async {
+                                await context.read<AuthController>().logOut();
+                              },
+                        backgroundColor: AppColors.redColor,
+                        child: isLoading
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Icon(Icons.logout, color: Colors.white),
+                      ).paddingOnly(bottom: 60.h, right: 16.w);
                     },
                   ),
-                ).paddingOnly(bottom: 60.h, right: 16.w, left: 16.w)
+                )
               : null,
         );
       },
