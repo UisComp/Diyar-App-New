@@ -131,14 +131,18 @@ class AuthController extends Cubit<AuthState> {
   }
 
   Future<void> resendOtp() async {
-    if (savedEmail == null || savedEmail!.isEmpty) {
+    if (savedEmailForForgetPasword == null ||
+        savedEmailForForgetPasword!.isEmpty) {
       emit(ResendOtpFailureState(error: "Missing email for resend."));
       return;
     }
     emit(ResendOtpLoadingState());
     try {
-      final value = await AuthService.forgetPassword(email: savedEmail!);
+      final value = await AuthService.forgetPassword(
+        email: savedEmailForForgetPasword!,
+      );
       if (value.success == true) {
+        await saveRefreshToken(value.data?.refreshToken);
         await startTimer();
         emit(ResendOtpSuccessState());
       } else {
@@ -180,8 +184,10 @@ class AuthController extends Cubit<AuthState> {
     emit(ResetPasswordLoadingState());
     await AuthService.resetPassword(
           resetPasswordRequestModel: ResetPasswordRequestModel(
-            email: emailForForgetPasswordController.text,
-            token: otpVerifyResponseModel.data?.resetToken,
+            email:
+                savedEmailForForgetPasword ??
+                emailForForgetPasswordController.text,
+            token: savedRefreshToken ?? otpVerifyResponseModel.data?.resetToken,
             password: passwordControllerForResetPassword.text,
             passwordConfirmation:
                 passwordConfirmationControllerForResetPassword.text,
@@ -200,12 +206,19 @@ class AuthController extends Cubit<AuthState> {
   Future<void> verifyOtp() async {
     emit(VerifyOtpLoadingState());
     await AuthService.verifyOtp(
-          email: emailForForgetPasswordController.text,
+          email:
+              savedEmailForForgetPasword ??
+              emailForForgetPasswordController.text,
           otpCode: otpController.text,
         )
-        .then((value) {
+        .then((value) async {
           otpVerifyResponseModel = value;
-          emit(VerifyOtpSuccessState());
+          if (value.success == true) {
+            await saveRefreshToken(value.data?.resetToken);
+            emit(VerifyOtpSuccessState());
+          } else {
+            emit(VerifyOtpFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Verify Otp is $error');

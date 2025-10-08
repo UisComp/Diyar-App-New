@@ -7,7 +7,6 @@ import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/controller/home_state.dart';
-import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';

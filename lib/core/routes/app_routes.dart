@@ -14,7 +14,6 @@ import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
-import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';

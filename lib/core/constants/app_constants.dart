@@ -1,10 +1,8 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
-import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/settings/view/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppConstants {
   static const String appName = "Diyar";
@@ -12,6 +10,7 @@ class AppConstants {
   static const String enLanguage = "en";
   static const String userModelKey = "userModelKey";
   static const String emailKey = "emailKey";
+  static const String refreshTokenKey = "refreshTokenKey";
   static const String myCurrentLanguagekey = "myCurrentLanguage";
   static const String translationPath = "assets/translations";
   static const String hiveDarkMode = "hiveDarkMode";

@@ -141,6 +141,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 CustomButton(
+                  isLoading: authState is ResetPasswordLoadingState,
                   buttonColor: AppColors.primaryColor,
                   buttonText: LocaleKeys.reset_password.tr(),
                   onPressed: () async {

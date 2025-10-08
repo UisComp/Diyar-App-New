@@ -76,6 +76,7 @@ class AuthService {
 
   static Future<ResetOrForgetPasswordResponseModel> resetPassword({
     required ResetPasswordRequestModel resetPasswordRequestModel,
+    
   }) async {
     final resetPassword = await DioHelper.postData(
       needHeader: false,

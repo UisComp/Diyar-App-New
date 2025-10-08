@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:diyar_app/core/style/app_color.dart';
@@ -24,14 +23,14 @@ class CustomPinCode extends StatelessWidget {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           appContext: context,
           controller: authController.otpController,
-          length: 4,
+          length: 6,
           animationType: AnimationType.fade,
           keyboardType: TextInputType.number,
           pinTheme: PinTheme(
             shape: PinCodeFieldShape.box,
             borderRadius: BorderRadius.circular(8.r),
-            fieldHeight: 55.h,
-            fieldWidth: 55.w,
+            fieldHeight: 45.h,
+            fieldWidth: 45.w,
             activeFillColor: AppColors.whiteColor,
             inactiveFillColor: AppColors.whiteColor,
             selectedFillColor: Colors.grey.shade200,
@@ -45,7 +44,7 @@ class CustomPinCode extends StatelessWidget {
           validator: (pinCode) {
             if (pinCode == null || pinCode.isEmpty) {
               return LocaleKeys.please_enter_otp.tr();
-            } else if (pinCode.length < 4) {
+            } else if (pinCode.length < 6) {
               return LocaleKeys.otp_must_be_4_digits.tr();
             }
             return null;

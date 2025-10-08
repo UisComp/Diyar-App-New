@@ -73,6 +73,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   const CustomTimer(),
                   20.ph,
                   CustomButton(
+                    isLoading: authState is VerifyOtpLoadingState,
                     buttonText: LocaleKeys.verify.tr(),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {

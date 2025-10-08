@@ -7,8 +7,20 @@ Future<void> updateUserModel(LoginResponseModel? user) async {
   userModel = user;
 }
 
-String? savedEmail;
+String? savedEmailForForgetPasword;
 Future<void> saveEmail(String? email) async {
-  savedEmail = email;
-  await HiveHelper.addToHive(key: AppConstants.emailKey, value: savedEmail);
+  savedEmailForForgetPasword = email;
+  await HiveHelper.addToHive(
+    key: AppConstants.emailKey,
+    value: savedEmailForForgetPasword,
+  );
+}
+
+String? savedRefreshToken;
+Future<void> saveRefreshToken(String? token) async {
+  savedRefreshToken = token;
+  await HiveHelper.addToHive(
+    key: AppConstants.refreshTokenKey,
+    value: savedRefreshToken,
+  );
 }
