@@ -262,10 +262,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.personalInformation,
       path: RoutesName.personalInformation,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (_) => ProfileController(),
-          child: const PersonalInformation(),
-        ),
+        child: const PersonalInformation(),
         transition: slideFromRight,
       ),
     ),
@@ -273,10 +270,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.profileScreen,
       path: RoutesName.profileScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (_) => ProfileController(),
-          child: const ProfileScreen(),
-        ),
+        child: const ProfileScreen(),
         transition: slideFromRight,
       ),
     ),

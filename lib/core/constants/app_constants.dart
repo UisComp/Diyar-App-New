@@ -23,12 +23,13 @@ class AppConstants {
   static final List<Widget> screens = [
     const SettingsScreen(),
     const HomeScreen(),
-    BlocProvider(create: (_) => ProfileController(), child: ProfileScreen()),
+    ProfileScreen(),
   ];
   //!App Fonts
   static const String manropeFont = "Manrope";
   static const String newsReaderFont = "NewsReader";
 }
+
 String? getScreenNameByType(int? type) {
   switch (type) {
     case 1:

@@ -18,11 +18,24 @@ class ProfileController extends Cubit<ProfileState> {
       BlocProvider.of(context);
 
   ProfileResponseModel profileResponseModel = ProfileResponseModel();
-  TextEditingController emailProfileController = TextEditingController();
-  TextEditingController nameProfileController = TextEditingController();
-  final phoneProfileController = PhoneController(
+  late TextEditingController emailProfileController;
+  late TextEditingController nameProfileController;
+
+  void initProfileInfoControllers() {
+    emailProfileController = TextEditingController();
+    nameProfileController = TextEditingController();
+    phoneProfileController = PhoneController(
     initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
   );
+  }
+
+  void disposeProfileInfoControllers() {
+    emailProfileController.dispose();
+    nameProfileController.dispose();
+  }
+
+  late PhoneController phoneProfileController ;
+  
   UserUnitsResponseModel userLinkedUnitsResponseModel =
       UserUnitsResponseModel();
 
@@ -35,7 +48,7 @@ class ProfileController extends Cubit<ProfileState> {
       if (isClosed) return;
       image = null;
       profileResponseModel = value;
-      log("FROM gET pROFILE cONTROLLER(profileResponseModel): ${profileResponseModel.toJson()}");
+
       if (value.data != null) {
         nameProfileController.text = value.data!.name ?? '';
         emailProfileController.text = value.data!.email ?? '';
@@ -101,28 +114,32 @@ class ProfileController extends Cubit<ProfileState> {
       }
     }
   }
+
   Future<void> editProfile() async {
     emit(EditingProfileLoadingState());
-    await ProfileService.editProfile(
-          authRequestModel: RequestModel(
-            email: emailProfileController.text,
-            name: nameProfileController.text,
-            phoneNumber: phoneProfileController.value.international,
-          ),
-          image: image,
-        )
-        .then((value) async {
-          if (value.success == true) {
-            image = null; 
-            emit(EditingProfileSuccessfullyState());
-          } else {
-            emit(EditingProfileFailureState());
-          }
-        })
-        .catchError((error) {
-          log('Error Happen While Editing My Profile is $error');
-          emit(EditingProfileFailureState());
-        });
+    try {
+      final value = await ProfileService.editProfile(
+        authRequestModel: RequestModel(
+          email: emailProfileController.text,
+          name: nameProfileController.text,
+          phoneNumber: phoneProfileController.value.international,
+        ),
+        image: image,
+      );
+
+      if (value.success == true) {
+        await getMyProfile();
+        image = null;
+        emit(EditingProfileSuccessfullyState());
+
+        // ✅ New line — force profile screen rebuild
+        emit(GetMyProfileSuccessState());
+      } else {
+        emit(EditingProfileFailureState());
+      }
+    } catch (error) {
+      emit(EditingProfileFailureState());
+    }
   }
 
   Future<void> getUserLinkedUnits() async {

@@ -31,15 +31,16 @@ class _PersonalInformationState extends State<PersonalInformation> {
   @override
   void initState() {
     super.initState();
+
     profileController = ProfileController.get(context);
+    profileController.initProfileInfoControllers();
     profileController.getMyProfile();
   }
 
   @override
   void dispose() {
     super.dispose();
-    profileController.emailProfileController.dispose();
-    profileController.nameProfileController.dispose();
+    profileController.disposeProfileInfoControllers();
   }
 
   final formKey = GlobalKey<FormState>();

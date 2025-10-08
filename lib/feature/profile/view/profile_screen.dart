@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -15,7 +14,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -26,40 +25,42 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late ProfileController profileController;
+  late final ProfileController _profileController;
 
   @override
   void initState() {
     super.initState();
-    profileController = ProfileController.get(context);
-    initProfileAndLinkedUnits();
+    _profileController = ProfileController.get(context);
+    _initProfileData();
   }
 
-  Future<void> initProfileAndLinkedUnits() async {
-    await profileController.getMyProfile();
-    await profileController.getUserLinkedUnits();
+  Future<void> _initProfileData() async {
+    await _profileController.getMyProfile();
+    await _profileController.getUserLinkedUnits();
   }
 
   @override
   Widget build(BuildContext context) {
-    log("Helpppp");
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.profile.tr()),
-      body: BlocConsumer<ProfileController, ProfileState>(
-        listener: (context, state) {},
+      body: BlocBuilder<ProfileController, ProfileState>(
+        buildWhen: (previous, current) =>
+            current is GetMyProfileSuccessState ||
+            current is EditingProfileSuccessfullyState ||
+            current is PickingImageProfileSuccessfully ||
+            current is GetUserLinkedUnitsSuccessfullyState ||
+            current is GetMyProfileLoadingState ||
+            current is GetUserLinkedUnitsLoadingState,
         builder: (context, state) {
-          log(
-            "at build in Profile profileResponseModel: ${profileController.profileResponseModel.toJson()}",
-          );
-          final isLoading =
-              state is GetUserLinkedUnitsLoadingState ||
-              state is GetMyProfileLoadingState;
-
-          final profile = profileController.profileResponseModel.data;
+          final controller = _profileController;
+          final isLoading = state is GetMyProfileLoadingState ||
+              state is GetUserLinkedUnitsLoadingState;
+          final profile = controller.profileResponseModel.data;
           final linkedUnits =
-              profileController.userLinkedUnitsResponseModel.data ?? [];
-          log("profileController.image ${profileController.image}");
-          log("profile?.profilePicture?.url ${profile?.profilePicture?.url}");
+              controller.userLinkedUnitsResponseModel.data ?? [];
+
+          log("🧩 Profile rebuild triggered | name: ${profile?.name}, image: ${profile?.profilePicture?.url}");
+
           return Skeletonizer(
             enabled: isLoading,
             child: Padding(
@@ -68,38 +69,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   20.ph,
-                  BlocBuilder<ProfileController, ProfileState>(
-                    builder: (context, state) {
-                      return CircleAvatar(
-                        radius: 50.r,
-                        backgroundColor: AppColors.containerColor,
-                        child: profileController.image != null
-                            ? ClipOval(
-                                child: Image.file(
-                                  profileController.image!,
-                                  width: 100.r,
-                                  height: 100.r,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : (profile?.profilePicture?.url != null
-                                  ? ClipOval(
-                                      child: CustomCachedNetworkImage(
-                                        imageUrl: profile!.profilePicture!.url!,
-                                        width: 100.r,
-                                        height: 100.r,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : SvgPicture.asset(
-                                      Assets.images.svg.person,
-                                      width: 50.w,
-                                      height: 50.h,
-                                    )),
-                      );
-                    },
+                  CircleAvatar(
+                    radius: 50.r,
+                    backgroundColor: AppColors.containerColor,
+                    child: (profile?.profilePicture?.url != null)
+                        ? ClipOval(
+                            child: CustomCachedNetworkImage(
+                              // ✅ Force-refresh image by cache-busting it
+                              imageUrl:
+                                  '${profile!.profilePicture!.url!}?v=${DateTime.now().millisecondsSinceEpoch}',
+                              width: 100.r,
+                              height: 100.r,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : SvgPicture.asset(
+                            Assets.images.svg.person,
+                            width: 50.w,
+                            height: 50.h,
+                          ),
                   ),
-
                   10.ph,
                   Text(
                     profile?.name ?? 'Guest',
@@ -109,17 +98,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   5.ph,
                   Text(
                     profile?.email ?? '',
-                    style: AppStyle.fontSize16Regular(
-                      context,
-                    ).copyWith(color: AppColors.descContainerColor),
+                    style: AppStyle.fontSize16Regular(context)
+                        .copyWith(color: AppColors.descContainerColor),
                     textAlign: TextAlign.center,
                   ),
                   5.ph,
                   Text(
                     profile?.phoneNumber ?? '',
-                    style: AppStyle.fontSize16Regular(
-                      context,
-                    ).copyWith(color: AppColors.descContainerColor),
+                    style: AppStyle.fontSize16Regular(context)
+                        .copyWith(color: AppColors.descContainerColor),
                     textAlign: TextAlign.center,
                   ),
                   20.ph,
@@ -127,26 +114,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       LocaleKeys.linked_units.tr(),
-                      style: AppStyle.fontSize22Bold(
-                        context,
-                      ).copyWith(fontSize: 18.sp),
+                      style: AppStyle.fontSize22Bold(context)
+                          .copyWith(fontSize: 18.sp),
                     ),
                   ),
                   10.ph,
                   Expanded(
-                    child: isLoading
-                        ? ListView.builder(
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return CustomContainerInformation(
-                                width: 50.w,
-                                height: 50.h,
-                                titleContainer: 'Loading...',
-                                descriptionContainer: '',
-                              ).paddingOnly(bottom: 10.h);
-                            },
-                          )
-                        : linkedUnits.isEmpty
+                    child: linkedUnits.isEmpty
                         ? Center(
                             child: Text(
                               LocaleKeys.no_new_unit_available.tr(),
