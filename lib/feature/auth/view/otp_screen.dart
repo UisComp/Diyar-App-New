@@ -1,14 +1,13 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
-import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/custom_pin_code.dart';
 import 'package:diyar_app/feature/auth/view/widgets/custom_timer.dart';
 import 'package:diyar_app/feature/auth/view/widgets/message_code.dart';
+import 'package:diyar_app/feature/auth/view/widgets/verify_button.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +24,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   late AuthController authController;
-
   final formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -72,15 +69,9 @@ class _OtpScreenState extends State<OtpScreen> {
                   10.ph,
                   const CustomTimer(),
                   20.ph,
-                  CustomButton(
-                    isLoading: authState is VerifyOtpLoadingState,
-                    buttonText: LocaleKeys.verify.tr(),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        await authController.verifyOtp();
-                      }
-                    },
-                    buttonColor: AppColors.primaryColor,
+                  VerifyButton(
+                    formKey: formKey,
+                    authController: authController,
                   ),
                 ],
               );

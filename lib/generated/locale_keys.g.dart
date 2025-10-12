@@ -118,7 +118,7 @@ abstract class  LocaleKeys {
   static const otp_verification = 'otp_verification';
   static const enter_the_code_sent_to_your_email = 'enter_the_code_sent_to_your_email';
   static const please_enter_otp = 'please_enter_otp';
-  static const otp_must_be_4_digits = 'otp_must_be_4_digits';
+  static const otp_must_be_6_digits = 'otp_must_be_6_digits';
   static const resend_code_in = 'resend_code_in';
   static const did_not_get_the_code = 'did_not_get_the_code';
   static const resend_otp = 'resend_otp';

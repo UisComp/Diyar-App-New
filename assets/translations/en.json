@@ -114,7 +114,7 @@
   "otp_verification": "OTP Verification",
   "enter_the_code_sent_to_your_email": "Enter the 6-digit code sent to your Email.",
   "please_enter_otp": "Please enter OTP Code",
-  "otp_must_be_4_digits": "OTP must be 6 digits",
+  "otp_must_be_6_digits": "OTP must be 6 digits",
   "resend_code_in": "Resend code in",
   "did_not_get_the_code": "Didn't get the code?",
   "resend_otp": "Resend OTP",

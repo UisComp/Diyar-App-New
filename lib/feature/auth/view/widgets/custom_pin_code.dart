@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
@@ -20,6 +18,8 @@ class CustomPinCode extends StatelessWidget {
       builder: (context, state) {
         final AuthController authController = AuthController.get(context);
         return PinCodeTextField(
+          enablePinAutofill: true,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           appContext: context,
           controller: authController.otpController,
@@ -45,13 +45,13 @@ class CustomPinCode extends StatelessWidget {
             if (pinCode == null || pinCode.isEmpty) {
               return LocaleKeys.please_enter_otp.tr();
             } else if (pinCode.length < 6) {
-              return LocaleKeys.otp_must_be_4_digits.tr();
+              return LocaleKeys.otp_must_be_6_digits.tr();
             }
             return null;
           },
           onChanged: (value) {},
-          onCompleted: (value) {
-            log("OTP entered: $value");
+          onCompleted: (value) async {
+            authController.verifyOtp();
           },
         );
       },

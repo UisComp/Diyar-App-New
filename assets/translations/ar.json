@@ -114,7 +114,7 @@
   "otp_verification": "تحقق من OTP",
   "enter_the_code_sent_to_your_email": "ادخل الكود المرسل لبريدك الالكتروني.",
   "please_enter_otp": "يرجى ادخال كود OTP",
-  "otp_must_be_4_digits": "OTP يجب ان يكون 6 ارقام",
+  "otp_must_be_6_digits": "OTP يجب ان يكون 6 ارقام",
   "resend_code_in": "إعادة إرسال الرمز خلال",
   "did_not_get_the_code": "لم يصلك الرمز؟",
   "resend_otp": "إعادة إرسال رمز التحقق",
