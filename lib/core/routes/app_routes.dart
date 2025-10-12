@@ -332,7 +332,7 @@ final GoRouter router = GoRouter(
             ],
             child: UnitEvent(projectId: projectId),
           ),
-          transition: elasticSlideUp,
+          transition: zoomFadeIn,
         );
       },
     ),

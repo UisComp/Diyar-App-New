@@ -1,4 +1,4 @@
-
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
@@ -15,7 +15,6 @@ class MessageCode extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthController, AuthState>(
       builder: (context, state) {
-        final AuthController authController = AuthController.get(context);
         return RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
@@ -24,12 +23,10 @@ class MessageCode extends StatelessWidget {
               TextSpan(
                 text: "${LocaleKeys.enter_the_code_sent_to_your_email.tr()} ",
               ),
-              if (authController
-                  .emailForForgetPasswordController
-                  .text
-                  .isNotEmpty)
+              if (savedEmailForForgetPasword != null &&
+                  savedEmailForForgetPasword!.isNotEmpty)
                 TextSpan(
-                  text: authController.emailForForgetPasswordController.text,
+                  text: savedEmailForForgetPasword,
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.w600,

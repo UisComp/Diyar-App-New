@@ -36,8 +36,6 @@ class CustomGridViewForServices extends StatelessWidget {
             homeController.filteredServices.isNotEmpty || searchText.isNotEmpty
             ? homeController.filteredServices
             : (homeController.userServicesResponse.data ?? []);
-
-        // لو المستخدم كتب حاجة ومفيش نتائج
         if (!isLoading && searchText.isNotEmpty && services.isEmpty) {
           return Padding(
             padding: EdgeInsets.only(top: 50.h),
@@ -54,7 +52,6 @@ class CustomGridViewForServices extends StatelessWidget {
         }
 
         final showSkeleton = isLoading || services.isEmpty;
-
         return Skeletonizer(
           enabled: showSkeleton,
           child: GridView.builder(

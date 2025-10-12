@@ -12,7 +12,7 @@ abstract class  LocaleKeys {
   static const login_message = 'login_message';
   static const email = 'email';
   static const password = 'password';
-  static const forgot_password = 'forgot_password';
+  static const forget_password = 'forget_password';
   static const donnot_have_account = 'donnot_have_account';
   static const create_account = 'create_account';
   static const already_have_account = 'already_have_account';
@@ -147,5 +147,6 @@ abstract class  LocaleKeys {
   static const project_gallery = 'project_gallery';
   static const no_news_found = 'no_news_found';
   static const no_new_unit_available = 'no_new_unit_available';
+  static const tap_again_to_exit = 'tap_again_to_exit';
 
 }

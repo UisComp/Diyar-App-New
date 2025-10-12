@@ -11,7 +11,7 @@ class ApiPaths {
   static const String changePassword = "profile/change-password";
   static const String forgetPassword = "password/request-otp";
   static const String verifyOtp = "password/verify-otp";
-  static const String resetPassword = "reset-password";
+  static const String resetPassword = "password/reset";
   static const String getAllServices = "services/user";
   static const String getLinkedUnitsForUser = "units";
   static const String getUserProjects = "profile/projects";

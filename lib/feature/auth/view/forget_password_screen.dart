@@ -43,7 +43,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        titleAppBar: LocaleKeys.forgot_password.tr().replaceAll("?", ""),
+        titleAppBar: LocaleKeys.forget_password.tr().replaceAll("?", ""),
       ),
       body: BlocConsumer<AuthController, AuthState>(
         listener: (context, authState) {
@@ -87,12 +87,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 CustomButton(
                   isLoading: authState is ForgetPasswordLoadingState,
                   buttonColor: AppColors.primaryColor,
-                  buttonText: LocaleKeys.forgot_password.tr().replaceAll(
+                  buttonText: LocaleKeys.forget_password.tr().replaceAll(
                     "?",
                     "",
                   ),
                   onPressed: () async {
-                    // context.push(RoutesName.otpScreen);
                     if (formKey.currentState!.validate()) {
                       await authController.forgetPassword();
                     }

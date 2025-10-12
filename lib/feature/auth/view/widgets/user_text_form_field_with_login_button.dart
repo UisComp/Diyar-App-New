@@ -115,12 +115,8 @@ class _UserTextFormFieldWithLoginButtonState
                 },
                 child: Text(
                   textAlign: TextAlign.start,
-                  LocaleKeys.forgot_password.tr(),
-                  style: AppStyle.fontSize16Regular(context)
-                  // .copyWith(
-                  //   fontSize: 14.sp,
-                  //   color: AppColors.greyColor,
-                  // ),
+                  LocaleKeys.forget_password.tr(),
+                  style: AppStyle.fontSize16Regular(context),
                 ),
               ),
             ).paddingSymmetric(horizontal: 16.sp),
@@ -135,16 +131,6 @@ class _UserTextFormFieldWithLoginButtonState
               },
               buttonColor: AppColors.primaryColor,
             ).paddingSymmetric(horizontal: 16.sp),
-            // CustomButton(
-            //   buttonHeight: 50.h,
-            //   buttonText: LocaleKeys.login.tr(),
-            //   onPressed: () async {
-            //     if (widget.formKey.currentState!.validate()) {
-            //       await authController.login();
-            //     }
-            //   },
-            //   buttonColor: AppColors.primaryColor,
-            // ).paddingSymmetric(horizontal: 16.sp),
           ],
         );
       },

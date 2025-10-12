@@ -120,6 +120,7 @@ class AuthController extends Cubit<AuthState> {
           log('forgetPasswordResponseModel: $forgetPasswordResponseModel');
           if (value.success == true) {
             emit(ForgetPasswordSuccessState());
+            clearEmailForForgetPassword();
           } else {
             emit(ForgetPasswordFailureState(error: value.message));
           }
@@ -128,6 +129,11 @@ class AuthController extends Cubit<AuthState> {
           log('Error Happen While Forget Password is ${error.toString()}');
           emit(ForgetPasswordFailureState(error: error.toString()));
         });
+  }
+
+  void clearEmailForForgetPassword() {
+    emailForForgetPasswordController.clear();
+    emailForForgetPasswordController.text = '';
   }
 
   Future<void> resendOtp() async {
@@ -193,9 +199,15 @@ class AuthController extends Cubit<AuthState> {
                 passwordConfirmationControllerForResetPassword.text,
           ),
         )
-        .then((value) {
+        .then((value) async {
           resetOrForgetPasswordResponseModel = value;
-          emit(ResetPasswordSuccessState());
+          if (value.success == true) {
+            emit(ResetPasswordSuccessState());
+            await saveRefreshToken(null);
+            await saveEmail(null);
+          } else {
+            emit(ResetPasswordFailureState(error: value.message));
+          }
         })
         .catchError((error) {
           log('Error Happen While Reset Password is $error');

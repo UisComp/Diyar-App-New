@@ -66,6 +66,7 @@ class GridViewServiceItem extends StatelessWidget {
                   ),
                 ),
                 child: CustomCachedNetworkImage(
+                  isProjectDetails: true,
                   fit: BoxFit.scaleDown,
                   height: 60.h,
                   width: 60.w,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -58,9 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           final profile = controller.profileResponseModel.data;
           final linkedUnits =
               controller.userLinkedUnitsResponseModel.data ?? [];
-
-          log("🧩 Profile rebuild triggered | name: ${profile?.name}, image: ${profile?.profilePicture?.url}");
-
           return Skeletonizer(
             enabled: isLoading,
             child: Padding(
@@ -75,7 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: (profile?.profilePicture?.url != null)
                         ? ClipOval(
                             child: CustomCachedNetworkImage(
-                              // ✅ Force-refresh image by cache-busting it
                               imageUrl:
                                   '${profile!.profilePicture!.url!}?v=${DateTime.now().millisecondsSinceEpoch}',
                               width: 100.r,

@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeController homeController;
+  DateTime? lastPressed;
 
   @override
   void initState() {
@@ -44,37 +46,55 @@ class _HomeScreenState extends State<HomeScreen> {
         ? AppColors.black87
         : AppColors.secondaryColor;
     final textColor = darkTheme ? AppColors.containerColor : AppColors.black87;
-    return Scaffold(
-      appBar: CustomAppBar(
-        titleAppBar: LocaleKeys.diyar.tr(),
-        showIconNotification: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomTextFormField(
-              controller: homeController.searchController,
-              hintStyle: AppStyle.fontSize16Regular(
-                context,
-              ).copyWith(color: AppColors.primaryColor),
-              hintText: LocaleKeys.search_services.tr(),
-              prefixIcon: SvgPicture.asset(
-                Assets.images.svg.search,
-                height: 24.h,
-                width: 24.w,
-                fit: BoxFit.scaleDown,
+
+    return WillPopScope(
+      onWillPop: () async {
+        final now = DateTime.now();
+        if (lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2)) {
+          lastPressed = now;
+
+          AppFunctions.errorMessage(
+            context,
+            message: LocaleKeys.tap_again_to_exit.tr(),
+          );
+
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+          titleAppBar: LocaleKeys.diyar.tr(),
+          showIconNotification: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomTextFormField(
+                controller: homeController.searchController,
+                hintStyle: AppStyle.fontSize16Regular(
+                  context,
+                ).copyWith(color: AppColors.primaryColor),
+                hintText: LocaleKeys.search_services.tr(),
+                prefixIcon: SvgPicture.asset(
+                  Assets.images.svg.search,
+                  height: 24.h,
+                  width: 24.w,
+                  fit: BoxFit.scaleDown,
+                ),
+              ).paddingOnly(top: 20.h),
+              30.ph,
+              const CustomServiceAndViewAllTexts(),
+              20.ph,
+              CustomGridViewForServices(
+                cardColor: cardColor,
+                cardImageColor: cardImageColor,
+                textColor: textColor,
               ),
-            ).paddingOnly(top: 20.h),
-            30.ph,
-            const CustomServiceAndViewAllTexts(),
-            20.ph,
-            CustomGridViewForServices(
-              cardColor: cardColor,
-              cardImageColor: cardImageColor,
-              textColor: textColor,
-            ),
-            30.ph,
-          ],
+              30.ph,
+            ],
+          ),
         ),
       ),
     );

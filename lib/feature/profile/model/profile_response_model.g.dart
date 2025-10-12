@@ -7,37 +7,36 @@ part of 'profile_response_model.dart';
 // **************************************************************************
 
 ProfileResponseModel _$ProfileResponseModelFromJson(
-  Map<String, dynamic> json,
-) => ProfileResponseModel(
-  success: json['success'] as bool?,
-  message: json['message'] as String?,
-  data: json['data'] == null
-      ? null
-      : ProfileData.fromJson(json['data'] as Map<String, dynamic>),
-);
+        Map<String, dynamic> json) =>
+    ProfileResponseModel(
+      success: json['success'] as bool?,
+      message: json['message'] as String?,
+      data: json['data'] == null
+          ? null
+          : ProfileData.fromJson(json['data'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ProfileResponseModelToJson(
-  ProfileResponseModel instance,
-) => <String, dynamic>{
-  'success': instance.success,
-  'message': instance.message,
-  'data': instance.data?.toJson(),
-};
+        ProfileResponseModel instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+      'message': instance.message,
+      'data': instance.data,
+    };
 
 ProfileData _$ProfileDataFromJson(Map<String, dynamic> json) => ProfileData(
-  id: (json['id'] as num?)?.toInt(),
-  name: json['name'] as String?,
-  email: json['email'] as String?,
-  phoneNumber: json['phone_number'] as String?,
-  emailVerifiedAt: json['email_verified_at'] as String?,
-  createdAt: json['created_at'] as String?,
-  updatedAt: json['updated_at'] as String?,
-  profilePicture: json['profile_picture'] == null
-      ? null
-      : ProfilePicture.fromJson(
-          json['profile_picture'] as Map<String, dynamic>,
-        ),
-);
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      phoneNumber: json['phone_number'] as String?,
+      emailVerifiedAt: json['email_verified_at'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      profilePicture: json['profile_picture'] == null
+          ? null
+          : ProfilePicture.fromJson(
+              json['profile_picture'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ProfileDataToJson(ProfileData instance) =>
     <String, dynamic>{

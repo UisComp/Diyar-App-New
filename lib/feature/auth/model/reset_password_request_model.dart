@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'reset_password_request_model.g.dart';
 
 @JsonSerializable()
 class ResetPasswordRequestModel {
+  @JsonKey(name: 'reset_token')
   final String? token;
   final String? email;
   final String? password;
