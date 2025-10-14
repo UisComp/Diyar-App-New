@@ -143,6 +143,16 @@
   "project_gallery": "Project Gallery",
   "no_news_found": "No news found",
   "no_new_unit_available": "No Units Available",
-    "tap_again_to_exit": "Tap again to exit"
-
+  "tap_again_to_exit": "Tap again to exit",
+  "enable_biometric": "Biometric Authentication",
+  "biometricOrNot": "Use fingerprint or face recognition for authentication Or Not",
+  "enableBiometricTextInDialog": "To enable Biometrics, you need to set up new biometric credentials",
+  "setup": "SetUp",
+  "loginWithBiometric": "Login With Biometric",
+  "unSupported": "Unsupported",
+  "messageForUnsupportedBiometric": "Your device does not support biometric authentication",
+  "setUpBiometricSuccessfully": "SetUp Biometric Successfully",
+  "deviceLockRequired": "Device Lock Required",
+  "biometric_authentication_failed": "Biometric authentication failed",
+  "biometric_feature": "Biometric Feature"
 }

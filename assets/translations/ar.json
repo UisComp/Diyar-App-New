@@ -143,5 +143,18 @@
   "project_gallery": "معرض المشروع",
   "no_news_found": "لم يتم العثور على اخبار",
   "no_new_unit_available": "لا يوجد وحدات متاحة",
-  "tap_again_to_exit": "اضغط مرة أخرى للخروج"
+  "tap_again_to_exit": "اضغط مرة أخرى للخروج",
+  "enable_biometric": "المصادقة البيومترية",
+  "enableDeviceLockInSettings": "يجب أن يحتوي جهازك على قفل شاشة لتتمكن من استخدام بصمة الإصبع. يُرجى إعداد قفل في إعدادات الجهاز.",
+  "biometric": "تمكين البصمة",
+  "biometricOrNot": "استخدام بصمة الإصبع أو التعرف على الوجه للمصادقة",
+  "enableBiometricTextInDialog": "لتفعيل البصمة، يجب إعداد بيانات بصمة جديدة",
+  "setup": "انشاء",
+  "loginWithBiometric": "تسجيل الدخول باستخدام البصمة",
+  "unSupported": "هذا الجهاز لا يدعم المصادقة باستخدام البصمة",
+  "messageForUnsupportedBiometric": "جهازك لا يدعم المصادقة باستخدام البصمة.",
+  "setUpBiometricSuccessfully": "انشاء بيانات البصمة بنجاح",
+  "deviceLockRequired": "مطلوب قفل الجهاز",
+  "biometric_authentication_failed": "فشل التحقق باستخدام البصمة",
+  "biometric_feature": "المصادقة باستخدام البصمة"
 }
