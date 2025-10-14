@@ -154,5 +154,8 @@
   "setUpBiometricSuccessfully": "SetUp Biometric Successfully",
   "deviceLockRequired": "Device Lock Required",
   "biometric_authentication_failed": "Biometric authentication failed",
-  "biometric_feature": "Biometric Feature"
+  "biometric_feature": "Biometric Feature",
+  "desc_biometric": "Enable or disable biometric authentication",
+  "biometrics_not_supported_on_this_device": "Biometrics not supported on this device",
+  "please_set_a_device_lock_pin_or_pattern_first": "Please set a device lock (PIN/Pattern) first"
 }

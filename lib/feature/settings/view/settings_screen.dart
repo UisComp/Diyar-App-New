@@ -58,6 +58,15 @@ class SettingsScreen extends StatelessWidget {
                   descriptionContainer: LocaleKeys.desc_change_password.tr(),
                   svgIcon: Assets.images.svg.lock,
                 ),
+                24.ph,
+                CustomContainerInformation(
+                  onTap: () {
+                    context.push(RoutesName.bioMetricScreen);
+                  },
+                  titleContainer: LocaleKeys.biometric_feature.tr(),
+                  descriptionContainer: LocaleKeys.biometric.tr(),
+                  svgIcon: Assets.images.svg.biometric,
+                ),
                 32.ph,
                 CustomTitle(title: LocaleKeys.preferences.tr()),
                 24.ph,

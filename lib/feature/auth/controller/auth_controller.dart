@@ -73,6 +73,10 @@ class AuthController extends Cubit<AuthState> {
             emit(LoginSuccessState());
             await updateUserModel(value);
             await HiveHelper.storeUserModel(value, AppConstants.userModelKey);
+            await savedCredentials(
+              email: emailControllerForLogin.text,
+              password: passwordControllerForLogin.text,
+            );
           } else {
             emit(LoginFailureState(error: value.message));
           }
@@ -246,7 +250,7 @@ class AuthController extends Cubit<AuthState> {
           if (value.success == true) {
             emit(LogOutSuccessState());
             await updateUserModel(null);
-            await HiveHelper.clearAllData();
+            await HiveHelper.clearUserDataOnly();
           } else {
             emit(LogOutFailureState(error: value.message));
           }

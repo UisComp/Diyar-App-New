@@ -14,6 +14,8 @@ class AppConstants {
   static const String myCurrentLanguagekey = "myCurrentLanguage";
   static const String translationPath = "assets/translations";
   static const String hiveDarkMode = "hiveDarkMode";
+  static const String myEmail = "myEmail";
+  static const String myPassword = "myPassword";
   static List<Locale> supportedLocales = [
     const Locale(enLanguage),
     const Locale(arLanguage),
@@ -27,6 +29,7 @@ class AppConstants {
   //!App Fonts
   static const String manropeFont = "Manrope";
   static const String newsReaderFont = "NewsReader";
+  static const String enableBiometric = "EnableBiometric";
 }
 
 String? getScreenNameByType(int? type) {

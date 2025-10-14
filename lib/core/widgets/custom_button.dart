@@ -1,8 +1,10 @@
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
+import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomButton extends StatefulWidget {
   const CustomButton({
@@ -15,6 +17,7 @@ class CustomButton extends StatefulWidget {
     this.isLoading = false,
     this.borderRadius = 10.0,
     this.animationDuration = const Duration(milliseconds: 350),
+    this.image,
   });
 
   final Color? buttonColor;
@@ -25,7 +28,7 @@ class CustomButton extends StatefulWidget {
   final bool isLoading;
   final double borderRadius;
   final Duration animationDuration;
-
+  final String? image;
   @override
   State<CustomButton> createState() => _CustomButtonState();
 }
@@ -81,11 +84,42 @@ class _CustomButtonState extends State<CustomButton>
                             strokeWidth: 2.4,
                           ),
                         )
+                      : widget.image != null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              colorFilter: ColorFilter.mode(
+                                AppColors.lightCard,
+                                BlendMode.srcIn,
+                              ),
+                              widget.image!,
+                              key: const ValueKey('image'),
+                            ),
+                            10.pw,
+                            Text(
+                              widget.buttonText,
+                              key: const ValueKey('text'),
+                              textAlign: TextAlign.center,
+                              style: AppStyle.fontSize18Bold(context).copyWith(
+                                fontSize: 16.sp,
+                                color:
+                                    AppThemeController.get(
+                                          context,
+                                        ).currentThemeMode ==
+                                        AppThemeMode.dark
+                                    ? AppColors.blackColor
+                                    : widget.textColor ?? AppColors.whiteColor,
+                              ),
+                            ),
+                          ],
+                        )
                       : Text(
                           widget.buttonText,
                           key: const ValueKey('text'),
                           textAlign: TextAlign.center,
-                          style: AppStyle.fontSize16Regular(context).copyWith(
+                          style: AppStyle.fontSize18Bold(context).copyWith(
+                            fontSize: 16.sp,
                             color:
                                 AppThemeController.get(
                                       context,

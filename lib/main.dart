@@ -7,6 +7,7 @@ import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
+import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,9 @@ Future<void> main() async {
   await DioHelper.init();
   Bloc.observer = AppBlocObserver();
   userModel = await HiveHelper.getUserModel(AppConstants.userModelKey);
+  enableBiometric = await HiveHelper.getFromHive(
+    key: AppConstants.enableBiometric,
+  );
   final languageController = await LanguageController.create();
   runApp(
     EasyLocalization(
@@ -35,6 +39,7 @@ Future<void> main() async {
           BlocProvider<LanguageController>.value(value: languageController),
           BlocProvider(create: (_) => AppThemeController()),
           BlocProvider(create: (_) => ProfileController()),
+          BlocProvider(create: (_) => SettingsController()),
         ],
         child: const DiyarApp(),
       ),

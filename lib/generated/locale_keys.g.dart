@@ -148,5 +148,21 @@ abstract class  LocaleKeys {
   static const no_news_found = 'no_news_found';
   static const no_new_unit_available = 'no_new_unit_available';
   static const tap_again_to_exit = 'tap_again_to_exit';
+  static const enable_biometric = 'enable_biometric';
+  static const enableDeviceLockInSettings = 'enableDeviceLockInSettings';
+  static const biometric = 'biometric';
+  static const biometricOrNot = 'biometricOrNot';
+  static const enableBiometricTextInDialog = 'enableBiometricTextInDialog';
+  static const setup = 'setup';
+  static const loginWithBiometric = 'loginWithBiometric';
+  static const unSupported = 'unSupported';
+  static const messageForUnsupportedBiometric = 'messageForUnsupportedBiometric';
+  static const setUpBiometricSuccessfully = 'setUpBiometricSuccessfully';
+  static const deviceLockRequired = 'deviceLockRequired';
+  static const biometric_authentication_failed = 'biometric_authentication_failed';
+  static const biometric_feature = 'biometric_feature';
+  static const desc_biometric = 'desc_biometric';
+  static const biometrics_not_supported_on_this_device = 'biometrics_not_supported_on_this_device';
+  static const please_set_a_device_lock_pin_or_pattern_first = 'please_set_a_device_lock_pin_or_pattern_first';
 
 }

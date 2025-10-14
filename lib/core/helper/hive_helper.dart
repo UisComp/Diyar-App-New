@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-//! Don't forget to change type of model
 abstract class HiveHelper {
-  //! For Test
   static Future<void> init({bool isTest = false}) async {
     if (isTest) {
       Hive.init(Directory.current.path);
@@ -41,20 +38,6 @@ abstract class HiveHelper {
     final box = await Hive.openBox<LoginResponseModel>('userModelBox');
     return box.get(key);
   }
-
-  // static Future<void> addToHive<T>({
-  //   required String key,
-  //   required T value,
-  // }) async {
-  //   final box = await Hive.openBox<T>('modelBox');
-  //   await box.put(key, value);
-  // }
-
-  // static Future<T?> getFromHive<T>({required String key}) async {
-  //   final box = await Hive.openBox<T>('modelBox');
-  //   return box.get(key);
-  // }
-
   static Future<void> removeFromHive({required String key}) async {
     final box = await Hive.openBox('modelBox');
     await box.delete(key);
@@ -67,6 +50,10 @@ abstract class HiveHelper {
     final modelBox = await Hive.openBox('modelBox');
     await modelBox.clear();
   }
+static Future<void> clearUserDataOnly() async {
+  final userBox = await Hive.openBox<LoginResponseModel>('userModelBox');
+  await userBox.clear();
+}
 
   static Box? _box;
 

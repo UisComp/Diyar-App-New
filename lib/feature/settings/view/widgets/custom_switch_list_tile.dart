@@ -17,16 +17,15 @@ class CustomSwitchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      title: Text(title, style: AppStyle.fontSize16Regular(context)),
+      title: Text(title, style: AppStyle.fontSize18Bold(context)),
       subtitle: Text(
         subtitle,
         style: AppStyle.fontSize14RegularNewsReader(context),
       ),
       value: value,
       onChanged: onChanged,
-      // activeThumbColor : AppColors.primaryColor,
       inactiveThumbColor: AppColors.whiteColor,
-      activeTrackColor: AppColors.primaryColor.withValues(alpha: 0.3),
+      activeTrackColor: AppColors.primaryColor,
       inactiveTrackColor: AppColors.greyColor.withValues(alpha: 0.4),
     );
   }

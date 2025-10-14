@@ -24,3 +24,33 @@ Future<void> saveRefreshToken(String? token) async {
     value: savedRefreshToken,
   );
 }
+
+String? savedEmailForLoginWithBioMetric;
+String? savedPasswordForLoginWithBioMetric;
+Future<void> savedCredentials({
+  required String email,
+  required String password,
+}) async {
+  savedEmailForLoginWithBioMetric = email;
+  await HiveHelper.addToHive(key: AppConstants.myEmail, value: email);
+  savedPasswordForLoginWithBioMetric = password;
+
+  await HiveHelper.addToHive(key: AppConstants.myPassword, value: password);
+}
+
+bool? enableBiometric;
+Future<void> saveBiometricStatus(bool isEnabled) async {
+  if (!isEnabled) {
+    enableBiometric = false;
+    await HiveHelper.addToHive(
+      key: AppConstants.enableBiometric,
+      value: false,
+    );
+    return;
+  }
+  enableBiometric = true;
+  await HiveHelper.addToHive(
+    key: AppConstants.enableBiometric,
+    value: true,
+  );
+}

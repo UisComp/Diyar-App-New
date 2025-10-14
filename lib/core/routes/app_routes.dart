@@ -17,8 +17,8 @@ import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
-import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/feature/settings/view/app_preferences.dart';
+import 'package:diyar_app/feature/settings/view/bio_metric_screen.dart';
 import 'package:diyar_app/feature/settings/view/change_password.dart';
 import 'package:diyar_app/feature/settings/view/contact_us_screen.dart';
 import 'package:diyar_app/feature/profile/view/personal_information.dart';
@@ -186,6 +186,14 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: RoutesName.bioMetricScreen,
+      path: RoutesName.bioMetricScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const BioMetricScreen(),
+        transition: zoomFadeIn,
+      ),
+    ),
+    GoRoute(
       name: RoutesName.homeLayout,
       path: RoutesName.homeLayout,
       pageBuilder: (context, state) => buildAnimatedPage(
@@ -207,7 +215,7 @@ final GoRouter router = GoRouter(
       path: RoutesName.login,
       pageBuilder: (context, state) => buildAnimatedPage(
         child: BlocProvider(
-          create: (_) => AuthController(),
+          create: (context) => AuthController(),
           child: LoginScreen(),
         ),
         transition: slideFromRight,
@@ -285,10 +293,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.changePasswordScreen,
       path: RoutesName.changePasswordScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (_) => SettingsController(),
-          child: const ChangePasswordScreen(),
-        ),
+        child: const ChangePasswordScreen(),
         transition: slideFromRight,
       ),
     ),
@@ -347,6 +352,7 @@ final GoRouter router = GoRouter(
         transition: fadeIn,
       ),
     ),
+
     GoRoute(
       name: RoutesName.newsDetailsScreen,
       path: RoutesName.newsDetailsScreen,
