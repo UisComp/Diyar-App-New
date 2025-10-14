@@ -159,5 +159,6 @@
   "biometric_feature": "المصادقة باستخدام البصمة",
   "desc_biometric": "تشغيل أو إيقاف تسجيل الدخول بالبصمة",
   "biometrics_not_supported_on_this_device": "البصمة غير مدعومة على هذا الجهاز",
-  "please_set_a_device_lock_pin_or_pattern_first": "يرجى تعيين قفل للجهاز (رمز PIN أو نمط) أولاً"
+  "please_set_a_device_lock_pin_or_pattern_first": "يرجى تعيين قفل للجهاز (رمز PIN أو نمط) أولاً",
+  "no_services_available_for_you": "لا يوجد خدمات متوفرة لك"
 }

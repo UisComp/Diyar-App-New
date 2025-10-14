@@ -42,12 +42,22 @@ class $AssetsImagesGen {
   AssetGenImage get forgetPassword =>
       const AssetGenImage('assets/images/forget_password.png');
 
+  /// File path: assets/images/service_not_available.png
+  AssetGenImage get serviceNotAvailable =>
+      const AssetGenImage('assets/images/service_not_available.png');
+
   /// Directory path: assets/images/svg
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [android12, backgroundCard, diyarNativeSplash, diyarPmc, forgetPassword];
+  List<AssetGenImage> get values => [
+        android12,
+        backgroundCard,
+        diyarNativeSplash,
+        diyarPmc,
+        forgetPassword,
+        serviceNotAvailable
+      ];
 }
 
 class $AssetsTranslationsGen {

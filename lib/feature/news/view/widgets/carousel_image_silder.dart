@@ -26,10 +26,12 @@ class CarouselImageSilder extends StatelessWidget {
           itemCount: newsDetails?.media!.length,
           itemBuilder: (context, index, _) {
             return CustomCachedNetworkImage(
+              fit: BoxFit.cover,
               imageUrl: newsDetails?.media![index].url,
             );
           },
           options: CarouselOptions(
+            aspectRatio: 1.2,
             viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 3),
@@ -43,10 +45,11 @@ class CarouselImageSilder extends StatelessWidget {
           dotsCount: newsDetails?.media!.length ?? 0,
           position: newsController.currentIndex.toDouble(),
           decorator: DotsDecorator(
+            spacing: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
             activeColor: AppColors.primaryColor,
             color: AppColors.greyColor,
-            size: Size(20.w, 20.h),
-            activeSize: Size(20.w, 20.h),
+            size: Size(15.w, 15.h),
+            activeSize: Size(15.w, 15.h),
           ),
         ),
       ],

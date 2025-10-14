@@ -110,6 +110,30 @@ class DioHelper {
     return null;
   }
 
+  static Future<Response?> deletData({
+    required String path,
+    data,
+    needHeader = true,
+  }) async {
+    try {
+      return await dio!.delete(
+        path,
+        data: data,
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: 'application/json',
+          headers: needHeader ? await ApiPaths.getHeaders() : null,
+          followRedirects: false,
+        ),
+      );
+    } on SocketException catch (_) {
+    } on DioException catch (e) {
+      String errorMsg = _handleResponse(e.response!);
+      log(errorMsg);
+    }
+    return null;
+  }
+
   static Future<Response?> patchData({
     required String path,
     data,

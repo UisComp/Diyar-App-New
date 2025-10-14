@@ -175,7 +175,8 @@ class CodegenLoader extends AssetLoader{
   "biometric_feature": "المصادقة باستخدام البصمة",
   "desc_biometric": "تشغيل أو إيقاف تسجيل الدخول بالبصمة",
   "biometrics_not_supported_on_this_device": "البصمة غير مدعومة على هذا الجهاز",
-  "please_set_a_device_lock_pin_or_pattern_first": "يرجى تعيين قفل للجهاز (رمز PIN أو نمط) أولاً"
+  "please_set_a_device_lock_pin_or_pattern_first": "يرجى تعيين قفل للجهاز (رمز PIN أو نمط) أولاً",
+  "no_services_available_for_you": "لا يوجد خدمات متوفرة لك"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -336,7 +337,8 @@ static const Map<String,dynamic> _en = {
   "biometric_feature": "Biometric Feature",
   "desc_biometric": "Enable or disable biometric authentication",
   "biometrics_not_supported_on_this_device": "Biometrics not supported on this device",
-  "please_set_a_device_lock_pin_or_pattern_first": "Please set a device lock (PIN/Pattern) first"
+  "please_set_a_device_lock_pin_or_pattern_first": "Please set a device lock (PIN/Pattern) first",
+  "no_services_available_for_you": "No Services Available For You"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

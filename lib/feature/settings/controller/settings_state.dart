@@ -11,12 +11,28 @@ class ChangePasswordFailureState extends SettingsState {
 
   ChangePasswordFailureState({this.error});
 }
-class BiometricLoading extends SettingsState{}
-class BiometricEnabled extends SettingsState{}
-class BiometricDisabled extends SettingsState{}
-class BiometricNotSupported extends SettingsState{}
-class BiometricLockNotSet extends SettingsState{}
-class BiometricError extends SettingsState{
+
+class BiometricLoading extends SettingsState {}
+
+class BiometricEnabled extends SettingsState {}
+
+class BiometricDisabled extends SettingsState {}
+
+class BiometricNotSupported extends SettingsState {}
+
+class BiometricLockNotSet extends SettingsState {}
+
+class BiometricError extends SettingsState {
   final String error;
   BiometricError(this.error);
+}
+
+class DeleteAccountLoadingState extends SettingsState {}
+
+class DeleteAccountSuccessfullyState extends SettingsState {}
+
+class DeleteAccountFailureState extends SettingsState {
+  final String? error;
+
+  DeleteAccountFailureState({this.error});
 }

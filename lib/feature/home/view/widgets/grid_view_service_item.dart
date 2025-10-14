@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/model/user_services_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,12 +26,14 @@ class GridViewServiceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final type = service?.type;
+    // final type = service?.type;
 
     return InkWell(
       onTap: () {
         if (service?.isActive == true) {
-          final screenName = getScreenNameByType(type);
+          final serviceType = ServiceType.fromInt(service?.type);
+          final screenName = getScreenNameByServiceType(serviceType);
+
           if (screenName != null) {
             context.push(screenName, extra: service);
           } else {
@@ -39,13 +42,32 @@ class GridViewServiceItem extends StatelessWidget {
               message: LocaleKeys.service_not_available.tr(),
             );
           }
-        }else{
+        } else {
           AppFunctions.errorMessage(
             context,
             message: LocaleKeys.service_not_active.tr(),
           );
         }
       },
+
+      // onTap: () {
+      //   if (service?.isActive == true) {
+      //     final screenName = getScreenNameByType(type);
+      //     if (screenName != null) {
+      //       context.push(screenName, extra: service);
+      //     } else {
+      //       AppFunctions.errorMessage(
+      //         context,
+      //         message: LocaleKeys.service_not_available.tr(),
+      //       );
+      //     }
+      //   }else{
+      //     AppFunctions.errorMessage(
+      //       context,
+      //       message: LocaleKeys.service_not_active.tr(),
+      //     );
+      //   }
+      // },
       child: Card(
         color: cardColor,
         shape: RoundedRectangleBorder(

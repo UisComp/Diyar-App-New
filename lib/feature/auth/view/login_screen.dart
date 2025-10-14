@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         authController.emailControllerForLogin.text = userName;
         authController.passwordControllerForLogin.text = password;
-        log('FirstLoginScreen: Loaded credentials after biometric success');
+        log('Loaded credentials after biometric success');
         await authController.login();
         context.go(RoutesName.homeLayout);
       }

@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/settings/view/settings_screen.dart';
@@ -32,11 +33,22 @@ class AppConstants {
   static const String enableBiometric = "EnableBiometric";
 }
 
-String? getScreenNameByType(int? type) {
+// String? getScreenNameByType(int? type) {
+//   switch (type) {
+//     case 1:
+//       return RoutesName.newsScreen;
+//     case 5:
+//       return RoutesName.financeScreen;
+//     default:
+//       return null;
+//   }
+// }
+
+String? getScreenNameByServiceType(ServiceType? type) {
   switch (type) {
-    case 1:
+    case ServiceType.type1:
       return RoutesName.newsScreen;
-    case 5:
+    case ServiceType.type5:
       return RoutesName.financeScreen;
     default:
       return null;

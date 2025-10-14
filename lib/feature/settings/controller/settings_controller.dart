@@ -4,6 +4,7 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
+import 'package:diyar_app/core/model/general_response_model.dart';
 import 'package:diyar_app/feature/settings/controller/settings_state.dart';
 import 'package:diyar_app/feature/settings/model/change_password_request_model.dart';
 import 'package:diyar_app/feature/settings/model/change_password_response_model.dart';
@@ -62,78 +63,41 @@ class SettingsController extends Cubit<SettingsState> {
     }
   }
 
-  // Future<void> enableBiometrics(BuildContext context) async {
-  //   try {
-  //     emit(BiometricLoading());
-  //     final canCheckBiometrics = await _localAuth.canCheckBiometrics;
-  //     final isDeviceSupported = await _localAuth.isDeviceSupported();
-  //     if (!canCheckBiometrics && !isDeviceSupported) {
-  //       emit(BiometricNotSupported());
-  //     }
+  Future<void> enableBiometrics(BuildContext context) async {
+    try {
+      emit(BiometricLoading());
+      final canCheckBiometrics = await _localAuth.canCheckBiometrics;
+      final isDeviceSupported = await _localAuth.isDeviceSupported();
 
-  //     final hasDeviceLock = await _localAuth.isDeviceSupported();
-  //     if (!hasDeviceLock) {
-  //       showLockRequiredDialog(context);
-  //       emit(BiometricLockNotSet());
-  //     }
-
-  //     final isAuthenticated = await _localAuth.authenticate(
-  //       localizedReason: 'Authenticate to enable biometrics',
-  //       options: const AuthenticationOptions(
-  //         useErrorDialogs: true,
-  //         stickyAuth: true,
-  //       ),
-  //     );
-
-  //     if (isAuthenticated) {
-  //       await _saveBiometricStatus(true);
-
-  //       emit(BiometricEnabled());
-  //     } else {
-  //       await _saveBiometricStatus(false);
-  //       emit(BiometricDisabled());
-  //     }
-  //   } catch (e) {
-  //     log('BiometricCubit: Error enabling biometrics: $e');
-  //     emit(BiometricError('Failed to enable biometrics: $e'));
-  //   }
-  // }
-  
-Future<void> enableBiometrics(BuildContext context) async {
-  try {
-    emit(BiometricLoading());
-    final canCheckBiometrics = await _localAuth.canCheckBiometrics;
-    final isDeviceSupported = await _localAuth.isDeviceSupported();
-
-    if (!canCheckBiometrics || !isDeviceSupported) {
-      emit(BiometricNotSupported());
-      return;
+      if (!canCheckBiometrics || !isDeviceSupported) {
+        emit(BiometricNotSupported());
+        return;
+      }
+      final hasDeviceLock = await _localAuth.isDeviceSupported();
+      if (!hasDeviceLock) {
+        showLockRequiredDialog(context);
+        emit(BiometricLockNotSet());
+        return;
+      }
+      final isAuthenticated = await _localAuth.authenticate(
+        localizedReason: 'Authenticate to enable biometrics',
+        options: const AuthenticationOptions(
+          useErrorDialogs: true,
+          stickyAuth: true,
+        ),
+      );
+      if (isAuthenticated) {
+        await saveBiometricStatus(true);
+        emit(BiometricEnabled());
+      } else {
+        await saveBiometricStatus(false);
+        emit(BiometricDisabled());
+      }
+    } catch (e) {
+      log('Error enabling biometrics: $e');
+      emit(BiometricError('Failed to enable biometrics: $e'));
     }
-    final hasDeviceLock = await _localAuth.isDeviceSupported();
-    if (!hasDeviceLock) {
-      showLockRequiredDialog(context);
-      emit(BiometricLockNotSet());
-      return; 
-    }
-    final isAuthenticated = await _localAuth.authenticate(
-      localizedReason: 'Authenticate to enable biometrics',
-      options: const AuthenticationOptions(
-        useErrorDialogs: true,
-        stickyAuth: true,
-      ),
-    );
-    if (isAuthenticated) {
-      await saveBiometricStatus(true);
-      emit(BiometricEnabled());
-    } else {
-      await saveBiometricStatus(false);
-      emit(BiometricDisabled());
-    }
-  } catch (e) {
-    log('Error enabling biometrics: $e');
-    emit(BiometricError('Failed to enable biometrics: $e'));
   }
-}
 
   Future<void> disableBiometrics() async {
     try {
@@ -147,7 +111,7 @@ Future<void> enableBiometrics(BuildContext context) async {
     }
   }
 
-  bool isEnabled=false;
+  bool isEnabled = false;
   Future<bool> authenticateWithBiometrics() async {
     try {
       isEnabled = await loadBiometricStatus();
@@ -210,5 +174,25 @@ Future<void> enableBiometrics(BuildContext context) async {
       log('Biometric: Error saving biometric status: $e');
       throw Exception(e);
     }
+  }
+
+  GeneralResponseModel deleteAccountResponseModel = GeneralResponseModel();
+  Future<void> deleteAccount() async {
+    emit(DeleteAccountLoadingState());
+    await SettingsService.deleteAccount()
+        .then((value) async {
+          deleteAccountResponseModel = value;
+          log('deleteAccountResponseModel $deleteAccountResponseModel');
+          if (value.success == true) {
+            await HiveHelper.clearAllData();
+            emit(DeleteAccountSuccessfullyState());
+          } else {
+            emit(DeleteAccountFailureState(error: value.message));
+          }
+        })
+        .catchError((error) {
+          log('Error Happen While Delete Account is $error');
+          emit(DeleteAccountFailureState(error: error.toString()));
+        });
   }
 }

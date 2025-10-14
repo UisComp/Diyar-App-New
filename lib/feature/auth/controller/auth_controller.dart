@@ -57,6 +57,8 @@ class AuthController extends Cubit<AuthState> {
   void initController() {
     emailControllerForLogin.clear();
     passwordControllerForLogin.clear();
+    emailControllerForLogin.text = '';
+    passwordControllerForLogin.text = '';
   }
 
   Future<void> login() async {

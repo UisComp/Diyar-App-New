@@ -1,9 +1,11 @@
 import 'package:diyar_app/core/extension/padding.dart';
+import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/controller/home_state.dart';
 import 'package:diyar_app/feature/home/view/widgets/grid_view_service_item.dart';
+import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,30 @@ class CustomGridViewForServices extends StatelessWidget {
             ),
           );
         }
-
+        if (!isLoading && searchText.isEmpty && services.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.only(top: 80.h),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Assets.images.serviceNotAvailable.image(
+                    width: 200.w,
+                    height: 200.h,
+                  ),
+                  12.ph,
+                  Text(
+                    LocaleKeys.no_services_available_for_you.tr(),
+                    style: AppStyle.fontSize22Bold(context).copyWith(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         final showSkeleton = isLoading || services.isEmpty;
         return Skeletonizer(
           enabled: showSkeleton,

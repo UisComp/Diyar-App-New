@@ -6,7 +6,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Future<void> showDeleteAccountDialog(BuildContext context) async {
+Future<void> showDeleteAccountDialog(
+  BuildContext context, {
+  void Function()? onDelete,
+  bool isLoading = false,
+}) async {
   await showGeneralDialog<Object?>(
     context: context,
     barrierDismissible: true,
@@ -75,22 +79,22 @@ Future<void> showDeleteAccountDialog(BuildContext context) async {
                     child: Text(LocaleKeys.cancel.tr()),
                   ),
                   12.pw,
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      minimumSize: Size(110.w, 45.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    onPressed: () async {
-                      // context.pop(context);
-                    },
-                    child: Text(
-                      LocaleKeys.delete.tr(),
-                      style: TextStyle(color: AppColors.containerColor),
-                    ),
-                  ),
+                  isLoading
+                      ? const CircularProgressIndicator.adaptive()
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            minimumSize: Size(110.w, 45.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          onPressed: onDelete,
+                          child: Text(
+                            LocaleKeys.delete.tr(),
+                            style: TextStyle(color: AppColors.containerColor),
+                          ),
+                        ),
                 ],
               ),
             ],
