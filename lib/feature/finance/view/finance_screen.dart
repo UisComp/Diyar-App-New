@@ -31,7 +31,7 @@ class FinanceScreen extends StatelessWidget {
               ),
             ),
             20.ph,
-            BalanceCard(),
+           const BalanceCard(),
             15.ph,
             const ReceiptsAndDuePayment(),
             10.ph,

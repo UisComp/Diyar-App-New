@@ -1,19 +1,16 @@
-import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
-import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
-import 'package:diyar_app/feature/settings/view/widgets/custom_container_information.dart';
-import 'package:diyar_app/gen/assets.gen.dart';
+import 'package:diyar_app/feature/profile/view/widgets/empty_linked_units.dart';
+import 'package:diyar_app/feature/profile/view/widgets/image_profile.dart';
+import 'package:diyar_app/feature/profile/view/widgets/list_view_linked_units.dart';
+import 'package:diyar_app/feature/profile/view/widgets/user_info.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -52,7 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             current is GetUserLinkedUnitsLoadingState,
         builder: (context, state) {
           final controller = _profileController;
-          final isLoading = state is GetMyProfileLoadingState ||
+          final isLoading =
+              state is GetMyProfileLoadingState ||
               state is GetUserLinkedUnitsLoadingState;
           final profile = controller.profileResponseModel.data;
           final linkedUnits =
@@ -65,79 +63,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   20.ph,
-                  CircleAvatar(
-                    radius: 50.r,
-                    backgroundColor: AppColors.containerColor,
-                    child: (profile?.profilePicture?.url != null)
-                        ? ClipOval(
-                            child: CustomCachedNetworkImage(
-                              imageUrl:
-                                  '${profile!.profilePicture!.url!}?v=${DateTime.now().millisecondsSinceEpoch}',
-                              width: 100.r,
-                              height: 100.r,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : SvgPicture.asset(
-                            Assets.images.svg.person,
-                            width: 50.w,
-                            height: 50.h,
-                          ),
-                  ),
+                  ImageProfile(profile: profile),
                   10.ph,
-                  Text(
-                    profile?.name ?? 'Guest',
-                    style: AppStyle.fontSize22Bold(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  5.ph,
-                  Text(
-                    profile?.email ?? '',
-                    style: AppStyle.fontSize16Regular(context)
-                        .copyWith(color: AppColors.descContainerColor),
-                    textAlign: TextAlign.center,
-                  ),
-                  5.ph,
-                  Text(
-                    profile?.phoneNumber ?? '',
-                    style: AppStyle.fontSize16Regular(context)
-                        .copyWith(color: AppColors.descContainerColor),
-                    textAlign: TextAlign.center,
-                  ),
-                  20.ph,
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      LocaleKeys.linked_units.tr(),
-                      style: AppStyle.fontSize22Bold(context)
-                          .copyWith(fontSize: 18.sp),
-                    ),
-                  ),
+                  UserInfo(profile: profile),
                   10.ph,
                   Expanded(
                     child: linkedUnits.isEmpty
-                        ? Center(
-                            child: Text(
-                              LocaleKeys.no_new_unit_available.tr(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: linkedUnits.length,
-                            itemBuilder: (context, index) {
-                              final unit = linkedUnits[index];
-                              return CustomContainerInformation(
-                                width: 50.w,
-                                height: 50.h,
-                                titleContainer: unit.name ?? '',
-                                descriptionContainer: "",
-                                imageUrl: unit.imageUrl?.url,
-                              ).paddingOnly(bottom: 10.h);
-                            },
-                          ),
+                        ? const EmptyLinkedUnits()
+                        : ListViewLinkedUnits(linkedUnits: linkedUnits),
                   ),
                 ],
               ),

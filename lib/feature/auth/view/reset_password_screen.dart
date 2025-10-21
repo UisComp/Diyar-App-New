@@ -9,13 +9,12 @@ import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
-import 'package:diyar_app/gen/assets.gen.dart';
+import 'package:diyar_app/feature/auth/view/widgets/custom_logo.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -66,11 +65,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: Column(
                       children: [
                         40.ph,
-                        SvgPicture.asset(
-                          Assets.images.svg.resetPassword,
-                          width: double.infinity,
-                          height: 200.h,
-                        ),
+                       const CustomLogo(),
                         40.ph,
                         CustomTextFormField(
                           suffixIcon: IconButton(
@@ -158,3 +153,4 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 }
+

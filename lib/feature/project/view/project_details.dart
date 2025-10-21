@@ -1,19 +1,16 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
-import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/controller/project_state.dart';
-import 'package:diyar_app/gen/assets.gen.dart';
+import 'package:diyar_app/feature/project/view/widgets/list_view_main_image_for_project_details.dart';
+import 'package:diyar_app/feature/project/view/widgets/project_details_image.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProjectDetails extends StatelessWidget {
@@ -35,32 +32,7 @@ class ProjectDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   20.ph,
-                  InkWell(
-                    onTap: () {
-                      final projectId =
-                          controller.projectDetailsResponseModel.data?.id;
-
-                      if (projectId != null) {
-                        context.push(RoutesName.unitEvents, extra: projectId);
-                      }
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: isLoading
-                          ? Container(
-                              width: double.infinity,
-                              height: 250.h,
-                              color: Colors.grey.shade300,
-                            )
-                          : CustomCachedNetworkImage(
-                              isProjectDetails: true,
-                              imageUrl: project.data?.mainImage?.url,
-                              width: double.infinity,
-                              height: 250.h,
-                            ),
-                    ),
-                  ),
-
+                  ProjectDetailsImage(controller: controller, isLoading: isLoading, project: project),
                   20.ph,
                   if (project.data?.name != null)
                     Text(
@@ -82,47 +54,7 @@ class ProjectDetails extends StatelessWidget {
                     style: AppStyle.fontSize18Bold(context),
                   ),
                   20.ph,
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount:
-                        project.data?.media?.length ?? (isLoading ? 4 : 0),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10.h,
-                      crossAxisSpacing: 10.w,
-                      childAspectRatio: .95,
-                    ),
-                    itemBuilder: (context, index) {
-                      final imageUrl = project.data?.media?[index].url;
-                      return Card(
-                        color: AppColors.whiteColor,
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: isLoading
-                              ? Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  color: Colors.grey.shade300,
-                                )
-                              : (imageUrl != null
-                                    ? CustomCachedNetworkImage(
-                                        imageUrl: imageUrl,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                      )
-                                    : Assets.images.diyarPmc.image(
-                                        width: 80.w,
-                                        height: 70.h,
-                                      )),
-                        ),
-                      );
-                    },
-                  ),
+                  ListViewMainImageForProjectDetails(project: project, isLoading: isLoading),
                   20.ph,
                 ],
               ).paddingSymmetric(horizontal: 16.w),

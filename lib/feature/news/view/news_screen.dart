@@ -3,6 +3,7 @@ import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/controller/news_state.dart';
+import 'package:diyar_app/feature/news/view/widgets/empty_news.dart';
 import 'package:diyar_app/feature/settings/view/widgets/custom_container_information.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -35,20 +36,9 @@ class _NewsScreenState extends State<NewsScreen> {
         builder: (context, state) {
           final isLoading = state is GetAllNewsLoadingState;
           final newsList = newsController.newsResponseModel.data ?? [];
-
-          // 🟡 حالة لا يوجد بيانات بعد التحميل
           if (!isLoading && newsList.isEmpty) {
-            return Center(
-              child: Text(
-                LocaleKeys.no_news_found.tr(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            );
+            return const EmptyNews();
           }
-
           return Skeletonizer(
             enabled: isLoading,
             child: ListView.separated(
