@@ -17,6 +17,7 @@ class AppConstants {
   static const String hiveDarkMode = "hiveDarkMode";
   static const String myEmail = "myEmail";
   static const String myPassword = "myPassword";
+  static const String fcmToken = "fcmToken";
   static List<Locale> supportedLocales = [
     const Locale(enLanguage),
     const Locale(arLanguage),

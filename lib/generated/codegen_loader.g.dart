@@ -154,7 +154,7 @@ class CodegenLoader extends AssetLoader{
   "service_not_available": "هذا الخدمة غير متوفرة حتى الان",
   "no_results_found": "لم يتم العثور على نتايج",
   "service_not_active": "الخدمة غير نشطة",
-  "phone_number_in_your_contract": "Enter Phone Number in Your Contract",
+  "phone_number_in_your_contract": "أدخل رقم الهاتف الموجود في عقدك",
   "linked_units": "الواحدات المرتبطة",
   "project_gallery": "معرض المشروع",
   "no_news_found": "لم يتم العثور على اخبار",
@@ -176,7 +176,9 @@ class CodegenLoader extends AssetLoader{
   "desc_biometric": "تشغيل أو إيقاف تسجيل الدخول بالبصمة",
   "biometrics_not_supported_on_this_device": "البصمة غير مدعومة على هذا الجهاز",
   "please_set_a_device_lock_pin_or_pattern_first": "يرجى تعيين قفل للجهاز (رمز PIN أو نمط) أولاً",
-  "no_services_available_for_you": "لا يوجد خدمات متوفرة لك"
+  "no_services_available_for_you": "لا يوجد خدمات متوفرة لك",
+  "no_country_found": "لم يتم العثور على دولة",
+  "no_notifications_found": "لا يوجد إشعارات"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -338,7 +340,9 @@ static const Map<String,dynamic> _en = {
   "desc_biometric": "Enable or disable biometric authentication",
   "biometrics_not_supported_on_this_device": "Biometrics not supported on this device",
   "please_set_a_device_lock_pin_or_pattern_first": "Please set a device lock (PIN/Pattern) first",
-  "no_services_available_for_you": "No Services Available For You"
+  "no_services_available_for_you": "No Services Available For You",
+  "no_country_found": "No Country Found",
+  "no_notifications_found": "No Notifications Found"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

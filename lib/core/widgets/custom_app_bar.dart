@@ -1,7 +1,9 @@
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -18,7 +20,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: showIconNotification == true
           ? [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push(RoutesName.notificationsScreen);
+                },
                 icon: SvgPicture.asset(Assets.images.svg.notification),
               ),
             ]

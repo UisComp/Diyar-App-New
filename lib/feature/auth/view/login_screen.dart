@@ -104,14 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           key: formKey,
                           child: Column(
                             children: [
-                              Assets.images.diyarPmc
+                              Assets.images.diyar
                                   .image(
-                                    height: 250.h,
+                                    height: 300.h,
                                     width: double.infinity,
                                     fit: BoxFit.scaleDown,
                                   )
                                   .paddingOnly(top: 20.h),
-                              15.ph,
                               Text(
                                 LocaleKeys.login_message.tr(),
                                 style: AppStyle.fontSize16Regular(context),
@@ -121,7 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 formKey: formKey,
                               ),
                               24.ph,
-
                               if (enableBiometric != null &&
                                   enableBiometric == true)
                                 CustomButton(

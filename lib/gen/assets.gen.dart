@@ -30,6 +30,9 @@ class $AssetsImagesGen {
   AssetGenImage get backgroundCard =>
       const AssetGenImage('assets/images/background_card.png');
 
+  /// File path: assets/images/diyar.png
+  AssetGenImage get diyar => const AssetGenImage('assets/images/diyar.png');
+
   /// File path: assets/images/diyar_native_splash.png
   AssetGenImage get diyarNativeSplash =>
       const AssetGenImage('assets/images/diyar_native_splash.png');
@@ -53,6 +56,7 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         android12,
         backgroundCard,
+        diyar,
         diyarNativeSplash,
         diyarPmc,
         forgetPassword,

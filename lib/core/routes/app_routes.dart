@@ -13,6 +13,7 @@ import 'package:diyar_app/feature/home/view/home_screen.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
+import 'package:diyar_app/feature/notifications/view/notifications_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
@@ -384,6 +385,14 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => buildAnimatedPage(
         child: const FinanceScreen(),
         transition: slideFromBottom,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.notificationsScreen,
+      path: RoutesName.notificationsScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const NotificationsScreen(),
+        transition: slideFromRight,
       ),
     ),
   ],

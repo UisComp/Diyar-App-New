@@ -30,15 +30,13 @@ class RegisterScreen extends StatelessWidget {
                   key: formKey,
                   child: Column(
                     children: [
-                      20.ph,
-                      Assets.images.diyarPmc
+                      Assets.images.diyar
                           .image(
-                            height: 270.h,
+                            height: 300.h,
                             width: double.infinity,
                             fit: BoxFit.scaleDown,
                           )
                           .paddingOnly(top: 20.h),
-                      30.ph,
                       Text(
                         LocaleKeys.create_account.tr(),
                         style: AppStyle.fontSize22Bold(context)

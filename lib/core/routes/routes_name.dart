@@ -21,4 +21,5 @@ class RoutesName {
   static const String viewAllServicesScreen = "/viewAllServicesScreen";
   static const String profileScreen = "/profileScreen";
   static const String bioMetricScreen = "/bioMetricScreen";
+  static const String notificationsScreen = "/notificationsScreen";
 }

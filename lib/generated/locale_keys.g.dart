@@ -165,5 +165,7 @@ abstract class  LocaleKeys {
   static const biometrics_not_supported_on_this_device = 'biometrics_not_supported_on_this_device';
   static const please_set_a_device_lock_pin_or_pattern_first = 'please_set_a_device_lock_pin_or_pattern_first';
   static const no_services_available_for_you = 'no_services_available_for_you';
+  static const no_country_found = 'no_country_found';
+  static const no_notifications_found = 'no_notifications_found';
 
 }
