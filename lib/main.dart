@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:diyar_app/bloc_observer.dart';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
@@ -33,7 +33,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     );
   }
   // await NotificationService().init();
-  log('Handling a background message: ${message.messageId}');
+  AppLogger.log('Handling a background message: ${message.messageId}');
   // await NotificationService().showLocalNotificationFromBackground(message);
 }
 
@@ -100,20 +100,20 @@ Future<void> main() async {
           key: AppConstants.fcmToken,
           value: fcmToken!,
         );
-        log("FCM Token saved: $fcmToken");
+       AppLogger. log("FCM Token saved: $fcmToken");
       }
-      log("FCM Token: $fcmToken");
+      AppLogger.log("FCM Token: $fcmToken");
     } catch (ex) {
-      log("exception on fcm init ${ex.toString()}");
+      AppLogger.log("exception on fcm init ${ex.toString()}");
     }
     if (Platform.isIOS) {
       String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      log("apnsToken: $apnsToken");
+      AppLogger.log("apnsToken: $apnsToken");
     }
     // final localNotificationService = NotificationService();
 
     FirebaseMessaging.onMessage.listen((message) async {
-      log("Foreground message received: ${message.data}");
+      AppLogger.log("Foreground message received: ${message.data}");
       //! get all notifications
       // appContext.read<NotificationController>().fetchAllNotifications(
       //   page: 1,
@@ -127,7 +127,7 @@ Future<void> main() async {
       //   page: 1,
       //   refresh: true,
       // );
-      log("Notification opened: ${message.data}");
+      AppLogger.log("Notification opened: ${message.data}");
     });
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // await localNotificationService.init();

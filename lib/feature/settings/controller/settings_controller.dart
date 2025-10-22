@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/model/general_response_model.dart';
@@ -40,7 +39,7 @@ class SettingsController extends Cubit<SettingsState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Change Password is $error');
+          AppLogger.error('Error Happen While Change Password is $error');
           emit(ChangePasswordFailureState(error: error.toString()));
         });
   }
@@ -51,14 +50,14 @@ class SettingsController extends Cubit<SettingsState> {
     try {
       emit(BiometricLoading());
       isEnabled = await loadBiometricStatus();
-      log('BiometricCubit: Initialized with isEnabled = $isEnabled');
+      AppLogger.success('BiometricCubit: Initialized with isEnabled = $isEnabled');
       if (isEnabled == true) {
         emit(BiometricEnabled());
       } else {
         emit(BiometricDisabled());
       }
     } catch (e) {
-      log('BiometricCubit: Error initializing biometric: $e');
+      AppLogger.error('BiometricCubit: Error initializing biometric: $e');
       emit(BiometricError(e.toString()));
     }
   }
@@ -94,7 +93,7 @@ class SettingsController extends Cubit<SettingsState> {
         emit(BiometricDisabled());
       }
     } catch (e) {
-      log('Error enabling biometrics: $e');
+      AppLogger.error('Error enabling biometrics: $e');
       emit(BiometricError('Failed to enable biometrics: $e'));
     }
   }
@@ -104,9 +103,9 @@ class SettingsController extends Cubit<SettingsState> {
       emit(BiometricLoading());
       await _saveBiometricStatus(false);
       emit(BiometricDisabled());
-      log('Biometrics disabled successfully');
+      AppLogger.success('Biometrics disabled successfully');
     } catch (e) {
-      log('Error disabling biometrics: $e');
+      AppLogger.error('Error disabling biometrics: $e');
       emit(BiometricError('Failed to disable biometrics: $e'));
     }
   }
@@ -116,14 +115,14 @@ class SettingsController extends Cubit<SettingsState> {
     try {
       isEnabled = await loadBiometricStatus();
       if (!isEnabled) {
-        log(' Biometrics not enabled');
+        AppLogger.warning(' Biometrics not enabled');
         return false;
       }
 
       final canCheckBiometrics = await _localAuth.canCheckBiometrics;
       final isDeviceSupported = await _localAuth.isDeviceSupported();
       if (!canCheckBiometrics && !isDeviceSupported) {
-        log(' Device does not support biometrics');
+        AppLogger.warning(' Device does not support biometrics');
         return false;
       }
 
@@ -134,12 +133,12 @@ class SettingsController extends Cubit<SettingsState> {
           stickyAuth: true,
         ),
       );
-      log(
+      AppLogger.info(
         'Biometric authentication ${isAuthenticated ? 'successful' : 'failed'}',
       );
       return isAuthenticated;
     } catch (e) {
-      log(' Biometric authentication error: $e');
+      AppLogger.error(' Biometric authentication error: $e');
       return false;
     }
   }
@@ -150,14 +149,14 @@ class SettingsController extends Cubit<SettingsState> {
         key: AppConstants.enableBiometric,
       );
       if (isEnabled == null) {
-        log('isEnabled in loadBiometricStatus: $isEnabled');
+        AppLogger.warning('isEnabled in loadBiometricStatus: $isEnabled');
 
         return false;
       }
-      log('Biometric: Loaded biometric status: $isEnabled');
+      AppLogger.success('Biometric: Loaded biometric status: $isEnabled');
       return isEnabled;
     } catch (e) {
-      log('Biometric: Error loading biometric status: $e');
+      AppLogger.error('Biometric: Error loading biometric status: $e');
       return false;
     }
   }
@@ -169,9 +168,9 @@ class SettingsController extends Cubit<SettingsState> {
         key: AppConstants.enableBiometric,
         value: isEnabled,
       );
-      log('_saveBiometricStatus when adding to hive: $isEnabled');
+      AppLogger.success('_saveBiometricStatus when adding to hive: $isEnabled');
     } catch (e) {
-      log('Biometric: Error saving biometric status: $e');
+      AppLogger.error('Biometric: Error saving biometric status: $e');
       throw Exception(e);
     }
   }
@@ -182,7 +181,7 @@ class SettingsController extends Cubit<SettingsState> {
     await SettingsService.deleteAccount()
         .then((value) async {
           deleteAccountResponseModel = value;
-          log('deleteAccountResponseModel $deleteAccountResponseModel');
+          AppLogger.info('deleteAccountResponseModel $deleteAccountResponseModel');
           if (value.success == true) {
             await HiveHelper.clearAllData();
             emit(DeleteAccountSuccessfullyState());
@@ -191,7 +190,7 @@ class SettingsController extends Cubit<SettingsState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Delete Account is $error');
+          AppLogger.error('Error Happen While Delete Account is $error');
           emit(DeleteAccountFailureState(error: error.toString()));
         });
   }

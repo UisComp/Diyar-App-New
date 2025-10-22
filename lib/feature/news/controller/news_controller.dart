@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/feature/news/controller/news_state.dart';
 import 'package:diyar_app/core/model/news_response_model.dart';
 import 'package:diyar_app/feature/news/model/news_details_response_model.dart';
@@ -28,7 +27,7 @@ class NewsController extends Cubit<NewsState> {
         emit(GetAllNewsErrorState(error: newsResponseModel.message));
       }
     } catch (e) {
-      log("Error Happen While Get All News is $e");
+      AppLogger.error("Error Happen While Get All News is $e");
       if (!isClosed) {
         emit(GetAllNewsErrorState(error: e.toString()));
       }
@@ -49,7 +48,7 @@ class NewsController extends Cubit<NewsState> {
         emit(GetNewsDetailsErrorState(error: newsDetailsResponseModel.message));
       }
     } catch (e) {
-      log("Error Happen While Get News Details is $e");
+      AppLogger.error("Error Happen While Get News Details is $e");
       if (!isClosed) {
         emit(GetNewsDetailsErrorState(error: e.toString()));
       }

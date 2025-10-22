@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/feature/project/controller/project_state.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/model/projects_response_model.dart';
@@ -19,14 +19,14 @@ class ProjectController extends Cubit<ProjectState> {
         .then((value) {
           projectsResponseModel = value;
           if (value.success == true) {
-            log('projectsResponseModel: ${projectsResponseModel.toJson()}');
+            AppLogger.success('projectsResponseModel: ${projectsResponseModel.toJson()}');
             emit(GetProjectsSuccessfullyState());
           } else {
             emit(GetProjectsFailureState(error: value.message));
           }
         })
         .catchError((error) {
-          log('Error Happen While Get Projects is $error');
+          AppLogger.error('Error Happen While Get Projects is $error');
           emit(GetProjectsFailureState(error: error.toString()));
         });
   }
@@ -36,7 +36,7 @@ class ProjectController extends Cubit<ProjectState> {
     await ProjectService.getProjectDetails(id: id)
         .then((value) {
           projectDetailsResponseModel = value;
-          log(
+          AppLogger.info(
             'projectDetailsResponseModel: ${projectDetailsResponseModel.toJson()}',
           );
           if (value.success == true) {
@@ -46,7 +46,7 @@ class ProjectController extends Cubit<ProjectState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Get Project Details is $error');
+          AppLogger.error('Error Happen While Get Project Details is $error');
           emit(GetProjectDetailsFailureState(error: error.toString()));
         });
   }

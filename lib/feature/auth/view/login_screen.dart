@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .authenticateWithBiometrics();
 
       if (!isAuthenticated) {
-        log('Biometric authentication failed');
+        AppLogger.error('Biometric authentication failed');
         return;
       }
       final userName = await HiveHelper.getFromHive(key: AppConstants.myEmail);
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (userName == null || password == null) {
-        log(' No saved credentials found');
+        AppLogger.warning(' No saved credentials found');
         AppFunctions.errorMessage(
           context,
           message: LocaleKeys.biometric_authentication_failed.tr(),
@@ -73,12 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         authController.emailControllerForLogin.text = userName;
         authController.passwordControllerForLogin.text = password;
-        log('Loaded credentials after biometric success');
+        AppLogger.success('Loaded credentials after biometric success');
         await authController.login();
         context.go(RoutesName.homeLayout);
       }
     } catch (e) {
-      log('Biometric login error: $e');
+      AppLogger.error('Biometric login error: $e');
       AppFunctions.errorMessage(
         context,
         message: LocaleKeys.biometric_authentication_failed.tr(),

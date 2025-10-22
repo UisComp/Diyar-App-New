@@ -1,5 +1,5 @@
-import 'dart:developer';
 import 'dart:io';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
@@ -60,7 +60,7 @@ class ProfileController extends Cubit<ProfileState> {
 
       emit(GetMyProfileSuccessState());
     } catch (error) {
-      log('Error Happen While Get My Profile is $error');
+      AppLogger.warning('Error Happen While Get My Profile is $error');
       if (!isClosed) emit(GetMyProfileFailureState());
     }
   }
@@ -108,7 +108,7 @@ class ProfileController extends Cubit<ProfileState> {
       image = compressedImage;
       if (!isClosed) emit(PickingImageProfileSuccessfully());
     } catch (e, stack) {
-      log('Error Happen While Picking Image $e\n$stack');
+      AppLogger.error('Error Happen While Picking Image $e\n$stack');
       if (!isClosed) {
         emit(PickingImageProfileFailureState(error: e.toString()));
       }
@@ -131,8 +131,6 @@ class ProfileController extends Cubit<ProfileState> {
         await getMyProfile();
         image = null;
         emit(EditingProfileSuccessfullyState());
-
-        // ✅ New line — force profile screen rebuild
         emit(GetMyProfileSuccessState());
       } else {
         emit(EditingProfileFailureState());
@@ -150,7 +148,7 @@ class ProfileController extends Cubit<ProfileState> {
       if (isClosed) return;
 
       userLinkedUnitsResponseModel = value;
-      log('getUserLinkedUnits==> ${value.data}');
+      AppLogger.info('getUserLinkedUnits==> ${value.data}');
 
       if (value.success == true) {
         emit(GetUserLinkedUnitsSuccessfullyState());
@@ -158,7 +156,7 @@ class ProfileController extends Cubit<ProfileState> {
         emit(GetUserLinkedUnitsFailureState());
       }
     } catch (error) {
-      log('Error Happen While Get User Linked Units is $error');
+      AppLogger.error('Error Happen While Get User Linked Units is $error');
       if (!isClosed) emit(GetUserLinkedUnitsFailureState());
     }
   }

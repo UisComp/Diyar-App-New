@@ -1,5 +1,5 @@
-import 'dart:developer';
 import 'package:diyar_app/core/api/api_paths.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/core/model/general_response_model.dart';
@@ -19,7 +19,7 @@ class AuthService {
       data: authRequestModel.toJson(),
     );
     try {
-      log('loginResponse==> ${response?.data}');
+      AppLogger.info('loginResponse==> ${response?.data}');
       if (response != null &&
           response.statusCode == 200 &&
           response.data != null &&
@@ -27,7 +27,7 @@ class AuthService {
         return LoginResponseModel.fromJson(response.data);
       }
     } catch (e, st) {
-      log('Error While Login: $e\n$st');
+      AppLogger.error('Error While Login: $e\n$st');
     }
     return LoginResponseModel.fromJson(response?.data);
   }
@@ -41,14 +41,14 @@ class AuthService {
       data: authRequestModel.toJson(),
     );
     try {
-      log('registerResponse==> ${response?.data}');
+      AppLogger.info('registerResponse==> ${response?.data}');
       if (response != null &&
           response.statusCode == 200 &&
           response.data != null) {
         return RegisterResponseModel.fromJson(response.data);
       }
     } catch (e, st) {
-      log('Error While Register: $e\n$st');
+      AppLogger.error('Error While Register: $e\n$st');
     }
     return RegisterResponseModel.fromJson(response?.data);
   }
@@ -62,14 +62,14 @@ class AuthService {
       data: {"email": email},
     );
     try {
-      log('forgetPassword==> ${forgetPassword?.data}');
+      AppLogger.info('forgetPassword==> ${forgetPassword?.data}');
       if (forgetPassword != null &&
           forgetPassword.statusCode == 200 &&
           forgetPassword.data != null) {
         return ResetOrForgetPasswordResponseModel.fromJson(forgetPassword.data);
       }
     } catch (e, st) {
-      log('Error While forget Password: $e\n$st');
+      AppLogger.error('Error While forget Password: $e\n$st');
     }
     return ResetOrForgetPasswordResponseModel.fromJson(forgetPassword?.data);
   }
@@ -84,14 +84,14 @@ class AuthService {
       data: resetPasswordRequestModel.toJson(),
     );
     try {
-      log('resetPassword==> ${resetPassword?.data}');
+      AppLogger.info('resetPassword==> ${resetPassword?.data}');
       if (resetPassword != null &&
           resetPassword.statusCode == 200 &&
           resetPassword.data != null) {
         return ResetOrForgetPasswordResponseModel.fromJson(resetPassword.data);
       }
     } catch (e, st) {
-      log('Error While reset Password: $e\n$st');
+      AppLogger.error('Error While reset Password: $e\n$st');
     }
     return ResetOrForgetPasswordResponseModel.fromJson(resetPassword?.data);
   }
@@ -106,14 +106,14 @@ class AuthService {
       data: {"email": email, "otp_code": otpCode},
     );
     try {
-      log('verifyOtp==> ${verifyOtp?.data}');
+      AppLogger.info('verifyOtp==> ${verifyOtp?.data}');
       if (verifyOtp != null &&
           verifyOtp.statusCode == 200 &&
           verifyOtp.data != null) {
         return OtpVerificationResponse.fromJson(verifyOtp.data);
       }
     } catch (e, st) {
-      log('Error While verify Otp: $e\n$st');
+      AppLogger.error('Error While verify Otp: $e\n$st');
     }
     return OtpVerificationResponse.fromJson(verifyOtp?.data);
   }
@@ -124,7 +124,7 @@ class AuthService {
       path: ApiPaths.logOut,
     );
     try {
-      log('responseLogOut==> ${responseLogOut?.data}');
+      AppLogger.info('responseLogOut==> ${responseLogOut?.data}');
       if (responseLogOut != null &&
           responseLogOut.statusCode == 200 &&
           responseLogOut.data != null &&
@@ -132,7 +132,7 @@ class AuthService {
         return GeneralResponseModel.fromJson(responseLogOut.data);
       }
     } catch (e, st) {
-      log('Error While Log Out: $e\n$st');
+      AppLogger.error('Error While Log Out: $e\n$st');
     }
     return GeneralResponseModel.fromJson(responseLogOut?.data);
   }

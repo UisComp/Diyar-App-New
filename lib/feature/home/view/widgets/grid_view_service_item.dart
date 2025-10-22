@@ -26,8 +26,6 @@ class GridViewServiceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final type = service?.type;
-
     return InkWell(
       onTap: () {
         if (service?.isActive == true) {
@@ -49,25 +47,6 @@ class GridViewServiceItem extends StatelessWidget {
           );
         }
       },
-
-      // onTap: () {
-      //   if (service?.isActive == true) {
-      //     final screenName = getScreenNameByType(type);
-      //     if (screenName != null) {
-      //       context.push(screenName, extra: service);
-      //     } else {
-      //       AppFunctions.errorMessage(
-      //         context,
-      //         message: LocaleKeys.service_not_available.tr(),
-      //       );
-      //     }
-      //   }else{
-      //     AppFunctions.errorMessage(
-      //       context,
-      //       message: LocaleKeys.service_not_active.tr(),
-      //     );
-      //   }
-      // },
       child: Card(
         color: cardColor,
         shape: RoundedRectangleBorder(

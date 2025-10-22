@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioHelper {
@@ -52,7 +52,7 @@ class DioHelper {
     } on SocketException catch (_) {
     } on DioException catch (e) {
       String errorMsg = _handleResponse(e.response);
-      log(errorMsg);
+       AppLogger.error(errorMsg);
     }
     return null;
   }
@@ -81,7 +81,7 @@ class DioHelper {
     } on SocketException catch (_) {
     } on DioException catch (e) {
       String errorMsg = _handleResponse(e.response);
-      log(errorMsg);
+       AppLogger.error(errorMsg);
     }
     return null;
   }
@@ -105,7 +105,7 @@ class DioHelper {
     } on SocketException catch (_) {
     } on DioException catch (e) {
       String errorMsg = _handleResponse(e.response!);
-      log(errorMsg);
+      AppLogger.error(errorMsg);
     }
     return null;
   }
@@ -129,7 +129,7 @@ class DioHelper {
     } on SocketException catch (_) {
     } on DioException catch (e) {
       String errorMsg = _handleResponse(e.response!);
-      log(errorMsg);
+      AppLogger.error(errorMsg);
     }
     return null;
   }
@@ -153,7 +153,7 @@ class DioHelper {
     } on SocketException catch (_) {
     } on DioException catch (e) {
       String errorMsg = _handleResponse(e.response!);
-      log(errorMsg);
+      AppLogger.error(errorMsg);
     }
     return null;
   }

@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:diyar_app/core/api/api_paths.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/model/projects_response_model.dart';
@@ -9,12 +8,12 @@ class ProjectService {
   static Future<ProjectsResponseModel> getProjects() async {
     final projectResponse = await DioHelper.getData(path: ApiPaths.getProjects);
     try {
-      log("projectResponse==>$projectResponse");
+      AppLogger.info("projectResponse==>$projectResponse");
       if (projectResponse != null && projectResponse.statusCode == 200) {
         return ProjectsResponseModel.fromJson(projectResponse.data);
       }
     } catch (e) {
-      log('Error Happen While Get Projects is $e');
+      AppLogger.error('Error Happen While Get Projects is $e');
     }
     return ProjectsResponseModel.fromJson(projectResponse?.data);
   }
@@ -26,13 +25,13 @@ class ProjectService {
       path: ApiPaths.getProjectDetails(id: id),
     );
     try {
-      log("projectResponseDetails==>$projectResponseDetails");
+      AppLogger.info("projectResponseDetails==>$projectResponseDetails");
       if (projectResponseDetails != null &&
           projectResponseDetails.statusCode == 200) {
         return ProjectDetailsResponseModel.fromJson(projectResponseDetails.data);
       }
     } catch (e) {
-      log('Error Happen While Get Project Details is $e');
+      AppLogger.error('Error Happen While Get Project Details is $e');
     }
     return ProjectDetailsResponseModel.fromJson(projectResponseDetails?.data);
   }

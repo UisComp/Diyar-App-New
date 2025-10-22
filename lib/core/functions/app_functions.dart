@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../constants/custom_logger.dart';
 
 class AppFunctions {
   static void successMessage(BuildContext context, {required String message}) {
@@ -82,7 +83,7 @@ void goToDeviceSettings(BuildContext context) async {
       throw 'Unsupported platform.';
     }
   } catch (e) {
-    log('Error opening device settings: $e');
+    AppLogger.error('Error opening device settings: $e');
   }
 }
 

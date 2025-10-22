@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/core/model/request_model.dart';
@@ -84,7 +84,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Login is $error');
+          AppLogger.error('Error Happen While Login is $error');
           emit(LoginFailureState(error: error.toString()));
         });
   }
@@ -110,7 +110,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Register is $error');
+          AppLogger.error('Error Happen While Register is $error');
           emit(RegisterFailureState(error: error.toString()));
         });
   }
@@ -123,7 +123,7 @@ class AuthController extends Cubit<AuthState> {
         .then((value) async {
           await saveEmail(emailForForgetPasswordController.text);
           forgetPasswordResponseModel = value;
-          log('forgetPasswordResponseModel: $forgetPasswordResponseModel');
+          AppLogger.success('forgetPasswordResponseModel: $forgetPasswordResponseModel');
           if (value.success == true) {
             emit(ForgetPasswordSuccessState());
             clearEmailForForgetPassword();
@@ -132,7 +132,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Forget Password is ${error.toString()}');
+          AppLogger.error('Error Happen While Forget Password is ${error.toString()}');
           emit(ForgetPasswordFailureState(error: error.toString()));
         });
   }
@@ -216,7 +216,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Reset Password is $error');
+          AppLogger.error('Error Happen While Reset Password is $error');
           emit(ResetPasswordFailureState(error: error.toString()));
         });
   }
@@ -239,7 +239,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Verify Otp is $error');
+          AppLogger.error('Error Happen While Verify Otp is $error');
           emit(VerifyOtpFailureState(error: error.toString()));
         });
   }
@@ -258,7 +258,7 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While log out is $error');
+          AppLogger.error('Error Happen While log out is $error');
           emit(LoginFailureState(error: error.toString()));
         });
   }

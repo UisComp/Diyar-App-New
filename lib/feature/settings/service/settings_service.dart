@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:diyar_app/core/api/api_paths.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/general_response_model.dart';
 import 'package:diyar_app/feature/settings/model/change_password_request_model.dart';
@@ -14,7 +13,7 @@ class SettingsService {
       path: ApiPaths.changePassword,
       data: changePasswordRequestModel.toJson(),
     );
-    log("changePasswordResponse $changePasswordResponse");
+    AppLogger.info("changePasswordResponse $changePasswordResponse");
     try {
       if (changePasswordResponse != null &&
           changePasswordResponse.statusCode == 200) {
@@ -23,7 +22,7 @@ class SettingsService {
         );
       }
     } catch (e) {
-      log('Error Happen While Change Password is $e');
+      AppLogger.error('Error Happen While Change Password is $e');
     }
     return ChangePasswordResponseModel.fromJson(changePasswordResponse?.data);
   }
@@ -32,14 +31,14 @@ class SettingsService {
     final deleteAccountResponse = await DioHelper.deletData(
       path: ApiPaths.profile,
     );
-    log("deleteAccountResponse $deleteAccountResponse");
+    AppLogger.info("deleteAccountResponse $deleteAccountResponse");
     try {
       if (deleteAccountResponse != null &&
           deleteAccountResponse.statusCode == 200) {
         return GeneralResponseModel.fromJson(deleteAccountResponse.data);
       }
     } catch (e) {
-      log('Error Happen While Delete Account is $e');
+      AppLogger.error('Error Happen While Delete Account is $e');
     }
     return GeneralResponseModel.fromJson(deleteAccountResponse?.data);
   }

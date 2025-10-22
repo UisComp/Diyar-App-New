@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/feature/home/controller/home_state.dart';
 import 'package:diyar_app/feature/home/model/user_services_model.dart';
 import 'package:diyar_app/feature/home/service/home_service.dart';
@@ -24,8 +23,8 @@ class HomeController extends Cubit<HomeState> {
     await HomeService.getAllServices()
         .then((value) {
           userServicesResponse = value;
-          log('getAllServices==> ${value.data}');
-          log('getAllServices==> ${value.data?.length}');
+          AppLogger.success('getAllServices==> ${value.data}');
+          AppLogger.success('getAllServices==> ${value.data?.length}');
           if (value.success == true) {
             emit(GetAllServicesSuccessfullyState());
           } else {
@@ -33,7 +32,7 @@ class HomeController extends Cubit<HomeState> {
           }
         })
         .catchError((error) {
-          log('Error Happen While Get All Services is $error');
+          AppLogger.error('Error Happen While Get All Services is $error');
           emit(GetAllServicesErrorState(error: error.toString()));
         });
   }

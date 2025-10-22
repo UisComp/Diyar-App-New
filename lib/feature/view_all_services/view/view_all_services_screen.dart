@@ -47,8 +47,9 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
     final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
     final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
-    final cardImageColor =
-        darkTheme ? AppColors.black87 : AppColors.secondaryColor;
+    final cardImageColor = darkTheme
+        ? AppColors.black87
+        : AppColors.secondaryColor;
     final textColor = darkTheme ? AppColors.containerColor : AppColors.black87;
 
     return Scaffold(
@@ -58,12 +59,39 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
       ),
       body: BlocBuilder<HomeController, HomeState>(
         builder: (context, state) {
+          // final homeController = HomeController.get(context);
+          // final isLoading = state is GetAllServicesLoadingState;
+          // final services = homeController.filteredServices.isNotEmpty ||
+          //         homeController.searchController.text.isNotEmpty
+          //     ? homeController.filteredServices
+          //     : (homeController.userServicesResponse.data ?? []);
           final homeController = HomeController.get(context);
           final isLoading = state is GetAllServicesLoadingState;
-          final services = homeController.filteredServices.isNotEmpty ||
-                  homeController.searchController.text.isNotEmpty
+          final searchText = homeController.searchController.text.trim();
+
+          final allServices =
+              homeController.filteredServices.isNotEmpty ||
+                  searchText.isNotEmpty
               ? homeController.filteredServices
               : (homeController.userServicesResponse.data ?? []);
+          final services = allServices
+              .where((service) => service.isActive == true)
+              .toList();
+
+          if (!isLoading && searchText.isNotEmpty && services.isEmpty) {
+            return Padding(
+              padding: EdgeInsets.only(top: 50.h),
+              child: Center(
+                child: Text(
+                  LocaleKeys.no_results_found.tr(),
+                  style: AppStyle.fontSize16Regular(context).copyWith(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            );
+          }
 
           return Skeletonizer(
             enabled: isLoading,
@@ -89,28 +117,24 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                 SliverPadding(
                   padding: EdgeInsets.all(16.sp),
                   sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (isLoading || services.isEmpty) {
-                          return GridViewServiceItem(
-                            cardColor: cardColor,
-                            cardImageColor: cardImageColor,
-                            textColor: textColor,
-                            service: null,
-                          );
-                        }
-
-                        final service = services[index];
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      if (isLoading || services.isEmpty) {
                         return GridViewServiceItem(
-                          service: service,
                           cardColor: cardColor,
                           cardImageColor: cardImageColor,
                           textColor: textColor,
+                          service: null,
                         );
-                      },
-                      childCount:
-                          isLoading ? 8 : (services.length),
-                    ),
+                      }
+
+                      final service = services[index];
+                      return GridViewServiceItem(
+                        service: service,
+                        cardColor: cardColor,
+                        cardImageColor: cardImageColor,
+                        textColor: textColor,
+                      );
+                    }, childCount: isLoading ? 8 : (services.length)),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 12.h,
@@ -127,9 +151,9 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                       child: Center(
                         child: Text(
                           LocaleKeys.no_results_found.tr(),
-                          style: AppStyle.fontSize16Regular(context).copyWith(
-                            color: AppColors.primaryColor,
-                          ),
+                          style: AppStyle.fontSize16Regular(
+                            context,
+                          ).copyWith(color: AppColors.primaryColor),
                         ),
                       ),
                     ),

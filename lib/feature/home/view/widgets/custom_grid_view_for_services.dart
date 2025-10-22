@@ -30,14 +30,42 @@ class CustomGridViewForServices extends StatelessWidget {
     return BlocConsumer<HomeController, HomeState>(
       listener: (context, state) {},
       builder: (context, state) {
+        // final homeController = HomeController.get(context);
+        // final isLoading = state is GetAllServicesLoadingState;
+        // final searchText = homeController.searchController.text.trim();
+
+        // final services =
+        //     homeController.filteredServices.isNotEmpty || searchText.isNotEmpty
+        //     ? homeController.filteredServices
+        //     : (homeController.userServicesResponse.data ?? []);
+        // if (!isLoading && searchText.isNotEmpty && services.isEmpty) {
+        //   return Padding(
+        //     padding: EdgeInsets.only(top: 50.h),
+        //     child: Center(
+        //       child: Text(
+        //         LocaleKeys.no_results_found.tr(),
+        //         style: AppStyle.fontSize16Regular(context).copyWith(
+        //           color: AppColors.primaryColor,
+        //           fontWeight: FontWeight.w600,
+        //         ),
+        //       ),
+        //     ),
+        //   );
+        // }
         final homeController = HomeController.get(context);
         final isLoading = state is GetAllServicesLoadingState;
         final searchText = homeController.searchController.text.trim();
 
-        final services =
+        final allServices =
             homeController.filteredServices.isNotEmpty || searchText.isNotEmpty
             ? homeController.filteredServices
             : (homeController.userServicesResponse.data ?? []);
+
+        // ✅ Filter active services
+        final services = allServices
+            .where((service) => service.isActive == true)
+            .toList();
+
         if (!isLoading && searchText.isNotEmpty && services.isEmpty) {
           return Padding(
             padding: EdgeInsets.only(top: 50.h),
