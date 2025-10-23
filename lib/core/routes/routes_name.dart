@@ -22,4 +22,16 @@ class RoutesName {
   static const String profileScreen = "/profileScreen";
   static const String bioMetricScreen = "/bioMetricScreen";
   static const String notificationsScreen = "/notificationsScreen";
+  static const String activeWorkScreen = "/activeWorkScreen";
+  static const String reportScreen = "/reportScreen";
+  static const String newWorkScreen = "/newWorkScreen";
+  static const String addPropertyScreen = "/addPropertyScreen";
+  static const String addTenantScreen = "/addTenantScreen";
+  static const String visitorScreen = "/visitorScreen";
+  static const String announcementScreen = "/announcementScreen";
+  static const String emergencyScreen = "/emergencyScreen";
+  static const String facilityBookingScreen = "/facilityBookingScreen";
+  static const String serviceProvidersScreen = "/serviceProvidersScreen";
+  static const String committeeScreen = "/committeeScreen";
+  static const String complainScreen = "/complainScreen";
 }

@@ -35,9 +35,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: _homeController),
-      ],
+      providers: [BlocProvider.value(value: _homeController)],
       child: BlocBuilder<HomeController, HomeState>(
         builder: (context, state) {
           return Scaffold(
@@ -95,9 +93,24 @@ class _HomeLayoutState extends State<HomeLayout> {
                   ),
                   label: LocaleKeys.profile.tr(),
                 ),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    Assets.images.svg.finance,
+                    height: 24.h,
+                    width: 24.w,
+                    colorFilter: ColorFilter.mode(
+                      _homeController.currentIndex == 3
+                          ? AppColors.primaryColor
+                          : Colors.grey,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  label: LocaleKeys.finance.tr(),
+                ),
               ],
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endDocked,
             floatingActionButton: _homeController.currentIndex == 2
                 ? BlocProvider(
                     create: (context) => AuthController(),
@@ -106,7 +119,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                         if (authState is LogOutSuccessState) {
                           AppFunctions.successMessage(
                             context,
-                            message: context
+                            message:
+                                context
                                     .read<AuthController>()
                                     .logoutResponseModel
                                     .message ??
@@ -117,7 +131,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                         if (authState is LogOutFailureState) {
                           AppFunctions.errorMessage(
                             context,
-                            message: context
+                            message:
+                                context
                                     .read<AuthController>()
                                     .logoutResponseModel
                                     .message ??

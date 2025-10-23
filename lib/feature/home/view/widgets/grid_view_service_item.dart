@@ -2,11 +2,13 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/model/user_services_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +35,11 @@ class GridViewServiceItem extends StatelessWidget {
           final screenName = getScreenNameByServiceType(serviceType);
 
           if (screenName != null) {
-            context.push(screenName, extra: service);
+            if (service?.type == 5) {
+              context.read<HomeController>().changeIndexBottomNavBar(3);
+            } else {
+              context.push(screenName, extra: service);
+            }
           } else {
             AppFunctions.errorMessage(
               context,

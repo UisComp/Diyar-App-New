@@ -3,6 +3,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLength,
     this.maxLines = 1,
     this.enabled,
+    this.inputFormatters,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -47,11 +49,13 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLength;
   final int? maxLines;
   final bool? enabled;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
      final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
     return TextFormField(
+      inputFormatters: inputFormatters,
       maxLines: maxLines,
       maxLength: maxLength,
       obscureText: obscureText ?? false,

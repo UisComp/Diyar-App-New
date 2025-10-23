@@ -167,5 +167,32 @@ abstract class  LocaleKeys {
   static const no_services_available_for_you = 'no_services_available_for_you';
   static const no_country_found = 'no_country_found';
   static const no_notifications_found = 'no_notifications_found';
+  static const unit_number = 'unit_number';
+  static const please_enter_unit_number = 'please_enter_unit_number';
+  static const documents = 'documents';
+  static const no_documents_found = 'no_documents_found';
+  static const upload_file = 'upload_file';
+  static const installment_number = 'installment_number';
+  static const amount = 'amount';
+  static const date = 'date';
+  static const status = 'status';
+  static const action = 'action';
+  static const size = 'size';
+  static const delete_file = 'delete_file';
+  static const delete_file_message = 'delete_file_message';
+  static const error_preview_file = 'error_preview_file';
+  static const error_downloading_file = 'error_downloading_file';
+  static const download_file_successfully = 'download_file_successfully';
+  static const emergency = 'emergency';
+  static const activeWork = 'activeWork';
+  static const newWork = 'newWork';
+  static const addProperty = 'addProperty';
+  static const addTenant = 'addTenant';
+  static const visitor = 'visitor';
+  static const announcement = 'announcement';
+  static const facilityBooking = 'facilityBooking';
+  static const serviceProviders = 'serviceProviders';
+  static const committee = 'committee';
+  static const complain = 'complain';
 
 }

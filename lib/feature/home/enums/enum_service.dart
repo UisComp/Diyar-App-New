@@ -1,5 +1,5 @@
 enum ServiceType {
-  type1,
+  type1, 
   type2,
   type3,
   type4,

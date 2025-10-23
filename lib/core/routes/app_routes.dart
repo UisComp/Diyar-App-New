@@ -1,15 +1,25 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/feature/active_work/view/active_work_screen.dart';
+import 'package:diyar_app/feature/add_property/view/add_property_screen.dart';
+import 'package:diyar_app/feature/add_tenant/view/add_tenant_screen.dart';
+import 'package:diyar_app/feature/announcement/view/announcement_screen.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/view/forget_password_screen.dart';
 import 'package:diyar_app/feature/auth/view/login_screen.dart';
 import 'package:diyar_app/feature/auth/view/otp_screen.dart';
 import 'package:diyar_app/feature/auth/view/register_screen.dart';
 import 'package:diyar_app/feature/auth/view/reset_password_screen.dart';
+import 'package:diyar_app/feature/committee/view/committee_screen.dart';
+import 'package:diyar_app/feature/complain/view/complain_screen.dart';
+import 'package:diyar_app/feature/emergency/view/emergency_screen.dart';
+import 'package:diyar_app/feature/facility_booking/view/facility_booking_screen.dart';
+import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
+import 'package:diyar_app/feature/new_work/view/new_work_screen.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
@@ -18,6 +28,8 @@ import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
+import 'package:diyar_app/feature/report/view/report_screen.dart';
+import 'package:diyar_app/feature/service_providers/view/service_providers_screen.dart';
 import 'package:diyar_app/feature/settings/view/app_preferences.dart';
 import 'package:diyar_app/feature/settings/view/bio_metric_screen.dart';
 import 'package:diyar_app/feature/settings/view/change_password.dart';
@@ -27,6 +39,7 @@ import 'package:diyar_app/feature/settings/view/privacy_policy.dart';
 import 'package:diyar_app/feature/unit_event/controller/unit_event_controller.dart';
 import 'package:diyar_app/feature/unit_event/view/unit_event.dart';
 import 'package:diyar_app/feature/view_all_services/view/view_all_services_screen.dart';
+import 'package:diyar_app/feature/visitor/view/visitor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -383,7 +396,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.financeScreen,
       path: RoutesName.financeScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: const FinanceScreen(),
+        child: BlocProvider(
+          create: (context) => FinanceController(),
+          child: const FinanceScreen(),
+        ),
         transition: slideFromBottom,
       ),
     ),
@@ -392,6 +408,104 @@ final GoRouter router = GoRouter(
       path: RoutesName.notificationsScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
         child: const NotificationsScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.activeWorkScreen,
+      path: RoutesName.activeWorkScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const ActiveWorkScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.reportScreen,
+      path: RoutesName.reportScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const ReportScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.newWorkScreen,
+      path: RoutesName.newWorkScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const NewWorkScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.addPropertyScreen,
+      path: RoutesName.addPropertyScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const AddPropertyScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.addTenantScreen,
+      path: RoutesName.addTenantScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const AddTenantScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      path: RoutesName.visitorScreen,
+      name: RoutesName.visitorScreen,
+      pageBuilder: (context, state) {
+        return buildAnimatedPage(
+          child: const VisitorScreen(),
+          transition: slideFromRight,
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.announcementScreen,
+      path: RoutesName.announcementScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const AnnouncementScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.emergencyScreen,
+      path: RoutesName.emergencyScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const EmergencyScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.facilityBookingScreen,
+      path: RoutesName.facilityBookingScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const FacilityBookingScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.serviceProvidersScreen,
+      path: RoutesName.serviceProvidersScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const ServiceProvidersScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.committeeScreen,
+      path: RoutesName.committeeScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const CommitteeScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.complainScreen,
+      path: RoutesName.complainScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const ComplainScreen(),
         transition: slideFromRight,
       ),
     ),

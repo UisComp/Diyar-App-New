@@ -25,6 +25,7 @@ class AuthController extends Cubit<AuthState> {
   //!=============================================================================
   //! Register
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController unitNumberController = TextEditingController();
   final TextEditingController emailControllerForRegister =
       TextEditingController();
   final TextEditingController passwordControllerForRegister =
@@ -99,6 +100,7 @@ class AuthController extends Cubit<AuthState> {
             name: nameController.text,
             email: emailControllerForRegister.text,
             password: passwordControllerForRegister.text,
+            // unitNumber: unitNumberController.text,
           ),
         )
         .then((value) {

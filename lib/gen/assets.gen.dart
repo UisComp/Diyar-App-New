@@ -483,6 +483,9 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/delete_user.svg
   String get deleteUser => 'assets/images/svg/delete_user.svg';
 
+  /// File path: assets/images/svg/finance.svg
+  String get finance => 'assets/images/svg/finance.svg';
+
   /// File path: assets/images/svg/help.svg
   String get help => 'assets/images/svg/help.svg';
 
@@ -518,6 +521,7 @@ class $AssetsImagesSvgGen {
         biometric,
         contactUs,
         deleteUser,
+        finance,
         help,
         home,
         lock,

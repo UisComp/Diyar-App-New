@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
