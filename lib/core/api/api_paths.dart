@@ -16,6 +16,7 @@ class ApiPaths {
   static const String getLinkedUnitsForUser = "units";
   static const String getUserProjects = "profile/projects";
   static const String getProjects = "projects";
+  static const String facilityBooking = "";
   static const String getAllNews = "news/user?per_page=15"; //! paginate
   static String getProjectDetails({required String id}) => "projects/$id";
   static String getNewsByUnit({required String id}) =>

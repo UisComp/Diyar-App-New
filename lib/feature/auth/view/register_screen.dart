@@ -30,7 +30,7 @@ class RegisterScreen extends StatelessWidget {
                   key: formKey,
                   child: Column(
                     children: [
-                      Assets.images.diyar
+                      Assets.images.diyarNew
                           .image(
                             height: 300.h,
                             width: double.infinity,

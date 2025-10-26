@@ -126,9 +126,9 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                           service: null,
                         );
                       }
-
                       final service = services[index];
                       return GridViewServiceItem(
+                        isFromViewAll: true,
                         service: service,
                         cardColor: cardColor,
                         cardImageColor: cardImageColor,

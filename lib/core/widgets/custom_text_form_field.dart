@@ -29,6 +29,8 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.enabled,
     this.inputFormatters,
+    this.readOnly=false,
+    this.onTap,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -50,11 +52,15 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final bool? enabled;
   final List<TextInputFormatter>? inputFormatters;
+  final bool ?readOnly ;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
      final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
     return TextFormField(
+      onTap:onTap,
+      readOnly:readOnly?? false,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
       maxLength: maxLength,

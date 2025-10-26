@@ -39,6 +39,7 @@ import 'package:diyar_app/feature/settings/view/privacy_policy.dart';
 import 'package:diyar_app/feature/unit_event/controller/unit_event_controller.dart';
 import 'package:diyar_app/feature/unit_event/view/unit_event.dart';
 import 'package:diyar_app/feature/view_all_services/view/view_all_services_screen.dart';
+import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/feature/visitor/view/visitor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -456,7 +457,10 @@ final GoRouter router = GoRouter(
       name: RoutesName.visitorScreen,
       pageBuilder: (context, state) {
         return buildAnimatedPage(
-          child: const VisitorScreen(),
+          child: BlocProvider(
+            create: (context) => VisitorController(),
+            child: const VisitorScreen(),
+          ),
           transition: slideFromRight,
         );
       },

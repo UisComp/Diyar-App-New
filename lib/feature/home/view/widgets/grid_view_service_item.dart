@@ -19,8 +19,9 @@ class GridViewServiceItem extends StatelessWidget {
     required this.cardImageColor,
     required this.textColor,
     required this.service,
+    this.isFromViewAll = false,
   });
-
+  final bool? isFromViewAll;
   final Color cardColor;
   final Color cardImageColor;
   final Color textColor;
@@ -36,7 +37,11 @@ class GridViewServiceItem extends StatelessWidget {
 
           if (screenName != null) {
             if (service?.type == 5) {
-              context.read<HomeController>().changeIndexBottomNavBar(3);
+              if (isFromViewAll == true) {
+                context.push(screenName, extra: service);
+              } else {
+                context.read<HomeController>().changeIndexBottomNavBar(3);
+              }
             } else {
               context.push(screenName, extra: service);
             }

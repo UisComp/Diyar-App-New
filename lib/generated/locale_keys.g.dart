@@ -194,5 +194,34 @@ abstract class  LocaleKeys {
   static const serviceProviders = 'serviceProviders';
   static const committee = 'committee';
   static const complain = 'complain';
+  static const request_now = 'request_now';
+  static const select_available_facilities = 'select_available_facilities';
+  static const select_all = 'select_all';
+  static const deselect_all = 'deselect_all';
+  static const service_description = 'service_description';
+  static const select_required_service_providers = 'select_required_service_providers';
+  static const each_service_provider_requires_details_before_submission = 'each_service_provider_requires_details_before_submission';
+  static const describe_your_requirements = 'describe_your_requirements';
+  static const description_is_required = 'description_is_required';
+  static const scan = 'scan';
+  static const start_scanning = 'start_scanning';
+  static const stop_scanning = 'stop_scanning';
+  static const align_barcode = 'align_barcode';
+  static const position_barcode = 'position_barcode';
+  static const scan_barcode = 'scan_barcode';
+  static const select_your_unit = 'select_your_unit';
+  static const choose_a_linked_unit = 'choose_a_linked_unit';
+  static const select_date_range = 'select_date_range';
+  static const select_time_range = 'select_time_range';
+  static const from = 'from';
+  static const to = 'to';
+  static const start_time = 'start_time';
+  static const end_time = 'end_time';
+  static const your_qr_code = 'your_qr_code';
+  static const generate_qr = 'generate_qr';
+  static const please_select_a_unit = 'please_select_a_unit';
+  static const please_select_date_range = 'please_select_date_range';
+  static const please_select_time_range = 'please_select_time_range';
+  static const share_qr_code = 'share_qr_code';
 
 }
