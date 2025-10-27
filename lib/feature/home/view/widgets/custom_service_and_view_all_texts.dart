@@ -19,7 +19,7 @@ class CustomServiceAndViewAllTexts extends StatelessWidget {
         Text(
           LocaleKeys.services.tr(),
           style: AppStyle.fontSize22Bold(context).copyWith(
-            fontSize: 24.sp,
+            fontSize: 20.sp,
             fontWeight: FontWeight.w800,
             color: AppColors.primaryColor,
           ),
