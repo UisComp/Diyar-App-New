@@ -201,6 +201,7 @@ class SettingsController extends Cubit<SettingsState> {
   }
 
   ConfigResponseModel configResponseModel = ConfigResponseModel();
+
   Future<void> getConfigData() async {
     emit(GetConfigDataLoadingState());
     await SettingsService.getConfigData()

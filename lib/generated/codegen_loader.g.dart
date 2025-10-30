@@ -252,7 +252,8 @@ class CodegenLoader extends AssetLoader{
   "release_to_cancel": "حرّر قبل اكتمالها لإلغاء المكالمة.",
   "discover": "اكتشف",
   "overdue": "متاخر",
-  "pending": "قيد الانتظار"
+  "pending": "قيد الانتظار",
+  "no_finance_available": "لا توجد بيانات مالية متاحة حالياً"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -490,7 +491,8 @@ static const Map<String,dynamic> _en = {
   "release_to_cancel": "Release before it completes to cancel the call.",
   "discover": "Discover",
   "overdue": "Overdue",
-  "pending": "Pending"
+  "pending": "Pending",
+  "no_finance_available": "No Finance Available"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

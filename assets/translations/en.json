@@ -227,12 +227,13 @@
   "installments_table": "Installments Table",
   "other_documents": "Other Documents",
   "emergency_number": "Emergency Number",
-  "hold_to_activate":"Hold to activate",
-  "press_and_hold_to_start":"Press & Hold to Start",
-  "hold_the_red_button":"Hold the red button for",
-  "to_make_a_call":"to make an immediate emergency call",
+  "hold_to_activate": "Hold to activate",
+  "press_and_hold_to_start": "Press & Hold to Start",
+  "hold_the_red_button": "Hold the red button for",
+  "to_make_a_call": "to make an immediate emergency call",
   "release_to_cancel": "Release before it completes to cancel the call.",
-  "discover":"Discover",
-  "overdue":"Overdue",
-  "pending":"Pending"
+  "discover": "Discover",
+  "overdue": "Overdue",
+  "pending": "Pending",
+  "no_finance_available": "No Finance Available"
 }

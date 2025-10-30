@@ -22,14 +22,10 @@ class FinanceScreen extends StatefulWidget {
 class _FinanceScreenState extends State<FinanceScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  // late FinanceController financeController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    // financeController = FinanceController.get(context);
-    // financeController.getFinance();
-    // financeController.getDocumets();
   }
 
   @override

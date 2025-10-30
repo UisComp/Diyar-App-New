@@ -241,5 +241,6 @@ abstract class  LocaleKeys {
   static const discover = 'discover';
   static const overdue = 'overdue';
   static const pending = 'pending';
+  static const no_finance_available = 'no_finance_available';
 
 }

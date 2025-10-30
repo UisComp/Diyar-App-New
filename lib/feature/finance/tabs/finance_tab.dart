@@ -1,5 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -24,9 +26,9 @@ class FinanceTab extends StatelessWidget {
                 size: 80.sp,
                 color: AppColors.primaryColor.withOpacity(0.5),
               ),
-             16.ph,
+              16.ph,
               Text(
-                "لا توجد بيانات مالية متاحة حالياً",
+                LocaleKeys.no_finance_available.tr(),
                 style: AppStyle.fontSize16Regular(
                   context,
                 ).copyWith(color: Colors.grey.shade700),

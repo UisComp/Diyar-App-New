@@ -51,4 +51,9 @@ class FinanceState with _$FinanceState {
   const factory FinanceState.getDocumentsSuccess() = _GetDocumentsSuccess;
   const factory FinanceState.getDocumentsFailure({String? errorMessage}) =
       _GetDocumentsFailure;
+const factory FinanceState.downloadFileProgress({
+  required String fileUrl,
+  required double progress,
+}) = _DownloadFileProgress;
+    
 }

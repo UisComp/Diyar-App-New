@@ -95,6 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ).paddingOnly(top: 20.h),
               30.ph,
+              Text(
+                LocaleKeys.discover.tr(),
+                style: AppStyle.fontSize22Bold(context).copyWith(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryColor,
+                ),
+              ).paddingSymmetric(horizontal: 16.w),
               BlocBuilder<HomeController, HomeState>(
                 builder: (context, state) {
                   final isLoading =
@@ -103,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Skeletonizer(
                     enabled: isLoading,
                     child: DiyarBannerSlider(
-                      isLoading:isLoading ,
+                      isLoading: isLoading,
                       banners: homeController.announcementsResponseModel,
                       height: 180.h,
                     ),

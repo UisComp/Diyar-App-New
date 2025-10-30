@@ -33,11 +33,11 @@ class FileCard extends StatelessWidget {
           previewFileLoading: () => true,
           orElse: () => false,
         );
-
-        final bool isDownloadLoading = state.maybeWhen(
-          downloadFileLoading: () => true,
-          orElse: () => false,
+        double? progress = state.maybeWhen(
+          downloadFileProgress: (fileUrl, p) => fileUrl == file.url ? p : null,
+          orElse: () => null,
         );
+        final bool isDownloading = progress != null;
         return Container(
           margin: EdgeInsets.only(bottom: 10.h),
           padding: EdgeInsets.all(12.w),
@@ -63,6 +63,7 @@ class FileCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+
                   Row(
                     children: [
                       IconButton(
@@ -80,25 +81,40 @@ class FileCard extends StatelessWidget {
                               : AppColors.blueColor,
                         ),
                       ),
-                      IconButton(
-                        onPressed: isDownloadLoading
-                            ? null
-                            : () async {
+                      isDownloading
+                          ? SizedBox(
+                              height: 28.h,
+                              width: 28.w,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: AppColors.primaryColor,
+                                    value: progress / 100,
+                                  ),
+                                  Text(
+                                    "${progress.toStringAsFixed(0)}%",
+                                    style: TextStyle(fontSize: 10.sp),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : IconButton(
+                              onPressed: () async {
                                 await context
                                     .read<FinanceController>()
-                                    .downloadFile(file.url!);
+                                    .downloadFileWithProgress(file.url!);
                               },
-                        icon: Icon(
-                          Icons.download,
-                          color: isDownloadLoading
-                              ? AppColors.greyColor
-                              : AppColors.greenColor,
-                        ),
-                      ),
+                              icon: Icon(
+                                Icons.download,
+                                color: AppColors.greenColor,
+                              ),
+                            ),
                     ],
                   ),
                 ],
               ),
+
               4.ph,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,6 +127,14 @@ class FileCard extends StatelessWidget {
                   ),
                 ],
               ),
+
+              if (isDownloading) ...[
+                6.ph,
+                LinearProgressIndicator(
+                  value: progress / 100,
+                  color: AppColors.primaryColor,
+                ),
+              ],
             ],
           ),
         );

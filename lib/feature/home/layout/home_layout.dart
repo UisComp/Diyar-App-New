@@ -1,4 +1,6 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/cubits/language/language_controller.dart';
+import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
@@ -37,7 +39,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     return MultiBlocProvider(
       providers: [BlocProvider.value(value: _homeController)],
       child: BlocBuilder<HomeController, HomeState>(
-        builder: (context, state) {
+        builder: (context, homeState) {
           return Scaffold(
             body: SafeArea(
               child: IndexedStack(
@@ -45,69 +47,73 @@ class _HomeLayoutState extends State<HomeLayout> {
                 children: AppConstants.screens,
               ),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: _homeController.currentIndex,
-              onTap: (index) {
-                _homeController.changeIndexBottomNavBar(index);
+            bottomNavigationBar: BlocBuilder<LanguageController, LanguageState>(
+              builder: (context, languageState) {
+                return BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: _homeController.currentIndex,
+                  onTap: (index) {
+                    _homeController.changeIndexBottomNavBar(index);
+                  },
+                  selectedItemColor: AppColors.primaryColor,
+                  unselectedItemColor: Colors.grey,
+                  showUnselectedLabels: true,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        Assets.images.svg.settings,
+                        colorFilter: ColorFilter.mode(
+                          _homeController.currentIndex == 0
+                              ? AppColors.primaryColor
+                              : Colors.grey,
+                          BlendMode.srcIn,
+                        ),
+                        height: 24.h,
+                        width: 24.w,
+                      ),
+                      label: LocaleKeys.settings.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        Assets.images.svg.home,
+                        colorFilter: ColorFilter.mode(
+                          _homeController.currentIndex == 1
+                              ? AppColors.primaryColor
+                              : Colors.grey,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      label: LocaleKeys.home.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        Assets.images.svg.person,
+                        colorFilter: ColorFilter.mode(
+                          _homeController.currentIndex == 2
+                              ? AppColors.primaryColor
+                              : Colors.grey,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      label: LocaleKeys.profile.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset(
+                        Assets.images.svg.finance,
+                        height: 24.h,
+                        width: 24.w,
+                        colorFilter: ColorFilter.mode(
+                          _homeController.currentIndex == 3
+                              ? AppColors.primaryColor
+                              : Colors.grey,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      label: LocaleKeys.finance.tr(),
+                    ),
+                  ],
+                );
               },
-              selectedItemColor: AppColors.primaryColor,
-              unselectedItemColor: Colors.grey,
-              showUnselectedLabels: true,
-              items: [
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    Assets.images.svg.settings,
-                    colorFilter: ColorFilter.mode(
-                      _homeController.currentIndex == 0
-                          ? AppColors.primaryColor
-                          : Colors.grey,
-                      BlendMode.srcIn,
-                    ),
-                    height: 24.h,
-                    width: 24.w,
-                  ),
-                  label: LocaleKeys.settings.tr(),
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    Assets.images.svg.home,
-                    colorFilter: ColorFilter.mode(
-                      _homeController.currentIndex == 1
-                          ? AppColors.primaryColor
-                          : Colors.grey,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: LocaleKeys.home.tr(),
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    Assets.images.svg.person,
-                    colorFilter: ColorFilter.mode(
-                      _homeController.currentIndex == 2
-                          ? AppColors.primaryColor
-                          : Colors.grey,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: LocaleKeys.profile.tr(),
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    Assets.images.svg.finance,
-                    height: 24.h,
-                    width: 24.w,
-                    colorFilter: ColorFilter.mode(
-                      _homeController.currentIndex == 3
-                          ? AppColors.primaryColor
-                          : Colors.grey,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: LocaleKeys.finance.tr(),
-                ),
-              ],
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,

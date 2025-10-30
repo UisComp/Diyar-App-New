@@ -34,6 +34,8 @@ mixin _$FinanceState {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,6 +56,7 @@ mixin _$FinanceState {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -74,6 +77,7 @@ mixin _$FinanceState {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -95,6 +99,7 @@ mixin _$FinanceState {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -115,6 +120,7 @@ mixin _$FinanceState {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -135,6 +141,7 @@ mixin _$FinanceState {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -212,6 +219,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return initial();
   }
@@ -235,6 +244,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return initial?.call();
   }
@@ -258,6 +268,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -285,6 +296,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return initial(this);
   }
@@ -308,6 +320,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return initial?.call(this);
   }
@@ -331,6 +344,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -398,6 +412,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return loading();
   }
@@ -421,6 +437,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return loading?.call();
   }
@@ -444,6 +461,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -471,6 +489,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return loading(this);
   }
@@ -494,6 +513,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return loading?.call(this);
   }
@@ -517,6 +537,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -584,6 +605,8 @@ class _$SuccessImpl implements _Success {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return success();
   }
@@ -607,6 +630,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return success?.call();
   }
@@ -630,6 +654,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -657,6 +682,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return success(this);
   }
@@ -680,6 +706,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return success?.call(this);
   }
@@ -703,6 +730,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -797,6 +825,8 @@ class _$FailureImpl implements _Failure {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return failure(errorMessage);
   }
@@ -820,6 +850,7 @@ class _$FailureImpl implements _Failure {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return failure?.call(errorMessage);
   }
@@ -843,6 +874,7 @@ class _$FailureImpl implements _Failure {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -870,6 +902,7 @@ class _$FailureImpl implements _Failure {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return failure(this);
   }
@@ -893,6 +926,7 @@ class _$FailureImpl implements _Failure {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return failure?.call(this);
   }
@@ -916,6 +950,7 @@ class _$FailureImpl implements _Failure {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -988,6 +1023,8 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return previewFileLoading();
   }
@@ -1011,6 +1048,7 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return previewFileLoading?.call();
   }
@@ -1034,6 +1072,7 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileLoading != null) {
@@ -1061,6 +1100,7 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return previewFileLoading(this);
   }
@@ -1084,6 +1124,7 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return previewFileLoading?.call(this);
   }
@@ -1107,6 +1148,7 @@ class _$PreviewFileLoadingImpl implements _PreviewFileLoading {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileLoading != null) {
@@ -1174,6 +1216,8 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return previewFileSuccess();
   }
@@ -1197,6 +1241,7 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return previewFileSuccess?.call();
   }
@@ -1220,6 +1265,7 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileSuccess != null) {
@@ -1247,6 +1293,7 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return previewFileSuccess(this);
   }
@@ -1270,6 +1317,7 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return previewFileSuccess?.call(this);
   }
@@ -1293,6 +1341,7 @@ class _$PreviewFileSuccessImpl implements _PreviewFileSuccess {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileSuccess != null) {
@@ -1388,6 +1437,8 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return previewFileFailure(errorMessage);
   }
@@ -1411,6 +1462,7 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return previewFileFailure?.call(errorMessage);
   }
@@ -1434,6 +1486,7 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileFailure != null) {
@@ -1461,6 +1514,7 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return previewFileFailure(this);
   }
@@ -1484,6 +1538,7 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return previewFileFailure?.call(this);
   }
@@ -1507,6 +1562,7 @@ class _$PreviewFileFailureImpl implements _PreviewFileFailure {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (previewFileFailure != null) {
@@ -1581,6 +1637,8 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return downloadFileLoading();
   }
@@ -1604,6 +1662,7 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return downloadFileLoading?.call();
   }
@@ -1627,6 +1686,7 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileLoading != null) {
@@ -1654,6 +1714,7 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return downloadFileLoading(this);
   }
@@ -1677,6 +1738,7 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return downloadFileLoading?.call(this);
   }
@@ -1700,6 +1762,7 @@ class _$DownloadFileLoadingImpl implements _DownloadFileLoading {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileLoading != null) {
@@ -1768,6 +1831,8 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return downloadFileSuccess();
   }
@@ -1791,6 +1856,7 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return downloadFileSuccess?.call();
   }
@@ -1814,6 +1880,7 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileSuccess != null) {
@@ -1841,6 +1908,7 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return downloadFileSuccess(this);
   }
@@ -1864,6 +1932,7 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return downloadFileSuccess?.call(this);
   }
@@ -1887,6 +1956,7 @@ class _$DownloadFileSuccessImpl implements _DownloadFileSuccess {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileSuccess != null) {
@@ -1982,6 +2052,8 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return downloadFileFailure(errorMessage);
   }
@@ -2005,6 +2077,7 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return downloadFileFailure?.call(errorMessage);
   }
@@ -2028,6 +2101,7 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileFailure != null) {
@@ -2055,6 +2129,7 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return downloadFileFailure(this);
   }
@@ -2078,6 +2153,7 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return downloadFileFailure?.call(this);
   }
@@ -2101,6 +2177,7 @@ class _$DownloadFileFailureImpl implements _DownloadFileFailure {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (downloadFileFailure != null) {
@@ -2174,6 +2251,8 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getFinanceLoading();
   }
@@ -2197,6 +2276,7 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getFinanceLoading?.call();
   }
@@ -2220,6 +2300,7 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceLoading != null) {
@@ -2247,6 +2328,7 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getFinanceLoading(this);
   }
@@ -2270,6 +2352,7 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getFinanceLoading?.call(this);
   }
@@ -2293,6 +2376,7 @@ class _$GetFinanceLoadingImpl implements _GetFinanceLoading {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceLoading != null) {
@@ -2360,6 +2444,8 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getFinanceSuccess();
   }
@@ -2383,6 +2469,7 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getFinanceSuccess?.call();
   }
@@ -2406,6 +2493,7 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceSuccess != null) {
@@ -2433,6 +2521,7 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getFinanceSuccess(this);
   }
@@ -2456,6 +2545,7 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getFinanceSuccess?.call(this);
   }
@@ -2479,6 +2569,7 @@ class _$GetFinanceSuccessImpl implements _GetFinanceSuccess {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceSuccess != null) {
@@ -2574,6 +2665,8 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getFinanceFailure(errorMessage);
   }
@@ -2597,6 +2690,7 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getFinanceFailure?.call(errorMessage);
   }
@@ -2620,6 +2714,7 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceFailure != null) {
@@ -2647,6 +2742,7 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getFinanceFailure(this);
   }
@@ -2670,6 +2766,7 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getFinanceFailure?.call(this);
   }
@@ -2693,6 +2790,7 @@ class _$GetFinanceFailureImpl implements _GetFinanceFailure {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getFinanceFailure != null) {
@@ -2767,6 +2865,8 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getDocumentsLoading();
   }
@@ -2790,6 +2890,7 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getDocumentsLoading?.call();
   }
@@ -2813,6 +2914,7 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsLoading != null) {
@@ -2840,6 +2942,7 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getDocumentsLoading(this);
   }
@@ -2863,6 +2966,7 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getDocumentsLoading?.call(this);
   }
@@ -2886,6 +2990,7 @@ class _$GetDocumentsLoadingImpl implements _GetDocumentsLoading {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsLoading != null) {
@@ -2954,6 +3059,8 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getDocumentsSuccess();
   }
@@ -2977,6 +3084,7 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getDocumentsSuccess?.call();
   }
@@ -3000,6 +3108,7 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsSuccess != null) {
@@ -3027,6 +3136,7 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getDocumentsSuccess(this);
   }
@@ -3050,6 +3160,7 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getDocumentsSuccess?.call(this);
   }
@@ -3073,6 +3184,7 @@ class _$GetDocumentsSuccessImpl implements _GetDocumentsSuccess {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsSuccess != null) {
@@ -3168,6 +3280,8 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     required TResult Function() getDocumentsLoading,
     required TResult Function() getDocumentsSuccess,
     required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
   }) {
     return getDocumentsFailure(errorMessage);
   }
@@ -3191,6 +3305,7 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     TResult? Function()? getDocumentsLoading,
     TResult? Function()? getDocumentsSuccess,
     TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
   }) {
     return getDocumentsFailure?.call(errorMessage);
   }
@@ -3214,6 +3329,7 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     TResult Function()? getDocumentsLoading,
     TResult Function()? getDocumentsSuccess,
     TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsFailure != null) {
@@ -3241,6 +3357,7 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
     required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
     required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
   }) {
     return getDocumentsFailure(this);
   }
@@ -3264,6 +3381,7 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
   }) {
     return getDocumentsFailure?.call(this);
   }
@@ -3287,6 +3405,7 @@ class _$GetDocumentsFailureImpl implements _GetDocumentsFailure {
     TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
     TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
     TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
     required TResult orElse(),
   }) {
     if (getDocumentsFailure != null) {
@@ -3304,4 +3423,243 @@ abstract class _GetDocumentsFailure implements FinanceState {
   @JsonKey(ignore: true)
   _$$GetDocumentsFailureImplCopyWith<_$GetDocumentsFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DownloadFileProgressImplCopyWith<$Res> {
+  factory _$$DownloadFileProgressImplCopyWith(_$DownloadFileProgressImpl value,
+          $Res Function(_$DownloadFileProgressImpl) then) =
+      __$$DownloadFileProgressImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String fileUrl, double progress});
+}
+
+/// @nodoc
+class __$$DownloadFileProgressImplCopyWithImpl<$Res>
+    extends _$FinanceStateCopyWithImpl<$Res, _$DownloadFileProgressImpl>
+    implements _$$DownloadFileProgressImplCopyWith<$Res> {
+  __$$DownloadFileProgressImplCopyWithImpl(_$DownloadFileProgressImpl _value,
+      $Res Function(_$DownloadFileProgressImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fileUrl = null,
+    Object? progress = null,
+  }) {
+    return _then(_$DownloadFileProgressImpl(
+      fileUrl: null == fileUrl
+          ? _value.fileUrl
+          : fileUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DownloadFileProgressImpl implements _DownloadFileProgress {
+  const _$DownloadFileProgressImpl(
+      {required this.fileUrl, required this.progress});
+
+  @override
+  final String fileUrl;
+  @override
+  final double progress;
+
+  @override
+  String toString() {
+    return 'FinanceState.downloadFileProgress(fileUrl: $fileUrl, progress: $progress)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DownloadFileProgressImpl &&
+            (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
+            (identical(other.progress, progress) ||
+                other.progress == progress));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, fileUrl, progress);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DownloadFileProgressImplCopyWith<_$DownloadFileProgressImpl>
+      get copyWith =>
+          __$$DownloadFileProgressImplCopyWithImpl<_$DownloadFileProgressImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() success,
+    required TResult Function(String? errorMessage) failure,
+    required TResult Function() previewFileLoading,
+    required TResult Function() previewFileSuccess,
+    required TResult Function(String? errorMessage) previewFileFailure,
+    required TResult Function() downloadFileLoading,
+    required TResult Function() downloadFileSuccess,
+    required TResult Function(String? errorMessage) downloadFileFailure,
+    required TResult Function() getFinanceLoading,
+    required TResult Function() getFinanceSuccess,
+    required TResult Function(String? errorMessage) getFinanceFailure,
+    required TResult Function() getDocumentsLoading,
+    required TResult Function() getDocumentsSuccess,
+    required TResult Function(String? errorMessage) getDocumentsFailure,
+    required TResult Function(String fileUrl, double progress)
+        downloadFileProgress,
+  }) {
+    return downloadFileProgress(fileUrl, progress);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? success,
+    TResult? Function(String? errorMessage)? failure,
+    TResult? Function()? previewFileLoading,
+    TResult? Function()? previewFileSuccess,
+    TResult? Function(String? errorMessage)? previewFileFailure,
+    TResult? Function()? downloadFileLoading,
+    TResult? Function()? downloadFileSuccess,
+    TResult? Function(String? errorMessage)? downloadFileFailure,
+    TResult? Function()? getFinanceLoading,
+    TResult? Function()? getFinanceSuccess,
+    TResult? Function(String? errorMessage)? getFinanceFailure,
+    TResult? Function()? getDocumentsLoading,
+    TResult? Function()? getDocumentsSuccess,
+    TResult? Function(String? errorMessage)? getDocumentsFailure,
+    TResult? Function(String fileUrl, double progress)? downloadFileProgress,
+  }) {
+    return downloadFileProgress?.call(fileUrl, progress);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? success,
+    TResult Function(String? errorMessage)? failure,
+    TResult Function()? previewFileLoading,
+    TResult Function()? previewFileSuccess,
+    TResult Function(String? errorMessage)? previewFileFailure,
+    TResult Function()? downloadFileLoading,
+    TResult Function()? downloadFileSuccess,
+    TResult Function(String? errorMessage)? downloadFileFailure,
+    TResult Function()? getFinanceLoading,
+    TResult Function()? getFinanceSuccess,
+    TResult Function(String? errorMessage)? getFinanceFailure,
+    TResult Function()? getDocumentsLoading,
+    TResult Function()? getDocumentsSuccess,
+    TResult Function(String? errorMessage)? getDocumentsFailure,
+    TResult Function(String fileUrl, double progress)? downloadFileProgress,
+    required TResult orElse(),
+  }) {
+    if (downloadFileProgress != null) {
+      return downloadFileProgress(fileUrl, progress);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Failure value) failure,
+    required TResult Function(_PreviewFileLoading value) previewFileLoading,
+    required TResult Function(_PreviewFileSuccess value) previewFileSuccess,
+    required TResult Function(_PreviewFileFailure value) previewFileFailure,
+    required TResult Function(_DownloadFileLoading value) downloadFileLoading,
+    required TResult Function(_DownloadFileSuccess value) downloadFileSuccess,
+    required TResult Function(_DownloadFileFailure value) downloadFileFailure,
+    required TResult Function(_GetFinanceLoading value) getFinanceLoading,
+    required TResult Function(_GetFinanceSuccess value) getFinanceSuccess,
+    required TResult Function(_GetFinanceFailure value) getFinanceFailure,
+    required TResult Function(_GetDocumentsLoading value) getDocumentsLoading,
+    required TResult Function(_GetDocumentsSuccess value) getDocumentsSuccess,
+    required TResult Function(_GetDocumentsFailure value) getDocumentsFailure,
+    required TResult Function(_DownloadFileProgress value) downloadFileProgress,
+  }) {
+    return downloadFileProgress(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Failure value)? failure,
+    TResult? Function(_PreviewFileLoading value)? previewFileLoading,
+    TResult? Function(_PreviewFileSuccess value)? previewFileSuccess,
+    TResult? Function(_PreviewFileFailure value)? previewFileFailure,
+    TResult? Function(_DownloadFileLoading value)? downloadFileLoading,
+    TResult? Function(_DownloadFileSuccess value)? downloadFileSuccess,
+    TResult? Function(_DownloadFileFailure value)? downloadFileFailure,
+    TResult? Function(_GetFinanceLoading value)? getFinanceLoading,
+    TResult? Function(_GetFinanceSuccess value)? getFinanceSuccess,
+    TResult? Function(_GetFinanceFailure value)? getFinanceFailure,
+    TResult? Function(_GetDocumentsLoading value)? getDocumentsLoading,
+    TResult? Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
+    TResult? Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult? Function(_DownloadFileProgress value)? downloadFileProgress,
+  }) {
+    return downloadFileProgress?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Failure value)? failure,
+    TResult Function(_PreviewFileLoading value)? previewFileLoading,
+    TResult Function(_PreviewFileSuccess value)? previewFileSuccess,
+    TResult Function(_PreviewFileFailure value)? previewFileFailure,
+    TResult Function(_DownloadFileLoading value)? downloadFileLoading,
+    TResult Function(_DownloadFileSuccess value)? downloadFileSuccess,
+    TResult Function(_DownloadFileFailure value)? downloadFileFailure,
+    TResult Function(_GetFinanceLoading value)? getFinanceLoading,
+    TResult Function(_GetFinanceSuccess value)? getFinanceSuccess,
+    TResult Function(_GetFinanceFailure value)? getFinanceFailure,
+    TResult Function(_GetDocumentsLoading value)? getDocumentsLoading,
+    TResult Function(_GetDocumentsSuccess value)? getDocumentsSuccess,
+    TResult Function(_GetDocumentsFailure value)? getDocumentsFailure,
+    TResult Function(_DownloadFileProgress value)? downloadFileProgress,
+    required TResult orElse(),
+  }) {
+    if (downloadFileProgress != null) {
+      return downloadFileProgress(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DownloadFileProgress implements FinanceState {
+  const factory _DownloadFileProgress(
+      {required final String fileUrl,
+      required final double progress}) = _$DownloadFileProgressImpl;
+
+  String get fileUrl;
+  double get progress;
+  @JsonKey(ignore: true)
+  _$$DownloadFileProgressImplCopyWith<_$DownloadFileProgressImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
