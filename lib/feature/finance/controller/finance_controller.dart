@@ -2,18 +2,23 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
+import 'package:diyar_app/feature/finance/model/documents_response_model.dart';
+import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
+import 'package:diyar_app/feature/finance/service/finance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FinanceController extends Cubit<FinanceState> {
-  FinanceController() : super(FinanceInitial());
+  FinanceController() : super(const FinanceState.initial());
+
   static FinanceController get(BuildContext context) =>
       BlocProvider.of<FinanceController>(context);
 
   Future<void> previewFile(String url) async {
-    emit(PriviewFileLoadingState());
+    emit(const FinanceState.previewFileLoading());
     try {
       final dir = await getTemporaryDirectory();
       final filePath = "${dir.path}/${url.split('/').last}";
@@ -22,25 +27,99 @@ class FinanceController extends Cubit<FinanceState> {
         await Dio().download(url, filePath);
       }
       await OpenFilex.open(filePath);
-      emit(PriviewFileSuccessState());
+      emit(const FinanceState.previewFileSuccess());
     } catch (e) {
       AppLogger.error("Error previewing file: $e");
-      emit(PriviewFileFailureState(errorMessage: e.toString()));
+      emit(FinanceState.previewFileFailure(errorMessage: e.toString()));
+    }
+  }
+  Future<bool> requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      if (await Permission.photos.isDenied ||
+          await Permission.videos.isDenied ||
+          await Permission.audio.isDenied ||
+          await Permission.manageExternalStorage.isDenied ||
+          await Permission.storage.isDenied) {
+        var result = await [
+          Permission.photos,
+          Permission.videos,
+          Permission.audio,
+          Permission.manageExternalStorage,
+          Permission.storage,
+        ].request();
+        return result.values.every((e) => e.isGranted);
+      }
+      var status = await Permission.manageExternalStorage.request();
+      return status.isGranted;
+    }
+    return true;
+  }
+
+Future<void> downloadFile(String url) async {
+  emit(const FinanceState.downloadFileLoading());
+
+  try {
+    final dir = await getApplicationDocumentsDirectory();
+    final filename = url.split('/').last;
+    final filePath = "${dir.path}/$filename";
+
+    await Dio().download(url, filePath);
+
+    OpenFilex.open(filePath);
+    emit(const FinanceState.downloadFileSuccess());
+  } catch (e) {
+    emit(FinanceState.downloadFileFailure(errorMessage: e.toString()));
+  }
+}
+
+
+  FinanceResponseModel financeResponseModel = FinanceResponseModel();
+  Future<void> getFinance() async {
+    emit(const FinanceState.getFinanceLoading());
+    try {
+      await FinanceService.getFinance().then((financeResponse) {
+        financeResponseModel = financeResponse;
+        if (financeResponse.success == true) {
+          AppLogger.success("Get Finance: ${financeResponse.toJson()}");
+          emit(const FinanceState.getFinanceSuccess());
+        } else {
+          AppLogger.error(
+            "Error While Get Finance: ${financeResponse.message}",
+          );
+          emit(
+            FinanceState.getFinanceFailure(
+              errorMessage: financeResponse.message,
+            ),
+          );
+        }
+      });
+    } catch (e) {
+      AppLogger.error("Error While Get Finance: $e");
+      emit(FinanceState.getFinanceFailure(errorMessage: e.toString()));
     }
   }
 
-  Future<void> downloadFile(String url) async {
-    emit(DownloadFileLoadingState());
+  DocumentsResponseModel documentsResponseModel = DocumentsResponseModel();
+  Future<void> getDocumets() async {
+    emit(const FinanceState.getDocumentsLoading());
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final filePath = "${dir.path}/${url.split('/').last}";
-
-      await Dio().download(url, filePath);
-      AppLogger.info("File downloaded to $filePath");
-      emit(DownloadFileSuccessState());
+      await FinanceService.getDocuments().then((doucResponse) {
+        documentsResponseModel = doucResponse;
+        if (doucResponse.success == true) {
+          AppLogger.success("Get Documents: ${doucResponse.toJson()}");
+          emit(const FinanceState.getDocumentsSuccess());
+        } else {
+          AppLogger.error("Error While Get Documents: ${doucResponse.message}");
+          emit(
+            FinanceState.getDocumentsFailure(
+              errorMessage: doucResponse.message,
+            ),
+          );
+        }
+      });
     } catch (e) {
-      AppLogger.error("Error downloading file: $e");
-      emit(DownloadFileFailureState(errorMessage: e.toString()));
+      AppLogger.error("Error While Get Documents: $e");
+      emit(FinanceState.getDocumentsFailure(errorMessage: e.toString()));
     }
   }
 }

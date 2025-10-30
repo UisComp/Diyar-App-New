@@ -1,12 +1,10 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/settings/view/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppConstants {
   static const String appName = "Diyar";
@@ -30,10 +28,7 @@ class AppConstants {
     const SettingsScreen(),
     const HomeScreen(),
     const ProfileScreen(),
-    BlocProvider(
-      create: (context) => FinanceController(),
-      child: const FinanceScreen(),
-    ),
+    const FinanceScreen(),
   ];
   //!App Fonts
   static const String manropeFont = "Manrope";
@@ -75,4 +70,6 @@ String? getScreenNameByServiceType(ServiceType? type) {
       return null;
   }
 }
+// lib/core/constants/app_keys.dart
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

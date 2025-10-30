@@ -29,7 +29,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   void initState() {
     super.initState();
-    _homeController = HomeController();
+    _homeController = HomeController.get(context);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -104,8 +105,12 @@ Future<void> showDeleteAccountDialog(
     },
   );
 }
-
-void showImagePreview(BuildContext context, String imageUrl) {
+void showImagePreview(
+  BuildContext context,
+  String imageUrl, {
+  String? title,
+  String? description,
+}) {
   showGeneralDialog(
     context: context,
     barrierDismissible: true,
@@ -115,7 +120,6 @@ void showImagePreview(BuildContext context, String imageUrl) {
       return Scaffold(
         backgroundColor: Colors.black.withValues(alpha: 0.9),
         body: Stack(
-          alignment: Alignment.center,
           children: [
             Center(
               child: Hero(
@@ -124,14 +128,57 @@ void showImagePreview(BuildContext context, String imageUrl) {
                   panEnabled: true,
                   minScale: 0.8,
                   maxScale: 4,
-                  child: CustomCachedNetworkImage(
-                    isProjectDetails: true,
-                    imageUrl: imageUrl,
-                    fit: BoxFit.contain,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      CustomCachedNetworkImage(
+                        isProjectDetails: true,
+                        imageUrl: imageUrl,
+                        fit: BoxFit.contain,
+                      ),
+                      20.ph,
+                      if (title != null && title.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 6.h,
+                            horizontal: 16.w,
+                          ),
+                          child: Text(
+                            title.capitalize(),
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                      if (description != null && description.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 20.h,
+                            left: 16.w,
+                            right: 16.w,
+                          ),
+                          child: Text(
+                            description.capitalize(),
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
             ),
+
+            /// CLOSE BUTTON
             Positioned(
               top: 50.h,
               right: 20.w,
@@ -149,7 +196,7 @@ void showImagePreview(BuildContext context, String imageUrl) {
                     ),
                     child: Icon(
                       Icons.close_rounded,
-                      color: Colors.white,
+                      color: AppColors.whiteColor,
                       size: 30.sp,
                     ),
                   ),

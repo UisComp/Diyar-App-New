@@ -66,7 +66,7 @@ Future<void> main() async {
           BlocProvider<LanguageController>.value(value: languageController),
           BlocProvider(create: (_) => AppThemeController()),
           BlocProvider(create: (_) => ProfileController()),
-          BlocProvider(create: (_) => SettingsController()),
+          BlocProvider(create: (_) => SettingsController()..getConfigData()),
         ],
         child: const DiyarApp(),
       ),

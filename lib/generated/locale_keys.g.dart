@@ -223,5 +223,21 @@ abstract class  LocaleKeys {
   static const please_select_date_range = 'please_select_date_range';
   static const please_select_time_range = 'please_select_time_range';
   static const share_qr_code = 'share_qr_code';
+  static const total_installments = 'total_installments';
+  static const remaining_installments = 'remaining_installments';
+  static const remaining_value = 'remaining_value';
+  static const total_value = 'total_value';
+  static const paid = 'paid';
+  static const engineering_structure = 'engineering_structure';
+  static const contract = 'contract';
+  static const installments_table = 'installments_table';
+  static const other_documents = 'other_documents';
+  static const emergency_number = 'emergency_number';
+  static const hold_to_activate = 'hold_to_activate';
+  static const press_and_hold_to_start = 'press_and_hold_to_start';
+  static const hold_the_red_button = 'hold_the_red_button';
+  static const to_make_a_call = 'to_make_a_call';
+  static const release_to_cancel = 'release_to_cancel';
+  static const discover = 'discover';
 
 }

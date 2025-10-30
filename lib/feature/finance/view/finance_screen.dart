@@ -22,113 +22,80 @@ class FinanceScreen extends StatefulWidget {
 class _FinanceScreenState extends State<FinanceScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  final List<String> units = ["الوحدة رقم 1", "الوحدة رقم 2"];
-
-  final List<Map<String, dynamic>> documentGroups = [
-    {
-      "title": "المرفق الهندسى",
-      "files": [
-        {
-          "name": "عقد شراء الوحدة.pdf",
-          "url":
-              "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-          "date": "2025-05-15",
-          "size": "1.2 MB",
-        },
-      ],
-    },
-     {
-      "title": "العقد",
-      "files": [
-        {
-          "name": "عقد شراء الوحدة.pdf",
-          "url":
-              "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-          "date": "2025-05-15",
-          "size": "1.2 MB",
-        },
-      ],
-    },
-    {
-      "title": "جدول الأقساط",
-      "files": [
-        {
-          "name": "عقد شراء الوحدة.pdf",
-          "url":
-              "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-          "date": "2025-05-15",
-          "size": "1.2 MB",
-        },
-      ],
-    },
-    {"title": "ملفات أخرى", "files": []},
-  ];
-
+  // late FinanceController financeController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    // financeController = FinanceController.get(context);
+    // financeController.getFinance();
+    // financeController.getDocumets();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
-      body: BlocConsumer<FinanceController, FinanceState>(
-        listener: (context, financeState) {
-          if (financeState is PriviewFileFailureState) {
-            AppFunctions.errorMessage(
-              context,
-              message:
-                  financeState.errorMessage ??
-                  LocaleKeys.error_preview_file.tr(),
+    return BlocProvider(
+      create: (context) => FinanceController()..getFinance()..getDocumets(),
+      child: Scaffold(
+        appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
+        body: BlocConsumer<FinanceController, FinanceState>(
+          listener: (context, state) {
+            state.whenOrNull(
+              previewFileFailure: (errorMessage) {
+                AppFunctions.errorMessage(
+                  context,
+                  message: errorMessage ?? LocaleKeys.error_preview_file.tr(),
+                );
+              },
+              downloadFileFailure: (errorMessage) {
+                AppFunctions.errorMessage(
+                  context,
+                  message: errorMessage ?? LocaleKeys.error_downloading_file.tr(),
+                );
+              },
+              downloadFileSuccess: () {
+                AppFunctions.successMessage(
+                  context,
+                  message: LocaleKeys.download_file_successfully.tr(),
+                );
+              },
             );
-          }
-          if (financeState is DownloadFileFailureState) {
-            AppFunctions.errorMessage(
-              context,
-              message:
-                  financeState.errorMessage ??
-                  LocaleKeys.error_downloading_file.tr(),
-            );
-          }
-           if (financeState is DownloadFileSuccessState) {
-            AppFunctions.successMessage(
-              context,
-              message:
-                  LocaleKeys.download_file_successfully.tr()
-            );
-          }
-          
-        },
-        builder: (context, financeState) {
-          return Column(
-            children: [
-              10.ph,
-              TabBar(
-                controller: _tabController,
-                indicatorColor: AppColors.primaryColor,
-                labelColor: AppColors.primaryColor,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: AppStyle.fontSize16Regular(context),
-                tabs: [
-                  Tab(text: LocaleKeys.finance.tr()),
-                  Tab(text: LocaleKeys.documents.tr()),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
+          },
+          builder: (context, state) {
+            return Column(
+              children: [
+                10.ph,
+                TabBar(
                   controller: _tabController,
-                  children: [
-                    FinanceTab(units: units),
-                    DocumentsTab(documentGroups: documentGroups),
+                  indicatorColor: AppColors.primaryColor,
+                  labelColor: AppColors.primaryColor,
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: AppStyle.fontSize16Regular(context),
+                  tabs: [
+                    Tab(text: LocaleKeys.finance.tr()),
+                    Tab(text: LocaleKeys.documents.tr()),
                   ],
                 ),
-              ),
-            ],
-          );
-        },
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      FinanceTab(
+                        units:
+                            FinanceController.get(context).financeResponseModel.data?.units ??
+                            [],
+                      ),
+                      DocumentsTab(
+                        documentGroups:
+                            FinanceController.get(context).documentsResponseModel.data,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

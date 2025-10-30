@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _initProfileData() async {
+     _profileController.initProfileInfoControllers();
     await _profileController.getMyProfile();
     await _profileController.getUserLinkedUnits();
   }

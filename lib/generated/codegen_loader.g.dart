@@ -234,7 +234,23 @@ class CodegenLoader extends AssetLoader{
   "please_select_a_unit": "يرجى اختيار الوحدة",
   "please_select_date_range": "يرجى اختيار نطاق التاريخ",
   "please_select_time_range": "يرجى اختيار نطاق الوقت",
-  "share_qr_code": "مشاركة رمز الاستجابة السريع"
+  "share_qr_code": "مشاركة رمز الاستجابة السريع",
+  "total_installments": "إجمالي الأقساط",
+  "remaining_installments": "الأقساط المتبقية",
+  "remaining_value": "قيمة المتبقي",
+  "total_value": "إجمالي القيمة",
+  "paid": "المدفوع",
+  "engineering_structure": "المرفق الهندسي",
+  "contract": "العقد",
+  "installments_table": "جدول الأقساط",
+  "other_documents": "مستندات أخرى",
+  "emergency_number": "رقم الطوارئ",
+  "hold_to_activate": "اضغط مع الاستمرار للتفعيل",
+  "press_and_hold_to_start": "اضغط مع الاستمرار للبدء",
+  "hold_the_red_button": "اضغط مع الاستمرار على الزر الأحمر لمدة",
+  "to_make_a_call": "لإجراء مكالمة طارئة فورًا",
+  "release_to_cancel": "حرّر قبل اكتمالها لإلغاء المكالمة.",
+  "discover": "اكتشف"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -454,7 +470,23 @@ static const Map<String,dynamic> _en = {
   "please_select_a_unit": "Please select a unit",
   "please_select_date_range": "Please select a date range",
   "please_select_time_range": "Please select a time range",
-  "share_qr_code": "Share QR Code"
+  "share_qr_code": "Share QR Code",
+  "total_installments": "Total Installments",
+  "remaining_installments": "Remaining Installments",
+  "remaining_value": "Remaining Value",
+  "total_value": "Total Value",
+  "paid": "Paid",
+  "engineering_structure": "Engineering Structure",
+  "contract": "Contract",
+  "installments_table": "Installments Table",
+  "other_documents": "Other Documents",
+  "emergency_number": "Emergency Number",
+  "hold_to_activate": "Hold to activate",
+  "press_and_hold_to_start": "Press & Hold to Start",
+  "hold_the_red_button": "Hold the red button for",
+  "to_make_a_call": "to make an immediate emergency call",
+  "release_to_cancel": "Release before it completes to cancel the call.",
+  "discover": "Discover"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

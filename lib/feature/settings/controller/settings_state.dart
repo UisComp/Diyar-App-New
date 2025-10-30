@@ -36,3 +36,12 @@ class DeleteAccountFailureState extends SettingsState {
 
   DeleteAccountFailureState({this.error});
 }
+class GetConfigDataLoadingState extends SettingsState {}
+
+class GetConfigDataSuccessfullyState extends SettingsState {}
+
+class GetConfigDataFailureState extends SettingsState {
+  final String? error;
+
+  GetConfigDataFailureState({this.error});
+}

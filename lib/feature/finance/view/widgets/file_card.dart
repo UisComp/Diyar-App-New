@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
+import 'package:diyar_app/feature/finance/model/documents_response_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FileCard extends StatelessWidget {
-  final Map<String, String> file;
+  final DocumentFile file;
   const FileCard({super.key, required this.file});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FinanceController, FinanceState>(
-      builder: (context, financeState) {
+      builder: (context, state) {
+        String formatFileSize(int bytes) {
+          if (bytes < 1024) {
+            return "$bytes B";
+          } else if (bytes < 1024 * 1024) {
+            double kb = bytes / 1024;
+            return "${kb.toStringAsFixed(2)} KB";
+          } else {
+            double mb = bytes / (1024 * 1024);
+            return "${mb.toStringAsFixed(2)} MB";
+          }
+        }
+
+        final bool isPreviewLoading = state.maybeWhen(
+          previewFileLoading: () => true,
+          orElse: () => false,
+        );
+
+        final bool isDownloadLoading = state.maybeWhen(
+          downloadFileLoading: () => true,
+          orElse: () => false,
+        );
         return Container(
           margin: EdgeInsets.only(bottom: 10.h),
           padding: EdgeInsets.all(12.w),
@@ -32,7 +54,7 @@ class FileCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      file["name"] ?? "",
+                      file.name ?? "",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -44,31 +66,31 @@ class FileCard extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: financeState is PriviewFileLoadingState
+                        onPressed: isPreviewLoading
                             ? null
                             : () async {
                                 await context
                                     .read<FinanceController>()
-                                    .previewFile(file["url"]!);
+                                    .previewFile(file.url!);
                               },
                         icon: Icon(
                           Icons.visibility,
-                          color: financeState is PriviewFileLoadingState
+                          color: isPreviewLoading
                               ? AppColors.greyColor
                               : AppColors.blueColor,
                         ),
                       ),
                       IconButton(
-                        onPressed: financeState is DownloadFileLoadingState
+                        onPressed: isDownloadLoading
                             ? null
                             : () async {
                                 await context
                                     .read<FinanceController>()
-                                    .downloadFile(file["url"]!);
+                                    .downloadFile(file.url!);
                               },
                         icon: Icon(
                           Icons.download,
-                          color: financeState is DownloadFileLoadingState
+                          color: isDownloadLoading
                               ? AppColors.greyColor
                               : AppColors.greenColor,
                         ),
@@ -81,8 +103,12 @@ class FileCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("${LocaleKeys.date.tr()}: ${file["date"]}"),
-                  Text("${LocaleKeys.size.tr()}: ${file["size"]}"),
+                  Text(
+                    "${LocaleKeys.date.tr()}: ${file.uploadedAt?.split('T').first ?? ''}",
+                  ),
+                  Text(
+                    "${LocaleKeys.size.tr()}: ${formatFileSize(int.tryParse(file.size ?? '0') ?? 0)}",
+                  ),
                 ],
               ),
             ],

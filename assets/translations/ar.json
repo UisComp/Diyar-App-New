@@ -218,5 +218,21 @@
   "please_select_a_unit": "يرجى اختيار الوحدة",
   "please_select_date_range": "يرجى اختيار نطاق التاريخ",
   "please_select_time_range": "يرجى اختيار نطاق الوقت",
-  "share_qr_code": "مشاركة رمز الاستجابة السريع"
+  "share_qr_code": "مشاركة رمز الاستجابة السريع",
+  "total_installments": "إجمالي الأقساط",
+  "remaining_installments": "الأقساط المتبقية",
+  "remaining_value": "قيمة المتبقي",
+  "total_value": "إجمالي القيمة",
+  "paid": "المدفوع",
+  "engineering_structure": "المرفق الهندسي",
+  "contract": "العقد",
+  "installments_table": "جدول الأقساط",
+  "other_documents": "مستندات أخرى",
+  "emergency_number": "رقم الطوارئ",
+  "hold_to_activate": "اضغط مع الاستمرار للتفعيل",
+  "press_and_hold_to_start": "اضغط مع الاستمرار للبدء",
+  "hold_the_red_button": "اضغط مع الاستمرار على الزر الأحمر لمدة",
+  "to_make_a_call": "لإجراء مكالمة طارئة فورًا",
+  "release_to_cancel": "حرّر قبل اكتمالها لإلغاء المكالمة.",
+  "discover": "اكتشف"
 }

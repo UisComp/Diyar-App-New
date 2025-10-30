@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
+import 'package:diyar_app/feature/home/model/announcements_response_model.dart';
 import 'package:diyar_app/feature/home/model/user_services_model.dart';
 
 class HomeService {
@@ -17,6 +18,21 @@ class HomeService {
     } catch (e) {
       AppLogger.error('Error Happen While Get All Services is $e');
       return UserServicesResponse.fromJson(response?.data);
+    }
+  }
+    static Future<AnnouncementsResponseModel> getAllAnnouncements() async {
+    final response = await DioHelper.getData(path: ApiPaths.getAllAnnouncementsBannersPath);
+    AppLogger.info('getAllAnnouncements path ==> ${ApiPaths.getAllAnnouncementsBannersPath}');
+    try {
+      AppLogger.info('getAllAnnouncements==> ${response?.data}');
+      if (response != null && response.statusCode == 200) {
+        return AnnouncementsResponseModel.fromJson(response.data);
+      } else {
+        return AnnouncementsResponseModel.fromJson(response?.data);
+      }
+    } catch (e) {
+      AppLogger.error('Error Happen While Get All Announcements is $e');
+      return AnnouncementsResponseModel.fromJson(response?.data);
     }
   }
 }

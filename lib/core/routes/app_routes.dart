@@ -14,7 +14,6 @@ import 'package:diyar_app/feature/committee/view/committee_screen.dart';
 import 'package:diyar_app/feature/complain/view/complain_screen.dart';
 import 'package:diyar_app/feature/emergency/view/emergency_screen.dart';
 import 'package:diyar_app/feature/facility_booking/view/facility_booking_screen.dart';
-import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
@@ -397,10 +396,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.financeScreen,
       path: RoutesName.financeScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (context) => FinanceController(),
-          child: const FinanceScreen(),
-        ),
+        child: const FinanceScreen(),
         transition: slideFromBottom,
       ),
     ),

@@ -1,11 +1,13 @@
-
-
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FinanceSummaryCard extends StatelessWidget {
-  const FinanceSummaryCard({super.key});
+  const FinanceSummaryCard({super.key, required this.unit});
+  final Unit unit;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,10 @@ class FinanceSummaryCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: TextStyle(fontSize: 14.sp, color: Colors.black87)),
+            Text(
+              title,
+              style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+            ),
             Text(
               value,
               style: TextStyle(
@@ -45,11 +50,28 @@ class FinanceSummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildRow("إجمالي الأقساط", "12"),
-          buildRow("الأقساط المتبقية", "9"),
-          buildRow("قيمة المتبقي", "945,000 جنيه"),
-          buildRow("إجمالي القيمة", "1,260,000 جنيه"),
-          buildRow("المدفوع", "315,000 جنيه"),
+          buildRow(
+            LocaleKeys.total_installments.tr(),
+            unit.financials?.installmentsCount.toString() ?? '0',
+          ),
+          buildRow(
+            LocaleKeys.remaining_installments.tr(),
+            unit.financials?.paymentStatistics?.pendingInstallments
+                    .toString() ??
+                '0',
+          ),
+          buildRow(
+            LocaleKeys.remaining_value.tr(),
+            unit.financials?.remainingBalance.toString() ?? '0',
+          ),
+          buildRow(
+            LocaleKeys.total_value.tr(),
+            unit.financials?.totalAfterInterest.toString() ?? '0',
+          ),
+          buildRow(
+            LocaleKeys.paid.tr(),
+            unit.financials?.totalPaid.toString() ?? '0',
+          ),
         ],
       ),
     );

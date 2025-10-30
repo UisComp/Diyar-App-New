@@ -7,6 +7,7 @@ import 'package:diyar_app/core/model/general_response_model.dart';
 import 'package:diyar_app/feature/settings/controller/settings_state.dart';
 import 'package:diyar_app/feature/settings/model/change_password_request_model.dart';
 import 'package:diyar_app/feature/settings/model/change_password_response_model.dart';
+import 'package:diyar_app/feature/settings/model/config_data_model.dart';
 import 'package:diyar_app/feature/settings/service/settings_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,9 @@ class SettingsController extends Cubit<SettingsState> {
     try {
       emit(BiometricLoading());
       isEnabled = await loadBiometricStatus();
-      AppLogger.success('BiometricCubit: Initialized with isEnabled = $isEnabled');
+      AppLogger.success(
+        'BiometricCubit: Initialized with isEnabled = $isEnabled',
+      );
       if (isEnabled == true) {
         emit(BiometricEnabled());
       } else {
@@ -181,7 +184,9 @@ class SettingsController extends Cubit<SettingsState> {
     await SettingsService.deleteAccount()
         .then((value) async {
           deleteAccountResponseModel = value;
-          AppLogger.info('deleteAccountResponseModel $deleteAccountResponseModel');
+          AppLogger.info(
+            'deleteAccountResponseModel $deleteAccountResponseModel',
+          );
           if (value.success == true) {
             await HiveHelper.clearAllData();
             emit(DeleteAccountSuccessfullyState());
@@ -192,6 +197,27 @@ class SettingsController extends Cubit<SettingsState> {
         .catchError((error) {
           AppLogger.error('Error Happen While Delete Account is $error');
           emit(DeleteAccountFailureState(error: error.toString()));
+        });
+  }
+
+  ConfigResponseModel configResponseModel = ConfigResponseModel();
+  Future<void> getConfigData() async {
+    emit(GetConfigDataLoadingState());
+    await SettingsService.getConfigData()
+        .then((value) async {
+          configResponseModel = value;
+          AppLogger.info('configResponseModel $configResponseModel');
+          if (value.success == true) {
+            emit(GetConfigDataSuccessfullyState());
+          } else {
+            emit(GetConfigDataFailureState(error: value.message));
+          }
+        })
+        .catchError((error) {
+          AppLogger.error(
+            'Error Happen While get configResponseModel is $error',
+          );
+          emit(GetConfigDataFailureState(error: error.toString()));
         });
   }
 }

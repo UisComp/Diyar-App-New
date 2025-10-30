@@ -31,7 +31,6 @@ class _PersonalInformationState extends State<PersonalInformation> {
   @override
   void initState() {
     super.initState();
-
     profileController = ProfileController.get(context);
     profileController.initProfileInfoControllers();
     profileController.getMyProfile();

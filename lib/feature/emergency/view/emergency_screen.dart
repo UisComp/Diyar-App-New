@@ -2,8 +2,14 @@ import 'dart:async';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/custom_emergency_number_button.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/description_under_button.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/description_under_button_after_make_call.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/emergency_number_text.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/inner_contianer.dart';
+import 'package:diyar_app/feature/emergency/view/widgets/outer_container.dart';
+import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -22,22 +28,30 @@ class _EmergencyScreenState extends State<EmergencyScreen>
   double _holdProgress = 0.0;
   Timer? _timer;
   late AnimationController _pulseController;
+  late SettingsController settingsController;
+  bool alreadyTriggered = false;
 
   @override
   void initState() {
     super.initState();
-    _pulseController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
-          ..repeat(reverse: true);
+    settingsController = SettingsController.get(context);
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
   }
 
   void startHoldTimer() {
+    alreadyTriggered = false;
     _holdProgress = 0.0;
+
     _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
       setState(() {
         _holdProgress += 0.05 / activationDuration;
-        if (_holdProgress >= 1.0) {
+
+        if (_holdProgress >= 1.0 && !alreadyTriggered) {
           _timer?.cancel();
+          alreadyTriggered = true;
           _triggerEmergency();
         }
       });
@@ -46,23 +60,30 @@ class _EmergencyScreenState extends State<EmergencyScreen>
 
   void cancelHoldTimer() {
     _timer?.cancel();
-    setState(() => _holdProgress = 0.0);
+    if (!alreadyTriggered) {
+      setState(() => _holdProgress = 0.0);
+    }
   }
 
   void _triggerEmergency() async {
-    const emergencyNumber = '911';
+    final emergencyNumber =
+        settingsController.configResponseModel.data?.emergencyNumber ?? '';
     final Uri callUri = Uri(scheme: 'tel', path: emergencyNumber);
 
     try {
       if (await canLaunchUrl(callUri)) {
         await launchUrl(callUri);
       } else {
-        AppFunctions.errorMessage(context,
-            message: 'Could not launch $emergencyNumber');
+        AppFunctions.errorMessage(
+          context,
+          message: 'Could not launch $emergencyNumber',
+        );
       }
     } catch (e) {
-      AppFunctions.errorMessage(context,
-          message: 'Could not launch $emergencyNumber');
+      AppFunctions.errorMessage(
+        context,
+        message: 'Could not launch $emergencyNumber',
+      );
     }
   }
 
@@ -72,39 +93,35 @@ class _EmergencyScreenState extends State<EmergencyScreen>
     _pulseController.dispose();
     super.dispose();
   }
+bool get isDark => Theme.of(context).brightness == Brightness.dark;
+
+Color get backgroundColor =>
+    isDark ? AppColors.darkBackground : AppColors.lightBackground;
+
+Color get textSecondary =>
+    isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+
+Color get cardColor =>
+    isDark ? AppColors.darkCard : AppColors.lightCard;
+
+int get remainingSeconds {
+  int sec = activationDuration - (_holdProgress * activationDuration).ceil();
+  sec = sec.clamp(0, activationDuration);
+  if (_holdProgress == 0.0) sec = activationDuration;
+  return sec;
+}
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final backgroundColor =
-        isDark ? AppColors.darkBackground : AppColors.lightBackground;
-    final textSecondary =
-        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final cardColor = isDark ? AppColors.darkCard : AppColors.lightCard;
-
-    int remainingSeconds =
-        activationDuration - (_holdProgress * activationDuration).ceil();
-    if (_holdProgress == 0.0) remainingSeconds = activationDuration;
-
     return Scaffold(
       backgroundColor: backgroundColor,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(
-        titleAppBar: LocaleKeys.emergency.tr(),
-      ),
+      appBar: CustomAppBar(titleAppBar: LocaleKeys.emergency.tr()),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Emergency Call',
-              style: TextStyle(
-                color: textSecondary,
-                fontSize: 18,
-                letterSpacing: 1.2,
-              ),
-            ),
+            EmergencyNumberText(textSecondary: textSecondary),
             50.ph,
             GestureDetector(
               onLongPressStart: (_) => startHoldTimer(),
@@ -119,61 +136,14 @@ class _EmergencyScreenState extends State<EmergencyScreen>
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Container(
-                          width: 240,
-                          height: 240,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [
-                                Colors.redAccent.withOpacity(0.6),
-                                Colors.transparent,
-                              ],
-                            ),
-                          ),
+                        const InnerContianer(),
+                        OuterContainer(
+                          holdProgress: _holdProgress,
+                          isDark: isDark,
                         ),
-                        SizedBox(
-                          width: 220,
-                          height: 220,
-                          child: CircularProgressIndicator(
-                            value: _holdProgress,
-                            strokeWidth: 12,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                                Colors.redAccent),
-                            backgroundColor:
-                                isDark ? Colors.white12 : Colors.black12,
-                          ),
-                        ),
-                        Container(
-                          width: 160,
-                          height: 160,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: const LinearGradient(
-                              colors: [Colors.red, Colors.redAccent],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.redAccent.withOpacity(0.4),
-                                blurRadius: 20,
-                                spreadRadius: _holdProgress * 10,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.warning_amber_rounded,
-                                  color: Colors.white, size: 40),
-                              const SizedBox(height: 8),
-                              Text(
-                                "${remainingSeconds}s",
-                                style: AppStyle.fontSize22Bold(context),
-                              ),
-                            ],
-                          ),
+                        CustomEmergencyNumberButton(
+                          holdProgress: _holdProgress,
+                          remainingSeconds: remainingSeconds,
                         ),
                       ],
                     ),
@@ -182,28 +152,11 @@ class _EmergencyScreenState extends State<EmergencyScreen>
               ),
             ),
             40.ph,
-            Text(
-              _holdProgress > 0
-                  ? "Hold to activate (${remainingSeconds}s)"
-                  : "Press & Hold to Start",
-              style: AppStyle.fontSize16Regular(context)
-            ),
+            DescriptionUnderButtonAfterMakeCall(holdProgress: _holdProgress, remainingSeconds: remainingSeconds),
             30.ph,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  "Hold the red button for ${activationDuration}s to make an immediate emergency call. "
-                  "Release before it completes to cancel the call.",
-                  style: AppStyle.fontSize16Regular(context),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            DescriptionUnderButton(
+              cardColor: cardColor,
+              activationDuration: activationDuration,
             ),
           ],
         ),
@@ -211,3 +164,6 @@ class _EmergencyScreenState extends State<EmergencyScreen>
     );
   }
 }
+
+
+

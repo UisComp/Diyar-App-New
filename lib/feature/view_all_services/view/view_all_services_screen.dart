@@ -59,12 +59,7 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
       ),
       body: BlocBuilder<HomeController, HomeState>(
         builder: (context, state) {
-          // final homeController = HomeController.get(context);
-          // final isLoading = state is GetAllServicesLoadingState;
-          // final services = homeController.filteredServices.isNotEmpty ||
-          //         homeController.searchController.text.isNotEmpty
-          //     ? homeController.filteredServices
-          //     : (homeController.userServicesResponse.data ?? []);
+          
           final homeController = HomeController.get(context);
           final isLoading = state is GetAllServicesLoadingState;
           final searchText = homeController.searchController.text.trim();
