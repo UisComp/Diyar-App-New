@@ -87,8 +87,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,
                             CustomTextFormField(
-                              controller:
-                                  profileController.nameProfileController,
+                              controller:profileController.nameProfileController,
                             ),
                             24.ph,
                             Text(
@@ -103,6 +102,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,
                             CustomTextFormField(
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (emailProfile) =>
                                   ValidatorHelper.validateEmail(
                                     emailProfile,

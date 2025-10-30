@@ -29,7 +29,7 @@ String? savedEmailForLoginWithBioMetric;
 String? savedPasswordForLoginWithBioMetric;
 Future<void> savedCredentials({
   required String email,
-  required String password,
+   String ?password,
 }) async {
   savedEmailForLoginWithBioMetric = email;
   await HiveHelper.addToHive(key: AppConstants.myEmail, value: email);

@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
@@ -13,6 +16,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -38,7 +42,6 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
 
   @override
   void dispose() {
-    visitorController.disposeControllers();
     super.dispose();
   }
 
@@ -212,13 +215,66 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                             ),
                             tooltip: LocaleKeys.share_qr_code.tr(),
                             onPressed: () async {
-                              final qrLink = visitorController.generatedQrData!;
-                              await Share.share(
-                                "${LocaleKeys.your_qr_code.tr()}:\n$qrLink",
-                                subject: LocaleKeys.share_qr_code.tr(),
-                              );
+                              try {
+                                final qrData =
+                                    visitorController.generatedQrData!;
+
+                                final qrValidationResult =
+                                    await QrValidator.validate(
+                                      data: qrData,
+                                      version: QrVersions.auto,
+                                      errorCorrectionLevel:
+                                          QrErrorCorrectLevel.M,
+                                    );
+
+                                if (qrValidationResult.status ==
+                                    QrValidationStatus.valid) {
+                                  final painter = QrPainter.withQr(
+                                    qr: qrValidationResult.qrCode!,
+                                    color: Colors.black,
+                                    emptyColor: Colors.white,
+                                  );
+
+                                  final tempDir = await getTemporaryDirectory();
+                                  final file = File(
+                                    "${tempDir.path}/qr_code.png",
+                                  );
+
+                                  final picData = await painter.toImageData(
+                                    2048,
+                                    format: ImageByteFormat.png,
+                                  );
+                                  await file.writeAsBytes(
+                                    picData!.buffer.asUint8List(),
+                                  );
+
+                                  await Share.shareXFiles(
+                                    [XFile(file.path)],
+                                    subject: LocaleKeys.share_qr_code.tr(),
+                                    text: LocaleKeys.your_qr_code.tr(),
+                                  );
+                                }
+                              } catch (e) {
+                                debugPrint("QR share error: $e");
+                              }
                             },
                           ),
+
+                          // IconButton(
+                          //   icon: const Icon(
+                          //     Icons.share,
+                          //     color: AppColors.primaryColor,
+                          //     size: 28,
+                          //   ),
+                          //   tooltip: LocaleKeys.share_qr_code.tr(),
+                          //   onPressed: () async {
+                          //     final qrLink = visitorController.generatedQrData!;
+                          //     await Share.share(
+                          //       "${LocaleKeys.your_qr_code.tr()}:\n$qrLink",
+                          //       subject: LocaleKeys.share_qr_code.tr(),
+                          //     );
+                          //   },
+                          // ),
                           Text(
                             LocaleKeys.share_qr_code.tr(),
                             style: AppStyle.fontSize16Regular(context),

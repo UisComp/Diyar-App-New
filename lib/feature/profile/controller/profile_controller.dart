@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
@@ -25,8 +26,8 @@ class ProfileController extends Cubit<ProfileState> {
     emailProfileController = TextEditingController();
     nameProfileController = TextEditingController();
     phoneProfileController = PhoneController(
-    initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
-  );
+      initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
+    );
   }
 
   void disposeProfileInfoControllers() {
@@ -34,8 +35,8 @@ class ProfileController extends Cubit<ProfileState> {
     nameProfileController.dispose();
   }
 
-  late PhoneController phoneProfileController ;
-  
+  late PhoneController phoneProfileController;
+
   UserUnitsResponseModel userLinkedUnitsResponseModel =
       UserUnitsResponseModel();
 
@@ -129,6 +130,11 @@ class ProfileController extends Cubit<ProfileState> {
 
       if (value.success == true) {
         await getMyProfile();
+        await savedCredentials(
+          email: emailProfileController.text,
+          password: savedPasswordForLoginWithBioMetric
+        );
+
         image = null;
         emit(EditingProfileSuccessfullyState());
         emit(GetMyProfileSuccessState());
