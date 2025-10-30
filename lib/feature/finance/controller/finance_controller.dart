@@ -33,6 +33,7 @@ class FinanceController extends Cubit<FinanceState> {
       emit(FinanceState.previewFileFailure(errorMessage: e.toString()));
     }
   }
+
   Future<bool> requestStoragePermission() async {
     if (Platform.isAndroid) {
       if (await Permission.photos.isDenied ||
@@ -55,23 +56,22 @@ class FinanceController extends Cubit<FinanceState> {
     return true;
   }
 
-Future<void> downloadFile(String url) async {
-  emit(const FinanceState.downloadFileLoading());
+  Future<void> downloadFile(String url) async {
+    emit(const FinanceState.downloadFileLoading());
 
-  try {
-    final dir = await getApplicationDocumentsDirectory();
-    final filename = url.split('/').last;
-    final filePath = "${dir.path}/$filename";
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final filename = url.split('/').last;
+      final filePath = "${dir.path}/$filename";
 
-    await Dio().download(url, filePath);
+      await Dio().download(url, filePath);
 
-    OpenFilex.open(filePath);
-    emit(const FinanceState.downloadFileSuccess());
-  } catch (e) {
-    emit(FinanceState.downloadFileFailure(errorMessage: e.toString()));
+      OpenFilex.open(filePath);
+      emit(const FinanceState.downloadFileSuccess());
+    } catch (e) {
+      emit(FinanceState.downloadFileFailure(errorMessage: e.toString()));
+    }
   }
-}
-
 
   FinanceResponseModel financeResponseModel = FinanceResponseModel();
   Future<void> getFinance() async {
@@ -80,7 +80,9 @@ Future<void> downloadFile(String url) async {
       await FinanceService.getFinance().then((financeResponse) {
         financeResponseModel = financeResponse;
         if (financeResponse.success == true) {
-          AppLogger.success("Get Finance: ${financeResponse.toJson()}");
+          AppLogger.success(
+            "Get Finance: ${financeResponse.data?.units?.map((e) => e.installments?.map((e) => e.status).toList()).toList()}",
+          );
           emit(const FinanceState.getFinanceSuccess());
         } else {
           AppLogger.error(

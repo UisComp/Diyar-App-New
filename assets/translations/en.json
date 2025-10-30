@@ -232,5 +232,7 @@
   "hold_the_red_button":"Hold the red button for",
   "to_make_a_call":"to make an immediate emergency call",
   "release_to_cancel": "Release before it completes to cancel the call.",
-  "discover":"Discover"
+  "discover":"Discover",
+  "overdue":"Overdue",
+  "pending":"Pending"
 }

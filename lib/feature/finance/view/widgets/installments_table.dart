@@ -22,6 +22,19 @@ class InstallmentsTable extends StatelessWidget {
     }
   }
 
+  String localizedStatus(String? status) {
+    switch (status?.toLowerCase()) {
+      case "paid":
+        return LocaleKeys.paid.tr();
+      case "overdue":
+        return LocaleKeys.overdue.tr();
+      case "pending":
+        return LocaleKeys.pending.tr();
+      default:
+        return "-";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FinanceController, FinanceState>(
@@ -38,17 +51,42 @@ class InstallmentsTable extends StatelessWidget {
             border: TableBorder.all(color: Colors.grey.shade300),
             columns: [
               DataColumn(
-                label: Center(child: Text(LocaleKeys.installment_number.tr(),textAlign: TextAlign.center,)),
+                label: Center(
+                  child: Text(
+                    LocaleKeys.installment_number.tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-              DataColumn(label: Center(child: Text(LocaleKeys.date.tr(),textAlign: TextAlign.center,))),
-              DataColumn(label: Center(child: Text(LocaleKeys.amount.tr(),textAlign: TextAlign.center,))),
-              DataColumn(label: Center(child: Text(LocaleKeys.status.tr(),textAlign: TextAlign.center,))),
+              DataColumn(
+                label: Center(
+                  child: Text(
+                    LocaleKeys.date.tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Center(
+                  child: Text(
+                    LocaleKeys.amount.tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Center(
+                  child: Text(
+                    LocaleKeys.status.tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ],
             rows: units.expand((unit) {
               final installments = unit.installments ?? [];
               return installments.map((installment) {
                 final status = installment.status ?? "-";
-
                 return DataRow(
                   cells: [
                     DataCell(
@@ -74,7 +112,7 @@ class InstallmentsTable extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            status.toUpperCase(),
+                            localizedStatus(status),
                             style: TextStyle(
                               color: statusColor(status),
                               fontWeight: FontWeight.w600,

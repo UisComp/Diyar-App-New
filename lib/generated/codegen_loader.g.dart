@@ -250,7 +250,9 @@ class CodegenLoader extends AssetLoader{
   "hold_the_red_button": "اضغط مع الاستمرار على الزر الأحمر لمدة",
   "to_make_a_call": "لإجراء مكالمة طارئة فورًا",
   "release_to_cancel": "حرّر قبل اكتمالها لإلغاء المكالمة.",
-  "discover": "اكتشف"
+  "discover": "اكتشف",
+  "overdue": "متاخر",
+  "pending": "قيد الانتظار"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -486,7 +488,9 @@ static const Map<String,dynamic> _en = {
   "hold_the_red_button": "Hold the red button for",
   "to_make_a_call": "to make an immediate emergency call",
   "release_to_cancel": "Release before it completes to cancel the call.",
-  "discover": "Discover"
+  "discover": "Discover",
+  "overdue": "Overdue",
+  "pending": "Pending"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

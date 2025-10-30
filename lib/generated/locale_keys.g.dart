@@ -239,5 +239,7 @@ abstract class  LocaleKeys {
   static const to_make_a_call = 'to_make_a_call';
   static const release_to_cancel = 'release_to_cancel';
   static const discover = 'discover';
+  static const overdue = 'overdue';
+  static const pending = 'pending';
 
 }

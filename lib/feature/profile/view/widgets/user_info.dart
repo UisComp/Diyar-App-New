@@ -1,4 +1,4 @@
-
+import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
@@ -9,10 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserInfo extends StatelessWidget {
-  const UserInfo({
-    super.key,
-    required this.profile,
-  });
+  const UserInfo({super.key, required this.profile});
 
   final ProfileData? profile;
 
@@ -44,12 +41,12 @@ class UserInfo extends StatelessWidget {
         ),
         20.ph,
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: context.locale.languageCode == AppConstants.enLanguage
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
           child: Text(
             LocaleKeys.linked_units.tr(),
-            style: AppStyle.fontSize22Bold(
-              context,
-            ).copyWith(fontSize: 18.sp),
+            style: AppStyle.fontSize22Bold(context).copyWith(fontSize: 18.sp),
           ),
         ),
       ],
