@@ -220,7 +220,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                                     visitorController.generatedQrData!;
 
                                 final qrValidationResult =
-                                    await QrValidator.validate(
+                                     QrValidator.validate(
                                       data: qrData,
                                       version: QrVersions.auto,
                                       errorCorrectionLevel:
@@ -259,22 +259,6 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                               }
                             },
                           ),
-
-                          // IconButton(
-                          //   icon: const Icon(
-                          //     Icons.share,
-                          //     color: AppColors.primaryColor,
-                          //     size: 28,
-                          //   ),
-                          //   tooltip: LocaleKeys.share_qr_code.tr(),
-                          //   onPressed: () async {
-                          //     final qrLink = visitorController.generatedQrData!;
-                          //     await Share.share(
-                          //       "${LocaleKeys.your_qr_code.tr()}:\n$qrLink",
-                          //       subject: LocaleKeys.share_qr_code.tr(),
-                          //     );
-                          //   },
-                          // ),
                           Text(
                             LocaleKeys.share_qr_code.tr(),
                             style: AppStyle.fontSize16Regular(context),

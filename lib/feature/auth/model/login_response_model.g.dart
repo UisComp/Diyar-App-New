@@ -97,6 +97,7 @@ class UserAdapter extends TypeAdapter<User> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return User(
+      roles: (fields[7] as List?)?.cast<String>(),
       id: fields[0] as int,
       name: fields[1] as String,
       email: fields[2] as String,
@@ -110,7 +111,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -124,7 +125,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(5)
       ..write(obj.createdAt)
       ..writeByte(6)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(7)
+      ..write(obj.roles);
   }
 
   @override
@@ -171,6 +174,8 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
+      roles:
+          (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       email: json['email'] as String,
@@ -188,4 +193,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email_verified_at': instance.emailVerifiedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+      'roles': instance.roles,
     };

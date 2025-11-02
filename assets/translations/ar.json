@@ -139,7 +139,7 @@
   "no_results_found": "لم يتم العثور على نتايج",
   "service_not_active": "الخدمة غير نشطة",
   "phone_number_in_your_contract": "أدخل رقم الهاتف الموجود في عقدك",
-  "linked_units": "الواحدات المرتبطة",
+  "own_units": "وحداتك الخاصة",
   "project_gallery": "معرض المشروع",
   "no_news_found": "لم يتم العثور على اخبار",
   "no_new_unit_available": "لا يوجد وحدات متاحة",
@@ -237,5 +237,6 @@
   "discover": "اكتشف",
   "overdue": "متاخر",
   "pending": "قيد الانتظار",
-  "no_finance_available":"لا توجد بيانات مالية متاحة حالياً"
+  "no_finance_available": "لا توجد بيانات مالية متاحة حالياً",
+  "payment_plan": "خطة الدفع"
 }

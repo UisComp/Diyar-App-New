@@ -31,7 +31,9 @@ class _FinanceScreenState extends State<FinanceScreen>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FinanceController()..getFinance()..getDocumets(),
+      create: (context) => FinanceController()
+        ..getFinance()
+        ..getDocumets(),
       child: Scaffold(
         appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
         body: BlocConsumer<FinanceController, FinanceState>(
@@ -46,7 +48,8 @@ class _FinanceScreenState extends State<FinanceScreen>
               downloadFileFailure: (errorMessage) {
                 AppFunctions.errorMessage(
                   context,
-                  message: errorMessage ?? LocaleKeys.error_downloading_file.tr(),
+                  message:
+                      errorMessage ?? LocaleKeys.error_downloading_file.tr(),
                 );
               },
               downloadFileSuccess: () {
@@ -77,13 +80,22 @@ class _FinanceScreenState extends State<FinanceScreen>
                     controller: _tabController,
                     children: [
                       FinanceTab(
+                        onRefresh: () async {
+                        await  FinanceController.get(context).getFinance();
+                        },
                         units:
-                            FinanceController.get(context).financeResponseModel.data?.units ??
+                            FinanceController.get(
+                              context,
+                            ).financeResponseModel.data?.units ??
                             [],
                       ),
                       DocumentsTab(
-                        documentGroups:
-                            FinanceController.get(context).documentsResponseModel.data,
+                        onRefresh: () async {
+                          await FinanceController.get(context).getDocumets();
+                        },
+                        documentGroups: FinanceController.get(
+                          context,
+                        ).documentsResponseModel.data,
                       ),
                     ],
                   ),

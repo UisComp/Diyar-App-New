@@ -77,57 +77,67 @@ class _HomeScreenState extends State<HomeScreen> {
           titleAppBar: LocaleKeys.diyar.tr(),
           showIconNotification: true,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTextFormField(
-                controller: homeController.searchController,
-                hintStyle: AppStyle.fontSize16Regular(
-                  context,
-                ).copyWith(color: AppColors.primaryColor),
-                hintText: LocaleKeys.search_services.tr(),
-                prefixIcon: SvgPicture.asset(
-                  Assets.images.svg.search,
-                  height: 24.h,
-                  width: 24.w,
-                  fit: BoxFit.scaleDown,
-                ),
-              ).paddingOnly(top: 20.h),
-              30.ph,
-              Text(
-                LocaleKeys.discover.tr(),
-                style: AppStyle.fontSize22Bold(context).copyWith(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primaryColor,
-                ),
-              ).paddingSymmetric(horizontal: 16.w),
-              BlocBuilder<HomeController, HomeState>(
-                builder: (context, state) {
-                  final isLoading =
-                      state is GetAllAnnouncementsBannersLoadingState;
+        body: RefreshIndicator(
+          color: AppColors.primaryColor,
+          onRefresh: () async {
+            await homeController.getAllAnnouncements();
+            await homeController.getAllServices();
+            await homeController.filterServices();
+          },
 
-                  return Skeletonizer(
-                    enabled: isLoading,
-                    child: DiyarBannerSlider(
-                      isLoading: isLoading,
-                      banners: homeController.announcementsResponseModel,
-                      height: 180.h,
-                    ),
-                  );
-                },
-              ),
-              30.ph,
-              const CustomServiceAndViewAllTexts(),
-              20.ph,
-              CustomGridViewForServices(
-                cardColor: cardColor,
-                cardImageColor: cardImageColor,
-                textColor: textColor,
-              ),
-              30.ph,
-            ],
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomTextFormField(
+                  controller: homeController.searchController,
+                  hintStyle: AppStyle.fontSize16Regular(
+                    context,
+                  ).copyWith(color: AppColors.primaryColor),
+                  hintText: LocaleKeys.search_services.tr(),
+                  prefixIcon: SvgPicture.asset(
+                    Assets.images.svg.search,
+                    height: 24.h,
+                    width: 24.w,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ).paddingOnly(top: 20.h),
+                30.ph,
+                Text(
+                  LocaleKeys.discover.tr(),
+                  style: AppStyle.fontSize22Bold(context).copyWith(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primaryColor,
+                  ),
+                ).paddingSymmetric(horizontal: 16.w),
+                5.ph,
+                BlocBuilder<HomeController, HomeState>(
+                  builder: (context, state) {
+                    final isLoading =
+                        state is GetAllAnnouncementsBannersLoadingState;
+                    return Skeletonizer(
+                      enabled: isLoading,
+                      child: DiyarBannerSlider(
+                        isLoading: isLoading,
+                        banners: homeController.announcementsResponseModel,
+                        height: 180.h,
+                      ),
+                    );
+                  },
+                ),
+                20.ph,
+                const CustomServiceAndViewAllTexts(),
+                20.ph,
+                CustomGridViewForServices(
+                  cardColor: cardColor,
+                  cardImageColor: cardImageColor,
+                  textColor: textColor,
+                ),
+                30.ph,
+              ],
+            ),
           ),
         ),
       ),

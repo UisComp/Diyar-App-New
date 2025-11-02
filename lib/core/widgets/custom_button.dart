@@ -120,35 +120,6 @@ class _CustomButtonState extends State<CustomButton>
                             ),
                           ],
                         )
-                      // ? Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       SvgPicture.asset(
-                      //         colorFilter: ColorFilter.mode(
-                      //           AppColors.lightCard,
-                      //           BlendMode.srcIn,
-                      //         ),
-                      //         widget.image!,
-                      //         key: const ValueKey('image'),
-                      //       ),
-                      //       10.pw,
-                      //       Text(
-                      //         widget.buttonText,
-                      //         key: const ValueKey('text'),
-                      //         textAlign: TextAlign.center,
-                      //         style: AppStyle.fontSize18Bold(context).copyWith(
-                      //           fontSize: 16.sp,
-                      //           color:
-                      //               AppThemeController.get(
-                      //                     context,
-                      //                   ).currentThemeMode ==
-                      //                   AppThemeMode.dark
-                      //               ? AppColors.blackColor
-                      //               : widget.textColor ?? AppColors.whiteColor,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   )
                       : Text(
                           widget.buttonText,
                           key: const ValueKey('text'),

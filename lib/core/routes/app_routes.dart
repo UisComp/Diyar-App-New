@@ -11,13 +11,14 @@ import 'package:diyar_app/feature/auth/view/otp_screen.dart';
 import 'package:diyar_app/feature/auth/view/register_screen.dart';
 import 'package:diyar_app/feature/auth/view/reset_password_screen.dart';
 import 'package:diyar_app/feature/committee/view/committee_screen.dart';
-import 'package:diyar_app/feature/complain/view/complain_screen.dart';
 import 'package:diyar_app/feature/emergency/view/emergency_screen.dart';
 import 'package:diyar_app/feature/facility_booking/view/facility_booking_screen.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
+import 'package:diyar_app/feature/home/model/announcements_response_model.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
+import 'package:diyar_app/feature/home/view/widgets/image_preview_screen.dart';
 import 'package:diyar_app/feature/new_work/view/new_work_screen.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
@@ -502,12 +503,20 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      name: RoutesName.complainScreen,
-      path: RoutesName.complainScreen,
-      pageBuilder: (context, state) => buildAnimatedPage(
-        child: const ComplainScreen(),
-        transition: slideFromRight,
-      ),
+      name: RoutesName.imagePreviewScreen,
+      path: RoutesName.imagePreviewScreen,
+
+      pageBuilder: (context, state) {
+        final imageUrl = state.extra as Announcement;
+        return buildAnimatedPage(
+          child: ImagePreviewScreen(
+            imageUrl: imageUrl.url ?? '',
+            title: imageUrl.title ?? '',
+            description: imageUrl.description ?? '',
+          ),
+          transition: slideFromRight,
+        );
+      },
     ),
   ],
 );

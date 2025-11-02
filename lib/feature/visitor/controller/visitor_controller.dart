@@ -2,25 +2,43 @@ import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class VisitorController extends Cubit<VisitorState> {
   VisitorController() : super(VisitorInitial());
 
   static VisitorController get(BuildContext context) =>
       BlocProvider.of<VisitorController>(context);
-
   String? selectedUnitId;
   String? generatedQrData;
-
   DateTimeRange? selectedDateRange;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-
   final TextEditingController dateRangeController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
+    bool isScanning = false;
+  String? scannedCode;
 
-  /// Pick date range
+  final MobileScannerController scannerController = MobileScannerController(
+      autoStart: false,
+    detectionSpeed: DetectionSpeed.normal,
+    formats: [
+      BarcodeFormat.code128,
+      BarcodeFormat.code39,
+      BarcodeFormat.code93,
+      BarcodeFormat.ean13,
+      BarcodeFormat.ean8,
+      BarcodeFormat.dataMatrix,
+      BarcodeFormat.itf,
+      BarcodeFormat.pdf417,
+      BarcodeFormat.codebar,
+      BarcodeFormat.all,
+      BarcodeFormat.dataMatrix,
+      BarcodeFormat.upcA,
+    ],
+  );
+
   Future<void> pickDateRange(BuildContext context) async {
     emit(PickDateRangeLoadingState());
     try {
@@ -125,7 +143,6 @@ class VisitorController extends Cubit<VisitorState> {
 
   void onUnitChanged(String? unitId) {
     selectedUnitId = unitId;
-
     selectedDateRange = null;
     startTime = null;
     endTime = null;
@@ -147,4 +164,16 @@ class VisitorController extends Cubit<VisitorState> {
 
     emit(ClearDataState());
   }
+   void startScan() {
+     isScanning = true;
+     scannerController.start();
+     emit(StartScanState());
+  }
+
+  void stopScan() {
+     isScanning = false;
+    scannerController.stop();
+    emit(StopScanState());
+  }
+
 }

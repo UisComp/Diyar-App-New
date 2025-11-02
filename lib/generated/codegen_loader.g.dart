@@ -155,7 +155,7 @@ class CodegenLoader extends AssetLoader{
   "no_results_found": "لم يتم العثور على نتايج",
   "service_not_active": "الخدمة غير نشطة",
   "phone_number_in_your_contract": "أدخل رقم الهاتف الموجود في عقدك",
-  "linked_units": "الواحدات المرتبطة",
+  "own_units": "وحداتك الخاصة",
   "project_gallery": "معرض المشروع",
   "no_news_found": "لم يتم العثور على اخبار",
   "no_new_unit_available": "لا يوجد وحدات متاحة",
@@ -253,7 +253,8 @@ class CodegenLoader extends AssetLoader{
   "discover": "اكتشف",
   "overdue": "متاخر",
   "pending": "قيد الانتظار",
-  "no_finance_available": "لا توجد بيانات مالية متاحة حالياً"
+  "no_finance_available": "لا توجد بيانات مالية متاحة حالياً",
+  "payment_plan": "خطة الدفع"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -396,7 +397,7 @@ static const Map<String,dynamic> _en = {
   "no_results_found": "No results found",
   "service_not_active": "Service Not Active",
   "phone_number_in_your_contract": "Enter Phone Number in Your Contract",
-  "linked_units": "Linked Units",
+  "own_units": "Own Units",
   "project_gallery": "Project Gallery",
   "no_news_found": "No news found",
   "no_new_unit_available": "No Units Available",
@@ -492,7 +493,8 @@ static const Map<String,dynamic> _en = {
   "discover": "Discover",
   "overdue": "Overdue",
   "pending": "Pending",
-  "no_finance_available": "No Finance Available"
+  "no_finance_available": "No Finance Available",
+  "payment_plan": "Payment Plan"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

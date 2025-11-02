@@ -29,3 +29,5 @@ class EmptyQrState extends VisitorState {
 class QrGeneratedState extends VisitorState {}
 class UnitChangedState  extends VisitorState {}
 class ClearDataState extends VisitorState {}
+class StartScanState extends VisitorState {}
+class StopScanState extends VisitorState {}

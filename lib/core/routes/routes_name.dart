@@ -36,4 +36,6 @@ class RoutesName {
   static const String complainScreen = "/complainScreen";
   static const String ownUnitScreen = "/ownUnitScreen";
   static const String guardRoleScreen = "/guardRoleScreen";
+  static const String imagePreviewScreen = "/imagePreviewScreen";
+
 }

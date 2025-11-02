@@ -1,11 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/home/model/announcements_response_model.dart';
-import 'package:diyar_app/feature/settings/functions/settings_functions.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class DiyarBannerSlider extends StatefulWidget {
@@ -31,11 +32,14 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
   Widget build(BuildContext context) {
     final itemCount = widget.isLoading ? 3 : (widget.banners.data?.length ?? 0);
     return InkWell(
-      onTap: () => showImagePreview(
-        context,
-        widget.banners.data?[_current].url ?? '',
-        title: widget.banners.data?[_current].title,
-        description: widget.banners.data?[_current].description,
+      onTap: () => context.push(
+        RoutesName.imagePreviewScreen,
+        extra: widget.banners.data?[_current],
+        //  showImagePreview(
+        //   context,
+        //   widget.banners.data?[_current].url ?? '',
+        //   title: widget.banners.data?[_current].title,
+        //   description: widget.banners.data?[_current].description,
       ),
       child: CarouselSlider.builder(
         itemCount: itemCount,

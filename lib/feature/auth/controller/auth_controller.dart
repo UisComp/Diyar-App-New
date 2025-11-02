@@ -125,7 +125,9 @@ class AuthController extends Cubit<AuthState> {
         .then((value) async {
           await saveEmail(emailForForgetPasswordController.text);
           forgetPasswordResponseModel = value;
-          AppLogger.success('forgetPasswordResponseModel: $forgetPasswordResponseModel');
+          AppLogger.success(
+            'forgetPasswordResponseModel: $forgetPasswordResponseModel',
+          );
           if (value.success == true) {
             emit(ForgetPasswordSuccessState());
             clearEmailForForgetPassword();
@@ -134,7 +136,9 @@ class AuthController extends Cubit<AuthState> {
           }
         })
         .catchError((error) {
-          AppLogger.error('Error Happen While Forget Password is ${error.toString()}');
+          AppLogger.error(
+            'Error Happen While Forget Password is ${error.toString()}',
+          );
           emit(ForgetPasswordFailureState(error: error.toString()));
         });
   }
@@ -256,6 +260,8 @@ class AuthController extends Cubit<AuthState> {
             await updateUserModel(null);
             await HiveHelper.clearUserDataOnly();
           } else {
+            await updateUserModel(null);
+            await HiveHelper.clearUserDataOnly();
             emit(LogOutFailureState(error: value.message));
           }
         })

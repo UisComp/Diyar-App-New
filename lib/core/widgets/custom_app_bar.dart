@@ -10,28 +10,41 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.showIconNotification = false,
     required this.titleAppBar,
-    this.isOtherIcon = false, this.otherIcon,
+    this.isOtherIcon = false,
+    this.otherIcon,
+    this.backgroundColor,
+    this.actions,
   });
+
   final bool? showIconNotification;
   final bool? isOtherIcon;
   final String titleAppBar;
-  final Widget ?otherIcon;
+  final Widget? otherIcon;
+  final Color? backgroundColor;
+  final List<Widget>? actions;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       surfaceTintColor: Colors.transparent,
-      actions: showIconNotification == true
-          ? [
-              ?isOtherIcon == true
-                  ?otherIcon
-                  : IconButton(
+      actions: actions ??
+          (showIconNotification == true
+              ? [
+                  if (isOtherIcon == true && otherIcon != null)
+                    otherIcon!
+                  else
+                    IconButton(
                       onPressed: () {
                         context.push(RoutesName.notificationsScreen);
                       },
-                      icon: SvgPicture.asset(Assets.images.svg.notification),
+                      icon: SvgPicture.asset(
+                        Assets.images.svg.notification,
+                      ),
                     ),
-            ]
-          : null,
+                ]
+              : null),
+
       title: Text(titleAppBar, style: AppStyle.fontSize18Bold(context)),
     );
   }
@@ -39,3 +52,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+

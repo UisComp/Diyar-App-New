@@ -45,7 +45,7 @@ class UserInfo extends StatelessWidget {
               ? Alignment.centerLeft
               : Alignment.centerRight,
           child: Text(
-            LocaleKeys.linked_units.tr(),
+            LocaleKeys.own_units.tr(),
             style: AppStyle.fontSize22Bold(context).copyWith(fontSize: 18.sp),
           ),
         ),

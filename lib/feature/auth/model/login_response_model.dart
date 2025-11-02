@@ -76,8 +76,12 @@ class User {
   @HiveField(6)
   @JsonKey(name: 'updated_at')
   final String updatedAt;
+  @HiveField(7)
+
+final List<String>? roles;
 
   User({
+     this.roles,
     required this.id,
     required this.name,
     required this.email,

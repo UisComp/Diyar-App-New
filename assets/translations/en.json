@@ -139,7 +139,7 @@
   "no_results_found": "No results found",
   "service_not_active": "Service Not Active",
   "phone_number_in_your_contract": "Enter Phone Number in Your Contract",
-  "linked_units": "Linked Units",
+  "own_units": "Own Units",
   "project_gallery": "Project Gallery",
   "no_news_found": "No news found",
   "no_new_unit_available": "No Units Available",
@@ -235,5 +235,6 @@
   "discover": "Discover",
   "overdue": "Overdue",
   "pending": "Pending",
-  "no_finance_available": "No Finance Available"
+  "no_finance_available": "No Finance Available",
+  "payment_plan":"Payment Plan"
 }

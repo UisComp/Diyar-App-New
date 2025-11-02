@@ -10,42 +10,53 @@ import 'package:diyar_app/feature/finance/view/widgets/unit_expansion_tile.dart'
 
 class FinanceTab extends StatelessWidget {
   final List<Unit> units;
-  const FinanceTab({super.key, required this.units});
+  final Future<void> Function() ?onRefresh;   
+
+  const FinanceTab({
+    super.key,
+    required this.units,
+     this.onRefresh,               
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (units.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.all(24.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 80.sp,
-                color: AppColors.primaryColor.withOpacity(0.5),
+    return RefreshIndicator(
+      color: AppColors.primaryColor,
+      onRefresh: onRefresh??() async {},                
+      child: units.isEmpty
+          ? SingleChildScrollView(        
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(24.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.account_balance_wallet_outlined,
+                        size: 80.sp,
+                        color: AppColors.primaryColor.withOpacity(0.5),
+                      ),
+                      16.ph,
+                      Text(
+                        LocaleKeys.no_finance_available.tr(),
+                        style: AppStyle.fontSize16Regular(
+                          context,
+                        ).copyWith(color: Colors.grey.shade700),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              16.ph,
-              Text(
-                LocaleKeys.no_finance_available.tr(),
-                style: AppStyle.fontSize16Regular(
-                  context,
-                ).copyWith(color: Colors.grey.shade700),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: EdgeInsets.all(16.w),
-      itemCount: units.length,
-      itemBuilder: (context, index) {
-        return UnitExpansionTile(unit: units[index]);
-      },
+            )
+          : ListView.builder(
+              padding: EdgeInsets.all(16.w),
+              itemCount: units.length,
+              itemBuilder: (context, index) {
+                return UnitExpansionTile(unit: units[index]);
+              },
+            ),
     );
   }
 }

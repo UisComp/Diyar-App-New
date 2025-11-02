@@ -48,88 +48,50 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Future<void> _loginWithBiometrics() async {
-  //   try {
-  //     final isAuthenticated = await context
-  //         .read<SettingsController>()
-  //         .authenticateWithBiometrics();
+  Future<void> _loginWithBiometrics() async {
+    try {
+      final isAuthenticated = await context
+          .read<SettingsController>()
+          .authenticateWithBiometrics();
 
-  //     if (!isAuthenticated) {
-  //       AppLogger.error('Biometric authentication failed');
-  //       return;
-  //     }
-  //     final userName = await HiveHelper.getFromHive(key: AppConstants.myEmail);
-  //     final password = await HiveHelper.getFromHive(
-  //       key: AppConstants.myPassword,
-  //     );
+      if (!isAuthenticated) {
+        AppLogger.error('Biometric authentication failed');
+        return;
+      }
+      final userName = await HiveHelper.getFromHive(key: AppConstants.myEmail);
+      final password = await HiveHelper.getFromHive(
+        key: AppConstants.myPassword,
+      );
 
-  //     if (userName == null || password == null) {
-  //       AppLogger.warning(' No saved credentials found');
-  //       AppFunctions.errorMessage(
-  //         context,
-  //         message: LocaleKeys.biometric_authentication_failed.tr(),
-  //       );
-  //       return;
-  //     } else {
-  //       authController.emailControllerForLogin.text = userName;
-  //       authController.passwordControllerForLogin.text = password;
-  //       AppLogger.success('Loaded credentials after biometric success');
-  //       await authController.login();
-  //       context.go(RoutesName.homeLayout);
-  //     }
-  //   } catch (e) {
-  //     AppLogger.error('Biometric login error: $e');
-  //     AppFunctions.errorMessage(
-  //       context,
-  //       message: LocaleKeys.biometric_authentication_failed.tr(),
-  //     );
-  //   }
-  // }
-Future<void> _loginWithBiometrics() async {
-  try {
-    final isAuthenticated = await context
-        .read<SettingsController>()
-        .authenticateWithBiometrics();
+      if (userName == null || password == null) {
+        AppLogger.warning('No saved credentials found');
 
-    if (!isAuthenticated) {
-      AppLogger.error('Biometric authentication failed');
-      return;
-    }
+        if (!mounted) return;
+        AppFunctions.errorMessage(
+          context,
+          message: LocaleKeys.biometric_authentication_failed.tr(),
+        );
+        return;
+      }
 
-    final userName =
-        await HiveHelper.getFromHive(key: AppConstants.myEmail);
-    final password =
-        await HiveHelper.getFromHive(key: AppConstants.myPassword);
+      authController.emailControllerForLogin.text = userName;
+      authController.passwordControllerForLogin.text = password;
 
-    if (userName == null || password == null) {
-      AppLogger.warning('No saved credentials found');
+      AppLogger.success('Loaded credentials after biometric success');
+      await authController.login();
 
-      if (!mounted) return;     
+      if (!mounted) return;
+      context.go(RoutesName.homeLayout);
+    } catch (e) {
+      AppLogger.error('Biometric login error: $e');
+
+      if (!mounted) return;
       AppFunctions.errorMessage(
         context,
         message: LocaleKeys.biometric_authentication_failed.tr(),
       );
-      return;
     }
-
-    authController.emailControllerForLogin.text = userName;
-    authController.passwordControllerForLogin.text = password;
-
-    AppLogger.success('Loaded credentials after biometric success');
-    await authController.login();
-
-    if (!mounted) return;       
-    context.go(RoutesName.homeLayout);
-  } catch (e) {
-    AppLogger.error('Biometric login error: $e');
-
-    if (!mounted) return;       
-    AppFunctions.errorMessage(
-      context,
-      message: LocaleKeys.biometric_authentication_failed.tr(),
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {

@@ -143,7 +143,7 @@ abstract class  LocaleKeys {
   static const no_results_found = 'no_results_found';
   static const service_not_active = 'service_not_active';
   static const phone_number_in_your_contract = 'phone_number_in_your_contract';
-  static const linked_units = 'linked_units';
+  static const own_units = 'own_units';
   static const project_gallery = 'project_gallery';
   static const no_news_found = 'no_news_found';
   static const no_new_unit_available = 'no_new_unit_available';
@@ -242,5 +242,6 @@ abstract class  LocaleKeys {
   static const overdue = 'overdue';
   static const pending = 'pending';
   static const no_finance_available = 'no_finance_available';
+  static const payment_plan = 'payment_plan';
 
 }
