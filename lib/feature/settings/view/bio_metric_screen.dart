@@ -39,12 +39,12 @@ class _BioMetricScreenState extends State<BioMetricScreen> {
           if (state is BiometricError) {
             AppFunctions.errorMessage(context, message: state.error);
           } else if (state is BiometricNotSupported) {
-            AppFunctions.errorMessage(
+            AppFunctions.warningMessage(
               context,
               message: LocaleKeys.biometrics_not_supported_on_this_device.tr(),
             );
           } else if (state is BiometricLockNotSet) {
-            AppFunctions.errorMessage(
+            AppFunctions.warningMessage(
               context,
               message: LocaleKeys.please_set_a_device_lock_pin_or_pattern_first
                   .tr(),

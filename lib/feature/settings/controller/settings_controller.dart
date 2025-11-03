@@ -68,26 +68,27 @@ class SettingsController extends Cubit<SettingsState> {
   Future<void> enableBiometrics(BuildContext context) async {
     try {
       emit(BiometricLoading());
+
       final canCheckBiometrics = await _localAuth.canCheckBiometrics;
       final isDeviceSupported = await _localAuth.isDeviceSupported();
 
-      if (!canCheckBiometrics || !isDeviceSupported) {
+      if (!canCheckBiometrics && !isDeviceSupported) {
         emit(BiometricNotSupported());
         return;
       }
-      final hasDeviceLock = await _localAuth.isDeviceSupported();
-      if (!hasDeviceLock) {
-        showLockRequiredDialog(context);
-        emit(BiometricLockNotSet());
-        return;
-      }
+
+      final available = await _localAuth.getAvailableBiometrics();
+
+      bool hasBiometric =
+          available.contains(BiometricType.face) ||
+          available.contains(BiometricType.fingerprint);
+
       final isAuthenticated = await _localAuth.authenticate(
         localizedReason: 'Authenticate to enable biometrics',
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: true,
-        ),
+        biometricOnly: hasBiometric,
+        persistAcrossBackgrounding: true,
       );
+
       if (isAuthenticated) {
         await saveBiometricStatus(true);
         emit(BiometricEnabled());
@@ -95,9 +96,19 @@ class SettingsController extends Cubit<SettingsState> {
         await saveBiometricStatus(false);
         emit(BiometricDisabled());
       }
+    } on LocalAuthException catch (e) {
+      AppLogger.error('LocalAuthException enabling biometrics: $e');
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet ||
+          e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        showLockRequiredDialog(context);
+        emit(BiometricLockNotSet());
+        return;
+      }
+
+      emit(BiometricError('Failed: ${e.code}'));
     } catch (e) {
       AppLogger.error('Error enabling biometrics: $e');
-      emit(BiometricError('Failed to enable biometrics: $e'));
+      emit(BiometricError('Failed: $e'));
     }
   }
 
@@ -118,30 +129,33 @@ class SettingsController extends Cubit<SettingsState> {
     try {
       isEnabled = await loadBiometricStatus();
       if (!isEnabled) {
-        AppLogger.warning(' Biometrics not enabled');
+        AppLogger.warning('Biometrics not enabled');
         return false;
       }
 
       final canCheckBiometrics = await _localAuth.canCheckBiometrics;
       final isDeviceSupported = await _localAuth.isDeviceSupported();
       if (!canCheckBiometrics && !isDeviceSupported) {
-        AppLogger.warning(' Device does not support biometrics');
+        AppLogger.warning('Device does not support biometrics');
         return false;
       }
 
+      final available = await _localAuth.getAvailableBiometrics();
+
+      bool hasBiometric =
+          available.contains(BiometricType.face) ||
+          available.contains(BiometricType.fingerprint);
       final isAuthenticated = await _localAuth.authenticate(
         localizedReason: 'Authenticate to access the app',
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: true,
-        ),
+        biometricOnly: hasBiometric,
+        persistAcrossBackgrounding: true,
       );
       AppLogger.info(
         'Biometric authentication ${isAuthenticated ? 'successful' : 'failed'}',
       );
       return isAuthenticated;
     } catch (e) {
-      AppLogger.error(' Biometric authentication error: $e');
+      AppLogger.error('Biometric authentication error: $e');
       return false;
     }
   }
@@ -171,7 +185,7 @@ class SettingsController extends Cubit<SettingsState> {
         key: AppConstants.enableBiometric,
         value: isEnabled,
       );
-      AppLogger.success('_saveBiometricStatus when adding to hive: $isEnabled');
+      AppLogger.success('saveBiometricStatus when adding to hive: $isEnabled');
     } catch (e) {
       AppLogger.error('Biometric: Error saving biometric status: $e');
       throw Exception(e);

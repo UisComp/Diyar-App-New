@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'user_services_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -39,6 +40,13 @@ class UserServicesResponse extends Equatable {
 class UserServiceData extends Equatable {
   final int? id;
   final String? name;
+
+  @JsonKey(name: 'name_ar')
+  final String? nameAr;
+
+  @JsonKey(name: 'localized_name')
+  final String? localizedName;
+
   final String? description;
 
   @JsonKey(name: 'is_active')
@@ -57,6 +65,8 @@ class UserServiceData extends Equatable {
   const UserServiceData({
     this.id,
     this.name,
+    this.nameAr,
+    this.localizedName,
     this.description,
     this.isActive,
     this.roles,
@@ -74,6 +84,8 @@ class UserServiceData extends Equatable {
   UserServiceData copyWith({
     int? id,
     String? name,
+    String? nameAr,
+    String? localizedName,
     String? description,
     bool? isActive,
     List<Role>? roles,
@@ -85,6 +97,8 @@ class UserServiceData extends Equatable {
     return UserServiceData(
       id: id ?? this.id,
       name: name ?? this.name,
+      nameAr: nameAr ?? this.nameAr,
+      localizedName: localizedName ?? this.localizedName,
       description: description ?? this.description,
       isActive: isActive ?? this.isActive,
       roles: roles ?? this.roles,
@@ -96,8 +110,19 @@ class UserServiceData extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, name, description, isActive, roles, type, icon, createdAt, updatedAt];
+  List<Object?> get props => [
+        id,
+        name,
+        nameAr,
+        localizedName,
+        description,
+        isActive,
+        roles,
+        type,
+        icon,
+        createdAt,
+        updatedAt,
+      ];
 }
 
 @JsonSerializable()
@@ -105,10 +130,7 @@ class Role extends Equatable {
   final int? id;
   final String? name;
 
-  const Role({
-    this.id,
-    this.name,
-  });
+  const Role({this.id, this.name});
 
   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 
@@ -139,8 +161,8 @@ class IconDataModel extends Equatable {
   final String? url;
   final String? size;
 
-  @JsonKey(name: 'mime_type')
-  final String? mimeType;
+  @JsonKey(name: 'uploaded_at')
+  final String? uploadedAt;
 
   const IconDataModel({
     this.id,
@@ -148,7 +170,7 @@ class IconDataModel extends Equatable {
     this.fileName,
     this.url,
     this.size,
-    this.mimeType,
+    this.uploadedAt,
   });
 
   factory IconDataModel.fromJson(Map<String, dynamic> json) =>
@@ -162,7 +184,7 @@ class IconDataModel extends Equatable {
     String? fileName,
     String? url,
     String? size,
-    String? mimeType,
+    String? uploadedAt,
   }) {
     return IconDataModel(
       id: id ?? this.id,
@@ -170,10 +192,10 @@ class IconDataModel extends Equatable {
       fileName: fileName ?? this.fileName,
       url: url ?? this.url,
       size: size ?? this.size,
-      mimeType: mimeType ?? this.mimeType,
+      uploadedAt: uploadedAt ?? this.uploadedAt,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, fileName, url, size, mimeType];
+  List<Object?> get props => [id, name, fileName, url, size, uploadedAt];
 }

@@ -65,6 +65,38 @@ class AppFunctions {
           : null,
     ).show(context);
   }
+   static void warningMessage(
+    BuildContext context, {
+    required String message,
+    String? description,
+  }) {
+    CherryToast.warning(
+      animationType: AnimationType.fromLeft,
+      toastPosition: Position.top,
+      borderRadius: 12.r,
+      displayCloseButton: true,
+      backgroundColor: AppColors.orangeColor,
+      toastDuration: const Duration(seconds: 4),
+      title: Text(
+        message,
+        style: TextStyle(
+          color: AppColors.blackColor,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      description: description != null && description.isNotEmpty
+          ? Text(
+              description,
+              style: TextStyle(color: AppColors.blackColor, fontSize: 12.sp),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            )
+          : null,
+    ).show(context);
+  }
 }
 
 void goToDeviceSettings(BuildContext context) async {

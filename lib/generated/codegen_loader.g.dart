@@ -494,7 +494,8 @@ static const Map<String,dynamic> _en = {
   "overdue": "Overdue",
   "pending": "Pending",
   "no_finance_available": "No Finance Available",
-  "payment_plan": "Payment Plan"
+  "payment_plan": "Payment Plan",
+  "enableDeviceLockInSettings": "Enable device lock in settings"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

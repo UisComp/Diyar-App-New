@@ -12,10 +12,7 @@ import 'package:flutter/widgets.dart';
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// Directory path: assets/fonts/manrope
   $AssetsFontsManropeGen get manrope => const $AssetsFontsManropeGen();
-
-  /// Directory path: assets/fonts/news_reader
   $AssetsFontsNewsReaderGen get newsReader => const $AssetsFontsNewsReaderGen();
 }
 
@@ -53,7 +50,6 @@ class $AssetsImagesGen {
   AssetGenImage get serviceNotAvailable =>
       const AssetGenImage('assets/images/service_not_available.png');
 
-  /// Directory path: assets/images/svg
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 
   /// List of all assets
@@ -549,16 +545,9 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName);
 
   final String _assetName;
-
-  final Size? size;
-  final Set<String> flavors;
 
   Image image({
     Key? key,
@@ -578,7 +567,7 @@ class AssetGenImage {
     ImageRepeat repeat = ImageRepeat.noRepeat,
     Rect? centerSlice,
     bool matchTextDirection = false,
-    bool gaplessPlayback = true,
+    bool gaplessPlayback = false,
     bool isAntiAlias = false,
     String? package,
     FilterQuality filterQuality = FilterQuality.low,

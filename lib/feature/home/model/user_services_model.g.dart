@@ -28,6 +28,8 @@ UserServiceData _$UserServiceDataFromJson(Map<String, dynamic> json) =>
     UserServiceData(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
+      nameAr: json['name_ar'] as String?,
+      localizedName: json['localized_name'] as String?,
       description: json['description'] as String?,
       isActive: json['is_active'] as bool?,
       roles: (json['roles'] as List<dynamic>?)
@@ -45,6 +47,8 @@ Map<String, dynamic> _$UserServiceDataToJson(UserServiceData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'name_ar': instance.nameAr,
+      'localized_name': instance.localizedName,
       'description': instance.description,
       'is_active': instance.isActive,
       'roles': instance.roles?.map((e) => e.toJson()).toList(),
@@ -71,7 +75,7 @@ IconDataModel _$IconDataModelFromJson(Map<String, dynamic> json) =>
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
       size: json['size'] as String?,
-      mimeType: json['mime_type'] as String?,
+      uploadedAt: json['uploaded_at'] as String?,
     );
 
 Map<String, dynamic> _$IconDataModelToJson(IconDataModel instance) =>
@@ -81,5 +85,5 @@ Map<String, dynamic> _$IconDataModelToJson(IconDataModel instance) =>
       'file_name': instance.fileName,
       'url': instance.url,
       'size': instance.size,
-      'mime_type': instance.mimeType,
+      'uploaded_at': instance.uploadedAt,
     };

@@ -90,7 +90,9 @@ class GridViewServiceItem extends StatelessWidget {
               flex: 3,
               child: Center(
                 child: Text(
-                  service?.name ?? 'Unknown',
+                  context.locale.languageCode == AppConstants.enLanguage
+                      ? service?.name ?? ''
+                      : service?.nameAr ?? '',
                   style: AppStyle.fontSize16Regular(context).copyWith(
                     color: textColor,
                     fontSize: 14.sp,

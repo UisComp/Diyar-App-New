@@ -236,5 +236,6 @@
   "overdue": "Overdue",
   "pending": "Pending",
   "no_finance_available": "No Finance Available",
-  "payment_plan":"Payment Plan"
+  "payment_plan": "Payment Plan",
+  "enableDeviceLockInSettings": "Enable device lock in settings"
 }
