@@ -237,5 +237,18 @@
   "pending": "Pending",
   "no_finance_available": "No Finance Available",
   "payment_plan": "Payment Plan",
-  "enableDeviceLockInSettings": "Enable device lock in settings"
+  "enableDeviceLockInSettings": "Enable device lock in settings",
+  "message_contact_us": "Contact us for more information",
+  "please_enter_your_message": "Please enter your message",
+  "sent_email_successfully": "Email sent successfully",
+  "sent_email_failed": "Failed to Send Email",
+  "failed_to_create_visitor_pass": "Failed to create visitor pass",
+  "visitor_pass_created_successfully": "Visitor Pass Created Successfully",
+  "visitor_pass_not_found": "Visitor pass not found.",
+  "visitor_pass_revoked": "Visitor pass has been revoked.",
+  "visitor_pass_not_yet_valid": "Visitor pass is not yet valid.",
+  "visitor_pass_expired": "Visitor pass has expired.",
+  "visitor_pass_one_time_used": "This one-time visitor pass has already been used.",
+  "error":"Error",
+  "ok":"Ok"
 }

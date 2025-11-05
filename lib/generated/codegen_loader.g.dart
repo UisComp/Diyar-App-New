@@ -254,7 +254,20 @@ class CodegenLoader extends AssetLoader{
   "overdue": "متاخر",
   "pending": "قيد الانتظار",
   "no_finance_available": "لا توجد بيانات مالية متاحة حالياً",
-  "payment_plan": "خطة الدفع"
+  "payment_plan": "خطة الدفع",
+  "message_contact_us": "تواصل معنا لمزيد من المعلومات",
+  "please_enter_your_message": "يرجى ادخال رسالتك",
+  "sent_email_successfully": "تم ارسال البريد الالكتروني بنجاح",
+  "sent_email_failed": "فشل ارسال البريد الالكتروني",
+  "failed_to_create_visitor_pass": "فشل انشاء بطاقة الزيارة",
+  "visitor_pass_created_successfully": " تم انشاء بطاقة الزيارة بنجاح",
+  "visitor_pass_not_found": "لم يتم العثور على تصريح الزائر.",
+  "visitor_pass_revoked": "تم إلغاء تصريح الزائر.",
+  "visitor_pass_not_yet_valid": "تصريح الزائر غير صالح بعد.",
+  "visitor_pass_expired": "انتهت صلاحية تصريح الزائر.",
+  "visitor_pass_one_time_used": "تم استخدام تصريح الزائر المرة الواحدة بالفعل.",
+  "error": "خطأ",
+  "ok": "موافق"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -495,7 +508,20 @@ static const Map<String,dynamic> _en = {
   "pending": "Pending",
   "no_finance_available": "No Finance Available",
   "payment_plan": "Payment Plan",
-  "enableDeviceLockInSettings": "Enable device lock in settings"
+  "enableDeviceLockInSettings": "Enable device lock in settings",
+  "message_contact_us": "Contact us for more information",
+  "please_enter_your_message": "Please enter your message",
+  "sent_email_successfully": "Email sent successfully",
+  "sent_email_failed": "Failed to Send Email",
+  "failed_to_create_visitor_pass": "Failed to create visitor pass",
+  "visitor_pass_created_successfully": "Visitor Pass Created Successfully",
+  "visitor_pass_not_found": "Visitor pass not found.",
+  "visitor_pass_revoked": "Visitor pass has been revoked.",
+  "visitor_pass_not_yet_valid": "Visitor pass is not yet valid.",
+  "visitor_pass_expired": "Visitor pass has expired.",
+  "visitor_pass_one_time_used": "This one-time visitor pass has already been used.",
+  "error": "Error",
+  "ok": "Ok"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

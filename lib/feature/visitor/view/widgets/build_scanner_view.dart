@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
@@ -6,44 +7,64 @@ import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class BuildScannerView extends StatelessWidget {
-  const BuildScannerView({super.key, required this.visitorController});
+class BuildScannerView extends StatefulWidget {
+  const BuildScannerView({
+    super.key,
+    required this.visitorController,
+    this.scannerController,
+  });
   final VisitorController visitorController;
+  final MobileScannerController? scannerController;
+
+  @override
+  State<BuildScannerView> createState() => _BuildScannerViewState();
+}
+
+class _BuildScannerViewState extends State<BuildScannerView> {
+  bool isScanning = false;
+  String? scannedCode;
+
+  Future<void> onQrScanned(String code) async {
+    if (!isScanning) return;
+    stopScan();
+    scannedCode = code;
+    await widget.visitorController.scanQrCodeRequest(scannedCode);
+  }
+
+  Future<void> startScan() async {
+    isScanning = true;
+    await widget.scannerController?.start();
+  }
+
+  Future<void> stopScan() async {
+    try {
+      isScanning = false;
+      await widget.scannerController?.stop();
+      context.pop();
+    } catch (e) {
+      AppLogger.error("stopScan error: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: [
         MobileScanner(
-          controller: visitorController.scannerController,
-          // onDetect: (capture) {
-          //   final barcode = capture.barcodes.first;
-          //   if (barcode.rawValue == null) return;
-          //   visitorController.stopScan();
-          //   visitorController.scannedCode = barcode.rawValue!;
-          //   ScaffoldMessenger.of(context).showSnackBar(
-          //     SnackBar(
-          //       content: Text("Scanned: ${barcode.rawValue}"),
-          //       behavior: SnackBarBehavior.floating,
-          //     ),
-          //   );
-          // },
+          controller: widget.scannerController,
           onDetect: (capture) {
             final barcode = capture.barcodes.first;
-            final value = barcode.rawValue;
+            final String? code = barcode.rawValue;
 
-            if (value == null) return;
-
-            visitorController.scannedCode = value;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Scanned: $value"),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-            visitorController.stopScan();
+            if (code != null && code.contains('token=')) {
+              AppLogger.log("Code: $code");
+              isScanning = true;
+              onQrScanned(code);
+            }
           },
         ),
         Container(
@@ -53,7 +74,7 @@ class BuildScannerView extends StatelessWidget {
               width: 260.w,
               height: 260.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
                 border: Border.all(color: Colors.white, width: 3),
                 boxShadow: [
                   BoxShadow(
@@ -81,7 +102,7 @@ class BuildScannerView extends StatelessWidget {
               20.ph,
               CustomButton(
                 buttonText: LocaleKeys.stop_scanning.tr(),
-                onPressed: visitorController.stopScan,
+                onPressed: stopScan,
                 buttonColor: AppColors.redColor,
               ),
             ],

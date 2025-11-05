@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/feature/visitor/view/guard_role_screen.dart';
 import 'package:diyar_app/feature/visitor/view/own_unit_screen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -16,9 +17,9 @@ class VisitorScreen extends StatefulWidget {
 class _VisitorScreenState extends State<VisitorScreen> {
   late bool isOwnUnit;
   @override
-
   void initState() {
     super.initState();
+
     if (userModel!.data != null &&
         userModel!.data!.user.roles != null &&
         userModel!.data!.user.roles!.isNotEmpty) {
@@ -38,7 +39,9 @@ class _VisitorScreenState extends State<VisitorScreen> {
         showIconNotification: false,
         titleAppBar: LocaleKeys.visitor.tr(),
       ),
-      body: isOwnUnit ? const OwnUnitScreen() : const GuardRoleScreen(),
+      body: isOwnUnit
+          ? const OwnUnitScreen()
+          : GuardRoleScreen(visitorController: VisitorController.get(context)),
     );
   }
 }

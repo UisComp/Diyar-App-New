@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
+import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
@@ -50,7 +51,22 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
     final bool darkTheme =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     return BlocConsumer<VisitorController, VisitorState>(
-      listener: (context, visitorState) {},
+      listener: (context, visitorState) {
+        if (visitorState is CreateVisitorPassErrorState) {
+          AppFunctions.errorMessage(
+            context,
+            message:
+                visitorState.message ??
+                LocaleKeys.failed_to_create_visitor_pass.tr(),
+          );
+        }
+        if (visitorState is CreateVisitorPassSuccessState) {
+          AppFunctions.successMessage(
+            context,
+            message: LocaleKeys.visitor_pass_created_successfully.tr(),
+          );
+        }
+      },
       builder: (context, visitorState) {
         return SingleChildScrollView(
           child: Form(
@@ -180,11 +196,12 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                 ),
                 32.ph,
                 CustomButton(
+                  isLoading: visitorState is CreateVisitorPassLoadingState,
                   buttonText: LocaleKeys.generate_qr.tr(),
                   buttonColor: AppColors.primaryColor,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      visitorController.generateQr();
+                      await visitorController.createVisitorPass();
                     }
                   },
                 ).paddingSymmetric(horizontal: 16.w),
@@ -219,13 +236,11 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                                 final qrData =
                                     visitorController.generatedQrData!;
 
-                                final qrValidationResult =
-                                     QrValidator.validate(
-                                      data: qrData,
-                                      version: QrVersions.auto,
-                                      errorCorrectionLevel:
-                                          QrErrorCorrectLevel.M,
-                                    );
+                                final qrValidationResult = QrValidator.validate(
+                                  data: qrData,
+                                  version: QrVersions.auto,
+                                  errorCorrectionLevel: QrErrorCorrectLevel.M,
+                                );
 
                                 if (qrValidationResult.status ==
                                     QrValidationStatus.valid) {

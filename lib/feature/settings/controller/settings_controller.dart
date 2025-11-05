@@ -12,6 +12,7 @@ import 'package:diyar_app/feature/settings/service/settings_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsController extends Cubit<SettingsState> {
   SettingsController() : super(SettingsInitialState());
@@ -22,6 +23,9 @@ class SettingsController extends Cubit<SettingsState> {
   final TextEditingController currentPassword = TextEditingController();
   final TextEditingController newPassword = TextEditingController();
   final TextEditingController newPasswordConfirmation = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
   Future<void> changePassword() async {
     emit(ChangePasswordLoadingState());
     await SettingsService.changePassword(
@@ -234,5 +238,33 @@ class SettingsController extends Cubit<SettingsState> {
           );
           emit(GetConfigDataFailureState(error: error.toString()));
         });
+  }
+
+  Future<void> sendEmail() async {
+    emit(SendEmailLoadingState());
+    final subject = Uri.encodeComponent('Contact with Diyar');
+    final body = Uri.encodeComponent('''
+Hello Diyar,
+${messageController.text}
+Name: ${nameController.text}
+''');
+
+    final uri = Uri.parse(
+      'mailto:${configResponseModel.data?.contactEmail}?subject=$subject&body=$body',
+    );
+    AppLogger.log("uri: $uri");
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+      emit(SendEmailSuccessfullyState());
+    } else {
+      emit(SendEmailFailureState(error: 'Could not launch email app'));
+      throw 'Could not launch email app';
+    }
+  }
+
+  void clearFields() {
+    nameController.clear();
+    messageController.clear();
+    emit(state);
   }
 }

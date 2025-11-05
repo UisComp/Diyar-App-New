@@ -36,6 +36,7 @@ class DeleteAccountFailureState extends SettingsState {
 
   DeleteAccountFailureState({this.error});
 }
+
 class GetConfigDataLoadingState extends SettingsState {}
 
 class GetConfigDataSuccessfullyState extends SettingsState {}
@@ -44,4 +45,14 @@ class GetConfigDataFailureState extends SettingsState {
   final String? error;
 
   GetConfigDataFailureState({this.error});
+}
+
+class SendEmailLoadingState extends SettingsState {}
+
+class SendEmailSuccessfullyState extends SettingsState {}
+
+class SendEmailFailureState extends SettingsState {
+  final String? error;
+
+  SendEmailFailureState({this.error});
 }

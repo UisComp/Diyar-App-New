@@ -31,3 +31,15 @@ class UnitChangedState  extends VisitorState {}
 class ClearDataState extends VisitorState {}
 class StartScanState extends VisitorState {}
 class StopScanState extends VisitorState {}
+class CreateVisitorPassLoadingState extends VisitorState {}
+class CreateVisitorPassErrorState extends VisitorState {
+  final String? message;
+  CreateVisitorPassErrorState({this.message});
+}
+class CreateVisitorPassSuccessState extends VisitorState {}
+class ScanQrRequestLoadingState extends VisitorState {}
+class ScanQrRequestErrorState extends VisitorState {
+  final String? message;
+  ScanQrRequestErrorState({this.message});
+}
+class ScanQrRequestSuccessState extends VisitorState {}

@@ -22,6 +22,8 @@ class ApiPaths {
   static const String financePath = "user/finance";
   static const String getAllNews = "news/user?per_page=15"; //! paginate
   static const String configDataPath = "config";
+  static const visitorPassesPath = "visitor-passes";
+  static const visitorPassesPathScan = "visitor-passes/validate";
   static String getProjectDetails({required String id}) => "projects/$id";
   static String getNewsByUnit({required String id}) =>
       "news/project/$id?per_page=15"; //! paginate

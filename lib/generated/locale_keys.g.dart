@@ -243,5 +243,18 @@ abstract class  LocaleKeys {
   static const pending = 'pending';
   static const no_finance_available = 'no_finance_available';
   static const payment_plan = 'payment_plan';
+  static const message_contact_us = 'message_contact_us';
+  static const please_enter_your_message = 'please_enter_your_message';
+  static const sent_email_successfully = 'sent_email_successfully';
+  static const sent_email_failed = 'sent_email_failed';
+  static const failed_to_create_visitor_pass = 'failed_to_create_visitor_pass';
+  static const visitor_pass_created_successfully = 'visitor_pass_created_successfully';
+  static const visitor_pass_not_found = 'visitor_pass_not_found';
+  static const visitor_pass_revoked = 'visitor_pass_revoked';
+  static const visitor_pass_not_yet_valid = 'visitor_pass_not_yet_valid';
+  static const visitor_pass_expired = 'visitor_pass_expired';
+  static const visitor_pass_one_time_used = 'visitor_pass_one_time_used';
+  static const error = 'error';
+  static const ok = 'ok';
 
 }

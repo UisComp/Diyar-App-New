@@ -316,7 +316,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.contactUsScreen,
       path: RoutesName.contactUsScreen,
       pageBuilder: (context, state) =>
-          buildAnimatedPage(child: const ContactUsScreen(), transition: fadeIn),
+          buildAnimatedPage(child: ContactUsScreen(), transition: fadeIn),
     ),
     GoRoute(
       name: RoutesName.privacyPolicy,
