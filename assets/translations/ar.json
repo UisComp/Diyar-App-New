@@ -250,6 +250,11 @@
   "visitor_pass_not_yet_valid": "تصريح الزائر غير صالح بعد.",
   "visitor_pass_expired": "انتهت صلاحية تصريح الزائر.",
   "visitor_pass_one_time_used": "تم استخدام تصريح الزائر المرة الواحدة بالفعل.",
-  "error":"خطأ",
-  "ok":"موافق"
+  "error": "خطأ",
+  "ok": "موافق",
+  "no_facilities_available": "لا توجد مرافق متاحة",
+  "you_must_select_at_least_one_facility": "يجب اختيار مرفق واحد على الأقل",
+  "your_request_has_been_sent_successfully": "تم ارسال طلبك بنجاح",
+  "your_request_has_been_sent_failed": "فشل ارسال طلبك",
+  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل"
 }

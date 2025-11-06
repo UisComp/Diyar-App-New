@@ -267,7 +267,12 @@ class CodegenLoader extends AssetLoader{
   "visitor_pass_expired": "انتهت صلاحية تصريح الزائر.",
   "visitor_pass_one_time_used": "تم استخدام تصريح الزائر المرة الواحدة بالفعل.",
   "error": "خطأ",
-  "ok": "موافق"
+  "ok": "موافق",
+  "no_facilities_available": "لا توجد مرافق متاحة",
+  "you_must_select_at_least_one_facility": "يجب اختيار مرفق واحد على الأقل",
+  "your_request_has_been_sent_successfully": "تم ارسال طلبك بنجاح",
+  "your_request_has_been_sent_failed": "فشل ارسال طلبك",
+  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -521,7 +526,12 @@ static const Map<String,dynamic> _en = {
   "visitor_pass_expired": "Visitor pass has expired.",
   "visitor_pass_one_time_used": "This one-time visitor pass has already been used.",
   "error": "Error",
-  "ok": "Ok"
+  "ok": "Ok",
+  "no_facilities_available": "No facilities available",
+  "you_must_select_at_least_one_facility": "You must select at least one facility",
+  "your_request_has_been_sent_successfully": "Your request has been sent successfully",
+  "your_request_has_been_sent_failed": "Your request has been sent failed",
+  "please_select_at_least_one_service": "Please select at least one service"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

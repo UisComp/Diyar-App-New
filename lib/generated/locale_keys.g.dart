@@ -256,5 +256,10 @@ abstract class  LocaleKeys {
   static const visitor_pass_one_time_used = 'visitor_pass_one_time_used';
   static const error = 'error';
   static const ok = 'ok';
+  static const no_facilities_available = 'no_facilities_available';
+  static const you_must_select_at_least_one_facility = 'you_must_select_at_least_one_facility';
+  static const your_request_has_been_sent_successfully = 'your_request_has_been_sent_successfully';
+  static const your_request_has_been_sent_failed = 'your_request_has_been_sent_failed';
+  static const please_select_at_least_one_service = 'please_select_at_least_one_service';
 
 }

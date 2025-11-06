@@ -27,7 +27,9 @@ Facility _$FacilityFromJson(Map<String, dynamic> json) => Facility(
       title: json['title'] as String?,
       description: json['description'] as String?,
       isActive: json['is_active'] as bool?,
-      icon: json['icon'] as String?,
+      icon: json['icon'] == null
+          ? null
+          : FacilityIcon.fromJson(json['icon'] as Map<String, dynamic>),
       iconUrl: json['icon_url'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
@@ -42,4 +44,23 @@ Map<String, dynamic> _$FacilityToJson(Facility instance) => <String, dynamic>{
       'icon_url': instance.iconUrl,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+    };
+
+FacilityIcon _$FacilityIconFromJson(Map<String, dynamic> json) => FacilityIcon(
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      fileName: json['file_name'] as String?,
+      url: json['url'] as String?,
+      size: json['size'] as String?,
+      uploadedAt: json['uploaded_at'] as String?,
+    );
+
+Map<String, dynamic> _$FacilityIconToJson(FacilityIcon instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'file_name': instance.fileName,
+      'url': instance.url,
+      'size': instance.size,
+      'uploaded_at': instance.uploadedAt,
     };

@@ -28,7 +28,7 @@ class Facility {
   @JsonKey(name: "is_active")
   final bool? isActive;
 
-  final String? icon;
+  final FacilityIcon? icon;
 
   @JsonKey(name: "icon_url")
   final String? iconUrl;
@@ -54,4 +54,33 @@ class Facility {
       _$FacilityFromJson(json);
 
   Map<String, dynamic> toJson() => _$FacilityToJson(this);
+}
+
+@JsonSerializable()
+class FacilityIcon {
+  final int? id;
+  final String? name;
+
+  @JsonKey(name: "file_name")
+  final String? fileName;
+
+  final String? url;
+  final String? size;
+
+  @JsonKey(name: "uploaded_at")
+  final String? uploadedAt;
+
+  FacilityIcon({
+    this.id,
+    this.name,
+    this.fileName,
+    this.url,
+    this.size,
+    this.uploadedAt,
+  });
+
+  factory FacilityIcon.fromJson(Map<String, dynamic> json) =>
+      _$FacilityIconFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FacilityIconToJson(this);
 }

@@ -14,10 +14,11 @@ import '../constants/custom_logger.dart';
 class AppFunctions {
   static void successMessage(BuildContext context, {required String message}) {
     CherryToast.success(
+      displayIcon: true,
+      displayCloseButton: true,
       animationType: AnimationType.fromRight,
       toastPosition: Position.top,
       borderRadius: 12.r,
-      displayCloseButton: true,
       backgroundColor: AppColors.greenColor,
       toastDuration: const Duration(seconds: 3),
       title: Text(
@@ -39,6 +40,7 @@ class AppFunctions {
     String? description,
   }) {
     CherryToast.error(
+      displayIcon: true,
       animationType: AnimationType.fromLeft,
       toastPosition: Position.top,
       borderRadius: 12.r,
@@ -65,17 +67,19 @@ class AppFunctions {
           : null,
     ).show(context);
   }
-   static void warningMessage(
+
+  static void warningMessage(
     BuildContext context, {
     required String message,
     String? description,
   }) {
     CherryToast.warning(
+      displayIcon: true,
       animationType: AnimationType.fromLeft,
       toastPosition: Position.top,
       borderRadius: 12.r,
       displayCloseButton: true,
-      backgroundColor: AppColors.orangeColor,
+      backgroundColor: AppColors.yellowColor,
       toastDuration: const Duration(seconds: 4),
       title: Text(
         message,

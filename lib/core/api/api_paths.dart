@@ -17,8 +17,10 @@ class ApiPaths {
   static const String getLinkedUnitsForUser = "units";
   static const String getUserProjects = "profile/projects";
   static const String getProjects = "projects";
-  static const String facilityBooking = "";
-  static const String serviceProvider = "";
+  static const String facilityBooking = "facilities";
+  static const String createFacilityRequest = "facility-bookings";
+  static const String createServiceProvider = "service-provider-bookings";
+  static const String serviceProvider = "service-providers";
   static const String getDocumentPath = "profile/documents";
   static const String financePath = "user/finance";
   static const String getAllNews = "news/user?per_page=15"; //! paginate
