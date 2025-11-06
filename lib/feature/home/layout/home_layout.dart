@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/padding.dart';
@@ -97,20 +98,22 @@ class _HomeLayoutState extends State<HomeLayout> {
                       ),
                       label: LocaleKeys.profile.tr(),
                     ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        Assets.images.svg.finance,
-                        height: 24.h,
-                        width: 24.w,
-                        colorFilter: ColorFilter.mode(
-                          _homeController.currentIndex == 3
-                              ? AppColors.primaryColor
-                              : Colors.grey,
-                          BlendMode.srcIn,
+                    if (userModel?.data != null &&
+                        !userModel!.data!.user.roles!.contains("guard"))
+                      BottomNavigationBarItem(
+                        icon: SvgPicture.asset(
+                          Assets.images.svg.finance,
+                          height: 24.h,
+                          width: 24.w,
+                          colorFilter: ColorFilter.mode(
+                            _homeController.currentIndex == 3
+                                ? AppColors.primaryColor
+                                : Colors.grey,
+                            BlendMode.srcIn,
+                          ),
                         ),
+                        label: LocaleKeys.finance.tr(),
                       ),
-                      label: LocaleKeys.finance.tr(),
-                    ),
                   ],
                 );
               },

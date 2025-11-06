@@ -27,7 +27,7 @@ class CustomLangauge extends StatelessWidget {
                 LanguagesMode.english,
               ),
               isSelected: currentLang == LanguagesMode.english,
-            ).paddingOnly(left: 16.w),
+            ),
             10.pw,
             CustomContainerLanguageOrTheme(
               text: LocaleKeys.arabic.tr(),
@@ -38,7 +38,7 @@ class CustomLangauge extends StatelessWidget {
               isSelected: currentLang == LanguagesMode.arabic,
             ),
           ],
-        );
+        ).paddingSymmetric(horizontal: 16.w);
       },
     );
   }
