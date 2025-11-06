@@ -1,30 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'facility_booking_response_model.dart';
+part of 'service_provider_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FacilityResponse _$FacilityResponseFromJson(Map<String, dynamic> json) =>
-    FacilityResponse(
+ServiceProviderResponse _$ServiceProviderResponseFromJson(
+        Map<String, dynamic> json) =>
+    ServiceProviderResponse(
       success: json['success'] as bool?,
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Facility.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ServiceProvider.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$FacilityResponseToJson(FacilityResponse instance) =>
+Map<String, dynamic> _$ServiceProviderResponseToJson(
+        ServiceProviderResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
       'message': instance.message,
       'data': instance.data,
     };
 
-Facility _$FacilityFromJson(Map<String, dynamic> json) => Facility(
+ServiceProvider _$ServiceProviderFromJson(Map<String, dynamic> json) =>
+    ServiceProvider(
       id: (json['id'] as num?)?.toInt(),
-      title: json['title'] as String?,
+      jobTitle: json['job_title'] as String?,
       description: json['description'] as String?,
       isActive: json['is_active'] as bool?,
       icon: json['icon'] as String?,
@@ -33,9 +36,10 @@ Facility _$FacilityFromJson(Map<String, dynamic> json) => Facility(
       updatedAt: json['updated_at'] as String?,
     );
 
-Map<String, dynamic> _$FacilityToJson(Facility instance) => <String, dynamic>{
+Map<String, dynamic> _$ServiceProviderToJson(ServiceProvider instance) =>
+    <String, dynamic>{
       'id': instance.id,
-      'title': instance.title,
+      'job_title': instance.jobTitle,
       'description': instance.description,
       'is_active': instance.isActive,
       'icon': instance.icon,
