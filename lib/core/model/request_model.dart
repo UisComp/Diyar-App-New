@@ -10,6 +10,8 @@ class RequestModel {
   final String? passwordConfirmation;
   @JsonKey(name: 'phone_number')
   final String? phoneNumber;
+  @JsonKey(name: 'fcm_token')
+  final String? fcmToken;
 
   RequestModel({
     this.name,
@@ -17,6 +19,7 @@ class RequestModel {
     this.password,
     this.passwordConfirmation,
     this.phoneNumber,
+    this.fcmToken,
   });
 
   factory RequestModel.fromJson(Map<String, dynamic> json) =>
@@ -29,8 +32,10 @@ class RequestModel {
     String? password,
     String? passwordConfirmation,
     String? phoneNumber,
+    String? fcmToken,
   }) {
     return RequestModel(
+      fcmToken: fcmToken ?? this.fcmToken,
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,

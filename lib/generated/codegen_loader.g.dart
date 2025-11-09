@@ -229,7 +229,7 @@ class CodegenLoader extends AssetLoader{
   "to": "إلى",
   "start_time": "وقت البداية",
   "end_time": "وقت الانتهاء",
-  "your_qr_code": "رمز الاستجابة السريع الخاص بك",
+  "invitation_code": "رمز الدعوة",
   "generate_qr": "توليد رمز الاستجابة السريع",
   "please_select_a_unit": "يرجى اختيار الوحدة",
   "please_select_date_range": "يرجى اختيار نطاق التاريخ",
@@ -272,7 +272,10 @@ class CodegenLoader extends AssetLoader{
   "you_must_select_at_least_one_facility": "يجب اختيار مرفق واحد على الأقل",
   "your_request_has_been_sent_successfully": "تم ارسال طلبك بنجاح",
   "your_request_has_been_sent_failed": "فشل ارسال طلبك",
-  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل"
+  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل",
+  "start_time_cannot_be_past": "لا يمكن ان يكون وقت البدء في الماضي",
+  "end_time_must_be_after_start": "يجب ان يكون وقت الانتهاء بعد وقت البدء",
+  "your_qr_code": "كود QR الخاص بك"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -487,7 +490,7 @@ static const Map<String,dynamic> _en = {
   "to": "To",
   "start_time": "Start time",
   "end_time": "End time",
-  "your_qr_code": "Your QR Code",
+  "invitation_code": "Invitation Code",
   "generate_qr": "Generate QR",
   "please_select_a_unit": "Please select a unit",
   "please_select_date_range": "Please select a date range",
@@ -531,7 +534,10 @@ static const Map<String,dynamic> _en = {
   "you_must_select_at_least_one_facility": "You must select at least one facility",
   "your_request_has_been_sent_successfully": "Your request has been sent successfully",
   "your_request_has_been_sent_failed": "Your request has been sent failed",
-  "please_select_at_least_one_service": "Please select at least one service"
+  "please_select_at_least_one_service": "Please select at least one service",
+  "start_time_cannot_be_past": "Start time cannot be past",
+  "end_time_must_be_after_start": "End time must be after start time",
+  "your_qr_code": "Your QR Code"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

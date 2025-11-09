@@ -217,7 +217,7 @@ abstract class  LocaleKeys {
   static const to = 'to';
   static const start_time = 'start_time';
   static const end_time = 'end_time';
-  static const your_qr_code = 'your_qr_code';
+  static const invitation_code = 'invitation_code';
   static const generate_qr = 'generate_qr';
   static const please_select_a_unit = 'please_select_a_unit';
   static const please_select_date_range = 'please_select_date_range';
@@ -261,5 +261,8 @@ abstract class  LocaleKeys {
   static const your_request_has_been_sent_successfully = 'your_request_has_been_sent_successfully';
   static const your_request_has_been_sent_failed = 'your_request_has_been_sent_failed';
   static const please_select_at_least_one_service = 'please_select_at_least_one_service';
+  static const start_time_cannot_be_past = 'start_time_cannot_be_past';
+  static const end_time_must_be_after_start = 'end_time_must_be_after_start';
+  static const your_qr_code = 'your_qr_code';
 
 }

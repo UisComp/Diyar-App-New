@@ -5,6 +5,7 @@ class MessageData {
   final String? imageUrl;
   final String? type;
   final String? title;
+  @JsonKey(name: 'body')
   final String? message;
 
   MessageData({

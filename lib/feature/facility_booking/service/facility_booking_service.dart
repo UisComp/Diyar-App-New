@@ -12,7 +12,7 @@ class FacilityBookingService {
       if (response != null && response.statusCode == 200) {
         return FacilityResponse.fromJson(response.data);
       } else {
-        return FacilityResponse();
+        return FacilityResponse.fromJson(response?.data);
       }
     } catch (e) {
       AppLogger.error("Error in getAllFacilityBooking: $e");
@@ -32,7 +32,7 @@ class FacilityBookingService {
       if (response != null && response.statusCode == 201) {
         return CreateRequestFacilityResponseModel.fromJson(response.data);
       } else {
-        return CreateRequestFacilityResponseModel();
+        return CreateRequestFacilityResponseModel.fromJson(response?.data);
       }
     } catch (e) {
       AppLogger.error("Error in create Facility request: $e");

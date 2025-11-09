@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
@@ -12,14 +9,13 @@ import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_state.dart';
+import 'package:diyar_app/feature/visitor/view/widgets/qr_code_view.dart';
+import 'package:diyar_app/feature/visitor/view/widgets/start_time_and_end_time_fields.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:share_plus/share_plus.dart';
 
 class OwnUnitScreen extends StatefulWidget {
   const OwnUnitScreen({super.key});
@@ -101,7 +97,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                           ?.map<DropdownMenuItem<String>>((unit) {
                             return DropdownMenuItem(
                               value: unit.id.toString(),
-                              child: Text(unit.name ?? "Unnamed Unit"),
+                              child: Text(unit.name ?? ""),
                             );
                           })
                           .toList() ??
@@ -146,54 +142,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                   style: AppStyle.fontSize16Regular(context),
                 ).paddingSymmetric(horizontal: 16.w),
                 8.ph,
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                        controller: visitorController.startTimeController,
-                        readOnly: true,
-                        onTap: () async {
-                          await visitorController.pickStartTime(context);
-                          if (visitorController.startTime != null) {
-                            visitorController.startTimeController.text =
-                                visitorController.startTime!.format(context);
-                          }
-                        },
-                        validator: (value) {
-                          if (visitorController.startTime == null) {
-                            return LocaleKeys.please_select_time_range.tr();
-                          }
-                          return null;
-                        },
-                        hintText: LocaleKeys.start_time.tr(),
-                      ),
-                    ),
-                    16.pw,
-                    Expanded(
-                      child: CustomTextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        controller: visitorController.endTimeController,
-                        readOnly: true,
-                        onTap: () async {
-                          await visitorController.pickEndTime(context);
-                          if (visitorController.endTime != null) {
-                            visitorController.endTimeController.text =
-                                visitorController.endTime!.format(context);
-                          }
-                        },
-                        validator: (value) {
-                          if (visitorController.endTime == null) {
-                            return LocaleKeys.please_select_time_range.tr();
-                          }
-                          return null;
-                        },
-                        hintText: LocaleKeys.end_time.tr(),
-                      ),
-                    ),
-                  ],
-                ),
+                StartTimeAndEndTimeFields(visitorController: visitorController),
                 32.ph,
                 CustomButton(
                   isLoading: visitorState is CreateVisitorPassLoadingState,
@@ -207,81 +156,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                 ).paddingSymmetric(horizontal: 16.w),
                 32.ph,
                 if (visitorController.generatedQrData != null)
-                  Column(
-                    children: [
-                      Text(
-                        LocaleKeys.your_qr_code.tr(),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      16.ph,
-                      QrImageView(
-                        data: visitorController.generatedQrData!,
-                        version: QrVersions.auto,
-                        size: 200.sp,
-                        backgroundColor: Colors.white,
-                      ),
-                      20.ph,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.share,
-                              color: AppColors.primaryColor,
-                              size: 28,
-                            ),
-                            tooltip: LocaleKeys.share_qr_code.tr(),
-                            onPressed: () async {
-                              try {
-                                final qrData =
-                                    visitorController.generatedQrData!;
-
-                                final qrValidationResult = QrValidator.validate(
-                                  data: qrData,
-                                  version: QrVersions.auto,
-                                  errorCorrectionLevel: QrErrorCorrectLevel.M,
-                                );
-
-                                if (qrValidationResult.status ==
-                                    QrValidationStatus.valid) {
-                                  final painter = QrPainter.withQr(
-                                    qr: qrValidationResult.qrCode!,
-                                    color: Colors.black,
-                                    emptyColor: Colors.white,
-                                  );
-
-                                  final tempDir = await getTemporaryDirectory();
-                                  final file = File(
-                                    "${tempDir.path}/qr_code.png",
-                                  );
-
-                                  final picData = await painter.toImageData(
-                                    2048,
-                                    format: ImageByteFormat.png,
-                                  );
-                                  await file.writeAsBytes(
-                                    picData!.buffer.asUint8List(),
-                                  );
-
-                                  await Share.shareXFiles(
-                                    [XFile(file.path)],
-                                    subject: LocaleKeys.share_qr_code.tr(),
-                                    text: LocaleKeys.your_qr_code.tr(),
-                                  );
-                                }
-                              } catch (e) {
-                                debugPrint("QR share error: $e");
-                              }
-                            },
-                          ),
-                          Text(
-                            LocaleKeys.share_qr_code.tr(),
-                            style: AppStyle.fontSize16Regular(context),
-                          ),
-                        ],
-                      ).paddingSymmetric(horizontal: 16.w),
-                    ],
-                  ).paddingSymmetric(horizontal: 16.w),
+                  QrCodeView(visitorController: visitorController),
               ],
             ),
           ),

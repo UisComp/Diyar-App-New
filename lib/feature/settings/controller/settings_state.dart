@@ -56,3 +56,8 @@ class SendEmailFailureState extends SettingsState {
 
   SendEmailFailureState({this.error});
 }
+
+class EnableEmailNotificationState extends SettingsState {}
+class DisableEmailNotificationState extends SettingsState {}
+class DisableNotificationState  extends SettingsState {}
+class EnableNotificationState extends SettingsState {}

@@ -1,43 +1,147 @@
+// import 'package:json_annotation/json_annotation.dart';
+// part 'notification_response_model.g.dart';
+
+// @JsonSerializable(explicitToJson: true)
+// class NotificationResponseModel {
+//   final bool? status;
+//   final List<NotificationData>? data;
+
+//   @JsonKey(name: 'error')
+//   final List<dynamic>? error;
+
+//   @JsonKey(name: 'unread_notifications_count')
+//   final int? unreadNotificationsCount;
+
+//   NotificationResponseModel({
+//     this.status,
+//     this.data,
+//     this.error,
+//     this.unreadNotificationsCount,
+//   });
+
+//   factory NotificationResponseModel.fromJson(Map<String, dynamic> json) =>
+//       _$NotificationResponseModelFromJson(json);
+
+//   Map<String, dynamic> toJson() => _$NotificationResponseModelToJson(this);
+
+//   NotificationResponseModel copyWith({
+//     bool? status,
+//     List<NotificationData>? data,
+//     List<dynamic>? error,
+//     int? unreadNotificationsCount,
+//   }) {
+//     return NotificationResponseModel(
+//       status: status ?? this.status,
+//       data: data ?? this.data,
+//       error: error ?? this.error,
+//       unreadNotificationsCount:
+//           unreadNotificationsCount ?? this.unreadNotificationsCount,
+//     );
+//   }
+// }
+
+// @JsonSerializable()
+// class NotificationData {
+//   final int? id;
+//   final String? title;
+//   final String? type;
+//   final String? description;
+//   final String? image;
+
+//   @JsonKey(name: 'is_read')
+//   final int? isRead;
+
+//   @JsonKey(name: 'created_at')
+//   final String? createdAt;
+
+//   @JsonKey(name: 'updated_at')
+//   final String? updatedAt;
+
+//   @JsonKey(name: 'image_url')
+//   final String? imageUrl;
+
+//   NotificationData({
+//     this.id,
+//     this.title,
+//     this.type,
+//     this.description,
+//     this.image,
+//     this.isRead,
+//     this.createdAt,
+//     this.updatedAt,
+//     this.imageUrl,
+//   });
+
+//   factory NotificationData.fromJson(Map<String, dynamic> json) =>
+//       _$NotificationDataFromJson(json);
+
+//   Map<String, dynamic> toJson() => _$NotificationDataToJson(this);
+
+//   NotificationData copyWith({
+//     int? id,
+//     String? title,
+//     String? type,
+//     String? description,
+//     String? image,
+//     int? isRead,
+//     String? createdAt,
+//     String? updatedAt,
+//     String? imageUrl,
+//   }) {
+//     return NotificationData(
+//       id: id ?? this.id,
+//       title: title ?? this.title,
+//       type: type ?? this.type,
+//       description: description ?? this.description,
+//       image: image ?? this.image,
+//       isRead: isRead ?? this.isRead,
+//       createdAt: createdAt ?? this.createdAt,
+//       updatedAt: updatedAt ?? this.updatedAt,
+//       imageUrl: imageUrl ?? this.imageUrl,
+//     );
+//   }
+// }
+
 import 'package:json_annotation/json_annotation.dart';
+
 part 'notification_response_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class NotificationResponseModel {
-  final bool? status;
-  final List<NotificationData>? data;
-
-  @JsonKey(name: 'error')
-  final List<dynamic>? error;
-
-  @JsonKey(name: 'unread_notifications_count')
-  final int? unreadNotificationsCount;
+  final bool? success;
+  final String? message;
+  final NotificationDataWrapper? data;
+  final MetaData? meta;
 
   NotificationResponseModel({
-    this.status,
+    this.success,
+    this.message,
     this.data,
-    this.error,
-    this.unreadNotificationsCount,
+    this.meta,
   });
 
   factory NotificationResponseModel.fromJson(Map<String, dynamic> json) =>
       _$NotificationResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationResponseModelToJson(this);
+}
 
-  NotificationResponseModel copyWith({
-    bool? status,
-    List<NotificationData>? data,
-    List<dynamic>? error,
-    int? unreadNotificationsCount,
-  }) {
-    return NotificationResponseModel(
-      status: status ?? this.status,
-      data: data ?? this.data,
-      error: error ?? this.error,
-      unreadNotificationsCount:
-          unreadNotificationsCount ?? this.unreadNotificationsCount,
-    );
-  }
+@JsonSerializable(explicitToJson: true)
+class NotificationDataWrapper {
+  final List<NotificationData>? notifications;
+
+  @JsonKey(name: 'unread_notifications_count')
+  final int? unreadNotificationsCount;
+
+  NotificationDataWrapper({
+    this.notifications,
+    this.unreadNotificationsCount,
+  });
+
+  factory NotificationDataWrapper.fromJson(Map<String, dynamic> json) =>
+      _$NotificationDataWrapperFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NotificationDataWrapperToJson(this);
 }
 
 @JsonSerializable()
@@ -49,7 +153,7 @@ class NotificationData {
   final String? image;
 
   @JsonKey(name: 'is_read')
-  final int? isRead;
+  final bool? isRead;
 
   @JsonKey(name: 'created_at')
   final String? createdAt;
@@ -76,28 +180,27 @@ class NotificationData {
       _$NotificationDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationDataToJson(this);
+}
 
-  NotificationData copyWith({
-    int? id,
-    String? title,
-    String? type,
-    String? description,
-    String? image,
-    int? isRead,
-    String? createdAt,
-    String? updatedAt,
-    String? imageUrl,
-  }) {
-    return NotificationData(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      type: type ?? this.type,
-      description: description ?? this.description,
-      image: image ?? this.image,
-      isRead: isRead ?? this.isRead,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
-  }
+@JsonSerializable()
+class MetaData {
+  final int? limit;
+  final int? total;
+
+  @JsonKey(name: "totalPages")
+  final int? totalPages;
+
+  final int? page;
+
+  MetaData({
+    this.limit,
+    this.total,
+    this.totalPages,
+    this.page,
+  });
+
+  factory MetaData.fromJson(Map<String, dynamic> json) =>
+      _$MetaDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MetaDataToJson(this);
 }

@@ -83,3 +83,12 @@ class ResendOtpFailureState extends AuthState {
 
   ResendOtpFailureState({this.error});
 }
+class UpdateFcmTokenLoadingState extends AuthState {}
+
+class UpdateFcmTokenSuccessState extends AuthState {}
+
+class UpdateFcmTokenFailureState extends AuthState {
+  final String? error;
+
+  UpdateFcmTokenFailureState({this.error});
+}

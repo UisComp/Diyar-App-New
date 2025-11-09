@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
@@ -33,6 +34,7 @@ class DiyarApp extends StatelessWidget {
             builder: (context, themeState) {
               final themeController = AppThemeController.get(context);
               return MaterialApp.router(
+                key: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 routerConfig: router,
                 locale: context.locale,

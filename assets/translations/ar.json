@@ -213,7 +213,7 @@
   "to": "إلى",
   "start_time": "وقت البداية",
   "end_time": "وقت الانتهاء",
-  "your_qr_code": "رمز الاستجابة السريع الخاص بك",
+  "invitation_code": "رمز الدعوة",
   "generate_qr": "توليد رمز الاستجابة السريع",
   "please_select_a_unit": "يرجى اختيار الوحدة",
   "please_select_date_range": "يرجى اختيار نطاق التاريخ",
@@ -256,5 +256,8 @@
   "you_must_select_at_least_one_facility": "يجب اختيار مرفق واحد على الأقل",
   "your_request_has_been_sent_successfully": "تم ارسال طلبك بنجاح",
   "your_request_has_been_sent_failed": "فشل ارسال طلبك",
-  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل"
+  "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل",
+  "start_time_cannot_be_past": "لا يمكن ان يكون وقت البدء في الماضي",
+  "end_time_must_be_after_start": "يجب ان يكون وقت الانتهاء بعد وقت البدء",
+  "your_qr_code": "كود QR الخاص بك"
 }

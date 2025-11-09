@@ -25,7 +25,6 @@ class DocumentGroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FinanceController, FinanceState>(
       builder: (context, state) {
-        /// Detect loading
         final bool isLoading = state.maybeWhen(
           getDocumentsLoading: () => true,
           orElse: () => false,

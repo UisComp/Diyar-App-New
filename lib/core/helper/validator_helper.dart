@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:flutter/material.dart';
 
 class ValidatorHelper {
   static String? validateEmail(
@@ -47,5 +48,14 @@ class ValidatorHelper {
       return notMatchMessage;
     }
     return null;
+  }
+
+  static bool isPast(TimeOfDay time) {
+    final now = TimeOfDay.now();
+    return time.hour * 60 + time.minute < now.hour * 60 + now.minute;
+  }
+
+  static bool isAfter(TimeOfDay a, TimeOfDay b) {
+    return a.hour * 60 + a.minute > b.hour * 60 + b.minute;
   }
 }

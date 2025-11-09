@@ -10,7 +10,7 @@ MessageData _$MessageDataFromJson(Map<String, dynamic> json) => MessageData(
       imageUrl: json['imageUrl'] as String?,
       type: json['type'] as String?,
       title: json['title'] as String?,
-      message: json['message'] as String?,
+      message: json['body'] as String?,
     );
 
 Map<String, dynamic> _$MessageDataToJson(MessageData instance) =>
@@ -18,5 +18,5 @@ Map<String, dynamic> _$MessageDataToJson(MessageData instance) =>
       'imageUrl': instance.imageUrl,
       'type': instance.type,
       'title': instance.title,
-      'message': instance.message,
+      'body': instance.message,
     };

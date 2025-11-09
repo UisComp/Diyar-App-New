@@ -76,7 +76,6 @@ class AuthService {
 
   static Future<ResetOrForgetPasswordResponseModel> resetPassword({
     required ResetPasswordRequestModel resetPasswordRequestModel,
-    
   }) async {
     final resetPassword = await DioHelper.postData(
       needHeader: false,
@@ -118,7 +117,7 @@ class AuthService {
     return OtpVerificationResponse.fromJson(verifyOtp?.data);
   }
 
- static Future<GeneralResponseModel> logOut() async {
+  static Future<GeneralResponseModel> logOut() async {
     final responseLogOut = await DioHelper.postData(
       needHeader: true,
       path: ApiPaths.logOut,
@@ -136,4 +135,5 @@ class AuthService {
     }
     return GeneralResponseModel.fromJson(responseLogOut?.data);
   }
+
 }

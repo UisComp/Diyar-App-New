@@ -8,6 +8,7 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
+import 'package:diyar_app/core/helper/notification_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
@@ -32,9 +33,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  // await NotificationService().init();
+  await NotificationService().init();
   AppLogger.log('Handling a background message: ${message.messageId}');
-  // await NotificationService().showLocalNotificationFromBackground(message);
+  await NotificationService().showLocalNotificationFromBackground(message);
 }
 
 Future<void> main() async {
@@ -73,62 +74,57 @@ Future<void> main() async {
     ),
   );
   FlutterNativeSplash.remove();
- 
 }
- Future<void> setupFirebase() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-  }
 
-  String? fcmToken;
+Future<void> setupFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: true,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+}
 
-  Future<void> setupNotifications() async {
-    try {
-      fcmToken = await FirebaseMessaging.instance.getToken();
-      if (fcmToken != null) {
-        await HiveHelper.addToHive(
-          key: AppConstants.fcmToken,
-          value: fcmToken!,
-        );
-       AppLogger. log("FCM Token saved: $fcmToken");
-      }
-      AppLogger.log("FCM Token: $fcmToken");
-    } catch (ex) {
-      AppLogger.log("exception on fcm init ${ex.toString()}");
+String? fcmToken;
+
+Future<void> setupNotifications() async {
+  try {
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    if (fcmToken != null) {
+      await HiveHelper.addToHive(key: AppConstants.fcmToken, value: fcmToken!);
+      AppLogger.log("FCM Token saved: $fcmToken");
     }
-    if (Platform.isIOS) {
-      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      AppLogger.log("apnsToken: $apnsToken");
-    }
-    // final localNotificationService = NotificationService();
-
-    FirebaseMessaging.onMessage.listen((message) async {
-      AppLogger.log("Foreground message received: ${message.data}");
-      //! get all notifications
-      // appContext.read<NotificationController>().fetchAllNotifications(
-      //   page: 1,
-      //   refresh: true,
-      // );
-      // await localNotificationService.showLocalNotification(message);
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-      // appContext.read<NotificationController>().fetchAllNotifications(
-      //   page: 1,
-      //   refresh: true,
-      // );
-      AppLogger.log("Notification opened: ${message.data}");
-    });
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    // await localNotificationService.init();
+    AppLogger.log("FCM Token: $fcmToken");
+  } catch (ex) {
+    AppLogger.log("exception on fcm init ${ex.toString()}");
   }
+  if (Platform.isIOS) {
+    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    AppLogger.log("apnsToken: $apnsToken");
+  }
+  final NotificationService localNotificationService = NotificationService();
+
+  FirebaseMessaging.onMessage.listen((message) async {
+    AppLogger.log("Foreground message received data: $message");
+    //! get all notifications
+    // appContext.read<NotificationController>().fetchAllNotifications(
+    //   page: 1,
+    //   refresh: true,
+    // );
+    await localNotificationService.showLocalNotification(message);
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+    // appContext.read<NotificationController>().fetchAllNotifications(
+    //   page: 1,
+    //   refresh: true,
+    // );
+    AppLogger.log("Notification opened: ${message.data}");
+  });
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await localNotificationService.init();
+}

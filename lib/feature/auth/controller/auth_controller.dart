@@ -12,6 +12,7 @@ import 'package:diyar_app/feature/auth/model/reset_or_forget_password_response_m
 import 'package:diyar_app/feature/auth/model/reset_password_request_model.dart';
 import 'package:diyar_app/feature/auth/model/verify_otp_response_model.dart';
 import 'package:diyar_app/feature/auth/service/auth_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_form_field/phone_form_field.dart';
@@ -64,8 +65,10 @@ class AuthController extends Cubit<AuthState> {
 
   Future<void> login() async {
     emit(LoginLoadingState());
+    final fcmToken = await FirebaseMessaging.instance.getToken();
     await AuthService.login(
           authRequestModel: RequestModel(
+            fcmToken: fcmToken,
             email: emailControllerForLogin.text,
             password: passwordControllerForLogin.text,
           ),
@@ -259,9 +262,12 @@ class AuthController extends Cubit<AuthState> {
             emit(LogOutSuccessState());
             await updateUserModel(null);
             await HiveHelper.clearUserDataOnly();
+            await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
           } else {
             await updateUserModel(null);
             await HiveHelper.clearUserDataOnly();
+            await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
+
             emit(LogOutFailureState(error: value.message));
           }
         })
@@ -270,4 +276,5 @@ class AuthController extends Cubit<AuthState> {
           emit(LoginFailureState(error: error.toString()));
         });
   }
+
 }

@@ -244,9 +244,9 @@ class SettingsController extends Cubit<SettingsState> {
     emit(SendEmailLoadingState());
     final subject = Uri.encodeComponent('Contact with Diyar');
     final body = Uri.encodeComponent('''
-Hello Diyar,
+Dear Diyar,
 ${messageController.text}
-Name: ${nameController.text}
+Sender Name: ${nameController.text}
 ''');
 
     final uri = Uri.parse(
@@ -265,6 +265,29 @@ Name: ${nameController.text}
   void clearFields() {
     nameController.clear();
     messageController.clear();
+    emailController.clear();
     emit(state);
+  }
+
+  bool enableNotification = false;
+
+  void toggleNotification() {
+    enableNotification = !enableNotification;
+    if (enableNotification == true) {
+      emit(EnableNotificationState());
+    } else {
+      emit(DisableNotificationState());
+    }
+  }
+
+  bool emailNotification = false;
+
+  void toggleEmailNotification() {
+    emailNotification = !emailNotification;
+    if (emailNotification == true) {
+      emit(EnableEmailNotificationState());
+    } else {
+      emit(DisableEmailNotificationState());
+    }
   }
 }

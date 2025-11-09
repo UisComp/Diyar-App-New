@@ -1,7 +1,8 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
-
+import 'package:flutter/material.dart';
+final navigatorKey = GlobalKey<NavigatorState>();
 LoginResponseModel? userModel;
 Future<void> updateUserModel(LoginResponseModel? user) async {
   userModel = user;

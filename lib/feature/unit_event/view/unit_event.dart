@@ -192,13 +192,23 @@ class UnitEventState extends State<UnitEvent> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'From: ${dateFormat.format(rangeStart!)} ',
-            style: AppStyle.fontSize18Bold(context).copyWith(fontSize: 16.sp),
+          Expanded(
+            child: Text(
+              'From:${dateFormat.format(rangeStart!)} ',
+              style: AppStyle.fontSize18Bold(
+                context,
+              ).copyWith(fontSize: 16.sp, overflow: TextOverflow.ellipsis),
+              maxLines: 1,
+            ),
           ),
-          Text(
-            'To: ${dateFormat.format(rangeEnd!)}',
-            style: AppStyle.fontSize18Bold(context).copyWith(fontSize: 16.sp),
+          Expanded(
+            child: Text(
+              'To:${dateFormat.format(rangeEnd!)}',
+              style: AppStyle.fontSize18Bold(
+                context,
+              ).copyWith(fontSize: 16.sp, overflow: TextOverflow.ellipsis),
+              maxLines: 1,
+            ),
           ),
         ],
       );
