@@ -1,6 +1,5 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -46,22 +45,7 @@ class _UserTextFormFieldWithLoginButtonState
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthController, AuthState>(
-      listener: (context, authState) {
-        if (authState is LoginSuccessState) {
-          AppFunctions.successMessage(
-            context,
-            message: LocaleKeys.login_successfully.tr(),
-          );
-          context.go(RoutesName.homeLayout);
-        }
-        if (authState is LoginFailureState) {
-          AppFunctions.errorMessage(
-            description: authController.loginResponseModel.message,
-            context,
-            message: LocaleKeys.login_failed.tr(),
-          );
-        }
-      },
+      listener: (context, authState) {},
       builder: (context, authState) {
         final isLoading = authState is LoginLoadingState;
         return Column(

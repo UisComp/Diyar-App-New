@@ -12,12 +12,18 @@ class UnitEventController extends Cubit<UnitEventStates> {
 
   NewByProjectUnitEventResponseModel newByProjectUnitEventResponseModel =
       NewByProjectUnitEventResponseModel();
-  Future<void> getUnitsByEvent({required String id}) async {
+  Future<void> getUnitsByEvent( {
+    required String id,
+    DateTime? start,
+    DateTime? end,
+  }) async {
     emit(GetUnitsByEventLoadingState());
     try {
-      await UnitEventService.getNewsByProjectUnitsByEvent(id: id).then((
-        newByProjectUnitEvent,
-      ) {
+      await UnitEventService.getNewsByProjectUnitsByEvent(
+        id: id,
+        start: start,
+        end: end,
+      ).then((newByProjectUnitEvent) {
         newByProjectUnitEventResponseModel = newByProjectUnitEvent;
         if (newByProjectUnitEventResponseModel.success == true) {
           emit(GetUnitsByEventSuccessfullyState());

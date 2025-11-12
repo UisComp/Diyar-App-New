@@ -19,6 +19,9 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Loading.json
+  String get loading => 'assets/images/Loading.json';
+
   /// File path: assets/images/android_12.png
   AssetGenImage get android12 =>
       const AssetGenImage('assets/images/android_12.png');
@@ -42,9 +45,15 @@ class $AssetsImagesGen {
   AssetGenImage get diyarPmc =>
       const AssetGenImage('assets/images/diyar_pmc.png');
 
+  /// File path: assets/images/empty_real_state.json
+  String get emptyRealState => 'assets/images/empty_real_state.json';
+
   /// File path: assets/images/forget_password.png
   AssetGenImage get forgetPassword =>
       const AssetGenImage('assets/images/forget_password.png');
+
+  /// File path: assets/images/no_internet.json
+  String get noInternet => 'assets/images/no_internet.json';
 
   /// File path: assets/images/service_not_available.png
   AssetGenImage get serviceNotAvailable =>
@@ -53,14 +62,17 @@ class $AssetsImagesGen {
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<dynamic> get values => [
+        loading,
         android12,
         backgroundCard,
         diyar,
         diyarNativeSplash,
         diyarNew,
         diyarPmc,
+        emptyRealState,
         forgetPassword,
+        noInternet,
         serviceNotAvailable
       ];
 }

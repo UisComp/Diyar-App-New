@@ -24,7 +24,6 @@ import 'package:diyar_app/feature/new_work/view/new_work_screen.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
-import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/view/notifications_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
@@ -408,10 +407,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.notificationsScreen,
       path: RoutesName.notificationsScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (context) => NotificationController(),
-          child: const NotificationsScreen(),
-        ),
+        child: const NotificationsScreen(),
         transition: slideFromRight,
       ),
     ),

@@ -60,7 +60,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             return Scaffold(
               appBar: CustomAppBar(
                 titleAppBar: LocaleKeys.settings.tr(),
-                showIconNotification: false,
               ),
               body: SingleChildScrollView(
                 child: Column(

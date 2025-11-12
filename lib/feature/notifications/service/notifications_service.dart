@@ -7,50 +7,39 @@ import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:diyar_app/feature/notifications/model/general_notification_model.dart';
 import 'package:diyar_app/feature/notifications/model/make_all_notification_as_read_response_model.dart';
 import 'package:diyar_app/feature/notifications/model/notification_response_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:diyar_app/core/helper/dio_helper.dart';
+import 'package:dio/dio.dart';
 
 class NotificationsService {
-  final LoginResponseModel _auth;
-  NotificationsService._(this._auth);
+  NotificationsService._();
+
   static Future<NotificationsService> create() async {
     try {
       final LoginResponseModel? authJson = await HiveHelper.getUserModel(
         AppConstants.userModelKey,
       );
+      log("Auth JSON => $authJson");
 
-      log('Auth JSON: $authJson');
-
-      if (authJson == null) {
-        return NotificationsService._(LoginResponseModel());
-      } else {
-        return NotificationsService._(authJson);
-      }
+      return NotificationsService._();
     } catch (e) {
       log('Error creating NotificationsService: $e');
       throw Exception("Failed to create NotificationsService: $e");
     }
   }
 
-  Map<String, String> get _headers => {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer ${_auth.data?.accessToken}",
-  };
-
   Future<NotificationResponseModel> getAllNotifications({
     int page = 1,
-    int perPage = 5,
+    int perPage = 15,
   }) async {
     try {
-      final response = await http.get(
-        Uri.parse(
-          '${ApiPaths.baseUrl}${ApiPaths.getAllNotifications}?per_page=$perPage&unread_only=false',
-        ),
-        headers: _headers,
+      Response? response = await DioHelper.getData(
+        needHeader: true,
+        path: ApiPaths.getAllNotifications(page: page, perPage: perPage),
       );
 
       _logResponse(response, "getAllNotifications");
-      final jsonData = jsonDecode(response.body);
-      return NotificationResponseModel.fromJson(jsonData);
+
+      return NotificationResponseModel.fromJson(response?.data);
     } catch (e) {
       log('Error: $e');
       rethrow;
@@ -59,47 +48,44 @@ class NotificationsService {
 
   Future<GeneralNotificationModel> markNotificationAsRead(int id) async =>
       _handleRequest(
-        () => http.get(
-          Uri.parse(ApiPaths.markAsRead(id: "$id")),
-          headers: _headers,
-        ),
+        () => DioHelper.postData(path: ApiPaths.markAsRead(id: "$id")),
         (json) => GeneralNotificationModel.fromJson(json),
         "markNotificationAsRead",
       );
-
   Future<GeneralNotificationModel> deleteNotification(int id) async =>
       _handleRequest(
-        () => http.delete(
-          Uri.parse(ApiPaths.deleteNotification(id: "$id")),
-          headers: _headers,
-        ),
+        () => DioHelper.deletData(path: ApiPaths.deleteNotification(id: "$id")),
         (json) => GeneralNotificationModel.fromJson(json),
         "deleteNotification",
       );
-
   Future<MakeAllNotificationAsReadResponseModel>
   makeAllNotificationAsRead() async => _handleRequest(
-    () => http.get(Uri.parse(ApiPaths.markAllAsRead), headers: _headers),
+    () => DioHelper.postData(path: ApiPaths.markAllAsRead),
     (json) => MakeAllNotificationAsReadResponseModel.fromJson(json),
     "makeAllNotificationAsRead",
   );
-
   Future<T> _handleRequest<T>(
-    Future<http.Response> Function() request,
+    Future<Response?> Function() request,
     T Function(Map<String, dynamic>) fromJson,
     String context,
   ) async {
     try {
       final response = await request();
+
       _logResponse(response, context);
-      return fromJson(jsonDecode(response.body));
+
+      if (response?.data is Map<String, dynamic>) {
+        return fromJson(response?.data);
+      } else {
+        return fromJson(jsonDecode(response?.data));
+      }
     } catch (e) {
       log('Error in $context: $e');
       rethrow;
     }
   }
 
-  void _logResponse(http.Response response, String context) {
-    log('$context Response (${response.statusCode}): ${response.body}');
+  void _logResponse(Response? res, String context) {
+    log("$context Response (${res?.statusCode}): ${res?.data}");
   }
 }

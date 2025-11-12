@@ -2,8 +2,9 @@ import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/feature/settings/functions/settings_functions.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_state.dart';
-import 'package:diyar_app/feature/visitor/view/widgets/build_idle_view.dart';
 import 'package:diyar_app/feature/visitor/view/widgets/build_scanner_view.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -58,7 +59,7 @@ class _GuardRoleScreenState extends State<GuardRoleScreen>
             Navigator.pop(context);
             AppFunctions.successMessage(
               context,
-              message: "QR scanned successfully",
+              message: LocaleKeys.qr_scanned_successfully.tr(),
             );
           }
           if (visitorState is ScanQrRequestErrorState) {

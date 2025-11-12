@@ -23,6 +23,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../notifications/controller/notification_cubit.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -53,16 +55,12 @@ class _LoginScreenState extends State<LoginScreen> {
       final isAuthenticated = await context
           .read<SettingsController>()
           .authenticateWithBiometrics();
-
       if (!isAuthenticated) {
         AppLogger.error('Biometric authentication failed');
         return;
       }
       final userName = await HiveHelper.getFromHive(key: AppConstants.myEmail);
-      final password = await HiveHelper.getFromHive(
-        key: AppConstants.myPassword,
-      );
-
+      final password = await secureStorage.read(key: AppConstants.myPassword);
       if (userName == null || password == null) {
         AppLogger.warning('No saved credentials found');
 
@@ -73,24 +71,24 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         return;
       }
-
       authController.emailControllerForLogin.text = userName;
       authController.passwordControllerForLogin.text = password;
-
       AppLogger.success('Loaded credentials after biometric success');
       await authController.login();
-
-      if (!mounted) return;
-      context.go(RoutesName.homeLayout);
     } catch (e) {
       AppLogger.error('Biometric login error: $e');
-
       if (!mounted) return;
       AppFunctions.errorMessage(
         context,
         message: LocaleKeys.biometric_authentication_failed.tr(),
       );
     }
+  }
+
+  Future<void> fetchNotifications() async {
+    await NotificationController.get(
+      context,
+    ).fetchAllNotifications(refresh: true, page: 1);
   }
 
   @override
@@ -104,7 +102,25 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   child: BlocConsumer<AuthController, AuthState>(
-                    listener: (context, authState) {},
+                    listener: (context, authState) {
+                      if (authState is LoginSuccessState) {
+                        fetchNotifications();
+
+                        AppFunctions.successMessage(
+                          context,
+                          message: LocaleKeys.login_successfully.tr(),
+                        );
+                        context.go(RoutesName.homeLayout);
+                      }
+                      if (authState is LoginFailureState) {
+                        AppFunctions.errorMessage(
+                          description:
+                              authController.loginResponseModel.message,
+                          context,
+                          message: LocaleKeys.login_failed.tr(),
+                        );
+                      }
+                    },
                     builder: (context, authState) {
                       return SingleChildScrollView(
                         child: Form(

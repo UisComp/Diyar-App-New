@@ -264,5 +264,9 @@ abstract class  LocaleKeys {
   static const start_time_cannot_be_past = 'start_time_cannot_be_past';
   static const end_time_must_be_after_start = 'end_time_must_be_after_start';
   static const your_qr_code = 'your_qr_code';
+  static const no_internet = 'no_internet';
+  static const please_check_your_internet_connection = 'please_check_your_internet_connection';
+  static const no_events_found = 'no_events_found';
+  static const qr_scanned_successfully = 'qr_scanned_successfully';
 
 }

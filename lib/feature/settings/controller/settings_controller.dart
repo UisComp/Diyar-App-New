@@ -35,9 +35,13 @@ class SettingsController extends Cubit<SettingsState> {
             newPasswordConfirmation: newPasswordConfirmation.text,
           ),
         )
-        .then((value) {
+        .then((value) async {
           changePasswordResponseModel = value;
           if (value.success == true) {
+            await secureStorage.write(
+              key: AppConstants.myPassword,
+              value: newPassword.text,
+            );
             emit(ChangePasswordSuccessfullyState());
           } else {
             emit(ChangePasswordFailureState(error: value.message));

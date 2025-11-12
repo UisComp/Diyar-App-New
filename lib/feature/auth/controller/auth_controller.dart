@@ -78,6 +78,10 @@ class AuthController extends Cubit<AuthState> {
           if (value.success == true) {
             emit(LoginSuccessState());
             await updateUserModel(value);
+            await HiveHelper.addToHive(
+              key: AppConstants.token,
+              value: value.data?.accessToken,
+            );
             await HiveHelper.storeUserModel(value, AppConstants.userModelKey);
             await savedCredentials(
               email: emailControllerForLogin.text,
@@ -260,14 +264,18 @@ class AuthController extends Cubit<AuthState> {
           logoutResponseModel = value;
           if (value.success == true) {
             emit(LogOutSuccessState());
+            await HiveHelper.removeFromHive(key: AppConstants.token);
             await updateUserModel(null);
+            await HiveHelper.removeUserModel(key: AppConstants.userModelKey);
             await HiveHelper.clearUserDataOnly();
             await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
           } else {
+            await HiveHelper.removeFromHive(key: AppConstants.token);
             await updateUserModel(null);
+            await HiveHelper.removeUserModel(key: AppConstants.userModelKey);
+
             await HiveHelper.clearUserDataOnly();
             await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
-
             emit(LogOutFailureState(error: value.message));
           }
         })
@@ -276,5 +284,4 @@ class AuthController extends Cubit<AuthState> {
           emit(LoginFailureState(error: error.toString()));
         });
   }
-
 }

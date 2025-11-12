@@ -275,7 +275,11 @@ class CodegenLoader extends AssetLoader{
   "please_select_at_least_one_service": "يرجى اختيار خدمة واحدة على الاقل",
   "start_time_cannot_be_past": "لا يمكن ان يكون وقت البدء في الماضي",
   "end_time_must_be_after_start": "يجب ان يكون وقت الانتهاء بعد وقت البدء",
-  "your_qr_code": "كود QR الخاص بك"
+  "your_qr_code": "كود QR الخاص بك",
+  "no_internet": "لا يوجد اتصال بالإنترنت!",
+  "please_check_your_internet_connection": "يرجى التحقق من اتصال الإنترنت",
+  "no_events_found": "لا توجد أحداث",
+  "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -537,7 +541,11 @@ static const Map<String,dynamic> _en = {
   "please_select_at_least_one_service": "Please select at least one service",
   "start_time_cannot_be_past": "Start time cannot be past",
   "end_time_must_be_after_start": "End time must be after start time",
-  "your_qr_code": "Your QR Code"
+  "your_qr_code": "Your QR Code",
+  "no_internet": "No internet",
+  "please_check_your_internet_connection": "Please check your internet connection",
+  "no_events_found": "No events found",
+  "qr_scanned_successfully": "QR scanned successfully"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

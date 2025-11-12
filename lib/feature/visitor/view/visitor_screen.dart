@@ -36,7 +36,6 @@ class _VisitorScreenState extends State<VisitorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        showIconNotification: false,
         titleAppBar: LocaleKeys.visitor.tr(),
       ),
       body: isOwnUnit

@@ -35,11 +35,6 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
       onTap: () => context.push(
         RoutesName.imagePreviewScreen,
         extra: widget.banners.data?[_current],
-        //  showImagePreview(
-        //   context,
-        //   widget.banners.data?[_current].url ?? '',
-        //   title: widget.banners.data?[_current].title,
-        //   description: widget.banners.data?[_current].description,
       ),
       child: CarouselSlider.builder(
         itemCount: itemCount,

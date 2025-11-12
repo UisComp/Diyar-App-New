@@ -4,14 +4,25 @@ import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/feature/unit_event/model/news_by_project_unit_event_response_model.dart';
 
 class UnitEventService {
-  static Future<NewByProjectUnitEventResponseModel> getNewsByProjectUnitsByEvent({required String id}) async {
+  static Future<NewByProjectUnitEventResponseModel>
+  getNewsByProjectUnitsByEvent({
+    required String id,
+    DateTime? start,
+    DateTime? end,
+  }) async {
     final unitEventResponse = await DioHelper.getData(
-      path: ApiPaths.getNewsByUnit(id: id),
+      path: ApiPaths.getNewsByUnit(
+        id: id,
+        start: start.toString(),
+        end: end.toString(),
+      ),
     );
     AppLogger.info("unitEventResponse==>$unitEventResponse");
     try {
       if (unitEventResponse != null && unitEventResponse.statusCode == 200) {
-        return NewByProjectUnitEventResponseModel.fromJson(unitEventResponse.data);
+        return NewByProjectUnitEventResponseModel.fromJson(
+          unitEventResponse.data,
+        );
       }
     } catch (e) {
       AppLogger.error('Error Happen While Get Units By Event is $e');

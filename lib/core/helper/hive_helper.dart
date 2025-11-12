@@ -79,4 +79,9 @@ static Future<void> clearUserDataOnly() async {
     final box = await _openBox();
     await box.clear();
   }
+  static Future<void> removeUserModel({ required String key}) async {
+  final box = await Hive.openBox<LoginResponseModel>('userModelBox');
+  await box.delete(key);
+}
+
 }

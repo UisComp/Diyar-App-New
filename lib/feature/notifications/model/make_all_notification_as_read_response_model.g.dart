@@ -10,7 +10,7 @@ MakeAllNotificationAsReadResponseModel
     _$MakeAllNotificationAsReadResponseModelFromJson(
             Map<String, dynamic> json) =>
         MakeAllNotificationAsReadResponseModel(
-          status: json['status'] as bool,
+          success: json['success'] as bool?,
           data: json['data'] == null
               ? null
               : MakeAllNotificationAsReadData.fromJson(
@@ -18,12 +18,14 @@ MakeAllNotificationAsReadResponseModel
           error: (json['error'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList(),
+          message: json['message'] as String?,
         );
 
 Map<String, dynamic> _$MakeAllNotificationAsReadResponseModelToJson(
         MakeAllNotificationAsReadResponseModel instance) =>
     <String, dynamic>{
-      'status': instance.status,
+      'success': instance.success,
+      'message': instance.message,
       'data': instance.data?.toJson(),
       'error': instance.error,
     };
@@ -31,11 +33,13 @@ Map<String, dynamic> _$MakeAllNotificationAsReadResponseModelToJson(
 MakeAllNotificationAsReadData _$MakeAllNotificationAsReadDataFromJson(
         Map<String, dynamic> json) =>
     MakeAllNotificationAsReadData(
-      message: json['message'] as String,
+      success: json['success'] as bool?,
+      updatedCount: (json['updated_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$MakeAllNotificationAsReadDataToJson(
         MakeAllNotificationAsReadData instance) =>
     <String, dynamic>{
-      'message': instance.message,
+      'success': instance.success,
+      'updated_count': instance.updatedCount,
     };

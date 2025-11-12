@@ -1,8 +1,9 @@
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_state.dart';
+import 'package:diyar_app/feature/notifications/view/widgets/custom_notification_icon.dart';
+import 'package:diyar_app/feature/notifications/view/widgets/custom_notifications_list_view.dart';
 import 'package:diyar_app/feature/notifications/view/widgets/empty_notifications.dart';
-import 'package:diyar_app/feature/notifications/view/widgets/notification_item.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,27 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   late NotificationController notificationController;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     notificationController = NotificationController.get(context)
       ..fetchAllNotifications();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 200 &&
+          notificationController.hasMore &&
+          !notificationController.isLoadingMore) {
+        notificationController.fetchMoreNotifications();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -32,39 +48,29 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return BlocBuilder<NotificationController, NotificationState>(
       builder: (context, state) {
         final bool isLoading = state is NotificationLoading;
-
         final notifications =
             notificationController.notifications?.data?.notifications ?? [];
-
         return Scaffold(
-          appBar: CustomAppBar(titleAppBar: LocaleKeys.notifications.tr()),
+          appBar: CustomAppBar(
+            titleAppBar: LocaleKeys.notifications.tr(),
+            actions: [
+              CustomNotificationIcon(
+                state: state,
+                notificationController: notificationController,
+              ),
+            ],
+          ),
           body: Padding(
             padding: EdgeInsets.all(16.w),
             child: Skeletonizer(
-              enabled: isLoading,
+              enabled: isLoading && notifications.isEmpty,
               child: notifications.isEmpty && !isLoading
                   ? const EmptyNotifications()
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: List.generate(
-                          isLoading ? 5 : notifications.length,
-                          (index) => Padding(
-                            padding: EdgeInsets.only(bottom: 10.h),
-                            child: isLoading
-                                ? Container(
-                                    width: double.infinity,
-                                    height: 80.h,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(12.r),
-                                    ),
-                                  )
-                                : NotificationItem(
-                                    notification: notifications[index],
-                                  ),
-                          ),
-                        ),
-                      ),
+                  : CustomNotificationsListView(
+                      state: state,
+                      scrollController: _scrollController,
+                      notifications: notifications,
+                      notificationController: notificationController,
                     ),
             ),
           ),

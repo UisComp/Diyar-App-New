@@ -43,7 +43,7 @@ class NotificationController extends Cubit<NotificationState> {
 
   int currentPage = 1;
   bool hasMore = true;
-  final int perPage = 20;
+  final int perPage = 15;
   Future<void> fetchAllNotifications({
     int page = 1,
     bool refresh = false,
@@ -80,6 +80,37 @@ class NotificationController extends Cubit<NotificationState> {
       emit(NotificationError(error: e.toString()));
     }
   }
+bool isLoadingMore = false;
+Future<void> fetchMoreNotifications() async {
+  if (!hasMore || isLoadingMore) return; // prevent overlapping
+  isLoadingMore = true;
+
+  try {
+    final nextPage = currentPage + 1;
+
+    final value = await notificationsService.getAllNotifications(
+      page: nextPage,
+      perPage: perPage,
+    );
+
+    final newNotifications = value.data?.notifications ?? [];
+
+    // Add new items
+    notifications?.data?.notifications?.addAll(newNotifications);
+
+    // Update page + hasMore
+    currentPage = nextPage;
+    hasMore = newNotifications.length >= perPage;
+
+    emit(NotificationSuccess());   // ✅ rebuild UI
+  } catch (e) {
+    log("Error loading more: $e");
+    emit(NotificationError(error: e.toString()));
+  } finally {
+    isLoadingMore = false;
+  }
+}
+
 
   Future<void> markAsRead(int id) async {
     emit(MakeAsReadNotificationLoading());
@@ -123,5 +154,15 @@ class NotificationController extends Cubit<NotificationState> {
 
   void clearNotifications() {
     emit(ClearNotificationState(notifications: null));
+  }
+
+  bool get allRead {
+    if (notifications?.data?.notifications == null) return true;
+    return notifications!.data!.notifications!.every((n) => n.isRead == true);
+  }
+
+  bool get anyUnread {
+    if (notifications?.data?.notifications == null) return false;
+    return notifications!.data!.notifications!.any((n) => n.isRead == false);
   }
 }

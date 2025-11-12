@@ -19,6 +19,7 @@ class AppConstants {
   static const String myEmail = "myEmail";
   static const String myPassword = "myPassword";
   static const String fcmToken = "fcmToken";
+  static const String token = "token";
   static List<Locale> supportedLocales = [
     const Locale(enLanguage),
     const Locale(arLanguage),
@@ -41,33 +42,34 @@ String? getScreenNameByServiceType(ServiceType? type) {
     case ServiceType.type1:
       return RoutesName.newsScreen;
     case ServiceType.type2:
-      return RoutesName.activeWorkScreen; 
+      return RoutesName.activeWorkScreen;
     case ServiceType.type3:
-      return RoutesName.reportScreen; 
+      return RoutesName.reportScreen;
     case ServiceType.type4:
-      return RoutesName.newWorkScreen; 
+      return RoutesName.newWorkScreen;
     case ServiceType.type5:
       return RoutesName.financeScreen;
     case ServiceType.type6:
-      return RoutesName.addPropertyScreen; 
+      return RoutesName.addPropertyScreen;
     case ServiceType.type7:
-      return RoutesName.addTenantScreen; 
+      return RoutesName.addTenantScreen;
     case ServiceType.type8:
       return RoutesName.visitorScreen;
     case ServiceType.type9:
-      return RoutesName.announcementScreen; 
+      return RoutesName.announcementScreen;
     case ServiceType.type10:
-      return RoutesName.emergencyScreen; 
+      return RoutesName.emergencyScreen;
     case ServiceType.type11:
-      return RoutesName.facilityBookingScreen; 
+      return RoutesName.facilityBookingScreen;
     case ServiceType.type12:
-      return RoutesName.serviceProvidersScreen; 
+      return RoutesName.serviceProvidersScreen;
     case ServiceType.type13:
-      return RoutesName.committeeScreen; 
+      return RoutesName.committeeScreen;
     case ServiceType.type14:
-      return RoutesName.contactUsScreen; 
+      return RoutesName.contactUsScreen;
     default:
       return null;
   }
 }
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

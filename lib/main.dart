@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:diyar_app/bloc_observer.dart';
 import 'package:diyar_app/core/constants/app_constants.dart';
-import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/app_variable.dart' hide navigatorKey;
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
@@ -10,6 +10,8 @@ import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/helper/notification_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
+import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
+import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/firebase_options.dart';
@@ -24,10 +26,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // await appContext.read<NotificationController>().fetchAllNotifications(
-  //   page: 1,
-  //   refresh: true,
-  // );
+  await navigatorKey.currentContext
+      ?.read<NotificationController>()
+      .fetchAllNotifications(page: 1, refresh: true);
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -64,9 +65,11 @@ Future<void> main() async {
       saveLocale: true,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => InternetConnectionController()),
           BlocProvider<LanguageController>.value(value: languageController),
           BlocProvider(create: (_) => AppThemeController()),
           BlocProvider(create: (_) => ProfileController()),
+          BlocProvider(create: (_) => NotificationController()),
           BlocProvider(create: (_) => SettingsController()..getConfigData()),
         ],
         child: const DiyarApp(),
@@ -110,19 +113,17 @@ Future<void> setupNotifications() async {
 
   FirebaseMessaging.onMessage.listen((message) async {
     AppLogger.log("Foreground message received data: $message");
-    //! get all notifications
-    // appContext.read<NotificationController>().fetchAllNotifications(
-    //   page: 1,
-    //   refresh: true,
-    // );
+
     await localNotificationService.showLocalNotification(message);
+    navigatorKey.currentContext
+        ?.read<NotificationController>()
+        .fetchAllNotifications(page: 1, refresh: true);
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-    // appContext.read<NotificationController>().fetchAllNotifications(
-    //   page: 1,
-    //   refresh: true,
-    // );
+    navigatorKey.currentContext
+        ?.read<NotificationController>()
+        .fetchAllNotifications(page: 1, refresh: true);
     AppLogger.log("Notification opened: ${message.data}");
   });
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

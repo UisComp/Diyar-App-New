@@ -1,8 +1,8 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
 
 class ApiPaths {
-  static Duration timeOutDuration = const Duration(seconds: 10);
-  static Duration sendTimeOutDuration = const Duration(seconds: 10);
+  static Duration timeOutDuration = const Duration(seconds: 20);
+  static Duration sendTimeOutDuration = const Duration(seconds: 20);
   static const String baseUrl = "https://diyar.sherif-elzeny.com/api/";
   static const String register = "register";
   static const String login = "login";
@@ -23,17 +23,22 @@ class ApiPaths {
   static const String serviceProvider = "service-providers";
   static const String getDocumentPath = "profile/documents";
   static const String financePath = "user/finance";
-  static const String getAllNews = "news/user?per_page=15"; //! paginate
+  static const String getAllNews = "news/user";
   static const String configDataPath = "config";
   static const visitorPassesPath = "visitor-passes";
   static const visitorPassesPathScan = "visitor-passes/validate";
-  static const String getAllNotifications = "notifications";
-  static String markAsRead({required String id}) => "/$id";
-  static String deleteNotification({required String id}) => "/$id";
-  static const String markAllAsRead = "";
+  static String getAllNotifications({int? perPage, int? page}) =>
+      "notifications?per_page=$perPage&page=$page&unread_only=false";
+  static String markAsRead({required String id}) =>
+      "notifications/$id/mark-read";
+  static String markAllAsRead = "notifications/mark-all-read";
+  static String deleteNotification({required String id}) => "notifications/$id";
   static String getProjectDetails({required String id}) => "projects/$id";
-  static String getNewsByUnit({required String id}) =>
-      "news/project/$id?per_page=15"; //! paginate
+  static String getNewsByUnit({
+    required String id,
+    String? start,
+    String? end,
+  }) => "news/project/$id?start=$start&end=$end";
   static String newsDetails({required String id}) => "news/$id";
   static Future<Map<String, dynamic>> getHeaders() async {
     return {

@@ -55,7 +55,6 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         titleAppBar: LocaleKeys.diyar.tr(),
-        showIconNotification: true,
       ),
       body: BlocBuilder<HomeController, HomeState>(
         builder: (context, state) {
