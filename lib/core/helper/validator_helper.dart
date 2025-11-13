@@ -55,7 +55,36 @@ class ValidatorHelper {
     return time.hour * 60 + time.minute < now.hour * 60 + now.minute;
   }
 
-  static bool isAfter(TimeOfDay a, TimeOfDay b) {
-    return a.hour * 60 + a.minute > b.hour * 60 + b.minute;
+  // static bool isAfter(TimeOfDay a, TimeOfDay b) {
+  //   return a.hour * 60 + a.minute > b.hour * 60 + b.minute;
+  // }
+  static bool isPastDateTime(DateTime startDate, TimeOfDay startTime) {
+    final now = DateTime.now();
+    final selectedDateTime = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      startTime.hour,
+      startTime.minute,
+    );
+    return selectedDateTime.isBefore(now);
+  }
+
+  static bool isAfter(DateTime startDate, TimeOfDay startTime, TimeOfDay endTime) {
+    final startDateTime = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      startTime.hour,
+      startTime.minute,
+    );
+    final endDateTime = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      endTime.hour,
+      endTime.minute,
+    );
+    return endDateTime.isAfter(startDateTime);
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/routes/app_routes.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/notifications/model/message_data_response_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,8 @@ class NotificationService {
     }
 
     final androidDetails = AndroidNotificationDetails(
+      color: AppColors.whiteColor,
+      colorized: true,
       'channel_id',
       'App Notifications',
       channelDescription: 'Channel for general notifications',
@@ -129,20 +132,19 @@ class NotificationService {
   //     );
   //   }
   // }
-void onSelectNotification(NotificationResponse response) {
-  final type = response.payload;
-  log('Notification tapped with type: $type');
+  void onSelectNotification(NotificationResponse response) {
+    final type = response.payload;
+    log('Notification tapped with type: $type');
 
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    final context = navigatorKey.currentContext;
-    if (context != null) {
-      if (type == 'personal') {
-       router.push(RoutesName.notificationsScreen);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = navigatorKey.currentContext;
+      if (context != null) {
+        if (type == 'personal') {
+          router.push(RoutesName.notificationsScreen);
+        }
       }
-    }
-  });
-}
-
+    });
+  }
 
   Future<String> downloadAndSaveImage(String url) async {
     final Directory tempDir = await getTemporaryDirectory();

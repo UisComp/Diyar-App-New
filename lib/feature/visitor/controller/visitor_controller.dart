@@ -115,11 +115,12 @@ class VisitorController extends Cubit<VisitorState> {
       selectedDateRange!.start,
     );
     final endDate = AppFormatter.dateFormatter().format(selectedDateRange!.end);
-
-    final formattedStartTime =
-        "${startTime!.hour.toString().padLeft(2, '0')}:${startTime!.minute.toString().padLeft(2, '0')}";
-    final formattedEndTime =
-        "${endTime!.hour.toString().padLeft(2, '0')}:${endTime!.minute.toString().padLeft(2, '0')}";
+    // final formattedStartTime =
+    //     "${startTime!.hour.toString().padLeft(2, '0')}:${startTime!.minute.toString().padLeft(2, '0')}";
+    // final formattedEndTime =
+    //     "${endTime!.hour.toString().padLeft(2, '0')}:${endTime!.minute.toString().padLeft(2, '0')}";
+    final formattedStartTime = AppFormatter.formatUtcTime(startTime!);
+    final formattedEndTime = AppFormatter.formatUtcTime(endTime!);
 
     generatedQrData =
         "https://yourapp.com/unit-access?token=${visitorPassResponse.data?.token}"
@@ -164,8 +165,6 @@ class VisitorController extends Cubit<VisitorState> {
   }
 
   VisitorPassResponse visitorPassResponse = VisitorPassResponse();
-  String formatTime(TimeOfDay t) =>
-      "${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}";
 
   Future<void> createVisitorPass() async {
     try {
@@ -179,8 +178,11 @@ class VisitorController extends Cubit<VisitorState> {
               startDate: AppFormatter.dateFormatter().format(
                 selectedDateRange!.start,
               ),
-              startTime: formatTime(startTime!),
-              endTime: formatTime(endTime!),
+              startTime: AppFormatter.formatUtcTime(startTime!),
+              endTime: AppFormatter.formatUtcTime(endTime!),
+
+              // startTime: AppFormatter.formatTime(startTime!),
+              // endTime: AppFormatter.formatTime(endTime!),
               unitId: int.tryParse(selectedUnitId.toString()),
             ),
           )

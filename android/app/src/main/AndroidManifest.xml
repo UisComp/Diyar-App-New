@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.diyar_app">
 
-    <!-- ✅ Required for network and Firebase -->
+    <!-- ====================== الأذونات ====================== -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <!-- ✅ File access (for open_filex, file picker & downloads) -->
+    <!-- File access (للتحميل والملفات) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -20,8 +20,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
-    <!-- Optional for document picker -->
     <uses-permission
         android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
         tools:ignore="UnknownPermission" />
@@ -29,9 +27,12 @@
     <application
         android:label="Diyar"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
-        <!-- ✅ FileProvider (for open_filex and similar plugins) -->
+        <!-- ✅ FileProvider (لفتح الملفات بـ open_filex) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -43,6 +44,15 @@
                 android:resource="@xml/filepaths"
                 tools:replace="android:resource" />
         </provider>
+
+        <!-- ✅ FCM Default Notification Icon (الأيقونة البيضاء) -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification_icon" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
 
         <!-- ✅ Main Activity -->
         <activity
@@ -64,7 +74,7 @@
             </intent-filter>
         </activity>
 
-        <!-- ✅ Firebase -->
+        <!-- ✅ Firebase Messaging Service -->
         <service
             android:name="com.google.firebase.messaging.FirebaseMessagingService"
             android:exported="false">
@@ -73,21 +83,29 @@
             </intent-filter>
         </service>
 
+        <!-- ✅ Firebase Instance ID Receiver (للـ Token) -->
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
+        <!-- ✅ Flutter Embedding -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- ✅ Custom Application Class (لو بتستخدم MyApplication.kt) -->
+        <!-- <meta-data android:name="com.example.diyar_app.MyApplication" android:value="io.flutter.app.FlutterApplication"/> -->
+
     </application>
 
-    <!-- ✅ Allow querying file-viewing apps -->
+    <!-- ✅ السماح للتطبيق بفتح الملفات في التطبيقات الأخرى -->
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
