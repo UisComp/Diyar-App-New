@@ -48,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDtHr_qEWvGZygQXKNwdIAhPa58ILTaAIw',
-    appId: '1:241715939585:web:553f3aa9f6f9ce32f97300',
+    appId: '1:241715939585:web:bbc32847ba243476f97300',
     messagingSenderId: '241715939585',
     projectId: 'diyar-app',
     authDomain: 'diyar-app.firebaseapp.com',
     storageBucket: 'diyar-app.firebasestorage.app',
-    measurementId: 'G-8NZKP5M9MX',
+    measurementId: 'G-8LLPZ00GCR',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBXbT7RW9e0yiO2lDGm712m6ddek25bWL0',
-    appId: '1:241715939585:android:b06cc1e6c7bfb8d9f97300',
+    appId: '1:241715939585:android:262b24bc128b7f41f97300',
     messagingSenderId: '241715939585',
     projectId: 'diyar-app',
     storageBucket: 'diyar-app.firebasestorage.app',
@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBOzHMP_RhVZqw0SSiVeFVtkP5IAwjSSpY',
-    appId: '1:241715939585:ios:82d74337ac807392f97300',
+    appId: '1:241715939585:ios:5130c62115d2e362f97300',
     messagingSenderId: '241715939585',
     projectId: 'diyar-app',
     storageBucket: 'diyar-app.firebasestorage.app',

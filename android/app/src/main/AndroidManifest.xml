@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.diyar_app">
+    package="com.uis.diyar">
 
     <!-- ====================== الأذونات ====================== -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -101,7 +101,7 @@
             android:value="2" />
 
         <!-- ✅ Custom Application Class (لو بتستخدم MyApplication.kt) -->
-        <!-- <meta-data android:name="com.example.diyar_app.MyApplication" android:value="io.flutter.app.FlutterApplication"/> -->
+        <!-- <meta-data android:name="com.uis.diyar.MyApplication" android:value="io.flutter.app.FlutterApplication"/> -->
 
     </application>
 

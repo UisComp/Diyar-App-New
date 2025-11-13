@@ -9,12 +9,12 @@ import java.util.Properties
 import java.io.FileInputStream
 
 android {
-    namespace = "com.example.diyar_app"
+    namespace = "com.uis.diyar"
     compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     defaultConfig {
-        applicationId = "com.example.diyar_app"
+        applicationId = "com.uis.diyar"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = 1
