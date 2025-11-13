@@ -28,7 +28,7 @@
         android:label="Diyar"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 

@@ -99,6 +99,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                       label: LocaleKeys.profile.tr(),
                     ),
                     if (userModel?.data != null &&
+                        userModel!.data!.user.roles != null &&
                         !userModel!.data!.user.roles!.contains("guard"))
                       BottomNavigationBarItem(
                         icon: SvgPicture.asset(
