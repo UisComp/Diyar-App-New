@@ -53,17 +53,17 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app requires permission to save photos to your library.</string>
 	
-<!-- ✅ Add these for file/document access -->
-<key>NSDocumentsFolderUsageDescription</key>
-<string>This app needs access to your documents to select and upload files.</string>
-<key>NSFileProviderDomainUsageDescription</key>
-<string>This app needs access to your files for uploading documents.</string>
+	<!-- File/Document Access -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>This app needs access to your documents to select and upload files.</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>This app needs access to your files for uploading documents.</string>
 
-<!-- ✅ Optional: if you'll download files to local storage -->
-<key>UIFileSharingEnabled</key>
-<true/>
-<key>LSSupportsOpeningDocumentsInPlace</key>
-<true/>
+	<!-- Optional: File Sharing -->
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 
 	<key>CFBundleLocalizations</key>
 	<array>
@@ -79,18 +79,15 @@
 	<string>This app would like to send you notifications about new updates, offers, and orders.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires access to your photo library to select and upload images.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app requires permission to save photos to your library.</string>
 
-	<!-- ✅ Add these for file/document access -->
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>This app needs access to your documents to select and upload files.</string>
-	<key>NSFileProviderDomainUsageDescription</key>
-	<string>This app needs access to your files for uploading documents.</string>
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>tel</string>
-</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+	</array>
+
+	<!-- CRITICAL FOR FIREBASE MESSAGING ON iOS -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 
 </dict>
 </plist>
