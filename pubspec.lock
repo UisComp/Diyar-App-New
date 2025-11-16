@@ -1249,10 +1249,10 @@ packages:
     dependency: "direct main"
     description:
       name: phone_form_field
-      sha256: b0a472fada98f5fcc75fc23021d04144b066a8064be957929b9fb3a25bbabe1b
+      sha256: e37d132cce0c42ae9e7901ccfb896f298ae259ac30e97496e6bd074a781a29c0
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.12"
+    version: "10.0.13"
   phone_numbers_parser:
     dependency: transitive
     description:
@@ -1630,10 +1630,10 @@ packages:
     dependency: transitive
     description:
       name: universal_io
-      sha256: "1722b2dcc462b4b2f3ee7d188dad008b6eb4c40bbd03a3de451d82c78bba9aad"
+      sha256: ba9dde5f7c6d8ec7ed856bef0eb01c425881acae7748f77dac4d5cc46f2edf04
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   url_launcher:
     dependency: "direct main"
     description:
