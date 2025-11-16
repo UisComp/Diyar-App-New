@@ -7,6 +7,7 @@ import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/routes/app_routes.dart';
 import 'package:diyar_app/core/theme/app_theme.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
+import 'package:diyar_app/feature/internet/controller/internet_state.dart';
 import 'package:diyar_app/feature/internet/view/no_internet.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,45 +34,63 @@ class DiyarApp extends StatelessWidget {
               },
             ),
           ],
-          child: BlocBuilder<AppThemeController, AppThemeState>(
-            builder: (context, themeState) {
-              final themeController = AppThemeController.get(context);
-              if (!InternetConnectionController.get(context).isConnected) {
-                AppLogger.log("${!InternetConnectionController.get(context).isConnected}");
-                return MaterialApp(
-                  key: navigatorKey,
-                  debugShowCheckedModeBanner: false,
-                  locale: context.locale,
-                  supportedLocales: context.supportedLocales,
-                  localizationsDelegates: context.localizationDelegates,
-                  themeMode:
-                      themeController.currentThemeMode == AppThemeMode.dark
-                      ? ThemeMode.dark
-                      : themeController.currentThemeMode == AppThemeMode.light
-                      ? ThemeMode.light
-                      : ThemeMode.system,
-                  theme: AppThemes.lightTheme,
-                  darkTheme: AppThemes.darkTheme,
-                  home: const NoInternetConnection(),
-                );
-              }
-              return MaterialApp.router(
-                key: navigatorKey,
-                debugShowCheckedModeBanner: false,
-                routerConfig: router,
-                locale: context.locale,
-                supportedLocales: context.supportedLocales,
-                localizationsDelegates: context.localizationDelegates,
-                themeMode: themeController.currentThemeMode == AppThemeMode.dark
-                    ? ThemeMode.dark
-                    : themeController.currentThemeMode == AppThemeMode.light
-                    ? ThemeMode.light
-                    : ThemeMode.system,
-                theme: AppThemes.lightTheme,
-                darkTheme: AppThemes.darkTheme,
-              );
-            },
-          ),
+          child:
+              BlocBuilder<
+                InternetConnectionController,
+                InternetConnectionStates
+              >(
+                builder: (context, internetConnectionStates) {
+                  return BlocBuilder<AppThemeController, AppThemeState>(
+                    builder: (context, themeState) {
+                      final themeController = AppThemeController.get(context);
+                      final bool isConnected =
+                          internetConnectionStates
+                              is InternetConnectionHaveConnectionStates;
+                      if (!isConnected) {
+                        AppLogger.log(
+                          "${!InternetConnectionController.get(context).isConnected}",
+                        );
+                        return MaterialApp(
+                          key: navigatorKey,
+                          debugShowCheckedModeBanner: false,
+                          locale: context.locale,
+                          supportedLocales: context.supportedLocales,
+                          localizationsDelegates: context.localizationDelegates,
+                          themeMode:
+                              themeController.currentThemeMode ==
+                                  AppThemeMode.dark
+                              ? ThemeMode.dark
+                              : themeController.currentThemeMode ==
+                                    AppThemeMode.light
+                              ? ThemeMode.light
+                              : ThemeMode.system,
+                          theme: AppThemes.lightTheme,
+                          darkTheme: AppThemes.darkTheme,
+                          home: const NoInternetConnection(),
+                        );
+                      }
+                      return MaterialApp.router(
+                        key: navigatorKey,
+                        debugShowCheckedModeBanner: false,
+                        routerConfig: router,
+                        locale: context.locale,
+                        supportedLocales: context.supportedLocales,
+                        localizationsDelegates: context.localizationDelegates,
+                        themeMode:
+                            themeController.currentThemeMode ==
+                                AppThemeMode.dark
+                            ? ThemeMode.dark
+                            : themeController.currentThemeMode ==
+                                  AppThemeMode.light
+                            ? ThemeMode.light
+                            : ThemeMode.system,
+                        theme: AppThemes.lightTheme,
+                        darkTheme: AppThemes.darkTheme,
+                      );
+                    },
+                  );
+                },
+              ),
         );
       },
     );
