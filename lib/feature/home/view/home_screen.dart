@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
+import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
@@ -55,164 +56,176 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final darkTheme =
-        AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
-    final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
-    final cardImageColor = darkTheme
-        ? AppColors.black87
-        : AppColors.secondaryColor;
-    final textColor = darkTheme ? AppColors.containerColor : AppColors.black87;
+    return BlocBuilder<AppThemeController, AppThemeState>(
+      builder: (context, state) {
+        final darkTheme =
+            AppThemeController.get(context).currentThemeMode ==
+            AppThemeMode.dark;
+        final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
+        final cardImageColor = darkTheme
+            ? AppColors.black87
+            : AppColors.secondaryColor;
+        final textColor = darkTheme
+            ? AppColors.containerColor
+            : AppColors.black87;
+        return BlocBuilder<HomeController, HomeState>(
+          builder: (context, homeState) {
+            return WillPopScope(
+              onWillPop: () async {
+                final now = DateTime.now();
+                if (lastPressed == null ||
+                    now.difference(lastPressed!) > const Duration(seconds: 2)) {
+                  lastPressed = now;
 
-    return BlocBuilder<HomeController, HomeState>(
-      builder: (context, homeState) {
-        return WillPopScope(
-          onWillPop: () async {
-            final now = DateTime.now();
-            if (lastPressed == null ||
-                now.difference(lastPressed!) > const Duration(seconds: 2)) {
-              lastPressed = now;
+                  AppFunctions.warningMessage(
+                    context,
+                    message: LocaleKeys.tap_again_to_exit.tr(),
+                  );
 
-              AppFunctions.warningMessage(
-                context,
-                message: LocaleKeys.tap_again_to_exit.tr(),
-              );
+                  return false;
+                }
+                return true;
+              },
+              child: Skeletonizer(
+                enabled:
+                    homeState is GetAllAnnouncementsBannersLoadingState ||
+                    homeState is GetAllServicesLoadingState,
+                child: Scaffold(
+                  appBar: CustomAppBar(
+                    actions: [
+                      BlocBuilder<NotificationController, NotificationState>(
+                        builder: (context, notificationState) {
+                          final isLoading =
+                              notificationState is NotificationLoading;
 
-              return false;
-            }
-            return true;
-          },
-          child: Skeletonizer(
-            enabled:
-                homeState is GetAllAnnouncementsBannersLoadingState ||
-                homeState is GetAllServicesLoadingState,
-            child: Scaffold(
-              appBar: CustomAppBar(
-                actions: [
-                  BlocBuilder<NotificationController, NotificationState>(
-                    builder: (context, notificationState) {
-                      final isLoading =
-                          notificationState is NotificationLoading;
-
-                      return Stack(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (!isLoading) {
-                                context.push(RoutesName.notificationsScreen);
-                              }
-                            },
-                            icon: isLoading
-                                ? SizedBox(
-                                    height: 22,
-                                    width: 22,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                : SvgPicture.asset(
-                                    Assets.images.svg.notification,
-                                  ),
-                          ),
-
-                          /// badge
-                          if (!isLoading &&
-                              notificationController.notifications?.data !=
-                                  null &&
-                              (notificationController
-                                          .notifications
-                                          ?.data!
-                                          .unreadNotificationsCount ??
-                                      0) >
-                                  0)
-                            Positioned(
-                              right: 6,
-                              top: 6,
-                              child: Container(
-                                padding: const EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                constraints: const BoxConstraints(
-                                  minWidth: 16,
-                                  minHeight: 16,
-                                ),
-                                child: Text(
-                                  '${notificationController.notifications?.data!.unreadNotificationsCount}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
+                          return Stack(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  if (!isLoading) {
+                                    context.push(
+                                      RoutesName.notificationsScreen,
+                                    );
+                                  }
+                                },
+                                icon: isLoading
+                                    ? SizedBox(
+                                        height: 22,
+                                        width: 22,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.red,
+                                        ),
+                                      )
+                                    : SvgPicture.asset(
+                                        Assets.images.svg.notification,
+                                        color: darkTheme
+                                            ? AppColors.whiteColor
+                                            : AppColors.black87,
+                                      ),
                               ),
-                            ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
-                titleAppBar: LocaleKeys.diyar.tr(),
-              ),
-              body: RefreshIndicator(
-                color: AppColors.primaryColor,
-                onRefresh: () async {
-                  await homeController.getAllAnnouncements();
-                  await homeController.getAllServices();
-                  await homeController.filterServices();
-                  await notificationController.fetchAllNotifications();
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomTextFormField(
-                        controller: homeController.searchController,
-                        hintStyle: AppStyle.fontSize16Regular(
-                          context,
-                        ).copyWith(color: AppColors.primaryColor),
-                        hintText: LocaleKeys.search_services.tr(),
-                        prefixIcon: SvgPicture.asset(
-                          Assets.images.svg.search,
-                          height: 24.h,
-                          width: 24.w,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ).paddingOnly(top: 20.h),
-                      30.ph,
-                      Text(
-                        LocaleKeys.discover.tr(),
-                        style: AppStyle.fontSize22Bold(context).copyWith(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primaryColor,
-                        ),
-                      ).paddingSymmetric(horizontal: 16.w),
-                      5.ph,
-                      DiyarBannerSlider(
-                        isLoading:
-                            homeState is GetAllAnnouncementsBannersLoadingState,
-                        banners: homeController.announcementsResponseModel,
-                        height: 180.h,
+
+                              /// badge
+                              if (!isLoading &&
+                                  notificationController.notifications?.data !=
+                                      null &&
+                                  (notificationController
+                                              .notifications
+                                              ?.data!
+                                              .unreadNotificationsCount ??
+                                          0) >
+                                      0)
+                                Positioned(
+                                  right: 6,
+                                  top: 6,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 16,
+                                      minHeight: 16,
+                                    ),
+                                    child: Text(
+                                      '${notificationController.notifications?.data!.unreadNotificationsCount}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
                       ),
-                      20.ph,
-                      const CustomServiceAndViewAllTexts(),
-                      20.ph,
-                      CustomGridViewForServices(
-                        cardColor: cardColor,
-                        cardImageColor: cardImageColor,
-                        textColor: textColor,
-                      ),
-                      30.ph,
                     ],
+                    titleAppBar: LocaleKeys.diyar.tr(),
+                  ),
+                  body: RefreshIndicator(
+                    color: AppColors.primaryColor,
+                    onRefresh: () async {
+                      await homeController.getAllAnnouncements();
+                      await homeController.getAllServices();
+                      await homeController.filterServices();
+                      await notificationController.fetchAllNotifications();
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextFormField(
+                            controller: homeController.searchController,
+                            hintStyle: AppStyle.fontSize16Regular(
+                              context,
+                            ).copyWith(color: AppColors.primaryColor),
+                            hintText: LocaleKeys.search_services.tr(),
+                            prefixIcon: SvgPicture.asset(
+                              Assets.images.svg.search,
+                              height: 24.h,
+                              width: 24.w,
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ).paddingOnly(top: 20.h),
+                          30.ph,
+                          Text(
+                            LocaleKeys.discover.tr(),
+                            style: AppStyle.fontSize22Bold(context).copyWith(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.primaryColor,
+                            ),
+                          ).paddingSymmetric(horizontal: 16.w),
+                          5.ph,
+                          DiyarBannerSlider(
+                            isLoading:
+                                homeState
+                                    is GetAllAnnouncementsBannersLoadingState,
+                            banners: homeController.announcementsResponseModel,
+                            height: 180.h,
+                          ),
+                          20.ph,
+                          const CustomServiceAndViewAllTexts(),
+                          20.ph,
+                          CustomGridViewForServices(
+                            cardColor: cardColor,
+                            cardImageColor: cardImageColor,
+                            textColor: textColor,
+                          ),
+                          30.ph,
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
