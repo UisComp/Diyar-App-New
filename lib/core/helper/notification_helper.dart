@@ -5,6 +5,8 @@ import 'package:diyar_app/core/routes/app_routes.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/notifications/model/message_data_response_model.dart';
+import 'package:diyar_app/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -20,6 +22,20 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  Future<void> setupFirebase() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+  }
 
   Future<void> init() async {
     const AndroidInitializationSettings androidInit =

@@ -16,7 +16,7 @@ class AppFormatter {
 
   static String formatTime(TimeOfDay t) =>
       "${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}";
- static String formatUtcTime(TimeOfDay time) {
+  static String formatUtcTime(TimeOfDay time) {
     final now = DateTime.now();
     final localDateTime = DateTime(
       now.year,
@@ -28,4 +28,7 @@ class AppFormatter {
     final utcDateTime = localDateTime.toUtc();
     return "${utcDateTime.hour.toString().padLeft(2, '0')}:${utcDateTime.minute.toString().padLeft(2, '0')}";
   }
+
+  static String formatDate(DateTime date) =>
+      DateFormat('MMM d, yyyy • h:mm a').format(date);
 }

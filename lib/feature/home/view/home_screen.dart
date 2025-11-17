@@ -55,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  dispose() {
+    homeController.searchController.removeListener(() {});
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppThemeController, AppThemeState>(
       builder: (context, state) {

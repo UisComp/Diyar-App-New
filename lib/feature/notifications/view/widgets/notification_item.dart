@@ -1,12 +1,14 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/model/notification_response_model.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationData notification;
@@ -32,7 +34,7 @@ class NotificationItem extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.all(12.w),
+        padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(
           color: isRead == true || notification.type == 'all'
               ? AppColors.whiteColor
@@ -45,15 +47,25 @@ class NotificationItem extends StatelessWidget {
           ),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomCachedNetworkImage(
-              isProjectDetails: true,
-              imageUrl: notification.imageUrl ?? '',
-              width: 80.w,
-              height: 80.h,
-              fit: BoxFit.cover,
-            ),
+            (notification.imageUrl != null)
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: CustomCachedNetworkImage(
+                      isProjectDetails: true,
+                      imageUrl: notification.imageUrl ?? '',
+                      width: 80.w,
+                      height: 80.h,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : SvgPicture.asset(
+                    Assets.images.svg.notification,
+                    width: 40.w,
+                    height: 40.h,
+                    color: AppColors.redColor,
+                  ),
             10.pw,
             Expanded(
               child: Column(
@@ -77,7 +89,7 @@ class NotificationItem extends StatelessWidget {
                   ),
                   6.ph,
                   Text(
-                    DateFormat('MMM d, yyyy • h:mm a').format(
+                    AppFormatter.formatDate(
                       DateTime.tryParse(notification.createdAt ?? '') ??
                           DateTime.now(),
                     ),

@@ -53,12 +53,9 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
     final textColor = darkTheme ? AppColors.containerColor : AppColors.black87;
 
     return Scaffold(
-      appBar: CustomAppBar(
-        titleAppBar: LocaleKeys.diyar.tr(),
-      ),
+      appBar: CustomAppBar(titleAppBar: LocaleKeys.diyar.tr()),
       body: BlocBuilder<HomeController, HomeState>(
         builder: (context, state) {
-          
           final homeController = HomeController.get(context);
           final isLoading = state is GetAllServicesLoadingState;
           final searchText = homeController.searchController.text.trim();
@@ -71,21 +68,6 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
           final services = allServices
               .where((service) => service.isActive == true)
               .toList();
-
-          if (!isLoading && searchText.isNotEmpty && services.isEmpty) {
-            return Padding(
-              padding: EdgeInsets.only(top: 50.h),
-              child: Center(
-                child: Text(
-                  LocaleKeys.no_results_found.tr(),
-                  style: AppStyle.fontSize16Regular(context).copyWith(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            );
-          }
 
           return Skeletonizer(
             enabled: isLoading,
@@ -110,32 +92,37 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                 ),
                 SliverPadding(
                   padding: EdgeInsets.all(16.sp),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      if (isLoading || services.isEmpty) {
-                        return GridViewServiceItem(
-                          cardColor: cardColor,
-                          cardImageColor: cardImageColor,
-                          textColor: textColor,
-                          service: null,
-                        );
-                      }
-                      final service = services[index];
-                      return GridViewServiceItem(
-                        isFromViewAll: true,
-                        service: service,
-                        cardColor: cardColor,
-                        cardImageColor: cardImageColor,
-                        textColor: textColor,
-                      );
-                    }, childCount: isLoading ? 8 : (services.length)),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12.h,
-                      crossAxisSpacing: 12.w,
-                      childAspectRatio: 1,
-                    ),
-                  ),
+                  sliver:
+                     SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            if (isLoading || services.isEmpty) {
+                              return GridViewServiceItem(
+                                cardColor: cardColor,
+                                cardImageColor: cardImageColor,
+                                textColor: textColor,
+                                service: null,
+                              );
+                            }
+                            final service = services[index];
+                            return GridViewServiceItem(
+                              isFromViewAll: true,
+                              service: service,
+                              cardColor: cardColor,
+                              cardImageColor: cardImageColor,
+                              textColor: textColor,
+                            );
+                          }, childCount: isLoading ? 8 : (services.length)),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 12.h,
+                                crossAxisSpacing: 12.w,
+                                childAspectRatio: 1,
+                              ),
+                        ),
                 ),
 
                 if (!isLoading && services.isEmpty)
