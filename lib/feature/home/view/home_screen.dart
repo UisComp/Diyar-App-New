@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fit: BoxFit.scaleDown,
                             ),
                           ).paddingOnly(top: 20.h),
-                          30.ph,
+                          20.ph,
                           Text(
                             LocaleKeys.discover.tr(),
                             style: AppStyle.fontSize22Bold(context).copyWith(
@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 homeState
                                     is GetAllAnnouncementsBannersLoadingState,
                             banners: homeController.announcementsResponseModel,
-                            height: 180.h,
+                            height: 250.h,
                           ),
                           20.ph,
                           const CustomServiceAndViewAllTexts(),

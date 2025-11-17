@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
 import 'package:diyar_app/feature/internet/controller/internet_state.dart';
@@ -38,13 +39,23 @@ class NoInternetConnection extends StatelessWidget {
                           SizedBox(
                             width: 1.sw,
                             height: 0.5.sh,
-                            child:Lottie.asset(Assets.images.noInternet,repeat: true),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                AppColors.primaryColor,
+                                BlendMode.srcATop,
+                              ),
+                              child: Lottie.asset(
+                                Assets.images.noInternet,
+                                repeat: true,
+                              ),
+                            ),
                           ),
                           SizedBox(height: 0.02.sh),
                           Text(
                             LocaleKeys.no_internet.tr(),
                             style: AppStyle.fontSize22Bold(context).copyWith(
                               fontSize: 20.sp,
+                              color: AppColors.primaryColor,
                               fontWeight: FontWeight.w900,
                             ),
                             textAlign: TextAlign.center,
@@ -56,6 +67,7 @@ class NoInternetConnection extends StatelessWidget {
                             style: AppStyle.fontSize16Regular(context).copyWith(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w600,
+                              color: AppColors.primaryColor,
                             ),
                             textAlign: TextAlign.center,
                           ),

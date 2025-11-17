@@ -9,7 +9,7 @@ import 'package:diyar_app/feature/profile/service/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -67,93 +67,49 @@ class ProfileController extends Cubit<ProfileState> {
     }
   }
 
-  // Future<void> pickImage() async {
-  //   emit(PickingImageProfileLoadingState());
-  //   try {
-  //     final ImagePicker picker = ImagePicker();
-  //     final XFile? pickedFile = await picker.pickImage(
-  //       source: ImageSource.gallery,
-  //     );
-
-  //     if (pickedFile == null) {
-  //       if (!isClosed) emit(EmptyImageProfileState());
-  //       return;
-  //     }
-
-  //     File file = File(pickedFile.path);
-  //     XFile? compressedXFile = await FlutterImageCompress.compressAndGetFile(
-  //       file.path,
-  //       '${file.path}_compressed.jpg',
-  //       quality: 70,
-  //       minWidth: 800,
-  //       minHeight: 800,
-  //     );
-
-  //     File compressedImage = compressedXFile != null
-  //         ? File(compressedXFile.path)
-  //         : file;
-  //     final sizeInMb = await compressedImage.length() / (1024 * 1024);
-  //     if (sizeInMb > 1) {
-  //       XFile? compressedXFile2 = await FlutterImageCompress.compressAndGetFile(
-  //         compressedImage.path,
-  //         '${compressedImage.path}_compressed2.jpg',
-  //         quality: 50,
-  //         minWidth: 800,
-  //         minHeight: 800,
-  //       );
-
-  //       if (compressedXFile2 != null) {
-  //         compressedImage = File(compressedXFile2.path);
-  //       }
-  //     }
-
-  //     image = compressedImage;
-  //     if (!isClosed) emit(PickingImageProfileSuccessfully());
-  //   } catch (e, stack) {
-  //     AppLogger.error('Error Happen While Picking Image $e\n$stack');
-  //     if (!isClosed) {
-  //       emit(PickingImageProfileFailureState(error: e.toString()));
-  //     }
-  //   }
-  // }
-
-  Future<void> pickImage() async {
+  Future<void> pickImage({required bool fromCamera}) async {
     emit(PickingImageProfileLoadingState());
 
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowCompression: true, // مهم جدًا
-        compressionQuality: 70,
+      final ImagePicker picker = ImagePicker();
+
+      // GALLERY → uses Android Photo Picker on Android 13+ automatically
+      // CAMERA → requires only CAMERA permission (allowed by Google Play)
+      final XFile? xfile = await picker.pickImage(
+        source: fromCamera ? ImageSource.camera : ImageSource.gallery,
+        imageQuality: 70, // built-in compression
+        maxHeight: 1400,
+        maxWidth: 1400,
       );
 
-      if (result == null || result.files.isEmpty) {
+      if (xfile == null) {
         if (!isClosed) emit(EmptyImageProfileState());
         return;
       }
 
-      PlatformFile platformFile = result.files.first;
-      File file = File(platformFile.path!);
-      final sizeInMb = file.lengthSync() / (1024 * 1024);
+      File file = File(xfile.path);
 
-      if (sizeInMb > 1) {
-        XFile? extraCompressed = await FlutterImageCompress.compressAndGetFile(
+      // Extra compression for large images
+      final sizeMB = file.lengthSync() / (1024 * 1024);
+      if (sizeMB > 1) {
+        final compressed = await FlutterImageCompress.compressAndGetFile(
           file.path,
-          '${file.path}_extra_compressed.jpg',
+          '${file.path}_compressed.jpg',
           quality: 50,
           minWidth: 800,
           minHeight: 800,
         );
 
-        if (extraCompressed != null) {
-          file = File(extraCompressed.path);
+        if (compressed != null) {
+          file = File(compressed.path);
         }
       }
 
       image = file;
+
       if (!isClosed) emit(PickingImageProfileSuccessfully());
     } catch (e, stack) {
-      AppLogger.error('Error picking image: $e\n$stack');
+      AppLogger.error("Error picking image: $e\n$stack");
       if (!isClosed) {
         emit(PickingImageProfileFailureState(error: e.toString()));
       }
