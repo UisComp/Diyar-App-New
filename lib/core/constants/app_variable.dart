@@ -29,19 +29,8 @@ Future<void> saveRefreshToken(String? token) async {
 }
 
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-
 String? savedEmailForLoginWithBioMetric;
 String? savedPasswordForLoginWithBioMetric;
-// Future<void> savedCredentials({
-//   required String email,
-//    String ?password,
-// }) async {
-//   savedEmailForLoginWithBioMetric = email;
-//   await HiveHelper.addToHive(key: AppConstants.myEmail, value: email);
-//   savedPasswordForLoginWithBioMetric = password;
-
-//   await HiveHelper.addToHive(key: AppConstants.myPassword, value: password);
-// }
 Future<void> savedCredentials({required String email, String? password}) async {
   savedEmailForLoginWithBioMetric = email;
   await HiveHelper.addToHive(key: AppConstants.myEmail, value: email);

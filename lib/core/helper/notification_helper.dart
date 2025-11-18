@@ -6,6 +6,7 @@ import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/notifications/model/message_data_response_model.dart';
 import 'package:diyar_app/firebase_options.dart';
+import 'package:diyar_app/main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,8 @@ class NotificationService {
 
   BigPictureStyleInformation? bigPictureStyleInformation;
   Future<void> showLocalNotification(RemoteMessage message) async {
+    if (!enableNotifications) return;
+
     final messageData = MessageData.fromJson(message.data);
     log("Notification received data: ${message.data}");
 
@@ -100,6 +103,7 @@ class NotificationService {
   Future<void> showLocalNotificationFromBackground(
     RemoteMessage message,
   ) async {
+     if (!enableNotifications) return;
     final messageData = MessageData.fromJson(message.data);
 
     BigPictureStyleInformation? bigPictureStyleInformation;
@@ -136,18 +140,6 @@ class NotificationService {
     );
   }
 
-  // void onSelectNotification(NotificationResponse response) {
-  //   final type = response.payload;
-  //   log('Notification tapped with type: $type');
-  //   log('Notification tapped : $response');
-
-  //   if (type == 'personal') {
-  //     navigatorKey.currentState!.pushNamedAndRemoveUntil(
-  //       RoutesName.notificationsScreen,
-  //       (route) => false,
-  //     );
-  //   }
-  // }
   void onSelectNotification(NotificationResponse response) {
     final type = response.payload;
     log('Notification tapped with type: $type');

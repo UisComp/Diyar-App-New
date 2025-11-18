@@ -17,6 +17,7 @@ import 'package:diyar_app/feature/notifications/controller/notification_cubit.da
 import 'package:diyar_app/feature/notifications/controller/notification_state.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:diyar_app/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -130,8 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             : AppColors.black87,
                                       ),
                               ),
-
-                              /// badge
                               if (!isLoading &&
                                   notificationController.notifications?.data !=
                                       null &&
@@ -178,7 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       await homeController.getAllAnnouncements();
                       await homeController.getAllServices();
                       await homeController.filterServices();
-                      await notificationController.fetchAllNotifications();
+                      if (enableNotifications == true) {
+                        await notificationController.fetchAllNotifications();
+                      }
                     },
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),

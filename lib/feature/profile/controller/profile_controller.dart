@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
-import 'package:file_picker/file_picker.dart';
 
 class ProfileController extends Cubit<ProfileState> {
   ProfileController() : super(ProfileInitialState());

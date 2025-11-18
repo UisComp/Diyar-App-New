@@ -26,19 +26,28 @@ import 'dart:async';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await navigatorKey.currentContext
-      ?.read<NotificationController>()
-      .fetchAllNotifications(page: 1, refresh: true);
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
-  await NotificationService().init();
+  getAllNotifications();
   AppLogger.log('Handling a background message: ${message.messageId}');
-  await NotificationService().showLocalNotificationFromBackground(message);
+
+  bool enable =
+      await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
+      true;
+
+  if (!enable) {
+    return;
+  } else {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+    await NotificationService().init();
+    AppLogger.log('Handling a background message: ${message.messageId}');
+    await NotificationService().showLocalNotificationFromBackground(message);
+  }
 }
 
+bool enableNotifications = true;
 Future<void> main() async {
   runZonedGuarded<Future<void>>(
     () async {
@@ -62,6 +71,10 @@ Future<void> main() async {
       enableBiometric = await HiveHelper.getFromHive(
         key: AppConstants.enableBiometric,
       );
+      enableNotifications =
+          await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
+          true;
+
       final languageController = await LanguageController.create();
       await NotificationService().setupFirebase();
       await setupNotifications();
@@ -98,46 +111,6 @@ Future<void> main() async {
   );
 }
 
-// Future<void> main() async {
-//   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   await ScreenUtil.ensureScreenSize();
-//   await EasyLocalization.ensureInitialized();
-//   await HiveHelper.init();
-//   await DioHelper.init();
-//   Bloc.observer = AppBlocObserver();
-//   userModel = await HiveHelper.getUserModel(AppConstants.userModelKey);
-//   enableBiometric = await HiveHelper.getFromHive(
-//     key: AppConstants.enableBiometric,
-//   );
-//   final languageController = await LanguageController.create();
-//   await setupFirebase();
-//   await setupNotifications();
-//   runApp(
-//     EasyLocalization(
-//       assetLoader: const CodegenLoader(),
-//       supportedLocales: AppConstants.supportedLocales,
-//       path: AppConstants.translationPath,
-//       fallbackLocale: const Locale(AppConstants.enLanguage),
-//       startLocale: languageController.getLocaleFromMode(),
-//       saveLocale: true,
-//       child: MultiBlocProvider(
-//         providers: [
-//           BlocProvider(create: (_) => InternetConnectionController()),
-//           BlocProvider<LanguageController>.value(value: languageController),
-//           BlocProvider(create: (_) => AppThemeController()),
-//           BlocProvider(create: (_) => ProfileController()),
-//           BlocProvider(create: (_) => NotificationController()),
-//           BlocProvider(create: (_) => SettingsController()..getConfigData()),
-//         ],
-//         child: const DiyarApp(),
-//       ),
-//     ),
-//   );
-//   FlutterNativeSplash.remove();
-// }
-
 String? fcmToken;
 Future<void> setupNotifications() async {
   try {
@@ -146,31 +119,41 @@ Future<void> setupNotifications() async {
       await HiveHelper.addToHive(key: AppConstants.fcmToken, value: fcmToken!);
       AppLogger.log("FCM Token saved: $fcmToken");
     }
-    AppLogger.log("FCM Token: $fcmToken");
   } catch (ex) {
     AppLogger.log("exception on fcm init ${ex.toString()}");
   }
+
   if (Platform.isIOS) {
     String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
     AppLogger.log("apnsToken: $apnsToken");
   }
+
   final NotificationService localNotificationService = NotificationService();
 
   FirebaseMessaging.onMessage.listen((message) async {
     AppLogger.log("Foreground message received data: $message");
+    getAllNotifications();
+    if (!enableNotifications) {
+      return;
+    }
 
     await localNotificationService.showLocalNotification(message);
-    navigatorKey.currentContext
-        ?.read<NotificationController>()
-        .fetchAllNotifications(page: 1, refresh: true);
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-    navigatorKey.currentContext
-        ?.read<NotificationController>()
-        .fetchAllNotifications(page: 1, refresh: true);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     AppLogger.log("Notification opened: ${message.data}");
+
+    getAllNotifications();
+    if (!enableNotifications) return;
+
+    await localNotificationService.init();
   });
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await localNotificationService.init();
+}
+
+Future<void> getAllNotifications() async {
+  await NotificationController.get(
+    navigatorKey.currentContext!,
+  ).fetchAllNotifications(refresh: true, page: 1);
 }

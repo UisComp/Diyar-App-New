@@ -9,6 +9,7 @@ import 'package:diyar_app/feature/settings/model/change_password_request_model.d
 import 'package:diyar_app/feature/settings/model/change_password_response_model.dart';
 import 'package:diyar_app/feature/settings/model/config_data_model.dart';
 import 'package:diyar_app/feature/settings/service/settings_service.dart';
+import 'package:diyar_app/main.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
@@ -273,15 +274,19 @@ Sender Name: ${nameController.text}
     emit(state);
   }
 
-  bool enableNotification = false;
+  void toggleNotification() async {
+    enableNotifications = !enableNotifications;
 
-  void toggleNotification() {
-    enableNotification = !enableNotification;
-    if (enableNotification == true) {
-      emit(EnableNotificationState());
-    } else {
-      emit(DisableNotificationState());
-    }
+    await HiveHelper.addToHive(
+      key: AppConstants.enableNotification,
+      value: enableNotifications,
+    );
+
+    emit(
+      enableNotifications
+          ? EnableNotificationState()
+          : DisableNotificationState(),
+    );
   }
 
   bool emailNotification = false;

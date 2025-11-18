@@ -1,10 +1,12 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/model/notification_response_model.dart';
+import 'package:diyar_app/feature/notifications/view/widgets/delete_notification_icon.dart';
+import 'package:diyar_app/feature/notifications/view/widgets/loading_notifications.dart';
+import 'package:diyar_app/feature/notifications/view/widgets/notification_time.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +26,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return LoadingNotifications();
+      return const LoadingNotifications();
     }
     final isRead = notification.isRead;
     return InkWell(
@@ -88,89 +90,17 @@ class NotificationItem extends StatelessWidget {
                     ).copyWith(color: Colors.grey.shade700),
                   ),
                   6.ph,
-                  Text(
-                    AppFormatter.formatDate(
-                      DateTime.tryParse(notification.createdAt ?? '') ??
-                          DateTime.now(),
-                    ),
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontSize: 12.sp,
-                    ),
-                  ),
+                  NotificationTime(notification: notification),
                 ],
               ),
             ),
             if (notification.type != 'all')
-              InkWell(
-                onTap: () async {
-                  if (notification.id != null) {
-                    await notificationController.deleteNotification(
-                      notification.id!,
-                    );
-                  }
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 8.w),
-                  child: Icon(
-                    Icons.delete_outline,
-                    color: Colors.red.shade400,
-                    size: 24.sp,
-                  ),
-                ),
+              DeleteNotificationIcon(
+                notification: notification,
+                notificationController: notificationController,
               ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class LoadingNotifications extends StatelessWidget {
-  const LoadingNotifications({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(width: 50.w, height: 50.h, color: Colors.grey[400]),
-          10.pw,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 16.h,
-                  color: Colors.grey[400],
-                ),
-                4.ph,
-                Container(
-                  width: double.infinity,
-                  height: 14.h,
-                  color: Colors.grey[400],
-                ),
-                6.ph,
-                Container(width: 120.w, height: 12.h, color: Colors.grey[400]),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 8.w),
-            child: Container(
-              width: 24.sp,
-              height: 24.sp,
-              color: Colors.grey[400],
-            ),
-          ),
-        ],
       ),
     );
   }

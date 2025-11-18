@@ -21,8 +21,8 @@ class CustomNotificationIcon extends StatelessWidget {
                 (notificationController.notifications?.data?.notifications ??
                         [])
                     .any((e) => e.type == "specific"))
-            ? Icons.notifications_active
-            : Icons.notifications,
+            ? Icons.done_all 
+            : Icons.done,
         color:
             (notificationController.anyUnread == true &&
                 (notificationController.notifications?.data?.notifications ??

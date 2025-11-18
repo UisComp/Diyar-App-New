@@ -20,6 +20,7 @@ class AppConstants {
   static const String myPassword = "myPassword";
   static const String fcmToken = "fcmToken";
   static const String token = "token";
+  static const String enableNotification = "enableNotification";
   static List<Locale> supportedLocales = [
     const Locale(enLanguage),
     const Locale(arLanguage),
