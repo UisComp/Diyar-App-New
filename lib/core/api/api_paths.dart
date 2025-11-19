@@ -38,7 +38,7 @@ class ApiPaths {
     required String id,
     String? start,
     String? end,
-  }) => "news/project/$id?start=$start&end=$end";
+  }) => "/news/unit/$id?start=$start&end=$end";
   static String newsDetails({required String id}) => "news/$id";
   static Future<Map<String, dynamic>> getHeaders() async {
     return {

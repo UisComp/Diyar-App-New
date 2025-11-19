@@ -35,6 +35,11 @@ class UnitEventState extends State<UnitEvent> {
     if (_focusedDay.isAfter(DateTime.utc(2025, 12, 31))) {
       _focusedDay = DateTime.utc(2025, 12, 31);
     }
+    unitEventController.getUnitsByEvent(
+      id: widget.projectId.toString(),
+      start: _focusedDay,
+      end: _focusedDay,
+    );
   }
 
   @override

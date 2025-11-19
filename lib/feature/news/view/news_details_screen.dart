@@ -55,9 +55,12 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                     )
                   else if (newsDetails?.media != null &&
                       newsDetails!.media!.isNotEmpty)
-                    CarouselImageSilder(
-                      newsDetails: newsDetails,
-                      newsController: newsController,
+                    ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(12.r),
+                      child: CarouselImageSilder(
+                        newsDetails: newsDetails,
+                        newsController: newsController,
+                      ),
                     ),
 
                   30.ph,
