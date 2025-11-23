@@ -48,7 +48,7 @@ class DiyarApp extends StatelessWidget {
                               is InternetConnectionHaveConnectionStates;
                       if (!isConnected) {
                         AppLogger.log(
-                          "${!InternetConnectionController.get(context).isConnected}",
+                          "internet state is : ${!InternetConnectionController.get(context).isConnected}",
                         );
                         return MaterialApp(
                           key: navigatorKey,

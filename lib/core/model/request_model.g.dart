@@ -13,6 +13,7 @@ RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
       passwordConfirmation: json['password_confirmation'] as String?,
       phoneNumber: json['phone_number'] as String?,
       fcmToken: json['fcm_token'] as String?,
+      unitNumber: json['unit_number'] as String?,
     );
 
 Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
       'password_confirmation': instance.passwordConfirmation,
       'phone_number': instance.phoneNumber,
       'fcm_token': instance.fcmToken,
+      'unit_number': instance.unitNumber,
     };

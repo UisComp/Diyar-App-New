@@ -7,7 +7,7 @@ class RegisterResponseModel {
   final String? message;
   final RegisterData? data;
 
-  RegisterResponseModel({this.success, this.message, this.data});
+  RegisterResponseModel({this.success, this.message, this.data,});
 
   factory RegisterResponseModel.fromJson(Map<String, dynamic> json) =>
       _$RegisterResponseModelFromJson(json);

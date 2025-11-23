@@ -107,7 +107,7 @@ class AuthController extends Cubit<AuthState> {
             name: nameController.text,
             email: emailControllerForRegister.text,
             password: passwordControllerForRegister.text,
-            // unitNumber: unitNumberController.text,
+            unitNumber: unitNumberController.text,
           ),
         )
         .then((value) {

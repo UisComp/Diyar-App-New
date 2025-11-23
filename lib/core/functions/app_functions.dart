@@ -54,7 +54,6 @@ class AppFunctions {
           fontSize: 14.sp,
           fontWeight: FontWeight.w600,
         ),
-        maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       description: description != null && description.isNotEmpty

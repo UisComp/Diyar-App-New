@@ -138,10 +138,10 @@ class ProfileController extends Cubit<ProfileState> {
         emit(EditingProfileSuccessfullyState());
         emit(GetMyProfileSuccessState());
       } else {
-        emit(EditingProfileFailureState());
+        emit(EditingProfileFailureState(error: value.message));
       }
     } catch (error) {
-      emit(EditingProfileFailureState());
+      emit(EditingProfileFailureState(error: error.toString()));
     }
   }
 

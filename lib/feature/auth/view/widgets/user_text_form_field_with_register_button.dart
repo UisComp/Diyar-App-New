@@ -65,7 +65,8 @@ class _UserTextFormFieldForRegisterState
         }
         if (authState is RegisterFailureState) {
           AppFunctions.errorMessage(
-            description: "${authController.registerResponseModel.message}",
+            description:
+                "● ${authController.registerResponseModel.message?.replaceAll(";", "\n● ")}",
             context,
             message: LocaleKeys.account_created_failed.tr(),
           );

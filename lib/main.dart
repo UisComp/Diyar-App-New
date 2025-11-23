@@ -18,6 +18,7 @@ import 'package:diyar_app/generated/codegen_loader.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -52,6 +53,10 @@ Future<void> main() async {
   runZonedGuarded<Future<void>>(
     () async {
       final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        // DeviceOrientation.portraitDown, // Optional: allow upside-down portrait
+      ]);
       FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
       FlutterError.onError = (FlutterErrorDetails details) {
         FlutterError.presentError(details);

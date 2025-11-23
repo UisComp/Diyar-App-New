@@ -3,6 +3,7 @@ import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
+import 'package:diyar_app/feature/project/view/widgets/polygons_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,6 @@ class ProjectDetailsImage extends StatelessWidget {
             height: imgHeight,
             child: Stack(
               children: [
-                // الصورة الأساسية (حتى أثناء التحميل)
                 CustomCachedNetworkImage(
                   isProjectDetails: true,
                   imageUrl: project.data?.mainImage?.url,
@@ -46,8 +46,6 @@ class ProjectDetailsImage extends StatelessWidget {
                   height: imgHeight,
                   fit: BoxFit.cover,
                 ),
-
-                // طبقة التحميل نصف شفافة فوق الصورة
                 if (isLoading)
                   Container(
                     width: double.infinity,
@@ -126,40 +124,4 @@ class ProjectDetailsImage extends StatelessWidget {
     }
     return inside;
   }
-}
-
-class PolygonsPainter extends CustomPainter {
-  final List<List<Offset>> polygons;
-
-  PolygonsPainter(this.polygons);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red.withOpacity(0.35)
-      ..style = PaintingStyle.fill;
-
-    final borderPaint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-
-    for (final points in polygons) {
-      if (points.isEmpty) continue;
-
-      final path = Path()..moveTo(points.first.dx, points.first.dy);
-
-      for (int i = 1; i < points.length; i++) {
-        path.lineTo(points[i].dx, points[i].dy);
-      }
-
-      path.close();
-
-      canvas.drawPath(path, paint);
-      canvas.drawPath(path, borderPaint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
