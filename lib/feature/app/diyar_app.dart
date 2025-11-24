@@ -13,7 +13,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 class DiyarApp extends StatelessWidget {
   const DiyarApp({super.key});
 
@@ -34,63 +33,46 @@ class DiyarApp extends StatelessWidget {
               },
             ),
           ],
-          child:
-              BlocBuilder<
-                InternetConnectionController,
-                InternetConnectionStates
-              >(
+          child: BlocBuilder<AppThemeController, AppThemeState>(
+            builder: (context, themeState) {
+              final themeController = AppThemeController.get(context);
+              
+              return BlocBuilder<InternetConnectionController, InternetConnectionStates>(
                 builder: (context, internetConnectionStates) {
-                  return BlocBuilder<AppThemeController, AppThemeState>(
-                    builder: (context, themeState) {
-                      final themeController = AppThemeController.get(context);
-                      final bool isConnected =
-                          internetConnectionStates
-                              is InternetConnectionHaveConnectionStates;
-                      if (!isConnected) {
-                        AppLogger.log(
-                          "internet state is : ${!InternetConnectionController.get(context).isConnected}",
-                        );
-                        return MaterialApp(
-                          key: navigatorKey,
-                          debugShowCheckedModeBanner: false,
-                          locale: context.locale,
-                          supportedLocales: context.supportedLocales,
-                          localizationsDelegates: context.localizationDelegates,
-                          themeMode:
-                              themeController.currentThemeMode ==
-                                  AppThemeMode.dark
-                              ? ThemeMode.dark
-                              : themeController.currentThemeMode ==
-                                    AppThemeMode.light
-                              ? ThemeMode.light
-                              : ThemeMode.system,
-                          theme: AppThemes.lightTheme,
-                          darkTheme: AppThemes.darkTheme,
-                          home: const NoInternetConnection(),
-                        );
-                      }
-                      return MaterialApp.router(
-                        key: navigatorKey,
-                        debugShowCheckedModeBanner: false,
-                        routerConfig: router,
-                        locale: context.locale,
-                        supportedLocales: context.supportedLocales,
-                        localizationsDelegates: context.localizationDelegates,
-                        themeMode:
-                            themeController.currentThemeMode ==
-                                AppThemeMode.dark
-                            ? ThemeMode.dark
-                            : themeController.currentThemeMode ==
-                                  AppThemeMode.light
+                  final bool isConnected = internetConnectionStates is InternetConnectionHaveConnectionStates;
+                  
+                  if (!isConnected) {
+                    AppLogger.log(
+                      "internet state is : ${!InternetConnectionController.get(context).isConnected}",
+                    );
+                  }
+                  
+                  return MaterialApp.router(
+                    key: navigatorKey,
+                    debugShowCheckedModeBanner: false,
+                    routerConfig: router,
+                    locale: context.locale,
+                    supportedLocales: context.supportedLocales,
+                    localizationsDelegates: context.localizationDelegates,
+                    themeMode: themeController.currentThemeMode == AppThemeMode.dark
+                        ? ThemeMode.dark
+                        : themeController.currentThemeMode == AppThemeMode.light
                             ? ThemeMode.light
                             : ThemeMode.system,
-                        theme: AppThemes.lightTheme,
-                        darkTheme: AppThemes.darkTheme,
-                      );
+                    theme: AppThemes.lightTheme,
+                    darkTheme: AppThemes.darkTheme,
+                    builder: (context, child) {
+                      // Overlay no internet screen when disconnected
+                      if (!isConnected) {
+                        return const NoInternetConnection();
+                      }
+                      return child ?? const SizedBox.shrink();
                     },
                   );
                 },
-              ),
+              );
+            },
+          ),
         );
       },
     );
