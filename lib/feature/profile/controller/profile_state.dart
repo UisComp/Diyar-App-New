@@ -1,3 +1,5 @@
+import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
+
 abstract class ProfileState {}
 
 class ProfileInitialState extends ProfileState {}
@@ -37,4 +39,15 @@ class GetUserLinkedUnitsFailureState extends ProfileState {
 
   GetUserLinkedUnitsFailureState({this.error});
 }
-class PickingImageProfileLoadingState  extends ProfileState {}
+
+class PickingImageProfileLoadingState extends ProfileState {}
+
+class GetUnitsForUserLinkedLoadingState extends ProfileState {}
+
+class GetUnitsForUserLinkedSuccessfullyState extends ProfileState {
+  final UnitModelDetailsForLinkedUserResponseModel? data;
+
+  GetUnitsForUserLinkedSuccessfullyState({this.data});
+}
+
+class GetUnitsForUserLinkedFailureState extends ProfileState {}

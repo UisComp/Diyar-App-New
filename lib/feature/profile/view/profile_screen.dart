@@ -2,10 +2,8 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
-import 'package:diyar_app/feature/profile/view/widgets/empty_linked_units.dart';
 import 'package:diyar_app/feature/profile/view/widgets/image_profile.dart';
 import 'package:diyar_app/feature/profile/view/widgets/list_view_linked_units.dart';
-import 'package:diyar_app/feature/profile/view/widgets/user_info.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _initProfileData() async {
-     _profileController.initProfileInfoControllers();
+    _profileController.initProfileInfoControllers();
     await _profileController.getMyProfile();
     await _profileController.getUserLinkedUnits();
   }
@@ -43,8 +41,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: BlocBuilder<ProfileController, ProfileState>(
         buildWhen: (previous, current) =>
             current is GetMyProfileSuccessState ||
-            current is EditingProfileSuccessfullyState ||
-            current is PickingImageProfileSuccessfully ||
             current is GetUserLinkedUnitsSuccessfullyState ||
             current is GetMyProfileLoadingState ||
             current is GetUserLinkedUnitsLoadingState,
@@ -66,12 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   20.ph,
                   ImageProfile(profile: profile),
                   10.ph,
-                  UserInfo(profile: profile),
-                  10.ph,
                   Expanded(
-                    child: linkedUnits.isEmpty
-                        ? const EmptyLinkedUnits()
-                        : ListViewLinkedUnits(linkedUnits: linkedUnits),
+                    child: ListViewLinkedUnits(
+                      linkedUnits: linkedUnits,
+                      unitData: controller
+                          .unitModelDetailsForLinkedUserResponseModel
+                          .data,
+                    ),
                   ),
                 ],
               ),

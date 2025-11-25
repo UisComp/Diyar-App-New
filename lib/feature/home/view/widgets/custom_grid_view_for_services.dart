@@ -36,7 +36,14 @@ class CustomGridViewForServices extends StatelessWidget {
             : (homeController.userServicesResponse.data ?? []);
 
         final services = allServices
-            .where((service) => service.isActive == true)
+            .where(
+              (service) =>
+                  service.isActive == true &&
+                  (service.type == 1 ||
+                      service.type == 8 ||
+                      service.type == 10 ||
+                      service.type == 5),
+            )
             .toList();
 
         if (!isLoading && searchText.isNotEmpty && services.isEmpty) {

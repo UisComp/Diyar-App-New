@@ -169,7 +169,7 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
                                 ),
                                 subtitle: Text(
                                   providers[index].description ?? '',
-                                  maxLines: 1,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 secondary: ClipRRect(

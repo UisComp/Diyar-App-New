@@ -23,7 +23,7 @@ class AlreadyHaveAccountWithSignIn extends StatelessWidget {
         5.pw,
         InkWell(
           onTap: () {
-            context.push(RoutesName.login);
+            context.go(RoutesName.login);
           },
           child: Text(
             LocaleKeys.sign_in.tr(),

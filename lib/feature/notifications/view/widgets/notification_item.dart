@@ -66,7 +66,7 @@ class NotificationItem extends StatelessWidget {
                     Assets.images.svg.notification,
                     width: 40.w,
                     height: 40.h,
-                    color: AppColors.redColor,
+                    color: AppColors.primaryColor,
                   ),
             10.pw,
             Expanded(

@@ -56,53 +56,6 @@ class FinanceController extends Cubit<FinanceState> {
     return true;
   }
 
-  // Future<void> downloadFile(String url) async {
-  //   emit(const FinanceState.downloadFileLoading());
-
-  //   try {
-  //     final dir = await getApplicationDocumentsDirectory();
-  //     final filename = url.split('/').last;
-  //     final filePath = "${dir.path}/$filename";
-
-  //     await Dio().download(url, filePath);
-
-  //     OpenFilex.open(filePath);
-  //     emit(const FinanceState.downloadFileSuccess());
-  //   } catch (e) {
-  //     emit(FinanceState.downloadFileFailure(errorMessage: e.toString()));
-  //   }
-  // }
-
-  // Future<void> downloadFileWithProgress(String url) async {
-  //   emit(const FinanceState.downloadFileLoading());
-
-  //   try {
-  //     // final dir = await getApplicationDocumentsDirectory();
-  //     final dir = await getExternalStorageDirectory();
-  //     final filename = url.split('/').last;
-  //     final filePath = "${dir?.path}/$filename";
-  //     final dio = Dio();
-
-  //     await dio.download(
-  //       url,
-  //       filePath,
-  //       onReceiveProgress: (received, total) {
-  //         if (total != -1) {
-  //           final progress = (received / total) * 100;
-  //           emit(FinanceState.downloadFileProgress(
-  //             fileUrl: url,
-  //             progress: progress,
-  //           ));
-  //         }
-  //       },
-  //     );
-  // AppLogger.success("Downloaded File dir: $dir");
-  // AppLogger.success("Downloaded File path: $filePath");
-  //     emit(const FinanceState.downloadFileSuccess());
-  //   } catch (e) {
-  //     emit(FinanceState.downloadFileFailure(errorMessage: e.toString()));
-  //   }
-  // }
   Future<void> downloadFileWithProgress(String url) async {
     emit(const FinanceState.downloadFileLoading());
 

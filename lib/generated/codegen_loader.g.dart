@@ -279,7 +279,10 @@ class CodegenLoader extends AssetLoader{
   "no_internet": "لا يوجد اتصال بالإنترنت!",
   "please_check_your_internet_connection": "يرجى التحقق من اتصال الإنترنت",
   "no_events_found": "لا توجد أحداث",
-  "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح"
+  "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح",
+  "building": "المبنى:",
+  "number": "الرقم:",
+  "unit_details": "تفاصيل الوحدة"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -545,7 +548,10 @@ static const Map<String,dynamic> _en = {
   "no_internet": "No internet",
   "please_check_your_internet_connection": "Please check your internet connection",
   "no_events_found": "No events found",
-  "qr_scanned_successfully": "QR scanned successfully"
+  "qr_scanned_successfully": "QR scanned successfully",
+  "building": "Building:",
+  "number": "Number:",
+  "unit_details": "Unit Details"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

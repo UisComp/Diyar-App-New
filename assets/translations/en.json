@@ -262,5 +262,8 @@
   "no_internet": "No internet",
   "please_check_your_internet_connection": "Please check your internet connection",
   "no_events_found": "No events found",
-  "qr_scanned_successfully": "QR scanned successfully"
+  "qr_scanned_successfully": "QR scanned successfully",
+  "building": "Building:",
+  "number": "Number:",
+  "unit_details": "Unit Details"
 }

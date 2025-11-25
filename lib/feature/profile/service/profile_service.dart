@@ -5,6 +5,7 @@ import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
+import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 
 class ProfileService {
@@ -21,6 +22,7 @@ class ProfileService {
     }
     return ProfileResponseModel.fromJson(profileResponse?.data);
   }
+
   static Future<ProfileResponseModel> editProfile({
     RequestModel? authRequestModel,
     File? image,
@@ -73,6 +75,30 @@ class ProfileService {
     } catch (e) {
       AppLogger.error('Error Happen While Get Linked Units For User is $e');
       return UserUnitsResponseModel.fromJson(response?.data);
+    }
+  }
+
+  static Future<UnitModelDetailsForLinkedUserResponseModel>
+  getUnitForLinkedUserService({ String? id}) async {
+    final response = await DioHelper.getData(
+      path: ApiPaths.getUnitById(id: id),
+    );
+    try {
+      AppLogger.info('getLinkedUnitsForUser==> ${response?.data}');
+      if (response != null && response.statusCode == 200) {
+        return UnitModelDetailsForLinkedUserResponseModel.fromJson(
+          response.data,
+        );
+      } else {
+        return UnitModelDetailsForLinkedUserResponseModel.fromJson(
+          response?.data,
+        );
+      }
+    } catch (e) {
+      AppLogger.error('Error Happen While Get Linked Units For User is $e');
+      return UnitModelDetailsForLinkedUserResponseModel.fromJson(
+        response?.data,
+      );
     }
   }
 }

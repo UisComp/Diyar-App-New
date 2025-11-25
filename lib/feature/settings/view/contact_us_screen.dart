@@ -1,7 +1,6 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
-import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
@@ -61,7 +60,7 @@ class ContactUsScreen extends StatelessWidget {
                   ).paddingSymmetric(horizontal: 16.w),
                   28.ph,
                   Text(
-                    LocaleKeys.contact_form.tr(),
+                    LocaleKeys.contact_us.tr(),
                     style: AppStyle.fontSize22Bold(context),
                   ).paddingSymmetric(horizontal: 16.w),
                   20.ph,
@@ -75,19 +74,6 @@ class ContactUsScreen extends StatelessWidget {
                     controller: settingsController.nameController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     hintText: LocaleKeys.your_name.tr(),
-                    keyboardType: TextInputType.name,
-                  ),
-                  24.ph,
-                  CustomTextFormField(
-                    validator: (email) => ValidatorHelper.validateEmail(
-                      email,
-                      emptyMessage: LocaleKeys.please_enter_your_email.tr(),
-                      invalidMessage: LocaleKeys.please_enter_a_valid_email
-                          .tr(),
-                    ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: settingsController.emailController,
-                    hintText: LocaleKeys.your_email.tr(),
                     keyboardType: TextInputType.name,
                   ),
                   24.ph,
@@ -119,6 +105,7 @@ class ContactUsScreen extends StatelessWidget {
                     LocaleKeys.other_contact_methods.tr(),
                     style: AppStyle.fontSize22Bold(context),
                   ).paddingSymmetric(horizontal: 16.w),
+                  10.ph,
                   CustomContainerInformation(
                     titleContainer: LocaleKeys.email.tr(),
                     descriptionContainer:

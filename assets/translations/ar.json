@@ -263,5 +263,8 @@
   "no_internet": "لا يوجد اتصال بالإنترنت!",
   "please_check_your_internet_connection": "يرجى التحقق من اتصال الإنترنت",
   "no_events_found": "لا توجد أحداث",
-  "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح"
+  "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح",
+  "building": "المبنى:",
+  "number": "الرقم:",
+  "unit_details": "تفاصيل الوحدة"
 }

@@ -62,7 +62,6 @@ class DiyarApp extends StatelessWidget {
                     theme: AppThemes.lightTheme,
                     darkTheme: AppThemes.darkTheme,
                     builder: (context, child) {
-                      // Overlay no internet screen when disconnected
                       if (!isConnected) {
                         return const NoInternetConnection();
                       }

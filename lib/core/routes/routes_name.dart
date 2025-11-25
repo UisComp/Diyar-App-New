@@ -37,5 +37,5 @@ class RoutesName {
   static const String ownUnitScreen = "/ownUnitScreen";
   static const String guardRoleScreen = "/guardRoleScreen";
   static const String imagePreviewScreen = "/imagePreviewScreen";
-
+  static const String linkedUnitsDetailScreen = "/linkedUnitsDetail";
 }

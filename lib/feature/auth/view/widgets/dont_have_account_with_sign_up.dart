@@ -24,7 +24,7 @@ class DontHaveAccountWithSignUp extends StatelessWidget {
         5.pw,
         InkWell(
           onTap: () {
-            context.push(RoutesName.register);
+            context.go(RoutesName.register);
           },
           child: Text(
             LocaleKeys.sign_up.tr(),

@@ -12,19 +12,13 @@ class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:CustomAppBar(
-        titleAppBar: LocaleKeys.privacy_settings.tr(),
-      ),
+      appBar: CustomAppBar(titleAppBar: LocaleKeys.privacy_settings.tr()),
       body: SingleChildScrollView(
         child: Text(
           textAlign: TextAlign.center,
-          LocaleKeys.privacy_policy.tr(),style: AppStyle.fontSize14RegularNewsReader(context)
-        //   .copyWith(
-        //   fontSize: 16.sp,
-        //   fontWeight: FontWeight.w400,
-        //   height: 1.5.h,
-        // )
-        ,).paddingSymmetric(horizontal: 16.w),
+          LocaleKeys.privacy_policy.tr(),
+          style: AppStyle.fontSize14RegularNewsReader(context),
+        ).paddingSymmetric(horizontal: 16.w),
       ),
     );
   }

@@ -268,5 +268,8 @@ abstract class  LocaleKeys {
   static const please_check_your_internet_connection = 'please_check_your_internet_connection';
   static const no_events_found = 'no_events_found';
   static const qr_scanned_successfully = 'qr_scanned_successfully';
+  static const building = 'building';
+  static const number = 'number';
+  static const unit_details = 'unit_details';
 
 }

@@ -25,7 +25,6 @@ class SettingsController extends Cubit<SettingsState> {
   final TextEditingController newPassword = TextEditingController();
   final TextEditingController newPasswordConfirmation = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
   Future<void> changePassword() async {
     emit(ChangePasswordLoadingState());
@@ -270,7 +269,6 @@ Sender Name: ${nameController.text}
   void clearFields() {
     nameController.clear();
     messageController.clear();
-    emailController.clear();
     emit(state);
   }
 

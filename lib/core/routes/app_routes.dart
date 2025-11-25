@@ -26,6 +26,8 @@ import 'package:diyar_app/feature/news/view/news_details_screen.dart';
 import 'package:diyar_app/feature/news/view/news_screen.dart';
 import 'package:diyar_app/feature/notifications/view/notifications_screen.dart';
 import 'package:diyar_app/feature/on_boarding/view/on_boarding_screen.dart';
+import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
+import 'package:diyar_app/feature/profile/view/linked_units_detail_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
@@ -510,6 +512,19 @@ final GoRouter router = GoRouter(
         transition: slideFromRight,
       ),
     ),
+
+    GoRoute(
+      name: RoutesName.linkedUnitsDetailScreen,
+      path: RoutesName.linkedUnitsDetailScreen,
+      pageBuilder: (context, state) {
+        final unitData = state.extra as UserUnit ;
+        return buildAnimatedPage(
+          child: LinkedUnitsDetailScreen(unitData: unitData),
+          transition: slideFromRight,
+        );
+      },
+    ),
+
     GoRoute(
       name: RoutesName.imagePreviewScreen,
       path: RoutesName.imagePreviewScreen,

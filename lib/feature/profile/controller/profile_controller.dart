@@ -4,6 +4,7 @@ import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
+import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 import 'package:diyar_app/feature/profile/service/profile_service.dart';
 import 'package:flutter/material.dart';
@@ -163,6 +164,30 @@ class ProfileController extends Cubit<ProfileState> {
     } catch (error) {
       AppLogger.error('Error Happen While Get User Linked Units is $error');
       if (!isClosed) emit(GetUserLinkedUnitsFailureState());
+    }
+  }
+
+  UnitModelDetailsForLinkedUserResponseModel
+  unitModelDetailsForLinkedUserResponseModel =
+      UnitModelDetailsForLinkedUserResponseModel();
+  Future<void> getUnitsForUserLinkedUnits({ String? id}) async {
+    if (isClosed) return;
+    emit(GetUnitsForUserLinkedLoadingState());
+    try {
+      final value = await ProfileService.getUnitForLinkedUserService(id: id);
+      if (isClosed) return;
+
+      unitModelDetailsForLinkedUserResponseModel = value;
+      AppLogger.info('getUnitsForUserLinkedUnits==> ${value.data}');
+
+      if (value.success == true) {
+        emit(GetUnitsForUserLinkedSuccessfullyState());
+      } else {
+        emit(GetUserLinkedUnitsFailureState());
+      }
+    } catch (error) {
+      AppLogger.error('Error Happen While Get User Linked Units is $error');
+      if (!isClosed) emit(GetUnitsForUserLinkedFailureState());
     }
   }
 }
