@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,10 @@ import 'package:diyar_app/core/cubits/language/language_controller.dart';
 
 void main() {
   testWidgets('DiyarApp basic smoke test', (WidgetTester tester) async {
+     setUpAll(() async {
+    await HiveHelper.init(isTest: true);
+  });
+
     final languageController = await LanguageController.create();
 
     await tester.pumpWidget(
@@ -13,7 +18,6 @@ void main() {
         providers: [
           BlocProvider<LanguageController>.value(value: languageController),
           BlocProvider(create: (_) => InternetConnectionController()),
-          // أضف أي Bloc آخر أساسي يحتاجه DiyarApp
         ],
         child: const DiyarApp(),
       ),

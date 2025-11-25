@@ -58,14 +58,14 @@ class AppPreferencesScreen extends StatelessWidget {
                       title: LocaleKeys.push_notifications.tr(),
                       subtitle: LocaleKeys.desc_push_notifications.tr(),
                     ),
-                    CustomSwitchListTile(
-                      value: settingsController.emailNotification,
-                      onChanged: (value) {
-                        settingsController.toggleEmailNotification();
-                      },
-                      title: LocaleKeys.email_notifications.tr(),
-                      subtitle: LocaleKeys.desc_email_notifications.tr(),
-                    ),
+                    // CustomSwitchListTile(
+                    //   value: settingsController.emailNotification,
+                    //   onChanged: (value) {
+                    //     settingsController.toggleEmailNotification();
+                    //   },
+                    //   title: LocaleKeys.email_notifications.tr(),
+                    //   subtitle: LocaleKeys.desc_email_notifications.tr(),
+                    // ),
                   ],
                 );
               },
