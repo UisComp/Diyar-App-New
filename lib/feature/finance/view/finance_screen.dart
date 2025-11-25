@@ -1,3 +1,5 @@
+import 'package:diyar_app/core/cubits/language/language_controller.dart';
+import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -34,76 +36,85 @@ class _FinanceScreenState extends State<FinanceScreen>
       create: (context) => FinanceController()
         ..getFinance()
         ..getDocumets(),
-      child: Scaffold(
-        appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
-        body: BlocConsumer<FinanceController, FinanceState>(
-          listener: (context, state) {
-            state.whenOrNull(
-              previewFileFailure: (errorMessage) {
-                AppFunctions.errorMessage(
-                  context,
-                  message: errorMessage ?? LocaleKeys.error_preview_file.tr(),
+      child: BlocBuilder<LanguageController, LanguageState>(
+        buildWhen: (previous, current) => current is ChangeCurrentLanguageState,
+        builder: (context, state) {
+          return Scaffold(
+            appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
+            body: BlocConsumer<FinanceController, FinanceState>(
+              listener: (context, state) {
+                state.whenOrNull(
+                  previewFileFailure: (errorMessage) {
+                    AppFunctions.errorMessage(
+                      context,
+                      message:
+                          errorMessage ?? LocaleKeys.error_preview_file.tr(),
+                    );
+                  },
+                  downloadFileFailure: (errorMessage) {
+                    AppFunctions.errorMessage(
+                      context,
+                      message:
+                          errorMessage ??
+                          LocaleKeys.error_downloading_file.tr(),
+                    );
+                  },
+                  downloadFileSuccess: () {
+                    AppFunctions.successMessage(
+                      context,
+                      message: LocaleKeys.download_file_successfully.tr(),
+                    );
+                  },
                 );
               },
-              downloadFileFailure: (errorMessage) {
-                AppFunctions.errorMessage(
-                  context,
-                  message:
-                      errorMessage ?? LocaleKeys.error_downloading_file.tr(),
-                );
-              },
-              downloadFileSuccess: () {
-                AppFunctions.successMessage(
-                  context,
-                  message: LocaleKeys.download_file_successfully.tr(),
-                );
-              },
-            );
-          },
-          builder: (context, state) {
-            return Column(
-              children: [
-                10.ph,
-                TabBar(
-                  controller: _tabController,
-                  indicatorColor: AppColors.primaryColor,
-                  labelColor: AppColors.primaryColor,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: AppStyle.fontSize16Regular(context),
-                  tabs: [
-                    Tab(text: LocaleKeys.finance.tr()),
-                    Tab(text: LocaleKeys.documents.tr()),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      FinanceTab(
-                        onRefresh: () async {
-                        await  FinanceController.get(context).getFinance();
-                        },
-                        units:
-                            FinanceController.get(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    10.ph,
+                    TabBar(
+                      controller: _tabController,
+                      indicatorColor: AppColors.primaryColor,
+                      labelColor: AppColors.primaryColor,
+                      unselectedLabelColor: Colors.grey,
+                      labelStyle: AppStyle.fontSize16Regular(context),
+                      tabs: [
+                        Tab(text: LocaleKeys.finance.tr()),
+                        Tab(text: LocaleKeys.documents.tr()),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          FinanceTab(
+                            onRefresh: () async {
+                              await FinanceController.get(context).getFinance();
+                            },
+                            units:
+                                FinanceController.get(
+                                  context,
+                                ).financeResponseModel.data?.units ??
+                                [],
+                          ),
+                          DocumentsTab(
+                            onRefresh: () async {
+                              await FinanceController.get(
+                                context,
+                              ).getDocumets();
+                            },
+                            documentGroups: FinanceController.get(
                               context,
-                            ).financeResponseModel.data?.units ??
-                            [],
+                            ).documentsResponseModel.data,
+                          ),
+                        ],
                       ),
-                      DocumentsTab(
-                        onRefresh: () async {
-                          await FinanceController.get(context).getDocumets();
-                        },
-                        documentGroups: FinanceController.get(
-                          context,
-                        ).documentsResponseModel.data,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }

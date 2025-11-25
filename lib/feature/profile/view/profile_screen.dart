@@ -1,3 +1,5 @@
+import 'package:diyar_app/core/cubits/language/language_controller.dart';
+import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
@@ -36,46 +38,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(titleAppBar: LocaleKeys.profile.tr()),
-      body: BlocBuilder<ProfileController, ProfileState>(
-        buildWhen: (previous, current) =>
-            current is GetMyProfileSuccessState ||
-            current is GetUserLinkedUnitsSuccessfullyState ||
-            current is GetMyProfileLoadingState ||
-            current is GetUserLinkedUnitsLoadingState,
-        builder: (context, state) {
-          final controller = _profileController;
-          final isLoading =
-              state is GetMyProfileLoadingState ||
-              state is GetUserLinkedUnitsLoadingState;
-          final profile = controller.profileResponseModel.data;
-          final linkedUnits =
-              controller.userLinkedUnitsResponseModel.data ?? [];
-          return Skeletonizer(
-            enabled: isLoading,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  20.ph,
-                  ImageProfile(profile: profile),
-                  10.ph,
-                  Expanded(
-                    child: ListViewLinkedUnits(
-                      linkedUnits: linkedUnits,
-                      unitData: controller
-                          .unitModelDetailsForLinkedUserResponseModel
-                          .data,
-                    ),
+    return BlocBuilder<LanguageController, LanguageState>(
+      buildWhen: (previous, current) => current is ChangeCurrentLanguageState,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: CustomAppBar(titleAppBar: LocaleKeys.profile.tr()),
+          body: BlocBuilder<ProfileController, ProfileState>(
+            buildWhen: (previous, current) =>
+                current is GetMyProfileSuccessState ||
+                current is GetUserLinkedUnitsSuccessfullyState ||
+                current is GetMyProfileLoadingState ||
+                current is GetUserLinkedUnitsLoadingState,
+            builder: (context, state) {
+              final controller = _profileController;
+              final isLoading =
+                  state is GetMyProfileLoadingState ||
+                  state is GetUserLinkedUnitsLoadingState;
+              final profile = controller.profileResponseModel.data;
+              final linkedUnits =
+                  controller.userLinkedUnitsResponseModel.data ?? [];
+              return Skeletonizer(
+                enabled: isLoading,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
                   ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      20.ph,
+                      ImageProfile(profile: profile),
+                      10.ph,
+                      Expanded(
+                        child: ListViewLinkedUnits(
+                          linkedUnits: linkedUnits,
+                          unitData: controller
+                              .unitModelDetailsForLinkedUserResponseModel
+                              .data,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
