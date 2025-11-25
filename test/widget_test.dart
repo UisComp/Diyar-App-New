@@ -6,13 +6,17 @@ import 'package:diyar_app/feature/app/diyar_app.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 
 void main() {
-  testWidgets('DiyarApp basic smoke test', (WidgetTester tester) async {
-     setUpAll(() async {
+  // تهيئة قبل أي test
+  late LanguageController languageController;
+
+  setUpAll(() async {
+    // init Hive for testing
     await HiveHelper.init(isTest: true);
+    languageController = await LanguageController.create();
   });
 
-    final languageController = await LanguageController.create();
-
+  testWidgets('DiyarApp basic smoke test', (WidgetTester tester) async {
+    // build app with providers
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
