@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/custom_cached.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
@@ -39,14 +40,11 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final unitData =
+        profileController.unitModelDetailsForLinkedUserResponseModel.data;
     return Scaffold(
       appBar: CustomAppBar(
-        titleAppBar:
-            profileController
-                .unitModelDetailsForLinkedUserResponseModel
-                .data
-                ?.name ??
-            LocaleKeys.unit_details.tr(),
+        titleAppBar: unitData?.name ?? LocaleKeys.unit_details.tr(),
         centerTitle: true,
       ),
       body: BlocBuilder<ProfileController, ProfileState>(
@@ -60,25 +58,21 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (profileController
-                          .unitModelDetailsForLinkedUserResponseModel
-                          .data
-                          ?.mainImage
-                          ?.url !=
-                      null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: CustomCachedNetworkImage(
-                        imageUrl: profileController
-                            .unitModelDetailsForLinkedUserResponseModel
-                            .data
-                            ?.mainImage!
-                            .url!,
-                        width: double.infinity,
-                        height: 200.h,
-                        fit: BoxFit.cover,
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: CachedImage(
+                      url:
+                          profileController
+                              .unitModelDetailsForLinkedUserResponseModel
+                              .data
+                              ?.mainImage!
+                              .url ??
+                          '',
+                      width: double.infinity,
+                      height: 200.h,
+                      fit: BoxFit.cover,
                     ),
+                  ),
                   16.ph,
                   Text(
                     profileController
@@ -89,11 +83,16 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
                     ),
                   ),
                   12.ph,
                   Text(
-                    "${LocaleKeys.building.tr()} ${profileController.unitModelDetailsForLinkedUserResponseModel.data?.building ?? ''}, ${LocaleKeys.number.tr()} ${profileController.unitModelDetailsForLinkedUserResponseModel.data?.number ?? ''}",
+                    "${LocaleKeys.building.tr()} ${unitData?.building ?? LocaleKeys.un_defined.tr()}",
+                    style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
+                  ),
+                  Text(
+                    "${LocaleKeys.number.tr()} ${unitData?.number ?? LocaleKeys.un_defined.tr()}",
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
                   ),
                   20.ph,
@@ -105,16 +104,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   ),
                   12.ph,
-                  if (profileController
-                              .unitModelDetailsForLinkedUserResponseModel
-                              .data
-                              ?.news !=
-                          null &&
-                      profileController
-                          .unitModelDetailsForLinkedUserResponseModel
-                          .data!
-                          .news!
-                          .isNotEmpty)
+                  if (unitData?.news != null && unitData!.news!.isNotEmpty)
                     Column(
                       children: profileController
                           .unitModelDetailsForLinkedUserResponseModel
@@ -201,11 +191,13 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                           .toList(),
                     )
                   else
-                    Text(
-                      LocaleKeys.no_news_found.tr(),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
+                    Center(
+                      child: Text(
+                        LocaleKeys.no_news_found.tr(),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
                 ],

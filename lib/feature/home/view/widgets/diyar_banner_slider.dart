@@ -62,6 +62,7 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
                     children: [
                       Skeleton.replace(
                         child: CustomCachedNetworkImage(
+                          
                           imageUrl: banner?.url ?? '',
                           height: widget.height.h,
                           fit: BoxFit.cover,

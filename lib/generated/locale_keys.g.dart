@@ -271,5 +271,7 @@ abstract class  LocaleKeys {
   static const building = 'building';
   static const number = 'number';
   static const unit_details = 'unit_details';
+  static const un_defined = 'un_defined';
+  static const processing = 'processing';
 
 }

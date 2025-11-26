@@ -6,8 +6,8 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ImagePreviewScreen extends StatelessWidget {
-  const ImagePreviewScreen({
+class AnnouncementImagePreviewScreen extends StatelessWidget {
+  const AnnouncementImagePreviewScreen({
     super.key,
     this.imageUrl,
     this.title,
@@ -25,113 +25,76 @@ class ImagePreviewScreen extends StatelessWidget {
           InkWell(
             borderRadius: BorderRadius.circular(25.r),
             onTap: () => Navigator.pop(context),
-            child: Container(
-              padding: EdgeInsets.all(8.sp),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.black54,
-              ),
-              child: Icon(
-                Icons.close_rounded,
-                color: AppColors.whiteColor,
-                size: 20.sp,
-              ),
-            ),
-          ),
-        ],
-        backgroundColor: Colors.transparent,
-      ),
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          if (imageUrl != null)
-            Center(
-              child: Hero(
-                tag: imageUrl!,
-                child: InteractiveViewer(
-                  panEnabled: true,
-                  minScale: 0.8,
-                  maxScale: 4,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomCachedNetworkImage(
-                          isProjectDetails: true,
-                          imageUrl: imageUrl,
-                          fit: BoxFit.contain,
-                        ),
-                        20.ph,
-                        if (title != null && title!.isNotEmpty)
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 6.h,
-                              horizontal: 16.w,
-                            ),
-                            child: Text(
-                              title!.capitalize(),
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
-                        if (description != null && description!.isNotEmpty)
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 20.h,
-                              left: 16.w,
-                              right: 16.w,
-                            ),
-                            child: Text(
-                              description!.capitalize(),
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                width: 30.w,
+                height: 30.h,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black54,
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.close_rounded,
+                    color: AppColors.whiteColor,
+                    size: 20.sp,
                   ),
                 ),
               ),
             ),
-
-          /// CLOSE BUTTON
-          // Positioned(
-          //   top: 50.h,
-          //   right: 20.w,
-          //   child: AnimatedOpacity(
-          //     opacity: 1,
-          //     duration: const Duration(milliseconds: 500),
-          //     child: InkWell(
-          //       borderRadius: BorderRadius.circular(50.r),
-          //       onTap: () => Navigator.pop(context),
-          //       child: Container(
-          //         padding: EdgeInsets.all(8.w),
-          //         decoration: const BoxDecoration(
-          //           shape: BoxShape.circle,
-          //           color: Colors.black54,
-          //         ),
-          //         child: Icon(
-          //           Icons.close_rounded,
-          //           color: AppColors.whiteColor,
-          //           size: 30.sp,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          ),
         ],
+        backgroundColor: AppColors.whiteColor,
+      ),
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.whiteColor,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomCachedNetworkImage(
+                isProjectDetails: true,
+                imageUrl: imageUrl,
+                fit: BoxFit.contain,
+              ),
+              20.ph,
+              if (title != null && title!.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 6.h,
+                    horizontal: 16.w,
+                  ),
+                  child: Text(
+                    title!.capitalize(),
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+              if (description != null && description!.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 20.h,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  child: Text(
+                    description!.capitalize(),
+                    textAlign: TextAlign.start,
+                    style: TextStyle(color: AppColors.black87, fontSize: 14.sp),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

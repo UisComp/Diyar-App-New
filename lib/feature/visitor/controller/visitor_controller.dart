@@ -52,9 +52,19 @@ class VisitorController extends Cubit<VisitorState> {
   Future<void> pickStartTime(BuildContext context) async {
     emit(PickStartTimeLoading());
     try {
+      // Get current time + 1 minute
+      final now = TimeOfDay.now();
+      final nowDate = DateTime(0, 1, 1, now.hour, now.minute);
+      final plusOneMinute = nowDate.add(const Duration(minutes: 1));
+
+      final initial = TimeOfDay(
+        hour: plusOneMinute.hour,
+        minute: plusOneMinute.minute,
+      );
+
       final picked = await showTimePicker(
         context: context,
-        initialTime: startTime ?? TimeOfDay.now(),
+        initialTime: startTime ?? initial, // default = now + 1 min
       );
 
       if (picked != null) {

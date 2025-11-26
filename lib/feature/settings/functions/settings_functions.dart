@@ -107,7 +107,7 @@ Future<void> showDeleteAccountDialog(
 }
 void showImagePreview(
   BuildContext context,
-  String imageUrl, {
+  String ?imageUrl, {
   String? title,
   String? description,
 }) {
@@ -123,60 +123,52 @@ void showImagePreview(
         body: Stack(
           children: [
             Center(
-              child: Hero(
-                tag: imageUrl,
-                child: InteractiveViewer(
-                  panEnabled: true,
-                  minScale: 0.8,
-                  maxScale: 4,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                      children: [
-                        CustomCachedNetworkImage(
-                          isProjectDetails: true,
-                          imageUrl: imageUrl,
-                          fit: BoxFit.contain,
-                        ),
-                        20.ph,
-                        if (title != null && title.isNotEmpty)
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 6.h,
-                              horizontal: 16.w,
-                            ),
-                            child: Text(
-                              title.capitalize(),
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                    
-                        if (description != null && description.isNotEmpty)
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 20.h,
-                              left: 16.w,
-                              right: 16.w,
-                            ),
-                            child: Text(
-                              description.capitalize(),
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          ),
-                      ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    CustomCachedNetworkImage(
+                      isProjectDetails: true,
+                      imageUrl: imageUrl,
+                      fit: BoxFit.contain,
                     ),
-                  ),
+                    20.ph,
+                    if (title != null && title.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 6.h,
+                          horizontal: 16.w,
+                        ),
+                        child: Text(
+                          title.capitalize(),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                
+                    if (description != null && description.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 20.h,
+                          left: 16.w,
+                          right: 16.w,
+                        ),
+                        child: Text(
+                          description.capitalize(),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),

@@ -58,9 +58,11 @@ class _NewsScreenState extends State<NewsScreen> {
                       );
                     }
                   },
-                  descriptionContainer: item?.content ?? "2 days ago",
-                  titleContainer: item?.title ?? "Loading...",
-                  imageUrl: item?.media?[0].url,
+                  descriptionContainer: item?.content ?? "",
+                  titleContainer: item?.title ?? "",
+                  imageUrl: (item?.media ?? []).isNotEmpty
+                      ? (item?.media ?? []).first.url
+                      : null,
                 );
               },
             ),

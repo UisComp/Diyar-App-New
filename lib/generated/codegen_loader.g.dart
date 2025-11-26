@@ -282,7 +282,9 @@ class CodegenLoader extends AssetLoader{
   "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح",
   "building": "المبنى:",
   "number": "الرقم:",
-  "unit_details": "تفاصيل الوحدة"
+  "unit_details": "تفاصيل الوحدة",
+  "un_defined": "غير محدد",
+  "processing": "جاري المعالجة..."
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -551,7 +553,9 @@ static const Map<String,dynamic> _en = {
   "qr_scanned_successfully": "QR scanned successfully",
   "building": "Building:",
   "number": "Number:",
-  "unit_details": "Unit Details"
+  "unit_details": "Unit Details",
+  "un_defined": "Un Defined",
+  "processing": "Processing..."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

@@ -1,4 +1,6 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/core/widgets/custom_cached.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 import 'package:diyar_app/feature/profile/view/widgets/empty_linked_units.dart';
@@ -66,20 +68,19 @@ class ListViewLinkedUnits extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 10.h),
                           child: Row(
                             children: [
-                              if (unit.imageUrl?.url != null)
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  child: Image.network(
-                                    unit.imageUrl!.url!,
+                                  child: CachedImage(
+                                    url: unit.imageUrl?.url??'',
                                     width: 50.w,
                                     height: 50.h,
                                     fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) => Icon(
-                                          Icons.image_not_supported,
-                                          size: 50.w,
-                                          color: Colors.grey[400],
-                                        ),
+                                    // errorBuilder:
+                                    //     (context, error, stackTrace) => Icon(
+                                    //       Icons.image_not_supported,
+                                    //       size: 50.w,
+                                    //       color: Colors.grey[400],
+                                    //     ),
                                   ),
                                 ),
                               SizedBox(width: 12.w),

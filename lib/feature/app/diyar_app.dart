@@ -62,9 +62,9 @@ class DiyarApp extends StatelessWidget {
                     theme: AppThemes.lightTheme,
                     darkTheme: AppThemes.darkTheme,
                     builder: (context, child) {
-                      if (!isConnected) {
-                        return const NoInternetConnection();
-                      }
+                      // if (!isConnected) {
+                      //   return const NoInternetConnection();
+                      // }
                       return child ?? const SizedBox.shrink();
                     },
                   );

@@ -532,7 +532,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final imageUrl = state.extra as Announcement;
         return buildAnimatedPage(
-          child: ImagePreviewScreen(
+          child: AnnouncementImagePreviewScreen(
             imageUrl: imageUrl.url ?? '',
             title: imageUrl.title ?? '',
             description: imageUrl.description ?? '',

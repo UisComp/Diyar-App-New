@@ -266,5 +266,7 @@
   "qr_scanned_successfully": "تم مسح رمز الاستجابة السريعة بنجاح",
   "building": "المبنى:",
   "number": "الرقم:",
-  "unit_details": "تفاصيل الوحدة"
+  "unit_details": "تفاصيل الوحدة",
+  "un_defined": "غير محدد",
+  "processing": "جاري المعالجة..."
 }

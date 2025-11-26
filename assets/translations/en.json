@@ -265,5 +265,7 @@
   "qr_scanned_successfully": "QR scanned successfully",
   "building": "Building:",
   "number": "Number:",
-  "unit_details": "Unit Details"
+  "unit_details": "Unit Details",
+  "un_defined": "Un Defined",
+  "processing": "Processing..."
 }

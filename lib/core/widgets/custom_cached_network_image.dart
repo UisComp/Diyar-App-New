@@ -26,8 +26,8 @@ class CustomCachedNetworkImage extends StatelessWidget {
           ? null
           : () => showImagePreview(context, imageUrl ?? ''),
       child: CachedNetworkImage(
-        width: width,
-        height: height,
+        width: (imageUrl != null && imageUrl!.trim().isNotEmpty) ? width : 1.sw,
+        height: (imageUrl != null && imageUrl!.trim().isNotEmpty) ? height : 300.h,
         fadeOutDuration: const Duration(seconds: 5),
         fadeInCurve: Curves.decelerate,
         fadeInDuration: const Duration(seconds: 5),

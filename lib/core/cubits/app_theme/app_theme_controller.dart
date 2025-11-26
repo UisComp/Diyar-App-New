@@ -13,7 +13,7 @@ class AppThemeController extends Cubit<AppThemeState> {
 
   static AppThemeController get(BuildContext context) =>
       BlocProvider.of(context);
-  AppThemeMode currentThemeMode = AppThemeMode.system;
+  AppThemeMode currentThemeMode = AppThemeMode.light;
 
   Future<void> _loadThemeFromHive() async {
     final storedValue =
