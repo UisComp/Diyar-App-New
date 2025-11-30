@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/constants/custom_logger.dart';
+import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_state.dart';
 import 'package:diyar_app/feature/visitor/model/scan_qr_code_response_model.dart';
@@ -55,7 +56,7 @@ class VisitorController extends Cubit<VisitorState> {
       // Get current time + 1 minute
       final now = TimeOfDay.now();
       final nowDate = DateTime(0, 1, 1, now.hour, now.minute);
-      final plusOneMinute = nowDate.add(const Duration(minutes: 1));
+      final plusOneMinute = nowDate.add(const Duration(minutes: 2));
 
       final initial = TimeOfDay(
         hour: plusOneMinute.hour,
@@ -125,10 +126,6 @@ class VisitorController extends Cubit<VisitorState> {
       selectedDateRange!.start,
     );
     final endDate = AppFormatter.dateFormatter().format(selectedDateRange!.end);
-    // final formattedStartTime =
-    //     "${startTime!.hour.toString().padLeft(2, '0')}:${startTime!.minute.toString().padLeft(2, '0')}";
-    // final formattedEndTime =
-    //     "${endTime!.hour.toString().padLeft(2, '0')}:${endTime!.minute.toString().padLeft(2, '0')}";
     final formattedStartTime = AppFormatter.formatUtcTime(startTime!);
     final formattedEndTime = AppFormatter.formatUtcTime(endTime!);
 
@@ -209,16 +206,17 @@ class VisitorController extends Cubit<VisitorState> {
           })
           .catchError((error) {
             AppLogger.error('Error Happen While Create Visitor Pass is $error');
+
             emit(
               CreateVisitorPassErrorState(
-                message: "Failed to create visitor pass: $error",
+                message: error.toString().removeExceptionWord(),
               ),
             );
           });
     } catch (e) {
       emit(
         CreateVisitorPassErrorState(
-          message: "Failed to create visitor pass: $e",
+          message: e.toString().removeExceptionWord(),
         ),
       );
     }

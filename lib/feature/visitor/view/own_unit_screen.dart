@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -52,7 +53,8 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
           AppFunctions.errorMessage(
             context,
             message:
-                visitorState.message ??
+                visitorState.message?.removeExceptionWord() 
+                ??
                 LocaleKeys.failed_to_create_visitor_pass.tr(),
           );
         }

@@ -17,7 +17,7 @@ class VisitorService {
     if (visitorPassResponse != null && visitorPassResponse.statusCode == 201) {
       return VisitorPassResponse.fromJson(visitorPassResponse.data);
     } else {
-      return VisitorPassResponse.fromJson(visitorPassResponse?.data);
+      throw Exception('Failed to create visitor pass');
     }
   }
 
