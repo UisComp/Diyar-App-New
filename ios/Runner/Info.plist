@@ -28,6 +28,14 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+	<!-- App Transport Security (Allow HTTP) -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -84,10 +92,10 @@
 	<array>
 		<string>tel</string>
 	</array>
-
+	
 	<!-- CRITICAL FOR FIREBASE MESSAGING ON iOS -->
 	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
+	<true/>
 
 </dict>
 </plist>
