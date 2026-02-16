@@ -121,7 +121,9 @@ class _HomeLayoutState extends State<HomeLayout> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
-            floatingActionButton: _homeController.currentIndex == 2
+            floatingActionButton:
+                (_homeController.currentIndex == 2 &&
+                    userModel?.data?.accessToken != null)
                 ? BlocProvider(
                     create: (context) => AuthController(),
                     child: BlocConsumer<AuthController, AuthState>(

@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/extension/padding.dart';
@@ -49,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> initHomeData() async {
     await homeController.getAllServices();
     await homeController.getAllAnnouncements();
-    await notificationController.fetchAllNotifications();
+    if (userModel?.data?.accessToken != null) {
+      await notificationController.fetchAllNotifications();
+    }
     homeController.searchController.addListener(() async {
       await homeController.filterServices();
     });
@@ -104,11 +107,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context, notificationState) {
                           final isLoading =
                               notificationState is NotificationLoading;
+                          final isGuest = userModel?.data?.accessToken == null;
 
                           return Stack(
                             children: [
                               IconButton(
                                 onPressed: () {
+                                  if (isGuest) {
+                                    AppFunctions.warningMessage(
+                                      context,
+                                      message: LocaleKeys
+                                          .notifications_for_logged_in_users_only
+                                          .tr(),
+                                    );
+                                    return;
+                                  }
                                   if (!isLoading) {
                                     context.push(
                                       RoutesName.notificationsScreen,
@@ -126,12 +139,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       )
                                     : SvgPicture.asset(
                                         Assets.images.svg.notification,
-                                        color: darkTheme
+                                        color: isGuest
+                                            ? AppColors.greyColor
+                                            : darkTheme
                                             ? AppColors.whiteColor
                                             : AppColors.black87,
                                       ),
                               ),
-                              if (!isLoading &&
+                              if (!isGuest &&
+                                  !isLoading &&
                                   notificationController.notifications?.data !=
                                       null &&
                                   (notificationController
@@ -177,7 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       await homeController.getAllAnnouncements();
                       await homeController.getAllServices();
                       await homeController.filterServices();
-                      if (enableNotifications == true) {
+                      if (enableNotifications == true &&
+                          userModel?.data?.accessToken != null) {
                         await notificationController.fetchAllNotifications();
                       }
                     },

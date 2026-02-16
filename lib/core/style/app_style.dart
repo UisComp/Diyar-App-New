@@ -5,41 +5,42 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppStyle {
   static Color _getPrimaryTextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkTextPrimary
-      : AppColors.lightTextPrimary;
+          ? AppColors.darkTextPrimary
+          : AppColors.lightTextPrimary;
 
   static Color _getSecondaryTextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkTextSecondary
-      : AppColors.lightTextSecondary;
+          ? AppColors.darkTextSecondary
+          : AppColors.lightTextSecondary;
 
+  // Existing styles
   static TextStyle fontSize22Bold(BuildContext context) => TextStyle(
-    color: _getPrimaryTextColor(context),
-    fontSize: 22.sp,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.3,
-  );
+        color: _getPrimaryTextColor(context),
+        fontSize: 22.sp,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.3,
+      );
 
   static TextStyle fontSize18Bold(BuildContext context) => TextStyle(
-    color: _getPrimaryTextColor(context),
-    fontSize: 18.sp,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 0.2,
-  );
+        color: _getPrimaryTextColor(context),
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.2,
+      );
 
   static TextStyle fontSize16Regular(BuildContext context) => TextStyle(
-    color: _getSecondaryTextColor(context),
-    fontSize: 16.sp,
-    fontWeight: FontWeight.w400,
-    height: 1.4,
-  );
+        color: _getSecondaryTextColor(context),
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+        height: 1.4,
+      );
 
   static TextStyle fontSize22BoldNewsReader(BuildContext context) => TextStyle(
-    color: _getPrimaryTextColor(context),
-    fontSize: 22.sp,
-    fontWeight: FontWeight.w700,
-    fontFamily: 'Newsreader',
-  );
+        color: _getPrimaryTextColor(context),
+        fontSize: 22.sp,
+        fontWeight: FontWeight.w700,
+        fontFamily: 'Newsreader',
+      );
 
   static TextStyle fontSize14RegularNewsReader(BuildContext context) =>
       TextStyle(
@@ -47,5 +48,46 @@ class AppStyle {
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
         fontFamily: 'Newsreader',
+      );
+
+  // New styles
+  static TextStyle fontSize20Bold(BuildContext context) => TextStyle(
+        color: _getPrimaryTextColor(context),
+        fontSize: 20.sp,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.2,
+      );
+
+  static TextStyle fontSize16Bold(BuildContext context) => TextStyle(
+        color: _getPrimaryTextColor(context),
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.2,
+      );
+
+  static TextStyle fontSize14Bold(BuildContext context) => TextStyle(
+        color: _getPrimaryTextColor(context),
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+      );
+
+  static TextStyle fontSize14Regular(BuildContext context) => TextStyle(
+        color: _getPrimaryTextColor(context),
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w400,
+      );
+
+  static TextStyle fontSize12Bold(BuildContext context) => TextStyle(
+        color: _getPrimaryTextColor(context),
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+      );
+
+  static TextStyle fontSize12Regular(BuildContext context) => TextStyle(
+        color: _getSecondaryTextColor(context),
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
       );
 }

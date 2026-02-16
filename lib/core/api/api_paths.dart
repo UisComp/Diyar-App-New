@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
+import 'package:diyar_app/core/constants/custom_logger.dart';
 
 class ApiPaths {
   static Duration timeOutDuration = const Duration(seconds: 20);
@@ -12,7 +13,14 @@ class ApiPaths {
   static const String forgetPassword = "password/request-otp";
   static const String verifyOtp = "password/verify-otp";
   static const String resetPassword = "password/reset";
-  static const String getAllServices = "services/user";
+  // static final String getAllServices = userModel?.data?.accessToken != null
+  //     ? "services/user"
+  //     : "services";
+  static String get getAllServices {
+    final hasToken = userModel?.data?.accessToken != null;
+    AppLogger.info('API Path check - Has token: $hasToken');
+    return hasToken ? "services/user" : "services";
+  }
   static const String getAllAnnouncementsBannersPath = "announcements";
   static const String getLinkedUnitsForUser = "units";
   static const String getProjects = "projects";
@@ -22,7 +30,9 @@ class ApiPaths {
   static const String serviceProvider = "service-providers";
   static const String getDocumentPath = "profile/documents";
   static const String financePath = "user/finance";
-  static const String getAllNews = "news/user";
+  static final String getAllNews = userModel?.data?.accessToken != null
+      ? "news/user"
+      : "news";
   static const String configDataPath = "config";
   static const visitorPassesPath = "visitor-passes";
   static const visitorPassesPathScan = "visitor-passes/validate";
@@ -33,6 +43,8 @@ class ApiPaths {
   static String markAllAsRead = "notifications/mark-all-read";
   static String deleteNotification({required String id}) => "notifications/$id";
   static String getProjectDetails({required String id}) => "projects/$id";
+  static String serviceProviderHistory = "service-provider-bookings";
+  static String facilityBookingHistory = "facility-bookings";
   static String getNewsByUnit({
     required String id,
     String? start,

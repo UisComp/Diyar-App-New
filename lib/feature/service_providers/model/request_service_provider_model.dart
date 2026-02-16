@@ -7,37 +7,29 @@ class RequestServiceProviderModel {
   @JsonKey(name: 'services')
   List<ServiceItem>? services;
 
-  @JsonKey(name: 'booking_date')
-  String? bookingDate;
-
-  RequestServiceProviderModel({
-    this.services,
-    this.bookingDate,
-  });
+  RequestServiceProviderModel({this.services});
 
   factory RequestServiceProviderModel.fromJson(Map<String, dynamic> json) =>
       _$RequestServiceProviderModelFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$RequestServiceProviderModelToJson(this);
+  Map<String, dynamic> toJson() => _$RequestServiceProviderModelToJson(this);
 }
 
 @JsonSerializable()
 class ServiceItem {
+  @JsonKey(name: 'id')
   int? id;
+
+  @JsonKey(name: 'title')
   String? title;
 
-  ServiceItem({this.id, this.title});
+  @JsonKey(name: 'booking_date')
+  String? bookingDate;
+
+  ServiceItem({this.id, this.title, this.bookingDate});
 
   factory ServiceItem.fromJson(Map<String, dynamic> json) =>
       _$ServiceItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServiceItemToJson(this);
-
-  factory ServiceItem.fromList(List<dynamic> list) {
-    return ServiceItem(
-      id: list.isNotEmpty ? list[0] : null,
-      title: list.length > 1 ? list[1] : null,
-    );
-  }
 }

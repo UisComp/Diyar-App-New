@@ -1,12 +1,17 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
+import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/view/widgets/polygons_painter.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 class ProjectDetailsImage extends StatelessWidget {
   const ProjectDetailsImage({
     super.key,
@@ -53,8 +58,6 @@ class ProjectDetailsImage extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.3),
                     child: const Center(child: CircularProgressIndicator()),
                   ),
-
-                // Polygon overlay & tap detection (only when loaded)
                 if (!isLoading)
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -74,10 +77,18 @@ class ProjectDetailsImage extends StatelessWidget {
                           AppLogger.log(
                             "Tapped shape details: ${shape.toJson()}",
                           );
-                          if (shape.unitId != null) {
+                          if (shape.unitId != null &&
+                              userModel?.data?.accessToken != null) {
                             context.push(
                               RoutesName.unitEvents,
                               extra: shape.unitId,
+                            );
+                          } else {
+                            AppFunctions.warningMessage(
+                              context,
+                              message: LocaleKeys
+                                  .available_for_logged_in_users_only
+                                  .tr(),
                             );
                           }
                           break;

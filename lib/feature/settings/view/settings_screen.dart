@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
@@ -58,61 +59,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
           builder: (context, settingsState) {
             return Scaffold(
-              appBar: CustomAppBar(
-                titleAppBar: LocaleKeys.settings.tr(),
-              ),
+              appBar: CustomAppBar(titleAppBar: LocaleKeys.settings.tr()),
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTitle(title: LocaleKeys.account.tr()),
-                    12.ph,
-                    CustomContainerInformation(
-                      onTap: () {
-                        context.push(RoutesName.personalInformation);
-                      },
-                      titleContainer: LocaleKeys.personal_information.tr(),
-                      descriptionContainer: LocaleKeys.desc_personal_information
-                          .tr(),
-                      svgIcon: Assets.images.svg.person,
-                    ),
-                    24.ph,
-                    CustomContainerInformation(
-                      onTap: () async {
-                        await showDeleteAccountDialog(
-                          isLoading: settingsState is DeleteAccountLoadingState,
-                          context,
-                          onDelete: () async {
-                            await SettingsController.get(
-                              context,
-                            ).deleteAccount();
-                          },
-                        );
-                      },
-                      titleContainer: LocaleKeys.delete_account.tr(),
-                      descriptionContainer: LocaleKeys.erase_all_data.tr(),
-                      svgIcon: Assets.images.svg.deleteUser,
-                    ),
-                    24.ph,
-                    CustomContainerInformation(
-                      onTap: () {
-                        context.push(RoutesName.changePasswordScreen);
-                      },
-                      titleContainer: LocaleKeys.change_password.tr(),
-                      descriptionContainer: LocaleKeys.desc_change_password
-                          .tr(),
-                      svgIcon: Assets.images.svg.lock,
-                    ),
-                    24.ph,
-                    CustomContainerInformation(
-                      onTap: () {
-                        context.push(RoutesName.bioMetricScreen);
-                      },
-                      titleContainer: LocaleKeys.biometric_feature.tr(),
-                      descriptionContainer: LocaleKeys.biometric.tr(),
-                      svgIcon: Assets.images.svg.biometric,
-                    ),
-                    32.ph,
+                    if (userModel?.data?.accessToken != null) ...[
+                      CustomTitle(title: LocaleKeys.account.tr()),
+                      12.ph,
+                      CustomContainerInformation(
+                        onTap: () {
+                          context.push(RoutesName.personalInformation);
+                        },
+                        titleContainer: LocaleKeys.personal_information.tr(),
+                        descriptionContainer: LocaleKeys
+                            .desc_personal_information
+                            .tr(),
+                        svgIcon: Assets.images.svg.person,
+                      ),
+                      24.ph,
+                      CustomContainerInformation(
+                        onTap: () async {
+                          await showDeleteAccountDialog(
+                            isLoading:
+                                settingsState is DeleteAccountLoadingState,
+                            context,
+                            onDelete: () async {
+                              await SettingsController.get(
+                                context,
+                              ).deleteAccount();
+                            },
+                          );
+                        },
+                        titleContainer: LocaleKeys.delete_account.tr(),
+                        descriptionContainer: LocaleKeys.erase_all_data.tr(),
+                        svgIcon: Assets.images.svg.deleteUser,
+                      ),
+                      24.ph,
+                      CustomContainerInformation(
+                        onTap: () {
+                          context.push(RoutesName.changePasswordScreen);
+                        },
+                        titleContainer: LocaleKeys.change_password.tr(),
+                        descriptionContainer: LocaleKeys.desc_change_password
+                            .tr(),
+                        svgIcon: Assets.images.svg.lock,
+                      ),
+                      24.ph,
+                      CustomContainerInformation(
+                        onTap: () {
+                          context.push(RoutesName.bioMetricScreen);
+                        },
+                        titleContainer: LocaleKeys.biometric_feature.tr(),
+                        descriptionContainer: LocaleKeys.biometric.tr(),
+                        svgIcon: Assets.images.svg.biometric,
+                      ),
+                      32.ph,
+                    ],
                     CustomTitle(title: LocaleKeys.preferences.tr()),
                     24.ph,
                     CustomContainerInformation(

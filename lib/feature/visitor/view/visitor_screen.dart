@@ -15,13 +15,12 @@ class VisitorScreen extends StatefulWidget {
 }
 
 class _VisitorScreenState extends State<VisitorScreen> {
-  late bool isOwnUnit;
+  bool isOwnUnit = true;
   @override
   void initState() {
     super.initState();
 
-    if (userModel!.data != null &&
-        userModel!.data!.user.roles != null &&
+    if (userModel?.data?.user.roles != null &&
         userModel!.data!.user.roles!.isNotEmpty) {
       isOwnUnit = userModel!.data!.user.roles!.contains("user");
     }
@@ -35,9 +34,7 @@ class _VisitorScreenState extends State<VisitorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        titleAppBar: LocaleKeys.visitor.tr(),
-      ),
+      appBar: CustomAppBar(titleAppBar: LocaleKeys.visitor.tr()),
       body: isOwnUnit
           ? const OwnUnitScreen()
           : GuardRoleScreen(visitorController: VisitorController.get(context)),

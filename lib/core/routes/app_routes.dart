@@ -13,6 +13,7 @@ import 'package:diyar_app/feature/auth/view/reset_password_screen.dart';
 import 'package:diyar_app/feature/committee/view/committee_screen.dart';
 import 'package:diyar_app/feature/emergency/view/emergency_screen.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
+import 'package:diyar_app/feature/facility_booking/view/facility_booking_history_screen.dart';
 import 'package:diyar_app/feature/facility_booking/view/facility_booking_screen.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
@@ -33,6 +34,7 @@ import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
 import 'package:diyar_app/feature/report/view/report_screen.dart';
 import 'package:diyar_app/feature/service_providers/controller/service_provider_controller.dart';
+import 'package:diyar_app/feature/service_providers/view/service_provider_history_screen.dart';
 import 'package:diyar_app/feature/service_providers/view/service_providers_screen.dart';
 import 'package:diyar_app/feature/settings/view/app_preferences.dart';
 import 'package:diyar_app/feature/settings/view/bio_metric_screen.dart';
@@ -517,7 +519,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.linkedUnitsDetailScreen,
       path: RoutesName.linkedUnitsDetailScreen,
       pageBuilder: (context, state) {
-        final unitData = state.extra as UserUnit ;
+        final unitData = state.extra as UserUnit;
         return buildAnimatedPage(
           child: LinkedUnitsDetailScreen(unitData: unitData),
           transition: slideFromRight,
@@ -536,6 +538,34 @@ final GoRouter router = GoRouter(
             imageUrl: imageUrl.url ?? '',
             title: imageUrl.title ?? '',
             description: imageUrl.description ?? '',
+          ),
+          transition: slideFromRight,
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.serviceProviderHistoryScreen,
+      path: RoutesName.serviceProviderHistoryScreen,
+      pageBuilder: (context, state) {
+        final serviceProviderController =
+            state.extra as ServiceProviderController;
+        return buildAnimatedPage(
+          child: ServiceProviderHistoryScreen(
+            serviceProviderController: serviceProviderController,
+          ),
+          transition: slideFromRight,
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.facilityBookingHistoryScreen,
+      path: RoutesName.facilityBookingHistoryScreen,
+      pageBuilder: (context, state) {
+        final facilityBookingController =
+            state.extra as FacilityBookingController;
+        return buildAnimatedPage(
+          child: FacilityBookingHistoryScreen(
+            facilityBookingController: facilityBookingController,
           ),
           transition: slideFromRight,
         );

@@ -10,7 +10,6 @@ import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -165,7 +164,7 @@ class _UserTextFormFieldForRegisterState
             ),
             24.ph,
             CustomTextFormField(
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (unitNumber) {
                 if (unitNumber!.isEmpty) {
@@ -176,7 +175,7 @@ class _UserTextFormFieldForRegisterState
               contentPadding: EdgeInsets.all(20.sp),
               controller: authController.unitNumberController,
               labelText: LocaleKeys.unit_number.tr(),
-              keyboardType: TextInputType.number,
+              // keyboardType: TextInputType.number,
               prefixIcon: Icon(Icons.domain, color: AppColors.blackColor),
             ),
           ],

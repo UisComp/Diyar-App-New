@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
@@ -34,6 +35,22 @@ class GridViewServiceItem extends StatelessWidget {
         if (service?.isActive == true) {
           final serviceType = ServiceType.fromInt(service?.type);
           final screenName = getScreenNameByServiceType(serviceType);
+
+          if (userModel?.data?.accessToken == null) {
+            if (serviceType == ServiceType.type1 ||
+                serviceType == ServiceType.type11 ||
+                serviceType == ServiceType.type12) {
+              if (screenName != null) {
+                context.push(screenName, extra: service);
+              }
+            } else {
+              AppFunctions.warningMessage(
+                context,
+                message: LocaleKeys.available_for_logged_in_users_only.tr(),
+              );
+            }
+            return;
+          }
 
           if (screenName != null) {
             if (service?.type == 5) {

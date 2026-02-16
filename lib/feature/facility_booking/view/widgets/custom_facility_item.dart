@@ -4,6 +4,7 @@ import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_response_model.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomFacilityItem extends StatelessWidget {
@@ -85,6 +86,20 @@ class CustomFacilityItem extends StatelessWidget {
                           ? AppColors.darkTextSecondary
                           : AppColors.lightTextSecondary,
                       fontSize: 13,
+                    ),
+                  ),
+                  4.ph,
+                  Text(
+                    item.createdAt != null
+                        ? DateFormat(
+                            'yyyy-MM-dd HH:mm',
+                          ).format(DateTime.parse(item.createdAt!))
+                        : '',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.lightTextSecondary,
+                      fontSize: 12,
                     ),
                   ),
                 ],

@@ -21,3 +21,12 @@ class CreateServiceProviderFailureState extends ServiceProviderState {
   CreateServiceProviderFailureState({this.errorMessage});
 }
 class ServiceProviderRefreshState extends ServiceProviderState {}
+class ServiceProviderHistoryLoadingState extends ServiceProviderState {}
+
+class ServiceProviderHistorySuccessState extends ServiceProviderState {}
+
+class ServiceProviderHistoryFailureState extends ServiceProviderState {
+  final String? errorMessage;
+
+  ServiceProviderHistoryFailureState({this.errorMessage});
+}

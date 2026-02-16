@@ -273,5 +273,27 @@ abstract class  LocaleKeys {
   static const unit_details = 'unit_details';
   static const un_defined = 'un_defined';
   static const processing = 'processing';
+  static const guest_mode = 'guest_mode';
+  static const guest = 'guest';
+  static const notifications_for_logged_in_users_only = 'notifications_for_logged_in_users_only';
+  static const available_for_logged_in_users_only = 'available_for_logged_in_users_only';
+  static const no_facility_booking_history_found = 'no_facility_booking_history_found';
+  static const no_service_booking_history_found = 'no_service_booking_history_found';
+  static const service_provider_history = 'service_provider_history';
+  static const facility_booking_history = 'facility_booking_history';
+  static const no_booking_history = 'no_booking_history';
+  static const cancelled = 'cancelled';
+  static const completed = 'completed';
+  static const description = 'description';
+  static const booking_date = 'booking_date';
+  static const notes = 'notes';
+  static const user_name = 'user_name';
+  static const created_at = 'created_at';
+  static const updated_at = 'updated_at';
+  static const please_select_date_for_all_services = 'please_select_date_for_all_services';
+  static const add_notes = 'add_notes';
+  static const select_booking_date = 'select_booking_date';
+  static const please_select_date_for_all_facilities = 'please_select_date_for_all_facilities';
+  static const confirmed = 'confirmed';
 
 }

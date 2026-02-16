@@ -3,7 +3,6 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached.dart';
-import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 import 'package:diyar_app/feature/profile/view/widgets/empty_linked_units.dart';
@@ -33,9 +32,9 @@ class ListViewLinkedUnits extends StatelessWidget {
             AppThemeController.get(context).currentThemeMode ==
             AppThemeMode.dark;
         final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
-        final cardImageColor = darkTheme
-            ? AppColors.black87
-            : AppColors.secondaryColor;
+        // final cardImageColor = darkTheme
+        //     ? AppColors.black87
+        //     : AppColors.secondaryColor;
         final textColor = darkTheme
             ? AppColors.containerColor
             : AppColors.black87;
@@ -94,12 +93,6 @@ class ListViewLinkedUnits extends StatelessWidget {
                                       width: 50.w,
                                       height: 50.h,
                                       fit: BoxFit.cover,
-                                      // errorBuilder:
-                                      //     (context, error, stackTrace) => Icon(
-                                      //       Icons.image_not_supported,
-                                      //       size: 50.w,
-                                      //       color: Colors.grey[400],
-                                      //     ),
                                     ),
                                   ),
                                   SizedBox(width: 12.w),

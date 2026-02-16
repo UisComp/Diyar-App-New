@@ -3,6 +3,7 @@ import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/feature/service_providers/model/create_service_provider_response_model.dart';
 import 'package:diyar_app/feature/service_providers/model/request_service_provider_model.dart';
+import 'package:diyar_app/feature/service_providers/model/service_provider_history_response_model.dart';
 import 'package:diyar_app/feature/service_providers/model/service_provider_response.dart';
 
 class ServiceProviderService {
@@ -40,6 +41,20 @@ class ServiceProviderService {
       }
     } catch (e) {
       AppLogger.error("Error in create service provider request: $e");
+    }
+
+    return response?.data;
+  }
+  static Future<ServiceProviderHistoryResponseModel> getServiceProviderHistory() async {
+    final response = await DioHelper.getData(path: ApiPaths.serviceProviderHistory);
+    try {
+      if (response != null && response.statusCode == 200) {
+        return ServiceProviderHistoryResponseModel.fromJson(response.data);
+      } else {
+        return ServiceProviderHistoryResponseModel();
+      }
+    } catch (e) {
+      AppLogger.error("Error in getServiceProviderHistory: $e");
     }
 
     return response?.data;

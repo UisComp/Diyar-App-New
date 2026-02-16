@@ -38,4 +38,6 @@ class RoutesName {
   static const String guardRoleScreen = "/guardRoleScreen";
   static const String imagePreviewScreen = "/imagePreviewScreen";
   static const String linkedUnitsDetailScreen = "/linkedUnitsDetail";
+  static const String serviceProviderHistoryScreen = "/serviceProviderHistoryScreen";
+  static const String facilityBookingHistoryScreen = "/facilityBookingHistoryScreen";
 }

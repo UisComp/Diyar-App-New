@@ -9,17 +9,26 @@ part of 'create_request_facility_request_model.dart';
 CreateRequestFacilityRequestModel _$CreateRequestFacilityRequestModelFromJson(
         Map<String, dynamic> json) =>
     CreateRequestFacilityRequestModel(
-      facilityIds: (json['facility_ids'] as List<dynamic>?)
-          ?.map((e) => (e as num).toInt())
+      facilities: (json['facilities'] as List<dynamic>?)
+          ?.map((e) => FacilityItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      bookingDate: json['booking_date'] as String?,
-      notes: json['notes'] as String?,
     );
 
 Map<String, dynamic> _$CreateRequestFacilityRequestModelToJson(
         CreateRequestFacilityRequestModel instance) =>
     <String, dynamic>{
-      'facility_ids': instance.facilityIds,
-      'booking_date': instance.bookingDate,
+      'facilities': instance.facilities,
+    };
+
+FacilityItem _$FacilityItemFromJson(Map<String, dynamic> json) => FacilityItem(
+      id: (json['id'] as num?)?.toInt(),
+      notes: json['notes'] as String?,
+      bookingDate: json['booking_date'] as String?,
+    );
+
+Map<String, dynamic> _$FacilityItemToJson(FacilityItem instance) =>
+    <String, dynamic>{
+      'id': instance.id,
       'notes': instance.notes,
+      'booking_date': instance.bookingDate,
     };

@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/extension/string_extension.dart';
@@ -53,8 +54,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
           AppFunctions.errorMessage(
             context,
             message:
-                visitorState.message?.removeExceptionWord() 
-                ??
+                visitorState.message?.removeExceptionWord() ??
                 LocaleKeys.failed_to_create_visitor_pass.tr(),
           );
         }
@@ -130,12 +130,6 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                           "${AppFormatter.dateFormatter().format(visitorController.selectedDateRange!.start)} → ${DateFormat('MMM d, yyyy').format(visitorController.selectedDateRange!.end)}";
                     }
                   },
-                  validator: (value) {
-                    if (visitorController.selectedDateRange == null) {
-                      return LocaleKeys.please_select_date_range.tr();
-                    }
-                    return null;
-                  },
                   hintText: LocaleKeys.select_date_range.tr(),
                 ),
                 15.ph,
@@ -152,7 +146,15 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                   buttonColor: AppColors.primaryColor,
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await visitorController.createVisitorPass();
+                      if (userModel?.data?.accessToken == null) {
+                        AppFunctions.warningMessage(
+                          context,
+                          message: LocaleKeys.available_for_logged_in_users_only
+                              .tr(),
+                        );
+                      } else {
+                        await visitorController.createVisitorPass();
+                      }
                     }
                   },
                 ).paddingSymmetric(horizontal: 16.w),

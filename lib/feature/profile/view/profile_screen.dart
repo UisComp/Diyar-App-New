@@ -1,7 +1,11 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/view/widgets/image_profile.dart';
@@ -11,6 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -31,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _initProfileData() async {
+    if (userModel?.data?.accessToken == null) return;
     _profileController.initProfileInfoControllers();
     await _profileController.getMyProfile();
     await _profileController.getUserLinkedUnits();
@@ -57,8 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               final profile = controller.profileResponseModel.data;
               final linkedUnits =
                   controller.userLinkedUnitsResponseModel.data ?? [];
+              final isGuest = userModel?.data?.accessToken == null;
+
               return Skeletonizer(
-                enabled: isLoading,
+                enabled: isLoading && !isGuest,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -70,14 +78,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       20.ph,
                       ImageProfile(profile: profile),
                       10.ph,
-                      Expanded(
-                        child: ListViewLinkedUnits(
-                          linkedUnits: linkedUnits,
-                          unitData: controller
-                              .unitModelDetailsForLinkedUserResponseModel
-                              .data,
+                      if (isGuest) ...[
+                        40.ph,
+                        CustomButton(
+                          buttonColor: AppColors.primaryColor,
+                          buttonText: LocaleKeys.login.tr(),
+                          onPressed: () {
+                            context.go(RoutesName.login);
+                          },
                         ),
-                      ),
+                      ] else
+                        Expanded(
+                          child: ListViewLinkedUnits(
+                            linkedUnits: linkedUnits,
+                            unitData: controller
+                                .unitModelDetailsForLinkedUserResponseModel
+                                .data,
+                          ),
+                        ),
                     ],
                   ),
                 ),

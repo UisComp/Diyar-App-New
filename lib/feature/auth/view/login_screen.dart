@@ -162,6 +162,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                           await _loginWithBiometrics();
                                         },
                                 ).paddingSymmetric(horizontal: 16.w),
+
+                              TextButton(
+                                onPressed: () {
+                                  context.go(RoutesName.homeLayout);
+                                },
+                                child: Text(
+                                  LocaleKeys.guest_mode.tr(),
+                                  style: AppStyle.fontSize16Regular(context)
+                                      .copyWith(
+                                        decoration: TextDecoration.underline,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                ),
+                              ).paddingSymmetric(horizontal: 16.w),
                             ],
                           ),
                         ),

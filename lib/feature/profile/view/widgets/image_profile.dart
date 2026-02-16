@@ -77,13 +77,17 @@
 //   }
 // }
 
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
+import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -124,13 +128,10 @@ class ImageProfile extends StatelessWidget {
           ),
           child: Column(
             children: [
-              /// -----------------------------
-              ///       PROFILE IMAGE
-              /// -----------------------------
               CircleAvatar(
                 radius: 50.r,
                 backgroundColor: cardImageColor,
-                child: (profile?.profilePicture?.url != null)
+                child: (profile?.profilePicture?.url != null && userModel?.data?.accessToken != null)
                     ? ClipOval(
                         child: CustomCachedNetworkImage(
                           imageUrl:
@@ -146,30 +147,32 @@ class ImageProfile extends StatelessWidget {
                         height: 50.h,
                       ),
               ),
-
-              SizedBox(height: 10.h),
-
-              /// -----------------------------
-              ///       USER INFO TEXT
-              /// -----------------------------
+              10.ph,
               Text(
-                profile?.name ?? 'Guest',
-                style: AppStyle.fontSize22Bold(context,).copyWith(color: textColor),
-              ),
-              SizedBox(height: 5.h),
-              Text(
-                profile?.email ?? '',
-                style: AppStyle.fontSize16Regular(
+                userModel?.data?.accessToken == null
+                    ? LocaleKeys.guest.tr()
+                    : profile?.name ?? '',
+                style: AppStyle.fontSize22Bold(
                   context,
-                ).copyWith(color: AppColors.descContainerColor),
+                ).copyWith(color: textColor),
               ),
-              SizedBox(height: 5.h),
-              Text(
-                profile?.phoneNumber ?? '',
-                style: AppStyle.fontSize16Regular(
-                  context,
-                ).copyWith(color: AppColors.descContainerColor),
-              ),
+              5.ph,
+              if (userModel?.data?.accessToken != null)
+                Text(
+                  profile?.email ?? '',
+                  style: AppStyle.fontSize16Regular(
+                    context,
+                  ).copyWith(color: AppColors.descContainerColor),
+                ),
+              if (userModel?.data?.accessToken != null) ...[
+                5.ph,
+                Text(
+                  profile?.phoneNumber ?? '',
+                  style: AppStyle.fontSize16Regular(
+                    context,
+                  ).copyWith(color: AppColors.descContainerColor),
+                ),
+              ],
             ],
           ),
         );
