@@ -12,7 +12,6 @@ import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_state.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/custom_facility_item.dart';
-// import 'package:diyar_app/feature/facility_booking/view/widgets/select_and_deselect_all.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/select_available_facilities_text.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/service_description_text.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -109,12 +108,12 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
               child: ListView.builder(
                 itemCount: 6,
                 itemBuilder: (_, _) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 10.sp),
                   child: Container(
-                    height: 80,
+                    height: 80.h,
                     decoration: BoxDecoration(
                       color: isDark ? Colors.grey[800] : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                     ),
                   ),
                 ),
@@ -140,14 +139,14 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                 children: [
                   Icon(
                     Icons.event_busy,
-                    size: 50,
+                    size: 50.sp,
                     color: AppColors.primaryColor,
                   ),
                   12.ph,
                   Text(
                     LocaleKeys.no_facilities_available.tr(),
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : Colors.black,
                     ),
@@ -182,15 +181,15 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
 
                       return AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        padding: const EdgeInsets.all(12),
+                        margin: EdgeInsets.symmetric(vertical: 6.sp),
+                        padding: EdgeInsets.all(12.sp),
                         decoration: BoxDecoration(
                           color: selected
                               ? AppColors.primaryColor.withOpacity(0.10)
                               : (isDark
                                     ? AppColors.darkCard
                                     : AppColors.lightCard),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                           border: Border.all(
                             color: selected
                                 ? AppColors.primaryColor
@@ -200,8 +199,8 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                             if (selected)
                               BoxShadow(
                                 color: AppColors.primaryColor.withOpacity(.3),
-                                blurRadius: 8,
-                                spreadRadius: 1,
+                                blurRadius: 8.r,
+                                spreadRadius: 1.r,
                               ),
                           ],
                         ),
@@ -260,9 +259,9 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                                   }
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 12,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.sp,
+                                    vertical: 12.sp,
                                   ),
                                   decoration: BoxDecoration(
                                     color: isDark
@@ -277,7 +276,7 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                                     children: [
                                       Icon(
                                         Icons.calendar_today,
-                                        size: 20,
+                                        size: 20.sp,
                                         color: AppColors.primaryColor,
                                       ),
                                       12.pw,
@@ -314,7 +313,7 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                                       ),
                                       Icon(
                                         Icons.arrow_forward_ios,
-                                        size: 16,
+                                        size: 16.sp,
                                         color: Colors.grey,
                                       ),
                                     ],

@@ -22,7 +22,6 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
   final Map<int, TextEditingController> notesControllers = {};
   final Map<int, DateTime> facilityDates = {};
 
-  // Safe emit helper
   void _safeEmit(FacilityBookingState state) {
     if (!isClosed) {
       emit(state);
