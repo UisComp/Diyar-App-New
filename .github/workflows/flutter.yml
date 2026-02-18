@@ -39,7 +39,15 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # ── 6. Run code generation (Freezed / JSON serializable) ─────────────
+      # ── 6. Restore keystore from secret ──────────────────────────────────
+      - name: Decode Keystore
+        run: echo '${{ secrets.KEYSTORE_BASE64 }}' | base64 --decode > android/app/upload-keystore.jks
+
+      # ── 7. Create key.properties ──────────────────────────────────────────
+      - name: Create key.properties
+        run: echo '${{ secrets.KEY_PROPERTIES }}' > android/key.properties
+
+      # ── 8. Run code generation (Freezed / JSON serializable) ─────────────
       - name: Run Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
