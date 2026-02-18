@@ -1,4 +1,5 @@
 
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,7 +13,7 @@ class EmptyDottedBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return DottedBorder(
    options: RectDottedBorderOptions(
-      color: Colors.grey,
+      color: AppColors.greyColor,
       strokeWidth: 1,
       dashPattern: [6, 3],
    ), 

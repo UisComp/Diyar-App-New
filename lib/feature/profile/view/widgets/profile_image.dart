@@ -63,7 +63,7 @@ class ProfileImage extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 14.r,
                     backgroundColor: AppColors.primaryColor,
-                    child: const Icon(Icons.edit, size: 16, color: Colors.white),
+                    child: const Icon(Icons.edit, size: 16, color: AppColors.whiteColor),
                   ),
                 ),
               ),
@@ -78,7 +78,7 @@ class ProfileImage extends StatelessWidget {
   void _showPickImageSheet(BuildContext context, ProfileController controller) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),

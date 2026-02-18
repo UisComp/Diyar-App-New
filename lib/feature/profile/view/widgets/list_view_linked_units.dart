@@ -46,7 +46,7 @@ class ListViewLinkedUnits extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black12,
+                color: AppColors.black12Color,
                 blurRadius: 10,
                 offset: Offset(0, 3),
               ),

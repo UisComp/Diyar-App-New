@@ -22,7 +22,7 @@ class OuterContainer extends StatelessWidget {
         value: _holdProgress,
         strokeWidth: 12,
         valueColor: const AlwaysStoppedAnimation<Color>(AppColors.redColor),
-        backgroundColor: isDark ? Colors.white12 : Colors.black12,
+        backgroundColor: isDark ? AppColors.white12Color : AppColors.blackColor,
       ),
     );
   }

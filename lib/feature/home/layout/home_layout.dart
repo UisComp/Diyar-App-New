@@ -57,7 +57,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                     _homeController.changeIndexBottomNavBar(index);
                   },
                   selectedItemColor: AppColors.primaryColor,
-                  unselectedItemColor: Colors.grey,
+                  unselectedItemColor: AppColors.greyColor,
                   showUnselectedLabels: true,
                   items: [
                     BottomNavigationBarItem(
@@ -66,7 +66,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                         colorFilter: ColorFilter.mode(
                           _homeController.currentIndex == 0
                               ? AppColors.primaryColor
-                              : Colors.grey,
+                              : AppColors.greyColor,
                           BlendMode.srcIn,
                         ),
                         height: 24.h,
@@ -80,7 +80,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                         colorFilter: ColorFilter.mode(
                           _homeController.currentIndex == 1
                               ? AppColors.primaryColor
-                              : Colors.grey,
+                              : AppColors.greyColor,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -92,7 +92,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                         colorFilter: ColorFilter.mode(
                           _homeController.currentIndex == 2
                               ? AppColors.primaryColor
-                              : Colors.grey,
+                              : AppColors.greyColor,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -109,7 +109,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           colorFilter: ColorFilter.mode(
                             _homeController.currentIndex == 3
                                 ? AppColors.primaryColor
-                                : Colors.grey,
+                                : AppColors.greyColor,
                             BlendMode.srcIn,
                           ),
                         ),
@@ -168,10 +168,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   height: 24,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2.5,
-                                    color: Colors.white,
+                                    color: AppColors.whiteColor,
                                   ),
                                 )
-                              : const Icon(Icons.logout, color: Colors.white),
+                              : const Icon(Icons.logout, color: AppColors.whiteColor),
                         ).paddingOnly(bottom: 60.h, right: 16.w);
                       },
                     ),

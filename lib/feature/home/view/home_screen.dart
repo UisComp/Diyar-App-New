@@ -130,11 +130,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 icon: isLoading
                                     ? SizedBox(
-                                        height: 22,
-                                        width: 22,
+                                        height: 22.h,
+                                        width: 22.w,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          color: Colors.red,
+                                          color: AppColors.redColor,
                                         ),
                                       )
                                     : SvgPicture.asset(
@@ -160,9 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   right: 6,
                                   top: 6,
                                   child: Container(
-                                    padding: const EdgeInsets.all(2),
+                                    padding: EdgeInsets.all(2.sp),
                                     decoration: BoxDecoration(
-                                      color: Colors.red,
+                                      color: AppColors.redColor,
                                       borderRadius: BorderRadius.circular(10.r),
                                     ),
                                     constraints: const BoxConstraints(
@@ -171,9 +171,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Text(
                                       '${notificationController.notifications?.data!.unreadNotificationsCount}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
+                                      style: TextStyle(
+                                        color: AppColors.whiteColor,
+                                        fontSize: 10.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                       textAlign: TextAlign.center,

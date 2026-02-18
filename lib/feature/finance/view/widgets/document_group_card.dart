@@ -40,7 +40,7 @@ class DocumentGroupCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
+                  color: AppColors.black12Color,
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),

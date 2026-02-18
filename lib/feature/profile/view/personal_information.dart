@@ -135,7 +135,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       isLoading: profileState is EditingProfileLoadingState,
                       buttonColor:
                           profileState is PickingImageProfileLoadingState
-                          ? Colors.grey
+                          ? AppColors.greyColor
                           : AppColors.primaryColor,
                       buttonText: LocaleKeys.save_changes.tr(),
                       onPressed: profileState is PickingImageProfileLoadingState

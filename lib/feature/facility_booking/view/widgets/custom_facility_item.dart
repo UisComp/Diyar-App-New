@@ -34,7 +34,7 @@ class CustomFacilityItem extends StatelessWidget {
         border: Border.all(
           color: selected
               ? AppColors.primaryColor
-              : Colors.grey.withOpacity(0.3),
+              : AppColors.greyColor.withOpacity(0.3),
           width: 1.2,
         ),
         boxShadow: [
@@ -50,7 +50,7 @@ class CustomFacilityItem extends StatelessWidget {
         value: selected,
         onChanged: (_) => facilityBookingController.toggleItem(item.id!),
         activeColor: AppColors.primaryColor,
-        checkColor: Colors.white,
+        checkColor: AppColors.whiteColor,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Row(
           children: [

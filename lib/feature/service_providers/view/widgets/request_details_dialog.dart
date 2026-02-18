@@ -44,9 +44,9 @@ class RequestDetailsDialog extends StatelessWidget {
             Container(
               height: 150.h,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
                 ),
                 gradient: LinearGradient(
                   colors: [
@@ -61,7 +61,7 @@ class RequestDetailsDialog extends StatelessWidget {
                 children: [
                   Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                       child: CustomCachedNetworkImage(
                         imageUrl: serviceProvider?.iconUrl ?? "",
                         width: 100.w,
@@ -74,7 +74,7 @@ class RequestDetailsDialog extends StatelessWidget {
                     right: 8,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: Colors.white),
+                      icon: const Icon(Icons.close, color: AppColors.whiteColor),
                     ),
                   ),
                 ],
@@ -82,7 +82,7 @@ class RequestDetailsDialog extends StatelessWidget {
             ),
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.sp),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,16 +100,16 @@ class RequestDetailsDialog extends StatelessWidget {
                     8.ph,
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.sp,
+                          vertical: 8.sp,
                         ),
                         decoration: BoxDecoration(
                           color: statusColor.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(
                             color: statusColor.withOpacity(0.5),
-                            width: 1.5,
+                            width: 1.5.sp,
                           ),
                         ),
                         child: Row(

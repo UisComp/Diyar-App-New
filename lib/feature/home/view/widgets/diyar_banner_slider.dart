@@ -49,7 +49,7 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
                   borderRadius: BorderRadius.circular(16.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: AppColors.blackColor.withOpacity(0.1),
                       blurRadius: 6,
                       offset: const Offset(0, 4),
                     ),
@@ -75,7 +75,7 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
                             begin: Alignment.bottomCenter,
                             end: Alignment.center,
                             colors: [
-                              Colors.black.withOpacity(0.7),
+                              AppColors.blackColor.withOpacity(0.7),
                               Colors.transparent,
                             ],
                           ),
@@ -94,7 +94,7 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
                     decorator: DotsDecorator(
                       spacing: EdgeInsets.symmetric(horizontal: 4.w),
                       activeColor: AppColors.primaryColor,
-                      color: Colors.white.withOpacity(0.5),
+                      color: AppColors.whiteColor.withOpacity(0.5),
                       size: Size(8.w, 8.h),
                       activeSize: Size(10.w, 10.h),
                       activeShape: RoundedRectangleBorder(

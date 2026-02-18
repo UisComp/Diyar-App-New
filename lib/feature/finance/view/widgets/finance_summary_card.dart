@@ -19,7 +19,7 @@ class FinanceSummaryCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+              style: TextStyle(fontSize: 14.sp, color: AppColors.black87),
             ),
             Text(
               value,
@@ -41,7 +41,7 @@ class FinanceSummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: AppColors.black12Color,
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),

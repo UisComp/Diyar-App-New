@@ -23,7 +23,7 @@ class CustomEmergencyNumberButton extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: const LinearGradient(
-          colors: [AppColors.redColor, Colors.redAccent],
+          colors: [AppColors.redColor, AppColors.redAccentColor],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

@@ -107,8 +107,8 @@ class UnitEventState extends State<UnitEvent> {
                         color: Colors.brown[200],
                         shape: BoxShape.circle,
                       ),
-                      todayTextStyle: const TextStyle(color: Colors.white),
-                      defaultTextStyle: const TextStyle(color: Colors.black),
+                      todayTextStyle: const TextStyle(color: AppColors.whiteColor),
+                      defaultTextStyle: const TextStyle(color: AppColors.blackColor),
                     ),
                     headerStyle: const HeaderStyle(
                       formatButtonVisible: false,

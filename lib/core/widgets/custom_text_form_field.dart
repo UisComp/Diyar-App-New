@@ -84,7 +84,7 @@ class CustomTextFormField extends StatelessWidget {
         enabled: enabled ?? true,
         helperText: helperText,
         helperStyle: helperStyle,
-        fillColor:darkTheme? Colors.black45:AppColors.secondaryColor,
+        fillColor:darkTheme? AppColors.black45Color:AppColors.secondaryColor,
         filled: true,
         labelText: labelText,
         border: OutlineInputBorder(

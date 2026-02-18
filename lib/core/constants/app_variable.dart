@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -52,45 +53,48 @@ Future<void> saveBiometricStatus(bool isEnabled) async {
   enableBiometric = true;
   await HiveHelper.addToHive(key: AppConstants.enableBiometric, value: true);
 }
-  String getTranslatedStatus(String? status) {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return LocaleKeys.completed.tr(); // مكتمل
-      case 'pending':
-        return LocaleKeys.pending.tr(); //  الانتظار
-      case 'cancelled':
-        return LocaleKeys.cancelled.tr(); 
-      case 'confirmed':
-        return LocaleKeys.confirmed.tr();  
-      default:
-        return status?.toUpperCase() ?? '';
-    }
+
+String getTranslatedStatus(String? status) {
+  switch (status?.toLowerCase()) {
+    case 'completed':
+      return LocaleKeys.completed.tr(); // مكتمل
+    case 'pending':
+      return LocaleKeys.pending.tr(); //  الانتظار
+    case 'cancelled':
+      return LocaleKeys.cancelled.tr();
+    case 'confirmed':
+      return LocaleKeys.confirmed.tr();
+    default:
+      return status?.toUpperCase() ?? '';
   }
-  Color getStatusColor(String? status) {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return Colors.green;
-      case 'pending':
-        return Colors.orange;
-      case 'cancelled':
-        return Colors.red;
-      case 'confirmed':
-        return Colors.blue;  
-      default:
-        return Colors.grey;
-    }
+}
+
+Color getStatusColor(String? status) {
+  switch (status?.toLowerCase()) {
+    case 'completed':
+      return AppColors.greenColor;
+    case 'pending':
+      return AppColors.orangeColor;
+    case 'cancelled':
+      return AppColors.redColor;
+    case 'confirmed':
+      return AppColors.blueColor;
+    default:
+      return AppColors.greyColor;
   }
-   IconData getStatusIcon(String? status) {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return Icons.check_circle;
-      case 'pending':
-        return Icons.access_time;
-      case 'cancelled':
-        return Icons.cancel;
-      case 'confirmed':
-        return Icons.check_circle_outline;  
-      default:
-        return Icons.help_outline;
-    }
+}
+
+IconData getStatusIcon(String? status) {
+  switch (status?.toLowerCase()) {
+    case 'completed':
+      return Icons.check_circle;
+    case 'pending':
+      return Icons.access_time;
+    case 'cancelled':
+      return Icons.cancel;
+    case 'confirmed':
+      return Icons.check_circle_outline;
+    default:
+      return Icons.help_outline;
   }
+}

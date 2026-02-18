@@ -32,7 +32,7 @@ class QrCodeView extends StatelessWidget {
           data: visitorController.generatedQrData!,
           version: QrVersions.auto,
           size: 200.sp,
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.whiteColor,
         ),
         20.ph,
         Row(
@@ -58,8 +58,8 @@ class QrCodeView extends StatelessWidget {
                   if (qrValidationResult.status == QrValidationStatus.valid) {
                     final painter = QrPainter.withQr(
                       qr: qrValidationResult.qrCode!,
-                      color: Colors.black,
-                      emptyColor: Colors.white,
+                      color: AppColors.blackColor,
+                      emptyColor: AppColors.whiteColor,
                     );
 
                     final tempDir = await getTemporaryDirectory();

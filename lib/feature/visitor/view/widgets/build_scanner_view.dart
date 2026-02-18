@@ -134,20 +134,20 @@ class _BuildScannerViewState extends State<BuildScannerView> {
 
         // Overlay with scanning area
         Container(
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+          decoration: BoxDecoration(color: AppColors.blackColor.withOpacity(0.5)),
           child: Center(
             child: Container(
               width: 260.w,
               height: 260.h,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: _isProcessing ? Colors.green : Colors.white,
+                  color: _isProcessing ?    AppColors.greenColor : AppColors.whiteColor,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(16.r),
                 boxShadow: [
                   BoxShadow(
-                    color: (_isProcessing ? Colors.green : Colors.white)
+                    color: (_isProcessing ? AppColors.greenColor : AppColors.whiteColor)
                         .withOpacity(0.3),
                     blurRadius: 20,
                     spreadRadius: 5,
@@ -208,7 +208,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                     vertical: 10.h,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.9),
+                    color: AppColors.greenColor.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Row(
@@ -220,7 +220,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
+                            AppColors.whiteColor,
                           ),
                         ),
                       ),
@@ -229,7 +229,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                         LocaleKeys.processing
                             .tr(), // Add this key to your locale
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.whiteColor,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -241,7 +241,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                 Text(
                   LocaleKeys.align_barcode.tr(),
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: AppColors.whiteColor.withOpacity(0.9),
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -268,22 +268,22 @@ class _BuildScannerViewState extends State<BuildScannerView> {
       decoration: BoxDecoration(
         border: Border(
           top: alignment == Alignment.topLeft || alignment == Alignment.topRight
-              ? BorderSide(color: Colors.green, width: 4)
+              ? BorderSide(color: AppColors.greenColor, width: 4)
               : BorderSide.none,
           bottom:
               alignment == Alignment.bottomLeft ||
                   alignment == Alignment.bottomRight
-              ? BorderSide(color: Colors.green, width: 4)
+              ? BorderSide(color: AppColors.greenColor, width: 4)
               : BorderSide.none,
           left:
               alignment == Alignment.topLeft ||
                   alignment == Alignment.bottomLeft
-              ? BorderSide(color: Colors.green, width: 4)
+              ? BorderSide(color: AppColors.greenColor, width: 4)
               : BorderSide.none,
           right:
               alignment == Alignment.topRight ||
                   alignment == Alignment.bottomRight
-              ? BorderSide(color: Colors.green, width: 4)
+              ? BorderSide(color: AppColors.greenColor, width: 4)
               : BorderSide.none,
         ),
       ),

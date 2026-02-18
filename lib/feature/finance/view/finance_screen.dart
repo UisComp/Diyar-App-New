@@ -1,10 +1,13 @@
+import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/feature/finance/tabs/documents_tab.dart';
@@ -13,6 +16,8 @@ import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen({super.key});
@@ -32,6 +37,32 @@ class _FinanceScreenState extends State<FinanceScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = userModel?.data?.accessToken == null;
+
+    if (isGuest) {
+      return Scaffold(
+        appBar: CustomAppBar(titleAppBar: LocaleKeys.finance.tr()),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                40.ph,
+                CustomButton(
+                  buttonColor: AppColors.primaryColor,
+                  buttonText: LocaleKeys.login.tr(),
+                  onPressed: () {
+                    context.go(RoutesName.login);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return BlocProvider(
       create: (context) => FinanceController()
         ..getFinance()
@@ -75,7 +106,7 @@ class _FinanceScreenState extends State<FinanceScreen>
                       controller: _tabController,
                       indicatorColor: AppColors.primaryColor,
                       labelColor: AppColors.primaryColor,
-                      unselectedLabelColor: Colors.grey,
+                      unselectedLabelColor: AppColors.greyColor,
                       labelStyle: AppStyle.fontSize16Regular(context),
                       tabs: [
                         Tab(text: LocaleKeys.finance.tr()),
@@ -90,11 +121,6 @@ class _FinanceScreenState extends State<FinanceScreen>
                             onRefresh: () async {
                               await FinanceController.get(context).getFinance();
                             },
-                            units:
-                                FinanceController.get(
-                                  context,
-                                ).financeResponseModel.data?.units ??
-                                [],
                           ),
                           DocumentsTab(
                             onRefresh: () async {

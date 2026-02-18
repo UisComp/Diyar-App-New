@@ -32,7 +32,7 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                 height: 30.h,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.black54,
+                  color: AppColors.black54Color,
                 ),
                 child: Center(
                   child: Icon(

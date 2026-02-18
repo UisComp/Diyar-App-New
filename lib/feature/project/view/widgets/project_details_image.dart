@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
@@ -55,7 +56,7 @@ class ProjectDetailsImage extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: imgHeight,
-                    color: Colors.grey.withOpacity(0.3),
+                    color: AppColors.greyColor.withOpacity(0.3),
                     child: const Center(child: CircularProgressIndicator()),
                   ),
                 if (!isLoading)

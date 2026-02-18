@@ -82,7 +82,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                   value: visitorController.selectedUnitId,
                   decoration: InputDecoration(
                     fillColor: darkTheme
-                        ? Colors.black45
+                        ? AppColors.black45Color
                         : AppColors.secondaryColor,
                     filled: true,
                     border: OutlineInputBorder(

@@ -1,17 +1,17 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
-import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_state.dart';
-import 'package:diyar_app/feature/facility_booking/view/widgets/custom_facility_item.dart';
+import 'package:diyar_app/feature/facility_booking/view/widgets/custom_list_view_facility.dart';
+import 'package:diyar_app/feature/facility_booking/view/widgets/custom_loading_facility.dart';
+import 'package:diyar_app/feature/facility_booking/view/widgets/empty_facility.dart';
+
 import 'package:diyar_app/feature/facility_booking/view/widgets/select_available_facilities_text.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/service_description_text.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class FacilityBookingScreen extends StatefulWidget {
   const FacilityBookingScreen({super.key});
@@ -70,7 +69,11 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
             },
             icon: Icon(
               Icons.history,
-              color: isDark ? AppColors.whiteColor : AppColors.blackColor,
+              color: userModel?.data?.accessToken == null
+                  ? AppColors.greyColor
+                  : isDark
+                  ? AppColors.whiteColor
+                  : AppColors.blackColor,
             ),
           ),
         ],
@@ -103,22 +106,7 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
           final controller = facilityBookingController;
 
           if (state is FacilityBookingLoadingState) {
-            return Skeletonizer(
-              enabled: true,
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (_, _) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.sp),
-                  child: Container(
-                    height: 80.h,
-                    decoration: BoxDecoration(
-                      color: isDark ? Colors.grey[800] : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                  ),
-                ),
-              ),
-            ).paddingSymmetric(horizontal: 16.w);
+            return CustomLoadingFacility(isDark: isDark);
           }
 
           if (state is FacilityBookingFailureState) {
@@ -133,27 +121,7 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
           final facilities = controller.facilityBookingResponseModel.data ?? [];
 
           if (facilities.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.event_busy,
-                    size: 50.sp,
-                    color: AppColors.primaryColor,
-                  ),
-                  12.ph,
-                  Text(
-                    LocaleKeys.no_facilities_available.tr(),
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return EmptyFacility(isDark: isDark);
           }
 
           return Form(
@@ -169,163 +137,10 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                 //   allSelected: controller.areAllSelected,
                 //   toggleSelectAll: controller.toggleSelectAll,
                 // ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: facilities.length,
-                    itemBuilder: (context, index) {
-                      final item = facilities[index];
-                      final selected = controller.isItemSelected(item.id!);
-                      final notesController = controller.getNotesController(
-                        item.id!,
-                      );
-
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: EdgeInsets.symmetric(vertical: 6.sp),
-                        padding: EdgeInsets.all(12.sp),
-                        decoration: BoxDecoration(
-                          color: selected
-                              ? AppColors.primaryColor.withOpacity(0.10)
-                              : (isDark
-                                    ? AppColors.darkCard
-                                    : AppColors.lightCard),
-                          borderRadius: BorderRadius.circular(16.r),
-                          border: Border.all(
-                            color: selected
-                                ? AppColors.primaryColor
-                                : Colors.grey.withOpacity(0.3),
-                          ),
-                          boxShadow: [
-                            if (selected)
-                              BoxShadow(
-                                color: AppColors.primaryColor.withOpacity(.3),
-                                blurRadius: 8.r,
-                                spreadRadius: 1.r,
-                              ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            CustomFacilityItem(
-                              selected: selected,
-                              isDark: isDark,
-                              item: item,
-                              facilityBookingController: controller,
-                            ),
-                            if (selected) ...[
-                              12.ph,
-                              CustomTextFormField(
-                                controller: notesController,
-                                hintText: LocaleKeys.notes.tr(),
-                                maxLines: 2,
-                              ),
-                              8.ph,
-                              InkWell(
-                                onTap: () async {
-                                  final DateTime? pickedDate =
-                                      await showDatePicker(
-                                        context: context,
-                                        initialDate:
-                                            controller.getSelectedDate(
-                                              item.id!,
-                                            ) ??
-                                            DateTime.now(),
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime.now().add(
-                                          const Duration(days: 365),
-                                        ),
-                                      );
-
-                                  if (pickedDate != null) {
-                                    final TimeOfDay? pickedTime =
-                                        await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now(),
-                                        );
-
-                                    if (pickedTime != null) {
-                                      final DateTime fullDateTime = DateTime(
-                                        pickedDate.year,
-                                        pickedDate.month,
-                                        pickedDate.day,
-                                        pickedTime.hour,
-                                        pickedTime.minute,
-                                      );
-                                      controller.setFacilityDate(
-                                        item.id!,
-                                        fullDateTime,
-                                      );
-                                    }
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12.sp,
-                                    vertical: 12.sp,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? AppColors.darkCard
-                                        : AppColors.lightCard,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color: Colors.grey.withOpacity(0.3),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_today,
-                                        size: 20.sp,
-                                        color: AppColors.primaryColor,
-                                      ),
-                                      12.pw,
-                                      Expanded(
-                                        child: Text(
-                                          controller.getSelectedDate(
-                                                    item.id!,
-                                                  ) !=
-                                                  null
-                                              ? AppFormatter.formatDate(
-                                                  controller.getSelectedDate(
-                                                    item.id!,
-                                                  )!,
-                                                )
-                                              : LocaleKeys.select_booking_date
-                                                    .tr(),
-                                          style:
-                                              AppStyle.fontSize14Regular(
-                                                context,
-                                              ).copyWith(
-                                                color:
-                                                    controller.getSelectedDate(
-                                                          item.id!,
-                                                        ) !=
-                                                        null
-                                                    ? (isDark
-                                                          ? AppColors
-                                                                .darkTextPrimary
-                                                          : AppColors
-                                                                .lightTextPrimary)
-                                                    : Colors.grey,
-                                              ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 16.sp,
-                                        color: Colors.grey,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                CustomListViewFacility(
+                  facilities: facilities,
+                  controller: controller,
+                  isDark: isDark,
                 ),
                 12.ph,
                 Center(

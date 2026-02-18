@@ -47,7 +47,7 @@ Future<void> showDeleteAccountDialog(
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                   ),
                 ),
               ],
@@ -119,7 +119,7 @@ void showImagePreview(
     transitionDuration: const Duration(milliseconds: 300),
     pageBuilder: (context, animation, secondaryAnimation) {
       return Scaffold(
-        backgroundColor: Colors.black.withValues(alpha: 0.9),
+        backgroundColor: AppColors.blackColor.withValues(alpha: 0.9),
         body: Stack(
           children: [
             Center(
@@ -145,7 +145,7 @@ void showImagePreview(
                           title.capitalize(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.whiteColor,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -163,7 +163,7 @@ void showImagePreview(
                           description.capitalize(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: AppColors.white70Color,
                             fontSize: 14.sp,
                           ),
                         ),
@@ -187,7 +187,7 @@ void showImagePreview(
                     padding: EdgeInsets.all(8.w),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.black54,
+                      color: AppColors.black54Color,
                     ),
                     child: Icon(
                       Icons.close_rounded,
@@ -257,7 +257,7 @@ Future<void> showErrorDialog(
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                   ),
                 ),
               ],

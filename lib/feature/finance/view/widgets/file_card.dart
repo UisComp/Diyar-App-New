@@ -57,7 +57,7 @@ class FileCard extends StatelessWidget {
                       file.name ?? "",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: AppColors.black87,
                         fontSize: 14.sp,
                       ),
                       overflow: TextOverflow.ellipsis,

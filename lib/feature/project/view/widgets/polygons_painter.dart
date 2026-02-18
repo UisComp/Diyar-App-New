@@ -1,4 +1,5 @@
 
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:flutter/material.dart';
 
 class PolygonsPainter extends CustomPainter {
@@ -9,11 +10,11 @@ class PolygonsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red.withOpacity(0.35)
+      ..color = AppColors.redColor.withOpacity(0.35)
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
-      ..color = Colors.red
+      ..color = AppColors.redColor
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

@@ -65,7 +65,7 @@ class OnBoardingScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: AppStyle.fontSize16Regular(context).copyWith(
                 fontSize: 14.sp,
-                color: Colors.grey,
+                color: AppColors.greyColor,
               ),
             ).paddingAll(16.sp),
           ],

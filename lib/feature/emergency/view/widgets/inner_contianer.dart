@@ -1,4 +1,5 @@
 
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,7 +14,7 @@ class InnerContianer extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: RadialGradient(
-          colors: [Colors.redAccent.withOpacity(0.6), Colors.transparent],
+          colors: [AppColors.redAccentColor.withOpacity(0.6), Colors.transparent],
         ),
       ),
     );

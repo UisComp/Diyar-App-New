@@ -10,7 +10,11 @@ class AppColors {
   static const Color blackColor = Colors.black;
   static const Color black87 = Colors.black87;
   static const Color greyColor = Colors.grey;
-
+  static const Color black45Color = Colors.black45;
+  static const Color white70Color = Colors.white70;
+  static const Color black54Color = Colors.black54;
+  static const Color black12Color = Colors.black12;
+  static const Color white12Color = Colors.white12;
   // Light theme palette
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightCard = Color(0xFFF8F5F3);
@@ -27,4 +31,5 @@ class AppColors {
   static const Color blueColor = Colors.blue;
   static const Color orangeColor = Colors.orange;
   static const Color yellowColor = Colors.yellow;
+  static const Color redAccentColor = Colors.redAccent;
 }
