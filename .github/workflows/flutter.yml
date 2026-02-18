@@ -41,11 +41,19 @@ jobs:
 
       # ── 6. Restore keystore from secret ──────────────────────────────────
       - name: Decode Keystore
-        run: echo '${{ secrets.KEYSTORE_BASE64 }}' | base64 --decode > android/app/upload-keystore.jks
+        run: printf '%s' '${{ secrets.KEYSTORE_BASE64 }}' | base64 --decode > android/app/upload-keystore.jks
 
       # ── 7. Create key.properties ──────────────────────────────────────────
       - name: Create key.properties
-        run: echo '${{ secrets.KEY_PROPERTIES }}' > android/key.properties
+        run: printf '%s' '${{ secrets.KEY_PROPERTIES }}' > android/key.properties
+
+      # ── Debug: verify signing files exist ────────────────────────────────
+      - name: Verify Signing Files
+        run: |
+          echo "=== key.properties ==="
+          cat android/key.properties
+          echo "=== keystore exists ==="
+          ls -lh android/app/upload-keystore.jks
 
       # ── 8. Run code generation (Freezed / JSON serializable) ─────────────
       - name: Run Build Runner
