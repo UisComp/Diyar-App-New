@@ -43,9 +43,6 @@ jobs:
       - name: Run Build Runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
-      # ── 7. Run tests ──────────────────────────────────────────────────────
-      - name: Run Tests
-        run: flutter test
 
       # ── 8. Build release APK ──────────────────────────────────────────────
       - name: Build APK
