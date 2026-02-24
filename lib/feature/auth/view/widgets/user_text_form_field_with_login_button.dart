@@ -4,6 +4,7 @@ import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
@@ -97,7 +98,7 @@ class _UserTextFormFieldWithLoginButtonState
                 onPressed: () {
                   context.push(RoutesName.forgetPasswordScreen);
                 },
-                child: Text(
+                child: AppText(
                   textAlign: TextAlign.start,
                   LocaleKeys.forget_password.tr(),
                   style: AppStyle.fontSize16Regular(context),

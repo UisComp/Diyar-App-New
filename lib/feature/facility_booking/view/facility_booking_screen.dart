@@ -4,6 +4,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
@@ -111,7 +112,7 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
 
           if (state is FacilityBookingFailureState) {
             return Center(
-              child: Text(
+              child: AppText(
                 state.errorMessage ?? "Error",
                 style: TextStyle(color: AppColors.redColor),
               ),

@@ -3,6 +3,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_history_response_model.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class BookingCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      AppText(
                         booking.facility?.title ?? "",
                         style: AppStyle.fontSize16Bold(context).copyWith(
                           color: isDark
@@ -91,7 +92,7 @@ class BookingCard extends StatelessWidget {
                             ),
                             6.pw,
                             Expanded(
-                              child: Text(
+                              child: AppText(
                                 AppFormatter.formatDate(
                                   DateTime.parse(
                                     booking.bookingDate!,
@@ -123,7 +124,7 @@ class BookingCard extends StatelessWidget {
                               color: statusColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
-                            child: Text(
+                            child: AppText(
                               getTranslatedStatus(booking.status),
                               style: AppStyle.fontSize12Bold(
                                 context,

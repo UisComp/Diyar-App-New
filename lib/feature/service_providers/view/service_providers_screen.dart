@@ -4,6 +4,7 @@ import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/loading_skeleton.dart';
@@ -111,7 +112,7 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AppText(
                     LocaleKeys.select_required_service_providers.tr(),
                     style: AppStyle.fontSize18Bold(context).copyWith(
                       color: isDark
@@ -120,7 +121,7 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
                     ),
                   ),
                   8.ph,
-                  Text(
+                  AppText(
                     LocaleKeys
                         .each_service_provider_requires_details_before_submission
                         .tr(),

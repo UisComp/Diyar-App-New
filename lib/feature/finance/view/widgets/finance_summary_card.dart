@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -17,11 +18,11 @@ class FinanceSummaryCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            AppText(
               title,
               style: TextStyle(fontSize: 14.sp, color: AppColors.black87),
             ),
-            Text(
+            AppText(
               value,
               style: TextStyle(
                 fontSize: 14.sp,

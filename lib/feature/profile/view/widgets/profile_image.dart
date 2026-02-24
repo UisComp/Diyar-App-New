@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
@@ -63,7 +64,11 @@ class ProfileImage extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 14.r,
                     backgroundColor: AppColors.primaryColor,
-                    child: const Icon(Icons.edit, size: 16, color: AppColors.whiteColor),
+                    child: const Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: AppColors.whiteColor,
+                    ),
                   ),
                 ),
               ),
@@ -91,7 +96,7 @@ class ProfileImage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.photo),
-                  title: const Text("Pick from Gallery"),
+                  title: const AppText("Pick from Gallery"),
                   onTap: () {
                     Navigator.pop(context);
                     controller.pickImage(fromCamera: false);
@@ -99,7 +104,7 @@ class ProfileImage extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.camera_alt),
-                  title: const Text("Take a Photo"),
+                  title: const AppText("Take a Photo"),
                   onTap: () {
                     Navigator.pop(context);
                     controller.pickImage(fromCamera: true);

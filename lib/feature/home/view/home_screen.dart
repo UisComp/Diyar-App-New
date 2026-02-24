@@ -7,6 +7,7 @@ import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
@@ -169,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       minWidth: 16,
                                       minHeight: 16,
                                     ),
-                                    child: Text(
+                                    child: AppText(
                                       '${notificationController.notifications?.data!.unreadNotificationsCount}',
                                       style: TextStyle(
                                         color: AppColors.whiteColor,
@@ -217,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ).paddingOnly(top: 20.h),
                           20.ph,
-                          Text(
+                          AppText(
                             LocaleKeys.discover.tr(),
                             style: AppStyle.fontSize22Bold(context).copyWith(
                               fontSize: 20.sp,

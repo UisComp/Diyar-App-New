@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomSwitchListTile extends StatelessWidget {
@@ -17,8 +18,8 @@ class CustomSwitchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      title: Text(title, style: AppStyle.fontSize18Bold(context)),
-      subtitle: Text(
+      title: AppText(title, style: AppStyle.fontSize18Bold(context)),
+      subtitle: AppText(
         subtitle,
         style: AppStyle.fontSize14RegularNewsReader(context),
       ),

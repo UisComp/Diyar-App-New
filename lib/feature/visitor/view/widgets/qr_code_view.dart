@@ -5,6 +5,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,7 +24,7 @@ class QrCodeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
+        AppText(
           LocaleKeys.your_qr_code.tr(),
           style: Theme.of(context).textTheme.titleMedium,
         ),
@@ -82,7 +83,7 @@ class QrCodeView extends StatelessWidget {
                 }
               },
             ),
-            Text(
+            AppText(
               LocaleKeys.share_qr_code.tr(),
               style: AppStyle.fontSize16Regular(context),
             ),

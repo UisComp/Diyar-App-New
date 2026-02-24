@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
 import 'package:diyar_app/feature/internet/controller/internet_state.dart';
 import 'package:diyar_app/feature/internet/service/internet_service.dart';
@@ -51,7 +52,7 @@ class NoInternetConnection extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 0.02.sh),
-                          Text(
+                          AppText(
                             LocaleKeys.no_internet.tr(),
                             style: AppStyle.fontSize22Bold(context).copyWith(
                               fontSize: 20.sp,
@@ -61,7 +62,7 @@ class NoInternetConnection extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 0.02.sh),
-                          Text(
+                          AppText(
                             LocaleKeys.please_check_your_internet_connection
                                 .tr(),
                             style: AppStyle.fontSize16Regular(context).copyWith(

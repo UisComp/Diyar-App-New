@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -18,13 +19,13 @@ class UserInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
+        AppText(
           profile?.name ?? 'Guest',
           style: AppStyle.fontSize22Bold(context),
           textAlign: TextAlign.center,
         ),
         5.ph,
-        Text(
+        AppText(
           profile?.email ?? '',
           style: AppStyle.fontSize16Regular(
             context,
@@ -32,7 +33,7 @@ class UserInfo extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         5.ph,
-        Text(
+        AppText(
           profile?.phoneNumber ?? '',
           style: AppStyle.fontSize16Regular(
             context,
@@ -44,7 +45,7 @@ class UserInfo extends StatelessWidget {
           alignment: context.locale.languageCode == AppConstants.enLanguage
               ? Alignment.centerLeft
               : Alignment.centerRight,
-          child: Text(
+          child: AppText(
             LocaleKeys.own_units.tr(),
             style: AppStyle.fontSize22Bold(context).copyWith(fontSize: 18.sp),
           ),

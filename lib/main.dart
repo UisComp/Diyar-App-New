@@ -27,32 +27,55 @@ import 'dart:async';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  getAllNotifications();
-  AppLogger.log('Handling a background message: ${message.messageId}');
-
+  // 1. Initialize Firebase FIRST
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+  await HiveHelper.init();
   bool enable =
       await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
       true;
+  if (!enable) return;
+  final service = NotificationService();
+  await service.init();
+  await service.showLocalNotificationFromBackground(message);
+  AppLogger.log('Background message handled: ${message.messageId}');
 
-  if (!enable) {
-    return;
-  } else {
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-    }
-    await NotificationService().init();
-    AppLogger.log('Handling a background message: ${message.messageId}');
-    await NotificationService().showLocalNotificationFromBackground(message);
-  }
 }
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   getAllNotifications();
+//   AppLogger.log('Handling a background message: ${message.messageId}');
+
+//   bool enable =
+//       await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
+//       true;
+
+//   if (!enable) {
+//     return;
+//   } else {
+//     if (Firebase.apps.isEmpty) {
+//       await Firebase.initializeApp(
+//         options: DefaultFirebaseOptions.currentPlatform,
+//       );
+//     }
+//     await NotificationService().init();
+//     AppLogger.log('Handling a background message: ${message.messageId}');
+//     await NotificationService().showLocalNotificationFromBackground(message);
+//   }
+// }
 
 bool enableNotifications = true;
 Future<void> main() async {
   runZonedGuarded<Future<void>>(
     () async {
       final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+      FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingBackgroundHandler,
+      );
+
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         // DeviceOrientation.portraitDown, // Optional: allow upside-down portrait
@@ -154,6 +177,7 @@ Future<void> setupNotifications() async {
     if (!enableNotifications) return;
 
     await localNotificationService.init();
+    // navigatorKey.currentContext?.pushNamed(RoutesName.notificationsScreen);
   });
 }
 

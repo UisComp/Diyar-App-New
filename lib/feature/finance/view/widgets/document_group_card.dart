@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/feature/finance/model/documents_response_model.dart';
@@ -49,10 +50,11 @@ class DocumentGroupCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                AppText(
                   title,
-                  style: AppStyle.fontSize18Bold(context)
-                      .copyWith(color: AppColors.primaryColor),
+                  style: AppStyle.fontSize18Bold(
+                    context,
+                  ).copyWith(color: AppColors.primaryColor),
                 ),
                 10.ph,
                 if (files.isEmpty)

@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,7 +15,7 @@ class PrivacyPolicy extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.privacy_settings.tr()),
       body: SingleChildScrollView(
-        child: Text(
+        child: AppText(
           textAlign: TextAlign.center,
           LocaleKeys.privacy_policy.tr(),
           style: AppStyle.fontSize14RegularNewsReader(context),

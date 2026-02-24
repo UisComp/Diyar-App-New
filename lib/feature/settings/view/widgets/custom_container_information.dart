@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/settings/functions/settings_functions.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class CustomContainerInformation extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AppText(
                     titleContainer,
                     style: AppStyle.fontSize22BoldNewsReader(
                       context,
@@ -96,17 +97,17 @@ class CustomContainerInformation extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (projectName != null && projectName!.isNotEmpty)
-                    Text(
-                      "(${projectName??''})",
+                    AppText(
+                      "(${projectName ?? ''})",
                       style: AppStyle.fontSize22BoldNewsReader(
                         context,
-                      ).copyWith(fontSize: 13.sp,fontWeight: FontWeight.w400),
+                      ).copyWith(fontSize: 13.sp, fontWeight: FontWeight.w400),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   5.ph,
                   if (descriptionContainer.isNotEmpty)
-                    Text(
+                    AppText(
                       descriptionContainer,
                       style: AppStyle.fontSize14RegularNewsReader(
                         context,

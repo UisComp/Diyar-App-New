@@ -1,9 +1,9 @@
-
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/service_providers/model/service_provider_history_response_model.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +14,12 @@ class RequestCard extends StatelessWidget {
   final bool isDark;
   final VoidCallback onTap;
 
-  const RequestCard({super.key, 
+  const RequestCard({
+    super.key,
     required this.request,
     required this.isDark,
     required this.onTap,
   });
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class RequestCard extends StatelessWidget {
     final serviceProvider = request.serviceProvider;
 
     return Container(
-      margin:  EdgeInsets.only(bottom: 16.sp),
+      margin: EdgeInsets.only(bottom: 16.sp),
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : AppColors.lightCard,
         borderRadius: BorderRadius.circular(16.r),
@@ -74,7 +72,7 @@ class RequestCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      AppText(
                         serviceProvider?.jobTitle ?? "",
                         style: AppStyle.fontSize16Bold(context).copyWith(
                           color: isDark
@@ -95,9 +93,11 @@ class RequestCard extends StatelessWidget {
                             ),
                             6.pw,
                             Expanded(
-                              child: Text(
+                              child: AppText(
                                 AppFormatter.formatDate(
-                                  DateTime.parse(request.bookingDate!).toUtc(),
+                                  DateTime.parse(
+                                    request.bookingDate!,
+                                  ).toUtc().toLocal(),
                                 ),
                                 style: AppStyle.fontSize12Regular(
                                   context,
@@ -125,7 +125,7 @@ class RequestCard extends StatelessWidget {
                               color: statusColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child: Text(
+                            child: AppText(
                               getTranslatedStatus(request.status),
                               style: AppStyle.fontSize12Bold(
                                 context,

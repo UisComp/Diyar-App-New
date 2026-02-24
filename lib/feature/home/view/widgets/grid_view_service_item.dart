@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/enums/enum_service.dart';
@@ -106,7 +107,7 @@ class GridViewServiceItem extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Center(
-                child: Text(
+                child: AppText(
                   context.locale.languageCode == AppConstants.enLanguage
                       ? service?.name ?? ''
                       : service?.nameAr ?? '',

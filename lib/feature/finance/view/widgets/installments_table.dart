@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -52,7 +53,7 @@ class InstallmentsTable extends StatelessWidget {
             columns: [
               DataColumn(
                 label: Center(
-                  child: Text(
+                  child: AppText(
                     LocaleKeys.installment_number.tr(),
                     textAlign: TextAlign.center,
                   ),
@@ -60,7 +61,7 @@ class InstallmentsTable extends StatelessWidget {
               ),
               DataColumn(
                 label: Center(
-                  child: Text(
+                  child: AppText(
                     LocaleKeys.date.tr(),
                     textAlign: TextAlign.center,
                   ),
@@ -68,7 +69,7 @@ class InstallmentsTable extends StatelessWidget {
               ),
               DataColumn(
                 label: Center(
-                  child: Text(
+                  child: AppText(
                     LocaleKeys.amount.tr(),
                     textAlign: TextAlign.center,
                   ),
@@ -76,7 +77,7 @@ class InstallmentsTable extends StatelessWidget {
               ),
               DataColumn(
                 label: Center(
-                  child: Text(
+                  child: AppText(
                     LocaleKeys.status.tr(),
                     textAlign: TextAlign.center,
                   ),
@@ -91,13 +92,15 @@ class InstallmentsTable extends StatelessWidget {
                   cells: [
                     DataCell(
                       Center(
-                        child: Text(installment.number?.toString() ?? '-'),
+                        child: AppText(installment.number?.toString() ?? '-'),
                       ),
                     ),
-                    DataCell(Center(child: Text(installment.dueDate ?? '-'))),
+                    DataCell(
+                      Center(child: AppText(installment.dueDate ?? '-')),
+                    ),
                     DataCell(
                       Center(
-                        child: Text(installment.amount?.toString() ?? '-'),
+                        child: AppText(installment.amount?.toString() ?? '-'),
                       ),
                     ),
                     DataCell(
@@ -111,7 +114,7 @@ class InstallmentsTable extends StatelessWidget {
                             color: statusColor(status).withOpacity(0.15),
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Text(
+                          child: AppText(
                             localizedStatus(status),
                             style: TextStyle(
                               color: statusColor(status),

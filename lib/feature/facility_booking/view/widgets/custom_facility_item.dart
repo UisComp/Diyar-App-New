@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_response_model.dart';
@@ -68,7 +69,7 @@ class CustomFacilityItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AppText(
                     item.title ?? '',
                     style: TextStyle(
                       fontSize: 16,
@@ -79,7 +80,7 @@ class CustomFacilityItem extends StatelessWidget {
                     ),
                   ),
                   4.ph,
-                  Text(
+                  AppText(
                     item.description ?? '',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: isDark
@@ -89,7 +90,7 @@ class CustomFacilityItem extends StatelessWidget {
                     ),
                   ),
                   4.ph,
-                  Text(
+                  AppText(
                     item.createdAt != null
                         ? DateFormat(
                             'yyyy-MM-dd HH:mm',

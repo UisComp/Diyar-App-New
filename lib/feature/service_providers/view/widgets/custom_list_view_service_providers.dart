@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
@@ -30,27 +31,18 @@ class CustomListViewServiceProviders extends StatelessWidget {
         itemCount: providers.length,
         itemBuilder: (context, index) {
           final item = providers[index];
-          final selected = controller.selectedIds.contains(
-            item.id,
-          );
-    
-          final descController = controller.getDescController(
-            item.id!,
-          );
-    
+          final selected = controller.selectedIds.contains(item.id);
+
+          final descController = controller.getDescController(item.id!);
+
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             margin: EdgeInsets.symmetric(vertical: 6.sp),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.sp,
-              vertical: 8.sp,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 8.sp),
             decoration: BoxDecoration(
               color: selected
                   ? AppColors.primaryColor.withOpacity(0.10)
-                  : (isDark
-                        ? AppColors.darkCard
-                        : AppColors.lightCard),
+                  : (isDark ? AppColors.darkCard : AppColors.lightCard),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: selected
@@ -75,21 +67,18 @@ class CustomListViewServiceProviders extends StatelessWidget {
                     controller.toggleService(item.id!);
                   },
                   activeColor: AppColors.primaryColor,
-                  controlAffinity:
-                      ListTileControlAffinity.trailing,
-                  title: Text(
+                  controlAffinity: ListTileControlAffinity.trailing,
+                  title: AppText(
                     item.jobTitle ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
                       color: selected
                           ? AppColors.primaryColor
-                          : Theme.of(
-                              context,
-                            ).textTheme.bodyLarge?.color,
+                          : Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
-                  subtitle: Text(
+                  subtitle: AppText(
                     providers[index].description ?? '',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -107,9 +96,7 @@ class CustomListViewServiceProviders extends StatelessWidget {
                   8.ph,
                   CustomTextFormField(
                     controller: descController,
-                    hintText: LocaleKeys
-                        .describe_your_requirements
-                        .tr(),
+                    hintText: LocaleKeys.describe_your_requirements.tr(),
                     // autovalidateMode:
                     //     AutovalidateMode.onUserInteraction,
                     // validator: (v) {
@@ -123,27 +110,21 @@ class CustomListViewServiceProviders extends StatelessWidget {
                   8.ph,
                   InkWell(
                     onTap: () async {
-                      final DateTime? pickedDate =
-                          await showDatePicker(
-                            context: context,
-                            initialDate:
-                                controller.getSelectedDate(
-                                  item.id!,
-                                ) ??
-                                DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(
-                              const Duration(days: 365),
-                            ),
-                          );
-    
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate:
+                            controller.getSelectedDate(item.id!) ??
+                            DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+
                       if (pickedDate != null) {
-                        final TimeOfDay? pickedTime =
-                            await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
-    
+                        final TimeOfDay? pickedTime = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        );
+
                         if (pickedTime != null) {
                           final DateTime fullDateTime = DateTime(
                             pickedDate.year,
@@ -152,10 +133,7 @@ class CustomListViewServiceProviders extends StatelessWidget {
                             pickedTime.hour,
                             pickedTime.minute,
                           );
-                          controller.setServiceDate(
-                            item.id!,
-                            fullDateTime,
-                          );
+                          controller.setServiceDate(item.id!, fullDateTime);
                         }
                       }
                     },
@@ -170,9 +148,7 @@ class CustomListViewServiceProviders extends StatelessWidget {
                             : AppColors.lightCard,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: AppColors.greyColor.withOpacity(
-                            0.3,
-                          ),
+                          color: AppColors.greyColor.withOpacity(0.3),
                         ),
                       ),
                       child: Row(
@@ -184,33 +160,20 @@ class CustomListViewServiceProviders extends StatelessWidget {
                           ),
                           12.pw,
                           Expanded(
-                            child: Text(
-                              controller.getSelectedDate(
-                                        item.id!,
-                                      ) !=
-                                      null
+                            child: AppText(
+                              controller.getSelectedDate(item.id!) != null
                                   ? AppFormatter.formatDate(
-                                      controller.getSelectedDate(
-                                        item.id!,
-                                      )!,
+                                      controller.getSelectedDate(item.id!)!,
                                     )
-                                  : LocaleKeys.select_date_range
-                                        .tr(),
-                              style:
-                                  AppStyle.fontSize14Regular(
-                                    context,
-                                  ).copyWith(
+                                  : LocaleKeys.select_date_range.tr(),
+                              style: AppStyle.fontSize14Regular(context)
+                                  .copyWith(
                                     color:
-                                        controller
-                                                .getSelectedDate(
-                                                  item.id!,
-                                                ) !=
+                                        controller.getSelectedDate(item.id!) !=
                                             null
                                         ? (isDark
-                                              ? AppColors
-                                                    .darkTextPrimary
-                                              : AppColors
-                                                    .lightTextPrimary)
+                                              ? AppColors.darkTextPrimary
+                                              : AppColors.lightTextPrimary)
                                         : AppColors.greyColor,
                                   ),
                             ),

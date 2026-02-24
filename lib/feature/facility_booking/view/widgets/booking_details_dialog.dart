@@ -1,9 +1,9 @@
-
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_history_response_model.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/detail_row.dart';
@@ -16,9 +16,11 @@ class BookingDetailsDialog extends StatelessWidget {
   final FacilityBookingData booking;
   final bool isDark;
 
-  const BookingDetailsDialog({super.key, required this.booking, required this.isDark});
-
-  
+  const BookingDetailsDialog({
+    super.key,
+    required this.booking,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,10 @@ class BookingDetailsDialog extends StatelessWidget {
                     right: 8,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: AppColors.whiteColor),
+                      icon: const Icon(
+                        Icons.close,
+                        color: AppColors.whiteColor,
+                      ),
                     ),
                   ),
                 ],
@@ -85,7 +90,7 @@ class BookingDetailsDialog extends StatelessWidget {
                   children: [
                     // Title
                     Center(
-                      child: Text(
+                      child: AppText(
                         booking.facility?.title ?? "",
                         style: AppStyle.fontSize20Bold(context).copyWith(
                           color: isDark
@@ -115,11 +120,13 @@ class BookingDetailsDialog extends StatelessWidget {
                           children: [
                             Icon(Icons.circle, size: 10, color: statusColor),
                             8.pw,
-                            Text(
-                               getTranslatedStatus(booking.status?.toUpperCase() ?? ""),
-                              style: AppStyle.fontSize14Bold(context).copyWith(
-                                color: statusColor,
+                            AppText(
+                              getTranslatedStatus(
+                                booking.status?.toUpperCase() ?? "",
                               ),
+                              style: AppStyle.fontSize14Bold(
+                                context,
+                              ).copyWith(color: statusColor),
                             ),
                           ],
                         ),
@@ -144,7 +151,9 @@ class BookingDetailsDialog extends StatelessWidget {
                         icon: Icons.calendar_today,
                         label: LocaleKeys.booking_date.tr(),
                         value: AppFormatter.formatDate(
-                          DateTime.parse(booking.bookingDate!).toUtc().toLocal(),
+                          DateTime.parse(
+                            booking.bookingDate!,
+                          ).toUtc().toLocal(),
                         ),
                         isDark: isDark,
                       ),

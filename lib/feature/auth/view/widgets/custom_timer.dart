@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -38,7 +39,7 @@ class _CustomTimerState extends State<CustomTimer> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            AppText(
               authController.remainingSeconds > 0
                   ? "${LocaleKeys.resend_code_in.tr()} ${authController.minutes}:${authController.seconds}"
                   : LocaleKeys.did_not_get_the_code.tr(),
@@ -50,7 +51,7 @@ class _CustomTimerState extends State<CustomTimer> {
                 onTap: () async {
                   await authController.resendOtp();
                 },
-                child: Text(
+                child: AppText(
                   LocaleKeys.resend_otp.tr(),
                   style: TextStyle(
                     color: AppColors.primaryColor,

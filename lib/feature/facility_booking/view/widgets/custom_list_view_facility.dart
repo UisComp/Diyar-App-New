@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_response_model.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/custom_facility_item.dart';
@@ -125,7 +126,7 @@ class CustomListViewFacility extends StatelessWidget {
                           ),
                           12.pw,
                           Expanded(
-                            child: Text(
+                            child: AppText(
                               controller.getSelectedDate(item.id!) != null
                                   ? AppFormatter.formatDate(
                                       controller.getSelectedDate(item.id!)!,

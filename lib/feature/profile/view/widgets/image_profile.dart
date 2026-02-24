@@ -4,6 +4,7 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
@@ -52,7 +53,9 @@ class ImageProfile extends StatelessWidget {
               CircleAvatar(
                 radius: 50.r,
                 backgroundColor: cardImageColor,
-                child: (profile?.profilePicture?.url != null && userModel?.data?.accessToken != null)
+                child:
+                    (profile?.profilePicture?.url != null &&
+                        userModel?.data?.accessToken != null)
                     ? ClipOval(
                         child: CustomCachedNetworkImage(
                           imageUrl:
@@ -69,7 +72,7 @@ class ImageProfile extends StatelessWidget {
                       ),
               ),
               10.ph,
-              Text(
+              AppText(
                 userModel?.data?.accessToken == null
                     ? LocaleKeys.guest.tr()
                     : profile?.name ?? '',
@@ -79,7 +82,7 @@ class ImageProfile extends StatelessWidget {
               ),
               5.ph,
               if (userModel?.data?.accessToken != null)
-                Text(
+                AppText(
                   profile?.email ?? '',
                   style: AppStyle.fontSize16Regular(
                     context,
@@ -87,7 +90,7 @@ class ImageProfile extends StatelessWidget {
                 ),
               if (userModel?.data?.accessToken != null) ...[
                 5.ph,
-                Text(
+                AppText(
                   profile?.phoneNumber ?? '',
                   style: AppStyle.fontSize16Regular(
                     context,

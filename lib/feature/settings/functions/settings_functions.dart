@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -41,7 +42,7 @@ Future<void> showDeleteAccountDialog(
                   size: 48.w,
                 ),
                 12.ph,
-                Text(
+                AppText(
                   LocaleKeys.delete_account.tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -56,7 +57,7 @@ Future<void> showDeleteAccountDialog(
               horizontal: 20.w,
               vertical: 8.h,
             ),
-            content: Text(
+            content: AppText(
               LocaleKeys.delete_account_desc.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
@@ -77,7 +78,7 @@ Future<void> showDeleteAccountDialog(
                       ),
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: Text(LocaleKeys.cancel.tr()),
+                    child: AppText(LocaleKeys.cancel.tr()),
                   ),
                   12.pw,
                   isLoading
@@ -91,7 +92,7 @@ Future<void> showDeleteAccountDialog(
                             ),
                           ),
                           onPressed: onDelete,
-                          child: Text(
+                          child: AppText(
                             LocaleKeys.delete.tr(),
                             style: TextStyle(color: AppColors.containerColor),
                           ),
@@ -105,9 +106,10 @@ Future<void> showDeleteAccountDialog(
     },
   );
 }
+
 void showImagePreview(
   BuildContext context,
-  String ?imageUrl, {
+  String? imageUrl, {
   String? title,
   String? description,
 }) {
@@ -126,8 +128,7 @@ void showImagePreview(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomCachedNetworkImage(
                       isProjectDetails: true,
@@ -141,7 +142,7 @@ void showImagePreview(
                           vertical: 6.h,
                           horizontal: 16.w,
                         ),
-                        child: Text(
+                        child: AppText(
                           title.capitalize(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -151,7 +152,7 @@ void showImagePreview(
                           ),
                         ),
                       ),
-                
+
                     if (description != null && description.isNotEmpty)
                       Padding(
                         padding: EdgeInsets.only(
@@ -159,7 +160,7 @@ void showImagePreview(
                           left: 16.w,
                           right: 16.w,
                         ),
-                        child: Text(
+                        child: AppText(
                           description.capitalize(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -251,7 +252,7 @@ Future<void> showErrorDialog(
                   size: 48.w,
                 ),
                 12.ph,
-                Text(
+                AppText(
                   title ?? LocaleKeys.error.tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -266,7 +267,7 @@ Future<void> showErrorDialog(
               horizontal: 20.w,
               vertical: 8.h,
             ),
-            content: Text(
+            content: AppText(
               message,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
@@ -287,9 +288,9 @@ Future<void> showErrorDialog(
                       ),
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: Text(LocaleKeys.ok.tr()),
+                    child: AppText(LocaleKeys.ok.tr()),
                   ),
-                  if (onRetry != null)...[
+                  if (onRetry != null) ...[
                     12.pw,
                     isLoading
                         ? const CircularProgressIndicator.adaptive()
@@ -302,7 +303,7 @@ Future<void> showErrorDialog(
                               ),
                             ),
                             onPressed: onRetry,
-                            child: Text(
+                            child: AppText(
                               "Retry",
                               style: TextStyle(color: AppColors.whiteColor),
                             ),

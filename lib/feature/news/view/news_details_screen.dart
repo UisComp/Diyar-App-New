@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/news/controller/news_controller.dart';
 import 'package:diyar_app/feature/news/controller/news_state.dart';
@@ -66,7 +67,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                   30.ph,
                   SizedBox(
                     width: isLoading ? 200.w : null,
-                    child: Text(
+                    child: AppText(
                       newsDetails?.title ?? '',
                       style: AppStyle.fontSize22Bold(context),
                     ),
@@ -75,7 +76,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                   10.ph,
                   SizedBox(
                     width: isLoading ? 120.w : null,
-                    child: Text(
+                    child: AppText(
                       newsDetails?.newsDate?.substring(0, 10) ?? '',
                       style: AppStyle.fontSize14RegularNewsReader(
                         context,
@@ -97,7 +98,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                       ),
                     )
                   else
-                    Text(
+                    AppText(
                       newsDetails?.content ?? '',
                       style: AppStyle.fontSize14RegularNewsReader(
                         context,

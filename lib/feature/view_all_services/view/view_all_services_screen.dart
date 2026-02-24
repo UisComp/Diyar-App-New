@@ -2,6 +2,7 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
@@ -92,37 +93,32 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                 ),
                 SliverPadding(
                   padding: EdgeInsets.all(16.sp),
-                  sliver:
-                     SliverGrid(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            if (isLoading || services.isEmpty) {
-                              return GridViewServiceItem(
-                                cardColor: cardColor,
-                                cardImageColor: cardImageColor,
-                                textColor: textColor,
-                                service: null,
-                              );
-                            }
-                            final service = services[index];
-                            return GridViewServiceItem(
-                              isFromViewAll: true,
-                              service: service,
-                              cardColor: cardColor,
-                              cardImageColor: cardImageColor,
-                              textColor: textColor,
-                            );
-                          }, childCount: isLoading ? 8 : (services.length)),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 12.h,
-                                crossAxisSpacing: 12.w,
-                                childAspectRatio: 1,
-                              ),
-                        ),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      if (isLoading || services.isEmpty) {
+                        return GridViewServiceItem(
+                          cardColor: cardColor,
+                          cardImageColor: cardImageColor,
+                          textColor: textColor,
+                          service: null,
+                        );
+                      }
+                      final service = services[index];
+                      return GridViewServiceItem(
+                        isFromViewAll: true,
+                        service: service,
+                        cardColor: cardColor,
+                        cardImageColor: cardImageColor,
+                        textColor: textColor,
+                      );
+                    }, childCount: isLoading ? 8 : (services.length)),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12.h,
+                      crossAxisSpacing: 12.w,
+                      childAspectRatio: 1,
+                    ),
+                  ),
                 ),
 
                 if (!isLoading && services.isEmpty)
@@ -130,7 +126,7 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 50.h),
                       child: Center(
-                        child: Text(
+                        child: AppText(
                           LocaleKeys.no_results_found.tr(),
                           style: AppStyle.fontSize16Regular(
                             context,

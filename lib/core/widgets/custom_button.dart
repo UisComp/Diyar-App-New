@@ -2,6 +2,7 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -98,7 +99,7 @@ class _CustomButtonState extends State<CustomButton>
                             ),
                             10.pw,
                             Flexible(
-                              child: Text(
+                              child: AppText(
                                 widget.buttonText,
                                 key: const ValueKey('text'),
                                 textAlign: TextAlign.center,
@@ -120,7 +121,7 @@ class _CustomButtonState extends State<CustomButton>
                             ),
                           ],
                         )
-                      : Text(
+                      : AppText(
                           widget.buttonText,
                           key: const ValueKey('text'),
                           textAlign: TextAlign.center,

@@ -1,4 +1,5 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -49,7 +50,7 @@ class FinanceTab extends StatelessWidget {
                                 color: AppColors.primaryColor.withOpacity(0.5),
                               ),
                               16.ph,
-                              Text(
+                              AppText(
                                 LocaleKeys.no_finance_available.tr(),
                                 style: AppStyle.fontSize16Regular(
                                   context,

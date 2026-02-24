@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,11 +35,7 @@ class CustomContainerLanguageOrTheme extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: AppStyle.fontSize16Regular(context)
-            
-          ),
+          child: AppText(text, style: AppStyle.fontSize16Regular(context)),
         ),
       ),
     );

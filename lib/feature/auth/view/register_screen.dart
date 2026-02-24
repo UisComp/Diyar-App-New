@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
-   final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +38,9 @@ class RegisterScreen extends StatelessWidget {
                             fit: BoxFit.scaleDown,
                           )
                           .paddingOnly(top: 20.h),
-                      Text(
+                      AppText(
                         LocaleKeys.create_account.tr(),
-                        style: AppStyle.fontSize22Bold(context)
+                        style: AppStyle.fontSize22Bold(context),
                       ),
                       24.ph,
                       const UserTextFormFieldForRegister(),

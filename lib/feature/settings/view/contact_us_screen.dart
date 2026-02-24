@@ -3,6 +3,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -48,18 +49,18 @@ class ContactUsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   20.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.we_are_here_to_help.tr(),
                     style: AppStyle.fontSize22Bold(context),
                   ).paddingSymmetric(horizontal: 16.w),
                   12.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.desc_we_are_here_to_help.tr(),
                     style: AppStyle.fontSize16Regular(context),
                     textAlign: TextAlign.center,
                   ).paddingSymmetric(horizontal: 16.w),
                   28.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.contact_us.tr(),
                     style: AppStyle.fontSize22Bold(context),
                   ).paddingSymmetric(horizontal: 16.w),
@@ -101,7 +102,7 @@ class ContactUsScreen extends StatelessWidget {
                     },
                   ).paddingSymmetric(horizontal: 16.w),
                   28.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.other_contact_methods.tr(),
                     style: AppStyle.fontSize22Bold(context),
                   ).paddingSymmetric(horizontal: 16.w),

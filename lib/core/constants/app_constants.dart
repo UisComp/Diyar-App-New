@@ -4,6 +4,8 @@ import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/view/home_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/settings/view/settings_screen.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AppConstants {
@@ -72,5 +74,12 @@ String? getScreenNameByServiceType(ServiceType? type) {
       return null;
   }
 }
+
+final List<String?> tabStatuses = [
+  LocaleKeys.pending.tr(),
+  LocaleKeys.confirmed.tr(),
+  LocaleKeys.completed.tr(),
+  LocaleKeys.cancelled.tr(),
+];
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

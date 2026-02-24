@@ -6,6 +6,7 @@ import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
@@ -72,7 +73,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
+                AppText(
                   LocaleKeys.select_your_unit.tr(),
                   style: AppStyle.fontSize22Bold(context),
                 ).paddingSymmetric(horizontal: 16.w),
@@ -93,13 +94,13 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                       vertical: 12.h,
                     ),
                   ),
-                  hint: Text(LocaleKeys.choose_a_linked_unit.tr()),
+                  hint: AppText(LocaleKeys.choose_a_linked_unit.tr()),
                   items:
                       profileController.userLinkedUnitsResponseModel.data
                           ?.map<DropdownMenuItem<String>>((unit) {
                             return DropdownMenuItem(
                               value: unit.id.toString(),
-                              child: Text(unit.name ?? ""),
+                              child: AppText(unit.name ?? ""),
                             );
                           })
                           .toList() ??
@@ -114,7 +115,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                 ).paddingSymmetric(horizontal: 16.w),
 
                 15.ph,
-                Text(
+                AppText(
                   LocaleKeys.select_date_range.tr(),
                   style: AppStyle.fontSize16Regular(context),
                 ).paddingSymmetric(horizontal: 16.w),
@@ -133,7 +134,7 @@ class _OwnUnitScreenState extends State<OwnUnitScreen> {
                   hintText: LocaleKeys.select_date_range.tr(),
                 ),
                 15.ph,
-                Text(
+                AppText(
                   LocaleKeys.select_time_range.tr(),
                   style: AppStyle.fontSize16Regular(context),
                 ).paddingSymmetric(horizontal: 16.w),

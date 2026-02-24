@@ -1,5 +1,6 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/feature/finance/model/documents_response_model.dart';
@@ -53,7 +54,7 @@ class FileCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       file.name ?? "",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -92,7 +93,7 @@ class FileCard extends StatelessWidget {
                                     color: AppColors.primaryColor,
                                     value: progress / 100,
                                   ),
-                                  Text(
+                                  AppText(
                                     "${progress.toStringAsFixed(0)}%",
                                     style: TextStyle(fontSize: 10.sp),
                                   ),
@@ -119,10 +120,10 @@ class FileCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  AppText(
                     "${LocaleKeys.date.tr()}: ${file.uploadedAt?.split('T').first ?? ''}",
                   ),
-                  Text(
+                  AppText(
                     "${LocaleKeys.size.tr()}: ${formatFileSize(int.tryParse(file.size ?? '0') ?? 0)}",
                   ),
                 ],

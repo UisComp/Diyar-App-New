@@ -1,7 +1,7 @@
-
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,7 +44,10 @@ class CustomEmergencyNumberButton extends StatelessWidget {
             size: 40.sp,
           ),
           8.ph,
-          Text("${remainingSeconds}s", style: AppStyle.fontSize22Bold(context)),
+          AppText(
+            "${remainingSeconds}s",
+            style: AppStyle.fontSize22Bold(context),
+          ),
         ],
       ),
     );

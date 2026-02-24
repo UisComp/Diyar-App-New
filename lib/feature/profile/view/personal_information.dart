@@ -4,6 +4,7 @@ import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_phone_field.dart';
@@ -82,15 +83,16 @@ class _PersonalInformationState extends State<PersonalInformation> {
                           children: [
                             32.ph,
                             const ProfileImage(),
-                            Text(
+                            AppText(
                               LocaleKeys.name.tr(),
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,
                             CustomTextFormField(
-                              controller:profileController.nameProfileController,
+                              controller:
+                                  profileController.nameProfileController,
                             ),
                             24.ph,
-                            Text(
+                            AppText(
                               LocaleKeys.email.tr(),
                               style:
                                   AppStyle.fontSize14RegularNewsReader(
@@ -102,7 +104,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,
                             CustomTextFormField(
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: (emailProfile) =>
                                   ValidatorHelper.validateEmail(
                                     emailProfile,
@@ -117,7 +120,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                                   profileController.emailProfileController,
                             ),
                             24.ph,
-                            Text(
+                            AppText(
                               LocaleKeys.contact_mobile_number.tr(),
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,

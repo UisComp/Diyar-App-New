@@ -2,7 +2,8 @@ import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_state.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/widgets/custom_cached.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
 import 'package:diyar_app/feature/profile/view/widgets/empty_linked_units.dart';
@@ -61,7 +62,7 @@ class ListViewLinkedUnits extends StatelessWidget {
                   alignment: context.locale.languageCode == 'en'
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
-                  child: Text(
+                  child: AppText(
                     LocaleKeys.own_units.tr(),
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -88,8 +89,14 @@ class ListViewLinkedUnits extends StatelessWidget {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8.r),
-                                    child: CachedImage(
-                                      url: unit.imageUrl?.url ?? '',
+                                    // child: CachedImage(
+                                    //   url: unit.imageUrl?.url ?? '',
+                                    //   width: 50.w,
+                                    //   height: 50.h,
+                                    //   fit: BoxFit.cover,
+                                    // ),
+                                    child: CustomCachedNetworkImage(
+                                      imageUrl: unit.imageUrl?.url ?? '',
                                       width: 50.w,
                                       height: 50.h,
                                       fit: BoxFit.cover,
@@ -97,7 +104,7 @@ class ListViewLinkedUnits extends StatelessWidget {
                                   ),
                                   SizedBox(width: 12.w),
                                   Expanded(
-                                    child: Text(
+                                    child: AppText(
                                       unit.name ?? '',
                                       style: TextStyle(
                                         fontSize: 16.sp,

@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class CustomServiceAndViewAllTexts extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        AppText(
           LocaleKeys.services.tr(),
           style: AppStyle.fontSize22Bold(context).copyWith(
             fontSize: 20.sp,
@@ -24,16 +25,16 @@ class CustomServiceAndViewAllTexts extends StatelessWidget {
             color: AppColors.primaryColor,
           ),
         ),
-       
-          InkWell(
-            onTap: () {
-              context.push(RoutesName.viewAllServicesScreen);
-            },
-            child: Text(
-              LocaleKeys.view_all.tr(),
-              style: AppStyle.fontSize16Regular(context),
-            ),
+
+        InkWell(
+          onTap: () {
+            context.push(RoutesName.viewAllServicesScreen);
+          },
+          child: AppText(
+            LocaleKeys.view_all.tr(),
+            style: AppStyle.fontSize16Regular(context),
           ),
+        ),
       ],
     ).paddingSymmetric(horizontal: 22.sp);
   }

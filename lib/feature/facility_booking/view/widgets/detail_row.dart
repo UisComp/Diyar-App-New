@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class DetailRow extends StatelessWidget {
@@ -43,14 +44,14 @@ class DetailRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                AppText(
                   label,
-                  style: AppStyle.fontSize12Regular(context).copyWith(
-                    color: Colors.grey.shade600,
-                  ),
+                  style: AppStyle.fontSize12Regular(
+                    context,
+                  ).copyWith(color: Colors.grey.shade600),
                 ),
                 4.ph,
-                Text(
+                AppText(
                   value,
                   style: AppStyle.fontSize14Regular(context).copyWith(
                     color: isDark

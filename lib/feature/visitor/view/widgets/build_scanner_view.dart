@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/visitor/controller/visitor_controller.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -134,21 +135,28 @@ class _BuildScannerViewState extends State<BuildScannerView> {
 
         // Overlay with scanning area
         Container(
-          decoration: BoxDecoration(color: AppColors.blackColor.withOpacity(0.5)),
+          decoration: BoxDecoration(
+            color: AppColors.blackColor.withOpacity(0.5),
+          ),
           child: Center(
             child: Container(
               width: 260.w,
               height: 260.h,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: _isProcessing ?    AppColors.greenColor : AppColors.whiteColor,
+                  color: _isProcessing
+                      ? AppColors.greenColor
+                      : AppColors.whiteColor,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(16.r),
                 boxShadow: [
                   BoxShadow(
-                    color: (_isProcessing ? AppColors.greenColor : AppColors.whiteColor)
-                        .withOpacity(0.3),
+                    color:
+                        (_isProcessing
+                                ? AppColors.greenColor
+                                : AppColors.whiteColor)
+                            .withOpacity(0.3),
                     blurRadius: 20,
                     spreadRadius: 5,
                   ),
@@ -225,7 +233,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                         ),
                       ),
                       10.pw,
-                      Text(
+                      AppText(
                         LocaleKeys.processing
                             .tr(), // Add this key to your locale
                         style: TextStyle(
@@ -238,7 +246,7 @@ class _BuildScannerViewState extends State<BuildScannerView> {
                   ),
                 )
               else
-                Text(
+                AppText(
                   LocaleKeys.align_barcode.tr(),
                   style: TextStyle(
                     color: AppColors.whiteColor.withOpacity(0.9),

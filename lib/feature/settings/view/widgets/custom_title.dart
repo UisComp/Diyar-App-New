@@ -1,6 +1,6 @@
-
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,7 +9,7 @@ class CustomTitle extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AppText(
       title,
       style: AppStyle.fontSize22BoldNewsReader(context),
     ).paddingSymmetric(horizontal: 16.w);

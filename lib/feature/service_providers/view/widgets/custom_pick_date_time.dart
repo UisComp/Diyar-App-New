@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/service_providers/controller/service_provider_controller.dart';
 import 'package:diyar_app/feature/service_providers/model/create_service_provider_response_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -62,7 +63,7 @@ class CustomPickDateTime extends StatelessWidget {
             Icon(Icons.calendar_today, size: 20, color: AppColors.primaryColor),
             12.pw,
             Expanded(
-              child: Text(
+              child: AppText(
                 controller.getSelectedDate(item.id!) != null
                     ? AppFormatter.formatDate(
                         controller.getSelectedDate(item.id!)!,

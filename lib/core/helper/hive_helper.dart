@@ -1,15 +1,32 @@
 import 'dart:io';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 abstract class HiveHelper {
+  // static Future<void> init({bool isTest = false}) async {
+  //   if (isTest) {
+  //     Hive.init(Directory.current.path);
+  //   } else {
+  //     await Hive.initFlutter();
+  //     Hive.registerAdapter(LoginResponseModelAdapter());
+  //     Hive.registerAdapter(LoginDataAdapter());
+  //     Hive.registerAdapter(UserAdapter());
+  //   }
+  // }
   static Future<void> init({bool isTest = false}) async {
     if (isTest) {
       Hive.init(Directory.current.path);
     } else {
       await Hive.initFlutter();
-      Hive.registerAdapter(LoginResponseModelAdapter());
-      Hive.registerAdapter(LoginDataAdapter());
-      Hive.registerAdapter(UserAdapter());
+      if (!Hive.isAdapterRegistered(0)) {
+        Hive.registerAdapter(LoginResponseModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(1)) {
+        Hive.registerAdapter(LoginDataAdapter());
+      }
+      if (!Hive.isAdapterRegistered(2)) {
+        Hive.registerAdapter(UserAdapter());
+      }
     }
   }
 
@@ -38,6 +55,7 @@ abstract class HiveHelper {
     final box = await Hive.openBox<LoginResponseModel>('userModelBox');
     return box.get(key);
   }
+
   static Future<void> removeFromHive({required String key}) async {
     final box = await Hive.openBox('modelBox');
     await box.delete(key);
@@ -50,10 +68,11 @@ abstract class HiveHelper {
     final modelBox = await Hive.openBox('modelBox');
     await modelBox.clear();
   }
-static Future<void> clearUserDataOnly() async {
-  final userBox = await Hive.openBox<LoginResponseModel>('userModelBox');
-  await userBox.clear();
-}
+
+  static Future<void> clearUserDataOnly() async {
+    final userBox = await Hive.openBox<LoginResponseModel>('userModelBox');
+    await userBox.clear();
+  }
 
   static Box? _box;
 
@@ -79,9 +98,9 @@ static Future<void> clearUserDataOnly() async {
     final box = await _openBox();
     await box.clear();
   }
-  static Future<void> removeUserModel({ required String key}) async {
-  final box = await Hive.openBox<LoginResponseModel>('userModelBox');
-  await box.delete(key);
-}
 
+  static Future<void> removeUserModel({required String key}) async {
+    final box = await Hive.openBox<LoginResponseModel>('userModelBox');
+    await box.delete(key);
+  }
 }

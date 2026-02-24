@@ -1,7 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
-import 'package:diyar_app/core/widgets/custom_cached.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
@@ -60,8 +60,20 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
-                    child: CachedImage(
-                      url:
+                    // child: CachedImage(
+                    //   url:
+                    //       profileController
+                    //           .unitModelDetailsForLinkedUserResponseModel
+                    //           .data
+                    //           ?.mainImage!
+                    //           .url ??
+                    //       '',
+                    //   width: double.infinity,
+                    //   height: 200.h,
+                    //   fit: BoxFit.cover,
+                    // ),
+                    child: CustomCachedNetworkImage(
+                      imageUrl:
                           profileController
                               .unitModelDetailsForLinkedUserResponseModel
                               .data
@@ -74,7 +86,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   ),
                   16.ph,
-                  Text(
+                  AppText(
                     profileController
                             .unitModelDetailsForLinkedUserResponseModel
                             .data
@@ -87,16 +99,16 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   ),
                   12.ph,
-                  Text(
+                  AppText(
                     "${LocaleKeys.building.tr()} ${unitData?.building ?? LocaleKeys.un_defined.tr()}",
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
                   ),
-                  Text(
+                  AppText(
                     "${LocaleKeys.number.tr()} ${unitData?.number ?? LocaleKeys.un_defined.tr()}",
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
                   ),
                   20.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.news.tr(),
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -164,7 +176,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AppText(
                                               newsItem.title ?? '',
                                               style: TextStyle(
                                                 fontSize: 16.sp,
@@ -172,7 +184,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                                               ),
                                             ),
                                             8.ph,
-                                            Text(
+                                            AppText(
                                               newsItem.content ?? '',
                                               style: TextStyle(
                                                 fontSize: 14.sp,
@@ -192,7 +204,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     )
                   else
                     Center(
-                      child: Text(
+                      child: AppText(
                         LocaleKeys.no_news_found.tr(),
                         style: TextStyle(
                           fontSize: 14.sp,

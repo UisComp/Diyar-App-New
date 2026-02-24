@@ -8,6 +8,7 @@ import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fit: BoxFit.scaleDown,
                                   )
                                   .paddingOnly(top: 20.h),
-                              Text(
+                              AppText(
                                 LocaleKeys.login_message.tr(),
                                 style: AppStyle.fontSize16Regular(context),
                               ),
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   context.go(RoutesName.homeLayout);
                                 },
-                                child: Text(
+                                child: AppText(
                                   LocaleKeys.guest_mode.tr(),
                                   style: AppStyle.fontSize16Regular(context)
                                       .copyWith(

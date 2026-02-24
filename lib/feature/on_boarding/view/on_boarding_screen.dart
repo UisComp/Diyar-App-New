@@ -3,6 +3,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -30,11 +31,11 @@ class OnBoardingScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                     20.ph,
-                    Text(
+                    AppText(
                       LocaleKeys.welcome_message.tr(),
                       style: AppStyle.fontSize22Bold(context),
                     ),
-                    Text(
+                    AppText(
                       LocaleKeys.discover_message.tr(),
                       textAlign: TextAlign.center,
                       style: AppStyle.fontSize16Regular(context),
@@ -60,13 +61,12 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
+            AppText(
               LocaleKeys.by_continue.tr(),
               textAlign: TextAlign.center,
-              style: AppStyle.fontSize16Regular(context).copyWith(
-                fontSize: 14.sp,
-                color: AppColors.greyColor,
-              ),
+              style: AppStyle.fontSize16Regular(
+                context,
+              ).copyWith(fontSize: 14.sp, color: AppColors.greyColor),
             ).paddingAll(16.sp),
           ],
         ),

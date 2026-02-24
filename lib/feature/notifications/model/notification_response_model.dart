@@ -1,6 +1,6 @@
-
 import 'package:json_annotation/json_annotation.dart';
 part 'notification_response_model.g.dart';
+
 @JsonSerializable(explicitToJson: true)
 class NotificationResponseModel {
   final bool? success;
@@ -8,12 +8,7 @@ class NotificationResponseModel {
   final NotificationDataWrapper? data;
   final MetaData? meta;
 
-  NotificationResponseModel({
-    this.success,
-    this.message,
-    this.data,
-    this.meta,
-  });
+  NotificationResponseModel({this.success, this.message, this.data, this.meta});
 
   factory NotificationResponseModel.fromJson(Map<String, dynamic> json) =>
       _$NotificationResponseModelFromJson(json);
@@ -28,10 +23,7 @@ class NotificationDataWrapper {
   @JsonKey(name: 'unread_notifications_count')
   final int? unreadNotificationsCount;
 
-  NotificationDataWrapper({
-    this.notifications,
-    this.unreadNotificationsCount,
-  });
+  NotificationDataWrapper({this.notifications, this.unreadNotificationsCount});
 
   factory NotificationDataWrapper.fromJson(Map<String, dynamic> json) =>
       _$NotificationDataWrapperFromJson(json);
@@ -46,7 +38,10 @@ class NotificationData {
   final String? type;
   final String? description;
   final String? image;
-
+  @JsonKey(name: 'title_ar')
+  final String? titleAr;
+  @JsonKey(name: 'description_ar')
+  final String? descriptionAr;
   @JsonKey(name: 'is_read')
   final bool? isRead;
 
@@ -58,8 +53,13 @@ class NotificationData {
 
   @JsonKey(name: 'image_url')
   final String? imageUrl;
-
+  @JsonKey(name: 'entity_type')
+  final String? entityType;
+  @JsonKey(name: 'entity_id')
+  final String? entityId;
   NotificationData({
+    this.titleAr,
+    this.descriptionAr,
     this.id,
     this.title,
     this.type,
@@ -69,6 +69,8 @@ class NotificationData {
     this.createdAt,
     this.updatedAt,
     this.imageUrl,
+    this.entityType,
+    this.entityId,
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) =>
@@ -87,12 +89,7 @@ class MetaData {
 
   final int? page;
 
-  MetaData({
-    this.limit,
-    this.total,
-    this.totalPages,
-    this.page,
-  });
+  MetaData({this.limit, this.total, this.totalPages, this.page});
 
   factory MetaData.fromJson(Map<String, dynamic> json) =>
       _$MetaDataFromJson(json);

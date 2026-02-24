@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
@@ -68,7 +69,7 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                     vertical: 6.h,
                     horizontal: 16.w,
                   ),
-                  child: Text(
+                  child: AppText(
                     title!.capitalize(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
@@ -86,7 +87,7 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                     left: 16.w,
                     right: 16.w,
                   ),
-                  child: Text(
+                  child: AppText(
                     description!.capitalize(),
                     textAlign: TextAlign.start,
                     style: TextStyle(color: AppColors.black87, fontSize: 14.sp),

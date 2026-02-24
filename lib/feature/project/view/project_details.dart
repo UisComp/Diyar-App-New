@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/controller/project_state.dart';
@@ -32,29 +33,36 @@ class ProjectDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   20.ph,
-                  ProjectDetailsImage(controller: controller, isLoading: isLoading, project: project),
+                  ProjectDetailsImage(
+                    controller: controller,
+                    isLoading: isLoading,
+                    project: project,
+                  ),
                   20.ph,
                   if (project.data?.name != null)
-                    Text(
+                    AppText(
                       project.data!.name!,
                       style: AppStyle.fontSize22Bold(
                         context,
                       ).copyWith(fontSize: 18.sp, fontWeight: FontWeight.w700),
                     ),
                   if (project.data?.description != null)
-                    Text(
+                    AppText(
                       project.data!.description ?? '',
                       style: AppStyle.fontSize16Regular(
                         context,
                       ).copyWith(fontWeight: FontWeight.w400),
                     ),
                   20.ph,
-                  Text(
+                  AppText(
                     LocaleKeys.project_gallery.tr(),
                     style: AppStyle.fontSize18Bold(context),
                   ),
                   20.ph,
-                  ListViewMainImageForProjectDetails(project: project, isLoading: isLoading),
+                  ListViewMainImageForProjectDetails(
+                    project: project,
+                    isLoading: isLoading,
+                  ),
                   20.ph,
                 ],
               ).paddingSymmetric(horizontal: 16.w),

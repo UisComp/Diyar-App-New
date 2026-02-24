@@ -48,6 +48,8 @@ Map<String, dynamic> _$NotificationDataWrapperToJson(
 
 NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) =>
     NotificationData(
+      titleAr: json['title_ar'] as String?,
+      descriptionAr: json['description_ar'] as String?,
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
       type: json['type'] as String?,
@@ -57,6 +59,8 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       imageUrl: json['image_url'] as String?,
+      entityType: json['entity_type'] as String?,
+      entityId: json['entity_id'] as String?,
     );
 
 Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
@@ -66,10 +70,14 @@ Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
       'type': instance.type,
       'description': instance.description,
       'image': instance.image,
+      'title_ar': instance.titleAr,
+      'description_ar': instance.descriptionAr,
       'is_read': instance.isRead,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'image_url': instance.imageUrl,
+      'entity_type': instance.entityType,
+      'entity_id': instance.entityId,
     };
 
 MetaData _$MetaDataFromJson(Map<String, dynamic> json) => MetaData(

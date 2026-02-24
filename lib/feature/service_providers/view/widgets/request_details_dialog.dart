@@ -1,9 +1,9 @@
-
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
+import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/detail_row.dart';
 import 'package:diyar_app/feature/service_providers/model/service_provider_history_response_model.dart';
@@ -21,7 +21,6 @@ class RequestDetailsDialog extends StatelessWidget {
     required this.request,
     required this.isDark,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,10 @@ class RequestDetailsDialog extends StatelessWidget {
                     right: 8,
                     child: IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: AppColors.whiteColor),
+                      icon: const Icon(
+                        Icons.close,
+                        color: AppColors.whiteColor,
+                      ),
                     ),
                   ),
                 ],
@@ -87,7 +89,7 @@ class RequestDetailsDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Text(
+                      child: AppText(
                         serviceProvider?.jobTitle ?? "",
                         style: AppStyle.fontSize20Bold(context).copyWith(
                           color: isDark
@@ -117,7 +119,7 @@ class RequestDetailsDialog extends StatelessWidget {
                           children: [
                             Icon(Icons.circle, size: 10.sp, color: statusColor),
                             8.pw,
-                            Text(
+                            AppText(
                               getTranslatedStatus(request.status),
                               style: AppStyle.fontSize14Bold(
                                 context,
@@ -143,7 +145,9 @@ class RequestDetailsDialog extends StatelessWidget {
                         icon: Icons.calendar_today,
                         label: LocaleKeys.booking_date.tr(),
                         value: AppFormatter.formatDate(
-                          DateTime.parse(request.bookingDate!).toUtc().toLocal(),
+                          DateTime.parse(
+                            request.bookingDate!,
+                          ).toUtc().toLocal(),
                         ),
                         isDark: isDark,
                       ),
@@ -172,7 +176,7 @@ class RequestDetailsDialog extends StatelessWidget {
                         icon: Icons.access_time,
                         label: LocaleKeys.created_at.tr(),
                         value: AppFormatter.formatDate(
-                          DateTime.parse(request.createdAt!).toUtc().toLocal(), 
+                          DateTime.parse(request.createdAt!).toUtc().toLocal(),
                         ),
                         isDark: isDark,
                       ),
