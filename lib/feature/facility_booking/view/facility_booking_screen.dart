@@ -175,7 +175,8 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                             }
                             bool allHaveDates = true;
                             for (var id in controller.selectedIds) {
-                              if (controller.getSelectedDate(id) == null) {
+                              if (controller.getSelectedStartDate(id) == null ||
+                                  controller.getSelectedEndDate(id) == null) {
                                 allHaveDates = false;
                                 break;
                               }

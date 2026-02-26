@@ -20,7 +20,8 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
 
   final Set<int> selectedIds = {};
   final Map<int, TextEditingController> notesControllers = {};
-  final Map<int, DateTime> facilityDates = {};
+  final Map<int, DateTime> facilityStartDates = {};
+  final Map<int, DateTime> facilityEndDates = {};
 
   void _safeEmit(FacilityBookingState state) {
     if (!isClosed) {
@@ -33,7 +34,8 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
       c.dispose();
     }
     notesControllers.clear();
-    facilityDates.clear();
+    facilityStartDates.clear();
+    facilityEndDates.clear();
     selectedIds.clear();
   }
 
@@ -72,13 +74,22 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
     return notesControllers[id]!;
   }
 
-  void setFacilityDate(int id, DateTime date) {
-    facilityDates[id] = date;
+  void setFacilityStartDate(int id, DateTime date) {
+    facilityStartDates[id] = date;
     _safeEmit(FacilityBookingRefreshState());
   }
 
-  DateTime? getSelectedDate(int id) {
-    return facilityDates[id];
+  void setFacilityEndDate(int id, DateTime date) {
+    facilityEndDates[id] = date;
+    _safeEmit(FacilityBookingRefreshState());
+  }
+
+  DateTime? getSelectedStartDate(int id) {
+    return facilityStartDates[id];
+  }
+
+  DateTime? getSelectedEndDate(int id) {
+    return facilityEndDates[id];
   }
 
   List<FacilityItem> getSelectedFacilityItems() {
@@ -87,7 +98,8 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
           (id) => FacilityItem(
             id: id,
             notes: notesControllers[id]?.text.trim(),
-            bookingDate: _formatDateTimeToUTC(facilityDates[id]),
+            bookingStart: _formatDateTimeToUTC(facilityStartDates[id]),
+            bookingEnd: _formatDateTimeToUTC(facilityEndDates[id]),
           ),
         )
         .toList();
@@ -95,16 +107,16 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
 
   String? _formatDateTimeToUTC(DateTime? dateTime) {
     if (dateTime == null) return null;
-    
+
     final utcDateTime = dateTime.toUtc();
-    
+
     String year = utcDateTime.year.toString();
     String month = utcDateTime.month.toString().padLeft(2, '0');
     String day = utcDateTime.day.toString().padLeft(2, '0');
     String hour = utcDateTime.hour.toString().padLeft(2, '0');
     String minute = utcDateTime.minute.toString().padLeft(2, '0');
     String second = utcDateTime.second.toString().padLeft(2, '0');
-    
+
     return '$year-$month-$day $hour:$minute:$second';
   }
 
@@ -113,26 +125,28 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
 
   Future<void> createFacilityRequest() async {
     if (!validateSelection()) return;
-    
+
     _safeEmit(CreateFacilityRequestLoadingState());
-    
+
     try {
       final req = CreateRequestFacilityRequestModel(
         facilities: getSelectedFacilityItems(),
       );
-      
+
       AppLogger.log('Request Facility is ${req.toJson()}');
-      
+
       final value = await FacilityBookingService.createFacilityRequest(
         createRequestFacilityRequestModel: req,
       );
-      
+
       createRequestFacilityResponseModel = value;
-      
+
       if (value.success == true) {
         _safeEmit(CreateFacilityRequestSuccessState());
       } else {
-        _safeEmit(CreateFacilityRequestFailureState(errorMessage: value.message));
+        _safeEmit(
+          CreateFacilityRequestFailureState(errorMessage: value.message),
+        );
       }
     } catch (e) {
       _safeEmit(CreateFacilityRequestFailureState(errorMessage: e.toString()));
@@ -150,15 +164,17 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
 
   Future<void> getFacilityBookingHistory() async {
     _safeEmit(FacilityBookingHistoryLoadingState());
-    
+
     try {
       final value = await FacilityBookingService.getFacilityBookingHistory();
       facilityBookingHistoryResponseModel = value;
-      
+
       if (value.success == true) {
         _safeEmit(FacilityBookingHistorySuccessState());
       } else {
-        _safeEmit(FacilityBookingHistoryFailureState(errorMessage: value.message));
+        _safeEmit(
+          FacilityBookingHistoryFailureState(errorMessage: value.message),
+        );
       }
     } catch (e) {
       _safeEmit(FacilityBookingHistoryFailureState(errorMessage: e.toString()));

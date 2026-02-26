@@ -80,15 +80,12 @@ class BookingDetailsDialog extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Content
             Flexible(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
                     Center(
                       child: AppText(
                         booking.facility?.title ?? "",
@@ -103,13 +100,13 @@ class BookingDetailsDialog extends StatelessWidget {
                     8.ph,
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                        padding:  EdgeInsets.symmetric(
+                          horizontal: 16.sp,
+                          vertical: 8.sp,
                         ),
                         decoration: BoxDecoration(
                           color: statusColor.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(
                             color: statusColor.withOpacity(0.5),
                             width: 1.5,
@@ -118,7 +115,7 @@ class BookingDetailsDialog extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.circle, size: 10, color: statusColor),
+                            Icon(Icons.circle, size: 10.sp, color: statusColor),
                             8.pw,
                             AppText(
                               getTranslatedStatus(
@@ -144,22 +141,30 @@ class BookingDetailsDialog extends StatelessWidget {
                       ),
                     ],
 
-                    // Booking Date
-                    if (booking.bookingDate != null) ...[
+                    // Booking Start
+                    if (booking.bookingStart != null) ...[
                       12.ph,
                       DetailRow(
-                        icon: Icons.calendar_today,
-                        label: LocaleKeys.booking_date.tr(),
-                        value: AppFormatter.formatDate(
-                          DateTime.parse(
-                            booking.bookingDate!,
-                          ).toUtc().toLocal(),
+                        icon: Icons.play_circle_outline,
+                        label: LocaleKeys.start_date.tr(),
+                        value: AppFormatter.formatDateWithTime(
+                          DateTime.parse(booking.bookingStart!).toLocal(),
+                        ),
+                        isDark: isDark,
+                      ),
+                    ],
+                    if (booking.bookingEnd != null) ...[
+                      12.ph,
+                      DetailRow(
+                        icon: Icons.stop_circle_outlined,
+                        label: LocaleKeys.end_date.tr(),
+                        value: AppFormatter.formatDateWithTime(
+                          DateTime.parse(booking.bookingEnd!).toLocal(),
                         ),
                         isDark: isDark,
                       ),
                     ],
 
-                    // Notes
                     if (booking.notes != null) ...[
                       12.ph,
                       DetailRow(
@@ -170,7 +175,6 @@ class BookingDetailsDialog extends StatelessWidget {
                       ),
                     ],
 
-                    // User Info
                     if (booking.user != null) ...[
                       12.ph,
                       DetailRow(
@@ -180,8 +184,6 @@ class BookingDetailsDialog extends StatelessWidget {
                         isDark: isDark,
                       ),
                     ],
-
-                    // Created Date
                     if (booking.createdAt != null) ...[
                       12.ph,
                       DetailRow(
@@ -193,8 +195,6 @@ class BookingDetailsDialog extends StatelessWidget {
                         isDark: isDark,
                       ),
                     ],
-
-                    // Updated Date
                     if (booking.updatedAt != null &&
                         booking.updatedAt != booking.createdAt) ...[
                       12.ph,

@@ -6,6 +6,7 @@ import 'package:diyar_app/core/routes/app_routes.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/feature/notifications/model/message_data_response_model.dart';
+import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/firebase_options.dart';
 import 'package:diyar_app/main.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,9 +55,26 @@ class NotificationService {
       initSettings,
       onDidReceiveNotificationResponse: onSelectNotification,
     );
+
     FirebaseMessaging.onMessage.listen(showLocalNotification);
+
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       log("Notification opened (onMessageOpenedApp): ${message.data}");
+      final messageData = MessageData.fromJson(message.data);
+      handleNotificationNavigation(messageData.type);
+    });
+
+    // Handle initial message when app is opened from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((
+      RemoteMessage? message,
+    ) {
+      if (message != null) {
+        log(
+          "App opened from terminated state via notification: ${message.data}",
+        );
+        final messageData = MessageData.fromJson(message.data);
+        handleNotificationNavigation(messageData.type);
+      }
     });
   }
 
@@ -80,6 +98,19 @@ class NotificationService {
 
   Future<void> showLocalNotification(RemoteMessage message) async {
     if (!enableNotifications) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = navigatorKey.currentContext;
+      if (context != null) {
+        try {
+          NotificationController.get(
+            context,
+          ).fetchAllNotifications(refresh: true, page: 1);
+        } catch (e) {
+          log('Error refreshing notifications in foreground: $e');
+        }
+      }
+    });
 
     final messageData = MessageData.fromJson(message.data);
     log("Notification received data: ${message.data}");
@@ -196,15 +227,21 @@ class NotificationService {
   void onSelectNotification(NotificationResponse response) {
     final type = response.payload;
     log('Notification tapped with type: $type');
+    handleNotificationNavigation(type);
+  }
 
+  void handleNotificationNavigation(String? type) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = navigatorKey.currentContext;
       if (context != null) {
-        if (type == 'personal' || type == 'specific') {
-          router.push(RoutesName.notificationsScreen);
-        } else {
-          router.push(RoutesName.notificationsScreen);
+        try {
+          NotificationController.get(
+            context,
+          ).fetchAllNotifications(refresh: true, page: 1);
+        } catch (e) {
+          log('Error refreshing notifications: $e');
         }
+        router.push(RoutesName.notificationsScreen);
       }
     });
   }

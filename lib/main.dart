@@ -42,30 +42,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await service.init();
   await service.showLocalNotificationFromBackground(message);
   AppLogger.log('Background message handled: ${message.messageId}');
-
 }
-// @pragma('vm:entry-point')
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   getAllNotifications();
-//   AppLogger.log('Handling a background message: ${message.messageId}');
-
-//   bool enable =
-//       await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
-//       true;
-
-//   if (!enable) {
-//     return;
-//   } else {
-//     if (Firebase.apps.isEmpty) {
-//       await Firebase.initializeApp(
-//         options: DefaultFirebaseOptions.currentPlatform,
-//       );
-//     }
-//     await NotificationService().init();
-//     AppLogger.log('Handling a background message: ${message.messageId}');
-//     await NotificationService().showLocalNotificationFromBackground(message);
-//   }
-// }
 
 bool enableNotifications = true;
 Future<void> main() async {
@@ -157,32 +134,5 @@ Future<void> setupNotifications() async {
   }
 
   final NotificationService localNotificationService = NotificationService();
-
-  FirebaseMessaging.onMessage.listen((message) async {
-    AppLogger.log("Foreground message received data: $message");
-    getAllNotifications();
-    if (!enableNotifications) {
-      return;
-    }
-
-    await localNotificationService.showLocalNotification(message);
-  });
-
-  FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    AppLogger.log("Notification opened: ${message.data}");
-
-    getAllNotifications();
-    if (!enableNotifications) return;
-
-    await localNotificationService.init();
-    // navigatorKey.currentContext?.pushNamed(RoutesName.notificationsScreen);
-  });
-}
-
-Future<void> getAllNotifications() async {
-  await NotificationController.get(
-    navigatorKey.currentContext!,
-  ).fetchAllNotifications(refresh: true, page: 1);
+  await localNotificationService.init();
 }

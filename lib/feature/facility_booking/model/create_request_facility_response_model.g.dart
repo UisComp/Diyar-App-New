@@ -27,7 +27,8 @@ Map<String, dynamic> _$CreateRequestFacilityResponseModelToJson(
 RequestFacilityData _$RequestFacilityDataFromJson(Map<String, dynamic> json) =>
     RequestFacilityData(
       id: (json['id'] as num?)?.toInt(),
-      bookingDate: json['booking_date'] as String?,
+      bookingStart: json['booking_start'] as String?,
+      bookingEnd: json['booking_end'] as String?,
       status: json['status'] as String?,
       notes: json['notes'] as String?,
       facility: json['facility'] == null
@@ -39,7 +40,8 @@ Map<String, dynamic> _$RequestFacilityDataToJson(
         RequestFacilityData instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'booking_date': instance.bookingDate,
+      'booking_start': instance.bookingStart,
+      'booking_end': instance.bookingEnd,
       'status': instance.status,
       'notes': instance.notes,
       'facility': instance.facility,
