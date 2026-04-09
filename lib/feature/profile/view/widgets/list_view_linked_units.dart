@@ -71,9 +71,12 @@ class ListViewLinkedUnits extends StatelessWidget {
                   ),
                 ),
                 12.ph,
-                linkedUnits.isEmpty
-                    ? SizedBox(height: 200.h, child: const EmptyLinkedUnits())
-                    : Column(
+                if (linkedUnits.isEmpty)
+                  const Expanded(child: EmptyLinkedUnits())
+                else
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
                         children: linkedUnits.map((unit) {
                           return InkWell(
                             onTap: () async {
@@ -117,8 +120,10 @@ class ListViewLinkedUnits extends StatelessWidget {
                               ),
                             ),
                           );
-                        }).toList(),
+                         }).toList(),
                       ),
+                    ),
+                  ),
               ],
             ),
           ),

@@ -34,14 +34,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  late AuthController authController;
-  late SettingsController settingsController;
   @override
   void initState() {
     super.initState();
-    authController = AuthController.get(context);
-    settingsController = SettingsController.get(context);
-    settingsController.initialize();
+    SettingsController.get(context).initialize();
     loadBio();
   }
 
@@ -52,10 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _loginWithBiometrics() async {
+    final authController = AuthController.get(context);
+    final settingsController = SettingsController.get(context);
     try {
-      final isAuthenticated = await context
-          .read<SettingsController>()
-          .authenticateWithBiometrics();
+      final isAuthenticated = await settingsController.authenticateWithBiometrics();
       if (!isAuthenticated) {
         AppLogger.error('Biometric authentication failed');
         return;
@@ -116,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (authState is LoginFailureState) {
                         AppFunctions.errorMessage(
                           description:
-                              authController.loginResponseModel.message,
+                              AuthController.get(context).loginResponseModel.message,
                           context,
                           message: LocaleKeys.login_failed.tr(),
                         );

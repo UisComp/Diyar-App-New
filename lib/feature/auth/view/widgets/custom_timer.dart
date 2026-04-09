@@ -17,23 +17,15 @@ class CustomTimer extends StatefulWidget {
 }
 
 class _CustomTimerState extends State<CustomTimer> {
-  late AuthController authController;
-
   @override
   void initState() {
     super.initState();
-    authController = AuthController.get(context);
-    authController.initTimer();
-  }
-
-  @override
-  void dispose() {
-    authController.stopTimer();
-    super.dispose();
+    AuthController.get(context).initTimer();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return BlocBuilder<AuthController, AuthState>(
       builder: (context, state) {
         return Row(

@@ -293,5 +293,6 @@
   "confirmed": "Confirmed",
   "end_date_must_be_after_start_date":"End Date Must Be After Start Date",
   "start_date":"Start Date",
-  "end_date":"End Date"
+  "end_date":"End Date",
+  "no_image_found": "No image found"
 }

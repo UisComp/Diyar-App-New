@@ -298,5 +298,6 @@ abstract class  LocaleKeys {
   static const end_date_must_be_after_start_date = 'end_date_must_be_after_start_date';
   static const start_date = 'start_date';
   static const end_date = 'end_date';
+  static const no_image_found = 'no_image_found';
 
 }

@@ -25,22 +25,10 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  late AuthController authController;
-  @override
-  void initState() {
-    super.initState();
-    authController = AuthController.get(context);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    authController.close();
-  }
-
   static final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return Scaffold(
       appBar: CustomAppBar(
         titleAppBar: LocaleKeys.forget_password.tr().replaceAll("?", ""),

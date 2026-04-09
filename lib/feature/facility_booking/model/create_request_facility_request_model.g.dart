@@ -7,23 +7,25 @@ part of 'create_request_facility_request_model.dart';
 // **************************************************************************
 
 CreateRequestFacilityRequestModel _$CreateRequestFacilityRequestModelFromJson(
-  Map<String, dynamic> json,
-) => CreateRequestFacilityRequestModel(
-  facilities: (json['facilities'] as List<dynamic>?)
-      ?.map((e) => FacilityItem.fromJson(e as Map<String, dynamic>))
-      .toList(),
-);
+        Map<String, dynamic> json) =>
+    CreateRequestFacilityRequestModel(
+      facilities: (json['facilities'] as List<dynamic>?)
+          ?.map((e) => FacilityItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$CreateRequestFacilityRequestModelToJson(
-  CreateRequestFacilityRequestModel instance,
-) => <String, dynamic>{'facilities': instance.facilities};
+        CreateRequestFacilityRequestModel instance) =>
+    <String, dynamic>{
+      'facilities': instance.facilities,
+    };
 
 FacilityItem _$FacilityItemFromJson(Map<String, dynamic> json) => FacilityItem(
-  id: (json['id'] as num?)?.toInt(),
-  notes: json['notes'] as String?,
-  bookingStart: json['booking_start'] as String?,
-  bookingEnd: json['booking_end'] as String?,
-);
+      id: (json['id'] as num?)?.toInt(),
+      notes: json['notes'] as String?,
+      bookingStart: json['booking_start'] as String?,
+      bookingEnd: json['booking_end'] as String?,
+    );
 
 Map<String, dynamic> _$FacilityItemToJson(FacilityItem instance) =>
     <String, dynamic>{

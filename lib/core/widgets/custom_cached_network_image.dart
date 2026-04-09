@@ -24,10 +24,18 @@ class CustomCachedNetworkImage extends StatelessWidget {
     return InkWell(
       onTap: isProjectDetails
           ? null
-          : () => showImagePreview(context, imageUrl ?? ''),
+          : () {
+              if (imageUrl != null && imageUrl!.isNotEmpty) {
+                showImagePreview(context, imageUrl!);
+              }
+            },
       child: CachedNetworkImage(
-        width: (imageUrl != null && imageUrl!.trim().isNotEmpty) ? width : 1.sw,
-        height: (imageUrl != null && imageUrl!.trim().isNotEmpty) ? height : 300.h,
+        width:
+            width ??
+            ((imageUrl == null || imageUrl!.trim().isEmpty) ? 1.sw : null),
+        height:
+            height ??
+            ((imageUrl == null || imageUrl!.trim().isEmpty) ? 300.h : null),
         fadeOutDuration: const Duration(seconds: 5),
         fadeInCurve: Curves.decelerate,
         fadeInDuration: const Duration(seconds: 5),

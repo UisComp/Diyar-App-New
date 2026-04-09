@@ -55,9 +55,43 @@ class UnitData {
     this.news,
   });
 
-  factory UnitData.fromJson(Map<String, dynamic> json) =>
-      _$UnitDataFromJson(json);
+  factory UnitData.fromJson(Map<String, dynamic> json) {
+    return UnitData(
+      id: _toInt(json['id']),
+      name: json['name']?.toString(),
+      building: json['building']?.toString(),
+      number: json['number']?.toString(),
+      projectId: json['project_id']?.toString(),
+      userId: json['user_id']?.toString(),
+      unitValue: _toDouble(json['unit_value']),
+      downPayment: _toDouble(json['down_payment']),
+      interestRate: _toDouble(json['interest_rate']),
+      installmentCount: _toInt(json['installments_count']),
+      firstInstallmentDate: json['first_installment_date']?.toString(),
+      mainImage: json['main_image'] != null ? Media.fromJson(json['main_image']) : null,
+      news: json['news'] != null
+          ? (json['news'] as List).map((e) => News.fromJson(e)).toList()
+          : null,
+    );
+  }
+
   Map<String, dynamic> toJson() => _$UnitDataToJson(this);
+
+  static int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
+  }
+
+  static double? _toDouble(dynamic value) {
+    if (value == null) return null;
+    if (value is double) return value;
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
+  }
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -80,7 +114,16 @@ class Media {
     this.uploadedAt,
   });
 
-  factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
+  factory Media.fromJson(Map<String, dynamic> json) {
+    return Media(
+      id: UnitData._toInt(json['id']),
+      name: json['name']?.toString(),
+      fileName: json['file_name']?.toString(),
+      url: json['url']?.toString(),
+      size: json['size']?.toString(),
+      uploadedAt: json['uploaded_at']?.toString(),
+    );
+  }
   Map<String, dynamic> toJson() => _$MediaToJson(this);
 }
 
@@ -105,7 +148,17 @@ class News {
     this.project,
   });
 
-  factory News.fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
+  factory News.fromJson(Map<String, dynamic> json) {
+    return News(
+      id: UnitData._toInt(json['id']),
+      title: json['title']?.toString(),
+      content: json['content']?.toString(),
+      newsDate: json['news_date']?.toString(),
+      media: json['media'] != null ? (json['media'] as List).map((e) => Media.fromJson(e)).toList() : null,
+      unit: json['unit'] != null ? UnitData.fromJson(json['unit']) : null,
+      project: json['project'] != null ? Project.fromJson(json['project']) : null,
+    );
+  }
   Map<String, dynamic> toJson() => _$NewsToJson(this);
 }
 
@@ -132,8 +185,17 @@ class Project {
     this.unitMapping,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json) =>
-      _$ProjectFromJson(json);
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return Project(
+      id: UnitData._toInt(json['id']),
+      name: json['name']?.toString(),
+      description: json['description']?.toString(),
+      mainImage: json['main_image'] != null ? Media.fromJson(json['main_image']) : null,
+      media: json['media'] != null ? (json['media'] as List).map((e) => Media.fromJson(e)).toList() : null,
+      hasUnitMapping: json['has_unit_mapping'] == true || json['has_unit_mapping'] == 'true',
+      unitMapping: json['unit_mapping'] != null ? UnitMapping.fromJson(json['unit_mapping']) : null,
+    );
+  }
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 }
 
@@ -146,8 +208,14 @@ class UnitMapping {
 
   UnitMapping({this.version, this.imageWidth, this.imageHeight, this.shapes});
 
-  factory UnitMapping.fromJson(Map<String, dynamic> json) =>
-      _$UnitMappingFromJson(json);
+  factory UnitMapping.fromJson(Map<String, dynamic> json) {
+    return UnitMapping(
+      version: json['version']?.toString(),
+      imageWidth: UnitData._toInt(json['imageWidth']) ?? UnitData._toInt(json['image_width']),
+      imageHeight: UnitData._toInt(json['imageHeight']) ?? UnitData._toInt(json['image_height']),
+      shapes: json['shapes'] != null ? (json['shapes'] as List).map((e) => Shape.fromJson(e)).toList() : null,
+    );
+  }
   Map<String, dynamic> toJson() => _$UnitMappingToJson(this);
 }
 
@@ -160,6 +228,15 @@ class Shape {
 
   Shape({this.id, this.shapeType, this.unitId, this.points});
 
-  factory Shape.fromJson(Map<String, dynamic> json) => _$ShapeFromJson(json);
+  factory Shape.fromJson(Map<String, dynamic> json) {
+    return Shape(
+      id: json['id']?.toString(),
+      shapeType: json['shapeType']?.toString() ?? json['shape_type']?.toString(),
+      unitId: UnitData._toInt(json['unitId']) ?? UnitData._toInt(json['unit_id']),
+      points: json['points'] != null 
+          ? (json['points'] as List).map((e) => (e as List).map((p) => UnitData._toDouble(p) ?? 0.0).toList()).toList() 
+          : null,
+    );
+  }
   Map<String, dynamic> toJson() => _$ShapeToJson(this);
 }
