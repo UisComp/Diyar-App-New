@@ -43,8 +43,26 @@ class ProfileData {
     this.profilePicture,
   });
 
-  factory ProfileData.fromJson(Map<String, dynamic> json) =>
-      _$ProfileDataFromJson(json);
+  factory ProfileData.fromJson(Map<String, dynamic> json) {
+    return ProfileData(
+      id: _toInt(json['id']),
+      name: json['name']?.toString(),
+      email: json['email']?.toString(),
+      phoneNumber: json['phone_number']?.toString(),
+      emailVerifiedAt: json['email_verified_at']?.toString(),
+      createdAt: json['created_at']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
+      profilePicture: json['profile_picture'] != null ? ProfilePicture.fromJson(json['profile_picture']) : null,
+    );
+  }
+
+  static int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
+  }
 
   Map<String, dynamic> toJson() => _$ProfileDataToJson(this);
 }
@@ -69,8 +87,16 @@ class ProfilePicture {
     this.mimeType,
   });
 
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) =>
-      _$ProfilePictureFromJson(json);
+  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
+    return ProfilePicture(
+      id: ProfileData._toInt(json['id']),
+      name: json['name']?.toString(),
+      fileName: json['file_name']?.toString(),
+      url: json['url']?.toString(),
+      size: json['size']?.toString(),
+      mimeType: json['mime_type']?.toString(),
+    );
+  }
 
   Map<String, dynamic> toJson() => _$ProfilePictureToJson(this);
 }

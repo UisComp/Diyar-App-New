@@ -56,6 +56,7 @@ class InstallmentsTable extends StatelessWidget {
                   child: AppText(
                     LocaleKeys.installment_number.tr(),
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.whiteColor),
                   ),
                 ),
               ),
@@ -64,6 +65,7 @@ class InstallmentsTable extends StatelessWidget {
                   child: AppText(
                     LocaleKeys.date.tr(),
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.whiteColor),
                   ),
                 ),
               ),
@@ -72,6 +74,7 @@ class InstallmentsTable extends StatelessWidget {
                   child: AppText(
                     LocaleKeys.amount.tr(),
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.whiteColor),
                   ),
                 ),
               ),
@@ -80,6 +83,7 @@ class InstallmentsTable extends StatelessWidget {
                   child: AppText(
                     LocaleKeys.status.tr(),
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.whiteColor),
                   ),
                 ),
               ),

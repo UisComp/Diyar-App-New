@@ -306,7 +306,11 @@ class CodegenLoader extends AssetLoader{
   "add_notes": "إضافة ملاحظات",
   "select_booking_date": "اختر تاريخ الحجز",
   "please_select_date_for_all_facilities": "يرجى اختيار تاريخ لجميع المرافق",
-  "confirmed": "تم التأكيد"
+  "confirmed": "تم التأكيد",
+  "end_date_must_be_after_start_date": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
+  "start_date": "تاريخ البدء",
+  "end_date": "تاريخ الانتهاء",
+  "no_image_found": "لا توجد صورة"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "Diyar",
@@ -600,7 +604,11 @@ static const Map<String,dynamic> _en = {
   "add_notes": "Add Notes",
   "select_booking_date": "Select Booking Date",
   "please_select_date_for_all_facilities": "Please Select Date For All Facilities",
-  "confirmed": "Confirmed"
+  "confirmed": "Confirmed",
+  "end_date_must_be_after_start_date": "End Date Must Be After Start Date",
+  "start_date": "Start Date",
+  "end_date": "End Date",
+  "no_image_found": "No image found"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

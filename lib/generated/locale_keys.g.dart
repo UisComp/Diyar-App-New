@@ -295,5 +295,9 @@ abstract class  LocaleKeys {
   static const select_booking_date = 'select_booking_date';
   static const please_select_date_for_all_facilities = 'please_select_date_for_all_facilities';
   static const confirmed = 'confirmed';
+  static const end_date_must_be_after_start_date = 'end_date_must_be_after_start_date';
+  static const start_date = 'start_date';
+  static const end_date = 'end_date';
+  static const no_image_found = 'no_image_found';
 
 }

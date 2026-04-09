@@ -28,7 +28,8 @@ Map<String, dynamic> _$FacilityBookingHistoryResponseModelToJson(
 FacilityBookingData _$FacilityBookingDataFromJson(Map<String, dynamic> json) =>
     FacilityBookingData(
       id: (json['id'] as num?)?.toInt(),
-      bookingDate: json['booking_date'] as String?,
+      bookingEnd: json['booking_end'] as String?,
+      bookingStart: json['booking_start'] as String?,
       status: json['status'] as String?,
       notes: json['notes'] as String?,
       facility: json['facility'] == null
@@ -45,7 +46,8 @@ Map<String, dynamic> _$FacilityBookingDataToJson(
         FacilityBookingData instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'booking_date': instance.bookingDate,
+      'booking_start': instance.bookingStart,
+      'booking_end': instance.bookingEnd,
       'status': instance.status,
       'notes': instance.notes,
       'facility': instance.facility,

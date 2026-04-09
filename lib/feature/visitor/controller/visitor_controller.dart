@@ -29,7 +29,7 @@ class VisitorController extends Cubit<VisitorState> {
       final now = DateTime.now();
       final picked = await showDateRangePicker(
         context: context,
-        firstDate: now,
+        firstDate: DateTime(2000),
         lastDate: now.add(const Duration(days: 365)),
         initialDateRange:
             selectedDateRange ??

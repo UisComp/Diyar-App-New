@@ -24,10 +24,13 @@ class FacilityItem {
   @JsonKey(name: 'notes')
   String? notes;
 
-  @JsonKey(name: 'booking_date')
-  String? bookingDate;
+  @JsonKey(name: 'booking_start')
+  String? bookingStart;
 
-  FacilityItem({this.id, this.notes, this.bookingDate});
+  @JsonKey(name: 'booking_end')
+  String? bookingEnd;
+
+  FacilityItem({this.id, this.notes, this.bookingStart, this.bookingEnd});
 
   factory FacilityItem.fromJson(Map<String, dynamic> json) =>
       _$FacilityItemFromJson(json);

@@ -23,16 +23,11 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  late AuthController authController;
   final formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    super.initState();
-    authController = AuthController.get(context);
-  }
 
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.otp_verification.tr()),
       body: Padding(

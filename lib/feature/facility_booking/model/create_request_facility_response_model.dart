@@ -8,24 +8,25 @@ class CreateRequestFacilityResponseModel {
   final String? message;
   final List<RequestFacilityData>? data;
 
-  CreateRequestFacilityResponseModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  CreateRequestFacilityResponseModel({this.success, this.message, this.data});
 
-  factory CreateRequestFacilityResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$CreateRequestFacilityResponseModelFromJson(json);
+  factory CreateRequestFacilityResponseModel.fromJson(
+    Map<String, dynamic> json,
+  ) => _$CreateRequestFacilityResponseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CreateRequestFacilityResponseModelToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$CreateRequestFacilityResponseModelToJson(this);
 }
 
 @JsonSerializable()
 class RequestFacilityData {
   final int? id;
 
-  @JsonKey(name: "booking_date")
-  final String? bookingDate;
+  @JsonKey(name: "booking_start")
+  final String? bookingStart;
+
+  @JsonKey(name: "booking_end")
+  final String? bookingEnd;
 
   final String? status;
   final String? notes;
@@ -33,7 +34,8 @@ class RequestFacilityData {
 
   RequestFacilityData({
     this.id,
-    this.bookingDate,
+    this.bookingStart,
+    this.bookingEnd,
     this.status,
     this.notes,
     this.facility,

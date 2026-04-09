@@ -23,12 +23,14 @@ Map<String, dynamic> _$CreateRequestFacilityRequestModelToJson(
 FacilityItem _$FacilityItemFromJson(Map<String, dynamic> json) => FacilityItem(
       id: (json['id'] as num?)?.toInt(),
       notes: json['notes'] as String?,
-      bookingDate: json['booking_date'] as String?,
+      bookingStart: json['booking_start'] as String?,
+      bookingEnd: json['booking_end'] as String?,
     );
 
 Map<String, dynamic> _$FacilityItemToJson(FacilityItem instance) =>
     <String, dynamic>{
       'id': instance.id,
       'notes': instance.notes,
-      'booking_date': instance.bookingDate,
+      'booking_start': instance.bookingStart,
+      'booking_end': instance.bookingEnd,
     };

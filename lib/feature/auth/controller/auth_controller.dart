@@ -178,7 +178,7 @@ class AuthController extends Cubit<AuthState> {
     }
   }
 
-  late Timer timer;
+  Timer? timer;
   int remainingSeconds = 30;
   String get minutes => (remainingSeconds ~/ 60).toString().padLeft(2, '0');
   String get seconds => (remainingSeconds % 60).toString().padLeft(2, '0');
@@ -188,7 +188,7 @@ class AuthController extends Cubit<AuthState> {
   }
 
   Future<void> stopTimer() async {
-    timer.cancel();
+    timer?.cancel();
     emit(StoppingTimerState());
   }
 
@@ -283,5 +283,11 @@ class AuthController extends Cubit<AuthState> {
           AppLogger.error('Error Happen While log out is $error');
           emit(LoginFailureState(error: error.toString()));
         });
+  }
+
+  @override
+  Future<void> close() {
+    timer?.cancel();
+    return super.close();
   }
 }

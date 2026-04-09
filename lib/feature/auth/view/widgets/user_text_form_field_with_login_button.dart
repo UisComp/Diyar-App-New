@@ -29,12 +29,10 @@ class UserTextFormFieldWithLoginButton extends StatefulWidget {
 class _UserTextFormFieldWithLoginButtonState
     extends State<UserTextFormFieldWithLoginButton> {
   bool isObscurePassword = true;
-  late AuthController authController;
   @override
   void initState() {
     super.initState();
-    authController = AuthController.get(context);
-    authController.initController();
+    AuthController.get(context).initController();
   }
 
   void toggleVisibilityPassword() {
@@ -45,6 +43,7 @@ class _UserTextFormFieldWithLoginButtonState
 
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return BlocConsumer<AuthController, AuthState>(
       listener: (context, authState) {},
       builder: (context, authState) {

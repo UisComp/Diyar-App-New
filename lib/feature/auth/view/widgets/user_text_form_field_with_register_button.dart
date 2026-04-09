@@ -26,11 +26,10 @@ class _UserTextFormFieldForRegisterState
     extends State<UserTextFormFieldForRegister> {
   bool isObscurePassword = true;
   bool isObscurePasswordForConformation = true;
-  late AuthController authController;
+
   @override
   void initState() {
     super.initState();
-    authController = AuthController.get(context);
   }
 
   void toggleVisibilityPassword() {
@@ -48,11 +47,11 @@ class _UserTextFormFieldForRegisterState
   @override
   void dispose() {
     super.dispose();
-    authController.close();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return BlocConsumer<AuthController, AuthState>(
       listener: (context, authState) {
         if (authState is RegisterSuccessState) {
@@ -164,7 +163,6 @@ class _UserTextFormFieldForRegisterState
             ),
             24.ph,
             CustomTextFormField(
-              // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (unitNumber) {
                 if (unitNumber!.isEmpty) {
@@ -175,7 +173,7 @@ class _UserTextFormFieldForRegisterState
               contentPadding: EdgeInsets.all(20.sp),
               controller: authController.unitNumberController,
               labelText: LocaleKeys.unit_number.tr(),
-              // keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               prefixIcon: Icon(Icons.domain, color: AppColors.blackColor),
             ),
           ],

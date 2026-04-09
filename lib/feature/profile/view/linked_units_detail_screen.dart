@@ -40,58 +40,59 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final unitData =
-        profileController.unitModelDetailsForLinkedUserResponseModel.data;
-    return Scaffold(
-      appBar: CustomAppBar(
-        titleAppBar: unitData?.name ?? LocaleKeys.unit_details.tr(),
-        centerTitle: true,
-      ),
-      body: BlocBuilder<ProfileController, ProfileState>(
-        builder: (context, state) {
-          final isLoading = state is GetUnitsForUserLinkedLoadingState;
+    return BlocBuilder<ProfileController, ProfileState>(
+      builder: (context, state) {
+        final unitData =
+            profileController.unitModelDetailsForLinkedUserResponseModel.data;
+        final isLoading = state is GetUnitsForUserLinkedLoadingState;
 
-          return Skeletonizer(
+        return Scaffold(
+          appBar: CustomAppBar(
+            titleAppBar: unitData?.name ?? LocaleKeys.unit_details.tr(),
+            centerTitle: true,
+          ),
+          body: Skeletonizer(
             enabled: isLoading,
             child: SingleChildScrollView(
               padding: EdgeInsets.all(16.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r),
-                    // child: CachedImage(
-                    //   url:
-                    //       profileController
-                    //           .unitModelDetailsForLinkedUserResponseModel
-                    //           .data
-                    //           ?.mainImage!
-                    //           .url ??
-                    //       '',
-                    //   width: double.infinity,
-                    //   height: 200.h,
-                    //   fit: BoxFit.cover,
-                    // ),
-                    child: CustomCachedNetworkImage(
-                      imageUrl:
-                          profileController
-                              .unitModelDetailsForLinkedUserResponseModel
-                              .data
-                              ?.mainImage!
-                              .url ??
-                          '',
-                      width: double.infinity,
-                      height: 200.h,
-                      fit: BoxFit.cover,
+                  if (profileController
+                          .unitModelDetailsForLinkedUserResponseModel
+                          .data
+                          ?.mainImage !=
+                      null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      // child: CachedImage(
+                      //   url:
+                      //       profileController
+                      //           .unitModelDetailsForLinkedUserResponseModel
+                      //           .data
+                      //           ?.mainImage!
+                      //           .url ??
+                      //       '',
+                      //   width: double.infinity,
+                      //   height: 200.h,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      child: CustomCachedNetworkImage(
+                        imageUrl:
+                            profileController
+                                .unitModelDetailsForLinkedUserResponseModel
+                                .data
+                                ?.mainImage
+                                ?.url ??
+                            '',
+                        width: double.infinity,
+                        height: 200.h,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
                   16.ph,
                   AppText(
-                    profileController
-                            .unitModelDetailsForLinkedUserResponseModel
-                            .data
-                            ?.name ??
-                        '',
+                    unitData?.name ?? '',
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -116,91 +117,80 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   ),
                   12.ph,
-                  if (unitData?.news != null && unitData!.news!.isNotEmpty)
+                  if (unitData?.news?.isNotEmpty ?? false)
                     Column(
-                      children: profileController
-                          .unitModelDetailsForLinkedUserResponseModel
-                          .data!
-                          .news!
-                          .map((newsItem) {
-                            return Card(
-                              color: AppColors.whiteColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              margin: EdgeInsets.only(bottom: 16.h),
-                              elevation: 3,
-                              child: Padding(
-                                padding: EdgeInsets.all(12.w),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (newsItem.media != null &&
-                                          newsItem.media!.isNotEmpty)
-                                        SizedBox(
-                                          height: 100.h,
-                                          width: 120.w,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: newsItem.media!.length,
-                                            itemBuilder: (context, index) {
-                                              final media =
-                                                  newsItem.media![index];
-                                              return Padding(
-                                                padding: EdgeInsets.only(
-                                                  right: 8.w,
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        8.r,
-                                                      ),
-                                                  child:
-                                                      CustomCachedNetworkImage(
-                                                        imageUrl:
-                                                            media.url ?? '',
-                                                        width: 100.w,
-                                                        height: 100.h,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                ),
-                                              );
-                                            },
+                      children: (unitData?.news ?? []).map((newsItem) {
+                        return Card(
+                          color: AppColors.whiteColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          margin: EdgeInsets.only(bottom: 16.h),
+                          elevation: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (newsItem.media != null &&
+                                      newsItem.media!.isNotEmpty)
+                                    SizedBox(
+                                      height: 100.h,
+                                      width: 120.w,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: newsItem.media!.length,
+                                        itemBuilder: (context, index) {
+                                          final media = newsItem.media![index];
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              right: 8.w,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                              child: CustomCachedNetworkImage(
+                                                imageUrl: media.url ?? '',
+                                                width: 100.w,
+                                                height: 100.h,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  8.pw,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText(
+                                          newsItem.title ?? '',
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      8.pw,
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AppText(
-                                              newsItem.title ?? '',
-                                              style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            8.ph,
-                                            AppText(
-                                              newsItem.content ?? '',
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: Colors.grey[700],
-                                              ),
-                                            ),
-                                          ],
+                                        8.ph,
+                                        AppText(
+                                          newsItem.content ?? '',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: Colors.grey[700],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            );
-                          })
-                          .toList(),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     )
                   else
                     Center(
@@ -215,9 +205,9 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

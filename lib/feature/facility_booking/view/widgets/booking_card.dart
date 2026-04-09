@@ -82,21 +82,44 @@ class BookingCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       4.ph,
-                      if (booking.bookingDate != null) ...[
+                      if (booking.bookingStart != null) ...[
                         Row(
                           children: [
                             Icon(
-                              Icons.calendar_today,
+                              Icons.play_circle_outline,
                               size: 14.sp,
-                              color: Colors.grey.shade600,
+                              color: Colors.green.shade600,
                             ),
                             6.pw,
                             Expanded(
                               child: AppText(
-                                AppFormatter.formatDate(
+                                AppFormatter.formatDateWithTime(
                                   DateTime.parse(
-                                    booking.bookingDate!,
-                                  ).toUtc().toLocal(),
+                                    booking.bookingStart!,
+                                  ).toLocal(),
+                                ),
+                                style: AppStyle.fontSize12Regular(
+                                  context,
+                                ).copyWith(color: Colors.grey.shade600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        4.ph,
+                      ],
+                      if (booking.bookingEnd != null) ...[
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.stop_circle_outlined,
+                              size: 14.sp,
+                              color: Colors.redAccent,
+                            ),
+                            6.pw,
+                            Expanded(
+                              child: AppText(
+                                AppFormatter.formatDateWithTime(
+                                  DateTime.parse(booking.bookingEnd!).toLocal(),
                                 ),
                                 style: AppStyle.fontSize12Regular(
                                   context,

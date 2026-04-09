@@ -8,15 +8,11 @@ class FacilityBookingHistoryResponseModel {
   final String? message;
   final List<FacilityBookingData>? data;
 
-  FacilityBookingHistoryResponseModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  FacilityBookingHistoryResponseModel({this.success, this.message, this.data});
 
   factory FacilityBookingHistoryResponseModel.fromJson(
-          Map<String, dynamic> json) =>
-      _$FacilityBookingHistoryResponseModelFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$FacilityBookingHistoryResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() =>
       _$FacilityBookingHistoryResponseModelToJson(this);
@@ -26,8 +22,11 @@ class FacilityBookingHistoryResponseModel {
 class FacilityBookingData {
   final int? id;
 
-  @JsonKey(name: 'booking_date')
-  final String? bookingDate;
+  @JsonKey(name: "booking_start")
+  final String? bookingStart;
+
+  @JsonKey(name: "booking_end")
+  final String? bookingEnd;
 
   final String? status;
   final String? notes;
@@ -42,7 +41,8 @@ class FacilityBookingData {
 
   FacilityBookingData({
     this.id,
-    this.bookingDate,
+    this.bookingEnd,
+    this.bookingStart,
     this.status,
     this.notes,
     this.facility,
@@ -129,11 +129,7 @@ class UserModel {
   final String? name;
   final String? email;
 
-  UserModel({
-    this.id,
-    this.name,
-    this.email,
-  });
+  UserModel({this.id, this.name, this.email});
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

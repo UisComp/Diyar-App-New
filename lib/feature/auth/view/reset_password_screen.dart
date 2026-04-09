@@ -25,18 +25,12 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  late AuthController authController;
-  @override
-  void initState() {
-    super.initState();
-    authController = AuthController.get(context);
-  }
-
   final formKey = GlobalKey<FormState>();
   bool isSecurePassword = true;
   bool isSecurePasswordConfirmation = true;
   @override
   Widget build(BuildContext context) {
+    final authController = AuthController.get(context);
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.reset_password.tr()),
       body: Form(

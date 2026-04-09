@@ -31,4 +31,7 @@ class AppFormatter {
 
   static String formatDate(DateTime date) =>
       DateFormat('MMM d, yyyy • h:mm a').format(date);
+
+  static String formatDateWithTime(DateTime date) =>
+      DateFormat('yyyy/MM/dd  HH:mm').format(date);
 }
