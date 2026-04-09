@@ -9,6 +9,7 @@ import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/helper/notification_helper.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
+import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
@@ -101,6 +102,7 @@ Future<void> main() async {
               BlocProvider(
                 create: (_) => SettingsController()..getConfigData(),
               ),
+              BlocProvider(create: (_) => HomeController()),
             ],
             child: const DiyarApp(),
           ),

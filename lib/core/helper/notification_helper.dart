@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -241,7 +242,12 @@ class NotificationService {
         } catch (e) {
           log('Error refreshing notifications: $e');
         }
-        router.push(RoutesName.notificationsScreen);
+        if (type == 'overdue') {
+          HomeController.get(context).changeIndexBottomNavBar(3);
+          router.go(RoutesName.homeLayout);
+        } else {
+          router.push(RoutesName.notificationsScreen);
+        }
       }
     });
   }

@@ -218,10 +218,7 @@ final GoRouter router = GoRouter(
       name: RoutesName.homeLayout,
       path: RoutesName.homeLayout,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (_) => HomeController(),
-          child: const HomeLayout(),
-        ),
+        child: const HomeLayout(),
         transition: slideFromLeft,
       ),
     ),
