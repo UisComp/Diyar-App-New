@@ -210,6 +210,7 @@ class NotificationItem extends StatelessWidget {
         if (notification.entityType == "1") {
           final controller = FacilityBookingController();
           await controller.getFacilityBookingHistory();
+          notificationController.markAsRead(notification.id!);
           context.push(
             RoutesName.facilityBookingHistoryScreen,
             extra: controller,
@@ -217,6 +218,7 @@ class NotificationItem extends StatelessWidget {
         } else if (notification.entityType == "2") {
           final controller = ServiceProviderController();
           await controller.getServiceProviderHistory();
+          notificationController.markAsRead(notification.id!);
           context.push(
             RoutesName.serviceProviderHistoryScreen,
             extra: controller,
