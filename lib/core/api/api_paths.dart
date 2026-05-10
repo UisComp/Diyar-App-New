@@ -4,7 +4,7 @@ import 'package:diyar_app/core/constants/custom_logger.dart';
 class ApiPaths {
   static Duration timeOutDuration = const Duration(seconds: 20);
   static Duration sendTimeOutDuration = const Duration(seconds: 20);
-  static const String baseUrl = "https://diyar.sherif-elzeny.com/api/";
+  static const String baseUrl = "https://diyar.uisdevs.com/api/";
   static const String register = "register";
   static const String login = "login";
   static const String logOut = "logout";
@@ -21,6 +21,7 @@ class ApiPaths {
     AppLogger.info('API Path check - Has token: $hasToken');
     return hasToken ? "services/user" : "services";
   }
+
   static const String getAllAnnouncementsBannersPath = "announcements";
   static const String getLinkedUnitsForUser = "units";
   static const String getProjects = "projects";
