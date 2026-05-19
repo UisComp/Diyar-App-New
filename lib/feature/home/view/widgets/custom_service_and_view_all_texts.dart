@@ -17,22 +17,39 @@ class CustomServiceAndViewAllTexts extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AppText(
-          LocaleKeys.services.tr(),
-          style: AppStyle.fontSize22Bold(context).copyWith(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w800,
-            color: AppColors.primaryColor,
-          ),
+        Row(
+          children: [
+            Container(
+              width: 4.w,
+              height: 22.h,
+              decoration: BoxDecoration(
+                gradient: AppColors.accentGradient,
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            AppText(
+              LocaleKeys.services.tr(),
+              style: AppStyle.fontSize22Bold(context).copyWith(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w800,
+                color: AppColors.primaryColor,
+              ),
+            ),
+          ],
         ),
-
         InkWell(
           onTap: () {
             context.push(RoutesName.viewAllServicesScreen);
           },
           child: AppText(
             LocaleKeys.view_all.tr(),
-            style: AppStyle.fontSize16Regular(context),
+            style: AppStyle.fontSize16Regular(context).copyWith(
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.primaryColor.withValues(alpha: 0.5),
+            ),
           ),
         ),
       ],

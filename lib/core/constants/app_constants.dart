@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  static const String appName = "Diyar";
+  static const String appName = "LA'MER";
   static const String arLanguage = "ar";
   static const String enLanguage = "en";
   static const String userModelKey = "userModelKey";

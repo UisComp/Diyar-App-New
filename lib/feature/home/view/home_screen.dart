@@ -206,25 +206,48 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           CustomTextFormField(
                             controller: homeController.searchController,
-                            hintStyle: AppStyle.fontSize16Regular(
-                              context,
-                            ).copyWith(color: AppColors.primaryColor),
+                            hintStyle: AppStyle.fontSize16Regular(context).copyWith(
+                              color: darkTheme
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
+                              fontSize: 14.sp,
+                            ),
                             hintText: LocaleKeys.search_services.tr(),
-                            prefixIcon: SvgPicture.asset(
-                              Assets.images.svg.search,
-                              height: 24.h,
-                              width: 24.w,
-                              fit: BoxFit.scaleDown,
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              child: SvgPicture.asset(
+                                Assets.images.svg.search,
+                                height: 22.h,
+                                width: 22.w,
+                                fit: BoxFit.scaleDown,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.primaryColor,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
                             ),
-                          ).paddingOnly(top: 20.h),
+                          ).paddingOnly(top: 16.h),
                           20.ph,
-                          AppText(
-                            LocaleKeys.discover.tr(),
-                            style: AppStyle.fontSize22Bold(context).copyWith(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.primaryColor,
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                width: 4.w,
+                                height: 22.h,
+                                decoration: BoxDecoration(
+                                  gradient: AppColors.accentGradient,
+                                  borderRadius: BorderRadius.circular(2.r),
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              AppText(
+                                LocaleKeys.discover.tr(),
+                                style: AppStyle.fontSize22Bold(context).copyWith(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ],
                           ).paddingSymmetric(horizontal: 16.w),
                           5.ph,
                           DiyarBannerSlider(

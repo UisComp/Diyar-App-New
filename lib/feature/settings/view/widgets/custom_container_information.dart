@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -31,96 +32,141 @@ class CustomContainerInformation extends StatelessWidget {
   final String? projectName;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(12.r),
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.r)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(10.r),
-              onTap: () {
-                if (imageUrl != null) {
-                  showImagePreview(context, imageUrl!);
-                }
-              },
-              child: Container(
-                width: width ?? 70.w,
-                height: height ?? 70.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: AppColors.containerColor,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.r),
-                  child: imageUrl != null
-                      ? CustomCachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: imageUrl!,
-                          width: 60.w,
-                          height: 60.h,
-                        )
-                      : (svgIcon != null
+    final isDark = AppThemeController.get(context).currentThemeMode ==
+        AppThemeMode.dark;
+    final Color cardBg = isDark ? const Color(0xFF111418) : AppColors.whiteColor;
+    final Color borderColor =
+        isDark ? const Color(0xFF1F242B) : const Color(0xFFE5E9F0);
+    final Color iconBg = AppColors.primaryColor.withValues(alpha: 0.10);
+    final Color titleColor =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final Color descColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16.r),
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: cardBg,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(color: borderColor, width: 1),
+            boxShadow: isDark
+                ? null
+                : [
+                    BoxShadow(
+                      color: AppColors.blackColor.withValues(alpha: 0.04),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                borderRadius: BorderRadius.circular(14.r),
+                onTap: () {
+                  if (imageUrl != null) {
+                    showImagePreview(context, imageUrl!);
+                  }
+                },
+                child: Container(
+                  width: width ?? 56.w,
+                  height: height ?? 56.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.r),
+                    color: imageUrl != null ? AppColors.containerColor : iconBg,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14.r),
+                    child: imageUrl != null
+                        ? CustomCachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: imageUrl!,
+                            width: width ?? 56.w,
+                            height: height ?? 56.h,
+                          )
+                        : (svgIcon != null
                             ? Center(
                                 child: SvgPicture.asset(
-                                  colorFilter: ColorFilter.mode(
+                                  colorFilter: const ColorFilter.mode(
                                     AppColors.primaryColor,
                                     BlendMode.srcIn,
                                   ),
                                   svgIcon!,
-                                  width: 30.w,
-                                  height: 30.h,
-                                  fit: BoxFit.cover,
+                                  width: 26.w,
+                                  height: 26.h,
+                                  fit: BoxFit.contain,
                                 ),
                               )
                             : Icon(
                                 Icons.image_outlined,
-                                size: 28.sp,
-                                color: AppColors.greyColor,
+                                size: 26.sp,
+                                color: AppColors.primaryColor,
                               )),
+                  ),
                 ),
               ),
-            ),
-            12.pw,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(
-                    titleContainer,
-                    style: AppStyle.fontSize22BoldNewsReader(
-                      context,
-                    ).copyWith(fontSize: 18.sp),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (projectName != null && projectName!.isNotEmpty)
+              14.pw,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     AppText(
-                      "(${projectName ?? ''})",
-                      style: AppStyle.fontSize22BoldNewsReader(
-                        context,
-                      ).copyWith(fontSize: 13.sp, fontWeight: FontWeight.w400),
+                      titleContainer,
+                      style: AppStyle.fontSize18Bold(context).copyWith(
+                        fontSize: 16.sp,
+                        color: titleColor,
+                        fontWeight: FontWeight.w700,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  5.ph,
-                  if (descriptionContainer.isNotEmpty)
-                    AppText(
-                      descriptionContainer,
-                      style: AppStyle.fontSize14RegularNewsReader(
-                        context,
-                      ).copyWith(color: AppColors.greyColor),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                ],
+                    if (projectName != null && projectName!.isNotEmpty)
+                      AppText(
+                        "(${projectName ?? ''})",
+                        style: AppStyle.fontSize14Regular(context).copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    if (descriptionContainer.isNotEmpty) ...[
+                      4.ph,
+                      AppText(
+                        descriptionContainer,
+                        style: AppStyle.fontSize14Regular(context).copyWith(
+                          fontSize: 12.5.sp,
+                          color: descColor,
+                          height: 1.35,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              if (onTap != null) ...[
+                8.pw,
+                Icon(
+                  Directionality.of(context) == TextDirection.rtl
+                      ? Icons.chevron_left_rounded
+                      : Icons.chevron_right_rounded,
+                  size: 22.sp,
+                  color: AppColors.primaryColor.withValues(alpha: 0.7),
+                ),
+              ],
+            ],
+          ),
         ),
-      ).paddingSymmetric(horizontal: 16.w),
-    );
+      ),
+    ).paddingSymmetric(horizontal: 16.w);
   }
 }

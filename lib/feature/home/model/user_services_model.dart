@@ -159,7 +159,7 @@ class IconDataModel extends Equatable {
   final String? fileName;
 
   final String? url;
-  final String? size;
+  final int? size;
 
   @JsonKey(name: 'uploaded_at')
   final String? uploadedAt;
@@ -183,7 +183,7 @@ class IconDataModel extends Equatable {
     String? name,
     String? fileName,
     String? url,
-    String? size,
+    int? size,
     String? uploadedAt,
   }) {
     return IconDataModel(

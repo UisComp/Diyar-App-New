@@ -26,6 +26,10 @@ class $AssetsImagesGen {
   AssetGenImage get android12 =>
       const AssetGenImage('assets/images/android_12.png');
 
+  /// File path: assets/images/app_logo.png
+  AssetGenImage get appLogo =>
+      const AssetGenImage('assets/images/app_logo.png');
+
   /// File path: assets/images/background_card.png
   AssetGenImage get backgroundCard =>
       const AssetGenImage('assets/images/background_card.png');
@@ -65,6 +69,7 @@ class $AssetsImagesGen {
   List<dynamic> get values => [
         loading,
         android12,
+        appLogo,
         backgroundCard,
         diyar,
         diyarNativeSplash,

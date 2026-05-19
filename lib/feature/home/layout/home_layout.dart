@@ -50,7 +50,23 @@ class _HomeLayoutState extends State<HomeLayout> {
             ),
             bottomNavigationBar: BlocBuilder<LanguageController, LanguageState>(
               builder: (context, languageState) {
-                return BottomNavigationBar(
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: AppColors.primaryColor.withValues(alpha: 0.18),
+                        width: 1,
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.accentHoverColor.withValues(alpha: 0.10),
+                        blurRadius: 16,
+                        offset: const Offset(0, -2),
+                      ),
+                    ],
+                  ),
+                  child: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   currentIndex: _homeController.currentIndex,
                   onTap: (index) {
@@ -116,6 +132,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                         label: LocaleKeys.finance.tr(),
                       ),
                   ],
+                ),
                 );
               },
             ),

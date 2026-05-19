@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
@@ -76,12 +77,23 @@ class GridViewServiceItem extends StatelessWidget {
           );
         }
       },
-      child: Card(
-        color: cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(16.r),
+      child: Container(
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(
+            color: AppColors.primaryColor.withValues(alpha: 0.12),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.accentHoverColor.withValues(alpha: 0.08),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        elevation: 2,
         child: Column(
           children: [
             Expanded(
@@ -90,19 +102,32 @@ class GridViewServiceItem extends StatelessWidget {
                 width: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: cardImageColor,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.primaryColor.withValues(alpha: 0.06),
+                      AppColors.accentHoverColor.withValues(alpha: 0.02),
+                    ],
+                  ),
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(12.r),
+                    top: Radius.circular(16.r),
                   ),
                 ),
                 child: CustomCachedNetworkImage(
                   isProjectDetails: true,
+                  tintBrand: true,
                   fit: BoxFit.scaleDown,
-                  height: 60.h,
-                  width: 60.w,
+                  height: 56.h,
+                  width: 56.w,
                   imageUrl: service?.icon?.url,
                 ),
               ),
+            ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: AppColors.primaryColor.withValues(alpha: 0.10),
             ),
             Expanded(
               flex: 3,
@@ -113,8 +138,9 @@ class GridViewServiceItem extends StatelessWidget {
                       : service?.nameAr ?? '',
                   style: AppStyle.fontSize16Regular(context).copyWith(
                     color: textColor,
-                    fontSize: 14.sp,
+                    fontSize: 13.5.sp,
                     fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

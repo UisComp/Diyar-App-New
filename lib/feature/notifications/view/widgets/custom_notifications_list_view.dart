@@ -27,7 +27,7 @@ class CustomNotificationsListView extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.zero,
       controller: _scrollController,
-      separatorBuilder: (context, index) => 10.ph,
+      separatorBuilder: (context, index) => 12.ph,
       itemCount:
           notifications.length + (notificationController.hasMore ? 1 : 0),
       itemBuilder: (_, index) {

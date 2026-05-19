@@ -1,5 +1,5 @@
-
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,43 +8,68 @@ class LoadingNotifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color skeleton = AppColors.primaryColor.withValues(alpha: 0.08);
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(12.r),
+        color: AppColors.whiteColor,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: const Color(0xFFE5E9F0)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(width: 50.w, height: 50.h, color: Colors.grey[400]),
-          10.pw,
+          Container(
+            width: 52.r,
+            height: 52.r,
+            decoration: BoxDecoration(
+              color: skeleton,
+              borderRadius: BorderRadius.circular(14.r),
+            ),
+          ),
+          12.pw,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   width: double.infinity,
-                  height: 16.h,
-                  color: Colors.grey[400],
+                  height: 14.h,
+                  decoration: BoxDecoration(
+                    color: skeleton,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
                 ),
-                4.ph,
+                8.ph,
                 Container(
                   width: double.infinity,
-                  height: 14.h,
-                  color: Colors.grey[400],
+                  height: 12.h,
+                  decoration: BoxDecoration(
+                    color: skeleton,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
                 ),
                 6.ph,
-                Container(width: 120.w, height: 12.h, color: Colors.grey[400]),
+                Container(
+                  width: 120.w,
+                  height: 10.h,
+                  decoration: BoxDecoration(
+                    color: skeleton,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 8.w),
+            padding: EdgeInsetsDirectional.only(start: 10.w),
             child: Container(
-              width: 24.sp,
-              height: 24.sp,
-              color: Colors.grey[400],
+              width: 22.sp,
+              height: 22.sp,
+              decoration: BoxDecoration(
+                color: skeleton,
+                borderRadius: BorderRadius.circular(6.r),
+              ),
             ),
           ),
         ],

@@ -15,6 +15,7 @@ import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -61,6 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             return Scaffold(
               appBar: CustomAppBar(titleAppBar: LocaleKeys.settings.tr()),
               body: SingleChildScrollView(
+                padding: EdgeInsets.only(top: 16.h, bottom: 24.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -117,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       32.ph,
                     ],
                     CustomTitle(title: LocaleKeys.preferences.tr()),
-                    24.ph,
+                    12.ph,
                     CustomContainerInformation(
                       onTap: () {
                         context.push(RoutesName.appPreferencesScreen);
@@ -127,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           .tr(),
                       svgIcon: Assets.images.svg.settings,
                     ),
-                    24.ph,
+                    12.ph,
                     CustomContainerInformation(
                       onTap: () {
                         context.push(RoutesName.privacyPolicy);
@@ -137,9 +139,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           .tr(),
                       svgIcon: Assets.images.svg.privacy,
                     ),
-                    32.ph,
-                    CustomTitle(title: LocaleKeys.contact_us.tr()),
                     24.ph,
+                    CustomTitle(title: LocaleKeys.contact_us.tr()),
+                    12.ph,
                     CustomContainerInformation(
                       onTap: () {
                         context.push(RoutesName.contactUsScreen);

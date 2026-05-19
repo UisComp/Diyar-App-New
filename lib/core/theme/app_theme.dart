@@ -9,6 +9,12 @@ class AppThemes {
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.lightBackground,
     primaryColor: AppColors.primaryColor,
+    colorScheme: ColorScheme.light(
+      primary: AppColors.primaryColor,
+      secondary: AppColors.accentHoverColor,
+      surface: AppColors.lightBackground,
+    ),
+    dividerColor: AppColors.dividerColor,
     appBarTheme: AppBarTheme(
       centerTitle: true,
       backgroundColor: AppColors.lightBackground,
@@ -28,13 +34,34 @@ class AppThemes {
       ),
     ),
     cardColor: AppColors.lightCard,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.pressed)) {
+            return AppColors.accentHoverColor;
+          }
+          return AppColors.primaryColor;
+        }),
+        foregroundColor: WidgetStateProperty.all(AppColors.whiteColor),
+        overlayColor: WidgetStateProperty.all(
+          AppColors.accentHoverColor.withValues(alpha: 0.18),
+        ),
+      ),
+    ),
   );
   static final ThemeData darkTheme = ThemeData(
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: AppColors.black87,),
+      backgroundColor: AppColors.darkBackground,),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkBackground,
     primaryColor: AppColors.primaryColor,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.primaryColor,
+      secondary: AppColors.accentHoverColor,
+      surface: AppColors.darkBackground,
+    ),
+    dividerColor: AppColors.dividerColor,
     appBarTheme: AppBarTheme(
       centerTitle: true,
       backgroundColor: AppColors.darkBackground,
@@ -54,5 +81,20 @@ class AppThemes {
       ),
     ),
     cardColor: AppColors.darkCard,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.pressed)) {
+            return AppColors.accentHoverColor;
+          }
+          return AppColors.primaryColor;
+        }),
+        foregroundColor: WidgetStateProperty.all(AppColors.whiteColor),
+        overlayColor: WidgetStateProperty.all(
+          AppColors.accentHoverColor.withValues(alpha: 0.22),
+        ),
+      ),
+    ),
   );
 }

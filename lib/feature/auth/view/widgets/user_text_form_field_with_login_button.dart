@@ -57,16 +57,12 @@ class _UserTextFormFieldWithLoginButtonState
                 emptyMessage: LocaleKeys.please_enter_your_email.tr(),
                 invalidMessage: LocaleKeys.please_enter_a_valid_email.tr(),
               ),
-              contentPadding: EdgeInsets.all(20.sp),
               controller: authController.emailControllerForLogin,
-              labelText: LocaleKeys.email.tr(),
+              hintText: LocaleKeys.email.tr(),
               keyboardType: TextInputType.emailAddress,
-              prefixIcon: Icon(
-                Icons.email_outlined,
-                color: AppColors.blackColor,
-              ),
+              prefixIcon: const Icon(Icons.mail_outline_rounded),
             ),
-            24.ph,
+            14.ph,
             CustomTextFormField(
               obscureText: isObscurePassword,
               keyboardType: TextInputType.visiblePassword,
@@ -80,32 +76,43 @@ class _UserTextFormFieldWithLoginButtonState
                     .tr(),
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              contentPadding: EdgeInsets.all(20.sp),
               controller: authController.passwordControllerForLogin,
-              labelText: LocaleKeys.password.tr(),
+              hintText: LocaleKeys.password.tr(),
               suffixIcon: IconButton(
                 onPressed: toggleVisibilityPassword,
                 icon: Icon(
-                  isObscurePassword ? Icons.visibility_off : Icons.visibility,
+                  isObscurePassword
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
                 ),
               ),
-              prefixIcon: Icon(Icons.lock, color: AppColors.blackColor),
+              prefixIcon: const Icon(Icons.lock_outline_rounded),
             ),
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: AlignmentDirectional.centerStart,
               child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
                 onPressed: () {
                   context.push(RoutesName.forgetPasswordScreen);
                 },
                 child: AppText(
                   textAlign: TextAlign.start,
                   LocaleKeys.forget_password.tr(),
-                  style: AppStyle.fontSize16Regular(context),
+                  style: AppStyle.fontSize16Regular(context).copyWith(
+                    fontSize: 13.sp,
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ).paddingSymmetric(horizontal: 16.sp),
+            8.ph,
             CustomButton(
-              buttonHeight: 50.h,
+              buttonHeight: 52.h,
               buttonText: LocaleKeys.login.tr(),
               isLoading: isLoading,
               onPressed: () async {

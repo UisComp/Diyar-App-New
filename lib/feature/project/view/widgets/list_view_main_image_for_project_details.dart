@@ -51,9 +51,16 @@ class ListViewMainImageForProjectDetails extends StatelessWidget {
                           width: double.infinity,
                           height: double.infinity,
                         )
-                      : Assets.images.diyarPmc.image(
-                          width: 80.w,
-                          height: 70.h,
+                      : Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: AppColors.blackColor,
+                          alignment: Alignment.center,
+                          child: Assets.images.diyarPmc.image(
+                            width: 80.w,
+                            height: 70.h,
+                            fit: BoxFit.contain,
+                          ),
                         )),
           ),
         );

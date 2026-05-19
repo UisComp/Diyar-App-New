@@ -38,29 +38,36 @@ class CustomPhoneField extends StatelessWidget {
 
           decoration: InputDecoration(
             filled: true,
-            fillColor: darkTheme ? AppColors.black87 : AppColors.secondaryColor,
+            fillColor: darkTheme
+                ? const Color(0xFF111418)
+                : AppColors.secondaryColor,
             hintText: hintText ?? LocaleKeys.contact_mobile_number.tr(),
             hintTextDirection: TextDirection.ltr,
             helperMaxLines: 8,
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              borderSide: BorderSide(
+                color: darkTheme ? const Color(0xFF1F242B) : const Color(0xFFE3E7EE),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(14.r)),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              borderSide: BorderSide(
+                color: darkTheme ? const Color(0xFF1F242B) : const Color(0xFFE3E7EE),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(14.r)),
             ),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.redColor),
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              borderRadius: BorderRadius.all(Radius.circular(14.r)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.6),
+              borderRadius: BorderRadius.all(Radius.circular(14.r)),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.redColor),
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              borderSide: BorderSide(color: AppColors.redColor, width: 1.6),
+              borderRadius: BorderRadius.all(Radius.circular(14.r)),
             ),
           ),
           validator: (isEdit == null || !isEdit!)

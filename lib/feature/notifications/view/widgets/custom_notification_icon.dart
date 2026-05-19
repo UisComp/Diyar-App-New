@@ -15,29 +15,31 @@ class CustomNotificationIcon extends StatelessWidget {
   final NotificationState state;
   @override
   Widget build(BuildContext context) {
+    final bool canMarkAll = notificationController.anyUnread == true &&
+        (notificationController.notifications?.data?.notifications ?? [])
+            .any((e) => e.type == "specific");
+    final bool isLoading = state is MakeAllNotificationLoadingState;
     return IconButton(
-      icon: Icon(
-        (notificationController.anyUnread == true &&
-                (notificationController.notifications?.data?.notifications ??
-                        [])
-                    .any((e) => e.type == "specific"))
-            ? Icons.done_all 
-            : Icons.done,
-        color:
-            (notificationController.anyUnread == true &&
-                (notificationController.notifications?.data?.notifications ??
-                        [])
-                    .any((e) => e.type == "specific"))
-            ? AppColors.redColor
-            : null,
-      ),
-      onPressed: state is MakeAllNotificationLoadingState
+      tooltip: canMarkAll ? 'Mark all as read' : null,
+      icon: isLoading
+          ? SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.primaryColor,
+              ),
+            )
+          : Icon(
+              canMarkAll ? Icons.done_all_rounded : Icons.done_rounded,
+              color: canMarkAll
+                  ? AppColors.primaryColor
+                  : AppColors.greyColor,
+            ),
+      onPressed: isLoading
           ? null
           : () async {
-              if (notificationController.anyUnread &&
-                  (notificationController.notifications?.data?.notifications
-                          ?.any((e) => e.type == "specific") ??
-                      false)) {
+              if (canMarkAll) {
                 await notificationController.markAllAsRead();
               }
             },

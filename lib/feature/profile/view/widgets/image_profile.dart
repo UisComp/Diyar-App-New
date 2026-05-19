@@ -27,74 +27,90 @@ class ImageProfile extends StatelessWidget {
         final darkTheme =
             AppThemeController.get(context).currentThemeMode ==
             AppThemeMode.dark;
-        final cardColor = darkTheme ? AppColors.black87 : AppColors.whiteColor;
-        final cardImageColor = darkTheme
-            ? AppColors.black87
-            : AppColors.secondaryColor;
+        final cardColor = darkTheme ? const Color(0xFF111418) : AppColors.whiteColor;
+        final borderColor =
+            darkTheme ? const Color(0xFF1F242B) : const Color(0xFFE5E9F0);
         final textColor = darkTheme
-            ? AppColors.containerColor
-            : AppColors.black87;
+            ? AppColors.darkTextPrimary
+            : AppColors.lightTextPrimary;
         return Container(
           width: double.infinity,
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: cardColor,
             borderRadius: BorderRadius.circular(24.r),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.black12Color,
-                blurRadius: 10,
-                offset: Offset(0, 3),
-              ),
-            ],
+            border: Border.all(color: borderColor, width: 1),
+            boxShadow: darkTheme
+                ? null
+                : [
+                    BoxShadow(
+                      color: AppColors.blackColor.withValues(alpha: 0.05),
+                      blurRadius: 14,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
           ),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 50.r,
-                backgroundColor: cardImageColor,
-                child:
-                    (profile?.profilePicture?.url != null &&
-                        userModel?.data?.accessToken != null)
-                    ? ClipOval(
-                        child: CustomCachedNetworkImage(
-                          imageUrl:
-                              '${profile!.profilePicture!.url!}?v=${DateTime.now().millisecondsSinceEpoch}',
-                          width: 100.r,
-                          height: 100.r,
-                          fit: BoxFit.cover,
+              Container(
+                padding: EdgeInsets.all(3.r),
+                decoration: const BoxDecoration(
+                  gradient: AppColors.accentGradient,
+                  shape: BoxShape.circle,
+                ),
+                child: CircleAvatar(
+                  radius: 48.r,
+                  backgroundColor:
+                      AppColors.primaryColor.withValues(alpha: 0.12),
+                  child:
+                      (profile?.profilePicture?.url != null &&
+                          userModel?.data?.accessToken != null)
+                      ? ClipOval(
+                          child: CustomCachedNetworkImage(
+                            imageUrl:
+                                '${profile!.profilePicture!.url!}?v=${DateTime.now().millisecondsSinceEpoch}',
+                            width: 96.r,
+                            height: 96.r,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : SvgPicture.asset(
+                          Assets.images.svg.person,
+                          width: 46.w,
+                          height: 46.h,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.primaryColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
-                      )
-                    : SvgPicture.asset(
-                        Assets.images.svg.person,
-                        width: 50.w,
-                        height: 50.h,
-                      ),
+                ),
               ),
               10.ph,
               AppText(
                 userModel?.data?.accessToken == null
                     ? LocaleKeys.guest.tr()
                     : profile?.name ?? '',
-                style: AppStyle.fontSize22Bold(
-                  context,
-                ).copyWith(color: textColor),
+                style: AppStyle.fontSize22Bold(context).copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-              5.ph,
-              if (userModel?.data?.accessToken != null)
+              if (userModel?.data?.accessToken != null) ...[
+                6.ph,
                 AppText(
                   profile?.email ?? '',
-                  style: AppStyle.fontSize16Regular(
-                    context,
-                  ).copyWith(color: AppColors.descContainerColor),
+                  style: AppStyle.fontSize16Regular(context).copyWith(
+                    color: AppColors.lightTextSecondary,
+                    fontSize: 13.sp,
+                  ),
                 ),
-              if (userModel?.data?.accessToken != null) ...[
-                5.ph,
+                3.ph,
                 AppText(
                   profile?.phoneNumber ?? '',
-                  style: AppStyle.fontSize16Regular(
-                    context,
-                  ).copyWith(color: AppColors.descContainerColor),
+                  style: AppStyle.fontSize16Regular(context).copyWith(
+                    color: AppColors.lightTextSecondary,
+                    fontSize: 13.sp,
+                  ),
                 ),
               ],
             ],

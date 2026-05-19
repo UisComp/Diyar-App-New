@@ -56,8 +56,13 @@ class CustomTextFormField extends StatelessWidget {
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-     final darkTheme =
+    final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
+    final Color fillColor =
+        darkTheme ? const Color(0xFF111418) : AppColors.secondaryColor;
+    final Color enabledBorderColor =
+        darkTheme ? const Color(0xFF1F242B) : const Color(0xFFE3E7EE);
+    final BorderRadius radius = BorderRadius.all(Radius.circular(14.r));
     return TextFormField(
       onTap:onTap,
       readOnly:readOnly?? false,
@@ -73,39 +78,61 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         isDense: isDense,
-        hintStyle: hintStyle,
-        hintText: hintText,
-        contentPadding: contentPadding,
-        labelStyle:
-            labelStyle ??
-            AppStyle.fontSize16Regular(context),
+        hintStyle: hintStyle ??
+            AppStyle.fontSize16Regular(context).copyWith(
+              color: darkTheme
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
+              fontSize: 14.sp,
+            ),
+        hintText: hintText ?? labelText,
+        contentPadding: contentPadding ??
+            EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        labelStyle: labelStyle ??
+            AppStyle.fontSize16Regular(context).copyWith(
+              color: darkTheme
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
+              fontSize: 13.sp,
+            ),
+        floatingLabelStyle: TextStyle(
+          color: AppColors.primaryColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 13.sp,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
         prefixIcon: prefixIcon,
+        prefixIconColor: AppColors.primaryColor,
         suffixIcon: suffixIcon,
+        suffixIconColor: darkTheme
+            ? AppColors.darkTextSecondary
+            : AppColors.lightTextSecondary,
         enabled: enabled ?? true,
         helperText: helperText,
         helperStyle: helperStyle,
-        fillColor:darkTheme? AppColors.black45Color:AppColors.secondaryColor,
+        fillColor: fillColor,
         filled: true,
-        labelText: labelText,
+        labelText: null,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryColor),
-          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide: BorderSide(color: enabledBorderColor),
+          borderRadius: radius,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryColor),
-          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide: BorderSide(color: enabledBorderColor),
+          borderRadius: radius,
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.redColor),
-          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderRadius: radius,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryColor),
-          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide:
+              BorderSide(color: AppColors.primaryColor, width: 1.6),
+          borderRadius: radius,
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.redColor),
-          borderRadius: BorderRadius.all(Radius.circular(8.r)),
+          borderSide: BorderSide(color: AppColors.redColor, width: 1.6),
+          borderRadius: radius,
         ),
       ),
     ).paddingSymmetric(horizontal: 16.w);

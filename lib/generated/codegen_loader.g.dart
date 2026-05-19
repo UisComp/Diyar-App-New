@@ -15,9 +15,9 @@ class CodegenLoader extends AssetLoader{
   }
 
   static const Map<String,dynamic> _ar = {
-  "diyar": "Diyar",
-  "welcome_message": "مرحبًا بك في Diyar",
-  "discover_message": "اكتشف عقارك المثالي مع Diyar. تصفح مجموعة واسعة من العقارات وابحث عن المكان الأمثل لتسميه منزلك.",
+  "diyar": "LA'MER",
+  "welcome_message": "مرحبًا بك في LA'MER",
+  "discover_message": "اكتشف عقارك المثالي مع LA'MER. تصفح مجموعة واسعة من العقارات وابحث عن المكان الأمثل لتسميه منزلك.",
   "register": "تسجيل",
   "login": "تسجيل الدخول",
   "by_continue": "بالاستمرار، فإنك توافق على شروط الخدمة وسياسة الخصوصية.",
@@ -83,7 +83,7 @@ class CodegenLoader extends AssetLoader{
   "desc_push_notifications": "استقبل إشعارات حول العقارات الجديدة، تغييرات الأسعار، والمزيد.",
   "email_notifications": "إشعارات البريد الإلكتروني",
   "desc_email_notifications": "استقبل تحديثات عبر البريد الإلكتروني حول حسابك والميزات الجديدة.",
-  "privacy_policy": "في تطبيق ديار، نحن نقدر خصوصيتك وملتزمون بحماية معلوماتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومشاركة معلوماتك عند استخدامك للتطبيق. باستخدامك تطبيق ديار، فإنك توافق على شروط هذه السياسة. نقوم بجمع المعلومات التي تقدمها مباشرة، مثل اسمك، تفاصيل الاتصال، وتفضيلات العقارات. كما نقوم بجمع البيانات تلقائيًا، بما في ذلك معلومات جهازك، أنماط الاستخدام، وبيانات الموقع. تساعدنا هذه المعلومات على تحسين خدماتنا، تخصيص تجربتك، وتوفير قوائم عقارات مناسبة لك. قد نشارك معلوماتك مع مزودي خدمات يساعدوننا في تشغيل التطبيق، أو إجراء أنشطة تجارية، أو تقديم الدعم للعملاء. قد نفصح أيضًا عن المعلومات إذا طُلب منا ذلك بموجب القانون أو لحماية حقوقنا وسلامتنا. نحن نطبق تدابير أمان لحماية معلوماتك من الوصول غير المصرح به أو التغيير أو الإفصاح. ومع ذلك، لا توجد وسيلة نقل عبر الإنترنت أو تخزين إلكتروني آمنة تمامًا. نحتفظ بمعلوماتك طالما كان ذلك ضروريًا لتقديم خدماتنا والامتثال للالتزامات القانونية. لديك الحق في الوصول إلى معلوماتك الشخصية أو تصحيحها أو حذفها. يمكنك إدارة تفضيلاتك وإعداداتك داخل التطبيق. قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنقوم بإخطارك بأي تغييرات جوهرية عن طريق نشر إشعار في التطبيق أو إرسال بريد إلكتروني. استمرارك في استخدام تطبيق ديار بعد أي تغييرات يعني موافقتك على السياسة المحدثة. إذا كانت لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية هذه، يرجى الاتصال بنا على support@diyarapp.com.",
+  "privacy_policy": "في تطبيق LA'MER، نحن نقدر خصوصيتك وملتزمون بحماية معلوماتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومشاركة معلوماتك عند استخدامك للتطبيق. باستخدامك تطبيق LA'MER، فإنك توافق على شروط هذه السياسة. نقوم بجمع المعلومات التي تقدمها مباشرة، مثل اسمك، تفاصيل الاتصال، وتفضيلات العقارات. كما نقوم بجمع البيانات تلقائيًا، بما في ذلك معلومات جهازك، أنماط الاستخدام، وبيانات الموقع. تساعدنا هذه المعلومات على تحسين خدماتنا، تخصيص تجربتك، وتوفير قوائم عقارات مناسبة لك. قد نشارك معلوماتك مع مزودي خدمات يساعدوننا في تشغيل التطبيق، أو إجراء أنشطة تجارية، أو تقديم الدعم للعملاء. قد نفصح أيضًا عن المعلومات إذا طُلب منا ذلك بموجب القانون أو لحماية حقوقنا وسلامتنا. نحن نطبق تدابير أمان لحماية معلوماتك من الوصول غير المصرح به أو التغيير أو الإفصاح. ومع ذلك، لا توجد وسيلة نقل عبر الإنترنت أو تخزين إلكتروني آمنة تمامًا. نحتفظ بمعلوماتك طالما كان ذلك ضروريًا لتقديم خدماتنا والامتثال للالتزامات القانونية. لديك الحق في الوصول إلى معلوماتك الشخصية أو تصحيحها أو حذفها. يمكنك إدارة تفضيلاتك وإعداداتك داخل التطبيق. قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنقوم بإخطارك بأي تغييرات جوهرية عن طريق نشر إشعار في التطبيق أو إرسال بريد إلكتروني. استمرارك في استخدام تطبيق LA'MER بعد أي تغييرات يعني موافقتك على السياسة المحدثة. إذا كانت لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية هذه، يرجى الاتصال بنا على support@lamerapp.com.",
   "frequently_asked_questions": "الأسئلة الشائعة",
   "how_to_search_for_properties": "كيف تبحث عن العقارات؟",
   "how_to_save_properties": "كيفية حفظ العقارات",
@@ -313,9 +313,9 @@ class CodegenLoader extends AssetLoader{
   "no_image_found": "لا توجد صورة"
 };
 static const Map<String,dynamic> _en = {
-  "diyar": "Diyar",
-  "welcome_message": "Welcome to Diyar",
-  "discover_message": "Discover your dream property with Diyar. Explore a wide range of listings and find the perfect place to call home.",
+  "diyar": "LA'MER",
+  "welcome_message": "Welcome to LA'MER",
+  "discover_message": "Discover your dream property with LA'MER. Explore a wide range of listings and find the perfect place to call home.",
   "register": "Register",
   "login": "Login",
   "by_continue": "By continuing, you agree to our Terms of Service and Privacy Policy.",
@@ -381,7 +381,7 @@ static const Map<String,dynamic> _en = {
   "desc_push_notifications": "Receive notifications about new properties, price changes, and more.",
   "email_notifications": "Email Notifications",
   "desc_email_notifications": "Receive email updates about your account and new features.",
-  "privacy_policy": "At Diyar App, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share your information when you use our app. By using Diyar App, you agree to the terms of this policy. We collect information you provide directly, such as your name, contact details, and property preferences. We also collect data automatically, including your device information, usage patterns, and location data. This information helps us improve our services, personalize your experience, and provide relevant property listings. We may share your information with service providers who assist us in operating the app, conducting business activities, or providing customer support. We may also disclose information if required by law or to protect our rights and safety. We implement security measures to protect your information from unauthorized access, alteration, or disclosure. However, no method of transmission over the internet or electronic storage is completely secure. We retain your information for as long as necessary to provide our services and comply with legal obligations. You have the right to access, correct, or delete your personal information. You can manage your preferences and settings within the app. We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting a notice in the app or sending you an email. Your continued use of Diyar App after any changes indicates your acceptance of the updated policy. If you have any questions or concerns about this Privacy Policy, please contact us at support@diyarapp.com.",
+  "privacy_policy": "At LA'MER App, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share your information when you use our app. By using LA'MER App, you agree to the terms of this policy. We collect information you provide directly, such as your name, contact details, and property preferences. We also collect data automatically, including your device information, usage patterns, and location data. This information helps us improve our services, personalize your experience, and provide relevant property listings. We may share your information with service providers who assist us in operating the app, conducting business activities, or providing customer support. We may also disclose information if required by law or to protect our rights and safety. We implement security measures to protect your information from unauthorized access, alteration, or disclosure. However, no method of transmission over the internet or electronic storage is completely secure. We retain your information for as long as necessary to provide our services and comply with legal obligations. You have the right to access, correct, or delete your personal information. You can manage your preferences and settings within the app. We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting a notice in the app or sending you an email. Your continued use of LA'MER App after any changes indicates your acceptance of the updated policy. If you have any questions or concerns about this Privacy Policy, please contact us at support@lamerapp.com.",
   "frequently_asked_questions": "Frequently Asked Questions",
   "how_to_search_for_properties": "How to search for properties?",
   "how_to_save_properties": "How to save properties",

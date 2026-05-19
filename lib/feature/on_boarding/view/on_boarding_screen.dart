@@ -4,8 +4,8 @@ import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/brand_logo_header.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
-import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +25,10 @@ class OnBoardingScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Assets.images.diyarNativeSplash.image(
+                    BrandLogoHeader(
                       height: 321.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                      logoHeight: 200.h,
+                      borderRadius: 24,
                     ),
                     20.ph,
                     AppText(

@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      bottom: bottom,
+      bottom: bottom ?? const _GradientAccentBottom(),
       centerTitle: centerTitle,
       backgroundColor: backgroundColor,
       surfaceTintColor: Colors.transparent,
@@ -34,6 +35,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize.height ?? 0));
+  Size get preferredSize => Size.fromHeight(
+        kToolbarHeight +
+            (bottom?.preferredSize.height ?? _GradientAccentBottom.height),
+      );
+}
+
+class _GradientAccentBottom extends StatelessWidget
+    implements PreferredSizeWidget {
+  const _GradientAccentBottom();
+  static const double height = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      decoration: const BoxDecoration(gradient: AppColors.accentGradient),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(height);
 }

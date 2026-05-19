@@ -246,9 +246,9 @@ class SettingsController extends Cubit<SettingsState> {
 
   Future<void> sendEmail() async {
     emit(SendEmailLoadingState());
-    final subject = Uri.encodeComponent('Contact with Diyar');
+    final subject = Uri.encodeComponent("Contact with LA'MER");
     final body = Uri.encodeComponent('''
-Dear Diyar,
+Dear LA'MER,
 ${messageController.text}
 Sender Name: ${nameController.text}
 ''');
