@@ -294,5 +294,14 @@
   "end_date_must_be_after_start_date":"End Date Must Be After Start Date",
   "start_date":"Start Date",
   "end_date":"End Date",
-  "no_image_found": "No image found"
+  "no_image_found": "No image found",
+  "coming_soon": "Coming Soon",
+  "feature_under_construction": "We're working hard to bring this feature to life. Stay tuned!",
+  "back_to_home": "Back to Home",
+  "announcement_details": "Announcement Details",
+  "add_property": "Add Property",
+  "add_tenant": "Add Tenant",
+  "announcements": "Announcements",
+  "privacy_policy_title": "Privacy Policy",
+  "last_updated": "Last Updated"
 }

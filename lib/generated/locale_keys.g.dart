@@ -299,5 +299,14 @@ abstract class  LocaleKeys {
   static const start_date = 'start_date';
   static const end_date = 'end_date';
   static const no_image_found = 'no_image_found';
+  static const coming_soon = 'coming_soon';
+  static const feature_under_construction = 'feature_under_construction';
+  static const back_to_home = 'back_to_home';
+  static const announcement_details = 'announcement_details';
+  static const add_property = 'add_property';
+  static const add_tenant = 'add_tenant';
+  static const announcements = 'announcements';
+  static const privacy_policy_title = 'privacy_policy_title';
+  static const last_updated = 'last_updated';
 
 }
