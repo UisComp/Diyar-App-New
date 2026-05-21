@@ -310,7 +310,18 @@ class CodegenLoader extends AssetLoader{
   "end_date_must_be_after_start_date": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
   "start_date": "تاريخ البدء",
   "end_date": "تاريخ الانتهاء",
-  "no_image_found": "لا توجد صورة"
+  "no_image_found": "لا توجد صورة",
+  "coming_soon": "قريبًا",
+  "feature_under_construction": "نعمل بجد لإطلاق هذه الميزة قريبًا. ترقبوا التحديث!",
+  "back_to_home": "العودة للرئيسية",
+  "announcement_details": "تفاصيل الإعلان",
+  "add_property": "إضافة عقار",
+  "add_tenant": "إضافة مستأجر",
+  "announcements": "الإعلانات",
+  "privacy_policy_title": "سياسة الخصوصية",
+  "last_updated": "آخر تحديث",
+  "designed_by": "تصميم",
+  "diyar_co": "شركة ديار"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "LA'MER",
@@ -608,7 +619,18 @@ static const Map<String,dynamic> _en = {
   "end_date_must_be_after_start_date": "End Date Must Be After Start Date",
   "start_date": "Start Date",
   "end_date": "End Date",
-  "no_image_found": "No image found"
+  "no_image_found": "No image found",
+  "coming_soon": "Coming Soon",
+  "feature_under_construction": "We're working hard to bring this feature to life. Stay tuned!",
+  "back_to_home": "Back to Home",
+  "announcement_details": "Announcement Details",
+  "add_property": "Add Property",
+  "add_tenant": "Add Tenant",
+  "announcements": "Announcements",
+  "privacy_policy_title": "Privacy Policy",
+  "last_updated": "Last Updated",
+  "designed_by": "Designed by",
+  "diyar_co": "Diyar Co."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

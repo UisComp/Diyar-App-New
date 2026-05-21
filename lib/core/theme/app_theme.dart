@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppThemes {
+  static const String _fontFamily = 'Alexandria';
+
   static final ThemeData lightTheme = ThemeData(
+    fontFamily: _fontFamily,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: AppColors.whiteColor,),
     brightness: Brightness.light,
@@ -22,6 +25,7 @@ class AppThemes {
         color: AppColors.lightTextPrimary,
       ),
       titleTextStyle: TextStyle(
+        fontFamily: _fontFamily,
         color: AppColors.lightTextPrimary,
         fontWeight: FontWeight.w700,
         fontSize: 18.sp,
@@ -29,6 +33,7 @@ class AppThemes {
     ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(
+        fontFamily: _fontFamily,
         color: AppColors.lightTextPrimary,
         fontSize: 14.sp,
       ),
@@ -51,6 +56,7 @@ class AppThemes {
     ),
   );
   static final ThemeData darkTheme = ThemeData(
+    fontFamily: _fontFamily,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: AppColors.darkBackground,),
     brightness: Brightness.dark,
@@ -69,6 +75,7 @@ class AppThemes {
         color: AppColors.darkTextPrimary,
       ),
       titleTextStyle: TextStyle(
+        fontFamily: _fontFamily,
         color: AppColors.darkTextPrimary,
         fontWeight: FontWeight.w700,
         fontSize: 18.sp,
@@ -76,6 +83,7 @@ class AppThemes {
     ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(
+        fontFamily: _fontFamily,
         color: AppColors.darkTextPrimary,
         fontSize: 14.sp,
       ),

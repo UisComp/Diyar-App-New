@@ -23,7 +23,6 @@ class CustomTitle extends StatelessWidget {
         AppText(
           title,
           style: TextStyle(
-            fontFamily: 'Manrope',
             fontSize: 18.sp,
             fontWeight: FontWeight.w800,
             color: AppColors.primaryColor,

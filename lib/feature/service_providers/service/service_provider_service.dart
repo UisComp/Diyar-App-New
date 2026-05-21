@@ -10,16 +10,15 @@ class ServiceProviderService {
   static Future<ServiceProviderResponse> getAllServiceProvider() async {
     final response = await DioHelper.getData(path: ApiPaths.serviceProvider);
     try {
-      if (response != null && response.statusCode == 200) {
-        return ServiceProviderResponse.fromJson(response.data);
-      } else {
-        return ServiceProviderResponse();
+      if (response?.data is Map<String, dynamic>) {
+        return ServiceProviderResponse.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
-      AppLogger.error("Error in getAllFacilityBooking: $e");
+      AppLogger.error("Error in getAllServiceProvider: $e");
     }
-
-    return response?.data;
+    return ServiceProviderResponse(success: false, message: 'Parsing failed');
   }
 
   static Future<CreateServiceProviderResponseModel>
@@ -34,29 +33,37 @@ class ServiceProviderService {
       "serviceProvider request is ${requestServiceProviderModel?.services?.map((e) => e.toJson())}",
     );
     try {
-      if (response != null && response.statusCode == 201) {
-        return CreateServiceProviderResponseModel.fromJson(response.data);
-      } else {
-        return CreateServiceProviderResponseModel();
+      if (response?.data is Map<String, dynamic>) {
+        return CreateServiceProviderResponseModel.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       AppLogger.error("Error in create service provider request: $e");
     }
-
-    return response?.data;
+    return CreateServiceProviderResponseModel(
+      success: false,
+      message: 'Parsing failed',
+    );
   }
-  static Future<ServiceProviderHistoryResponseModel> getServiceProviderHistory() async {
-    final response = await DioHelper.getData(path: ApiPaths.serviceProviderHistory);
+
+  static Future<ServiceProviderHistoryResponseModel>
+  getServiceProviderHistory() async {
+    final response = await DioHelper.getData(
+      path: ApiPaths.serviceProviderHistory,
+    );
     try {
-      if (response != null && response.statusCode == 200) {
-        return ServiceProviderHistoryResponseModel.fromJson(response.data);
-      } else {
-        return ServiceProviderHistoryResponseModel();
+      if (response?.data is Map<String, dynamic>) {
+        return ServiceProviderHistoryResponseModel.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       AppLogger.error("Error in getServiceProviderHistory: $e");
     }
-
-    return response?.data;
+    return ServiceProviderHistoryResponseModel(
+      success: false,
+      message: 'Parsing failed',
+    );
   }
 }

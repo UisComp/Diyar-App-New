@@ -7,6 +7,7 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
@@ -58,35 +59,45 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Assets.images.forgetPassword.image(),
-                CustomTextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (email) => ValidatorHelper.validateEmail(
-                    email,
-                    emptyMessage: LocaleKeys.please_enter_your_email.tr(),
-                    invalidMessage: LocaleKeys.please_enter_a_valid_email.tr(),
-                  ),
-                  hintText: LocaleKeys.email.tr(),
-                  controller: authController.emailForForgetPasswordController,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Assets.images.forgetPassword.image(),
+                      CustomTextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (email) => ValidatorHelper.validateEmail(
+                          email,
+                          emptyMessage:
+                              LocaleKeys.please_enter_your_email.tr(),
+                          invalidMessage:
+                              LocaleKeys.please_enter_a_valid_email.tr(),
+                        ),
+                        hintText: LocaleKeys.email.tr(),
+                        controller:
+                            authController.emailForForgetPasswordController,
+                      ),
+                      40.ph,
+                      CustomButton(
+                        isLoading: authState is ForgetPasswordLoadingState,
+                        buttonColor: AppColors.primaryColor,
+                        buttonText: LocaleKeys.forget_password.tr().replaceAll(
+                          "?",
+                          "",
+                        ),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            await authController.forgetPassword();
+                          }
+                        },
+                      ).paddingSymmetric(horizontal: 16.w),
+                    ],
+                  ).paddingSymmetric(horizontal: 16.w),
                 ),
-                40.ph,
-                CustomButton(
-                  isLoading: authState is ForgetPasswordLoadingState,
-                  buttonColor: AppColors.primaryColor,
-                  buttonText: LocaleKeys.forget_password.tr().replaceAll(
-                    "?",
-                    "",
-                  ),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      await authController.forgetPassword();
-                    }
-                  },
-                ).paddingSymmetric(horizontal: 16.w),
+                const DesignedByFooter(compact: true),
               ],
-            ).paddingSymmetric(horizontal: 16.w),
+            ),
           );
         },
       ),

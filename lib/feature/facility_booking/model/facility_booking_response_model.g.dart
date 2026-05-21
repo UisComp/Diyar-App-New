@@ -51,7 +51,7 @@ FacilityIcon _$FacilityIconFromJson(Map<String, dynamic> json) => FacilityIcon(
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: _sizeFromJson(json['size']),
       uploadedAt: json['uploaded_at'] as String?,
     );
 
@@ -61,6 +61,6 @@ Map<String, dynamic> _$FacilityIconToJson(FacilityIcon instance) =>
       'name': instance.name,
       'file_name': instance.fileName,
       'url': instance.url,
-      'size': instance.size,
+      'size': _sizeToJson(instance.size),
       'uploaded_at': instance.uploadedAt,
     };

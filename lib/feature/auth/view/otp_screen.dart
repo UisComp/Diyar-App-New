@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/custom_pin_code.dart';
@@ -30,49 +31,56 @@ class _OtpScreenState extends State<OtpScreen> {
     final authController = AuthController.get(context);
     return Scaffold(
       appBar: CustomAppBar(titleAppBar: LocaleKeys.otp_verification.tr()),
-      body: Padding(
-        padding: EdgeInsets.all(32.0.sp),
-        child: Form(
-          key: formKey,
-          child: BlocConsumer<AuthController, AuthState>(
-            listener: (context, authState) {
-              if (authState is VerifyOtpSuccessState) {
-                AppFunctions.successMessage(
-                  context,
-                  message:
-                      authController.otpVerifyResponseModel.message ??
-                      LocaleKeys.otp_verify_successfully.tr(),
-                );
-                context.push(RoutesName.resetPasswordScreen);
-              }
-              if (authState is VerifyOtpFailureState) {
-                AppFunctions.errorMessage(
-                  context,
-                  message:
-                      authController.otpVerifyResponseModel.message ??
-                      LocaleKeys.otp_verify_failed.tr(),
-                );
-              }
-            },
-            builder: (context, authState) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const MessageCode(),
-                  40.ph,
-                  const CustomPinCode(),
-                  10.ph,
-                  const CustomTimer(),
-                  20.ph,
-                  VerifyButton(
-                    formKey: formKey,
-                    authController: authController,
-                  ),
-                ],
-              );
-            },
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(32.0.sp),
+              child: Form(
+                key: formKey,
+                child: BlocConsumer<AuthController, AuthState>(
+                  listener: (context, authState) {
+                    if (authState is VerifyOtpSuccessState) {
+                      AppFunctions.successMessage(
+                        context,
+                        message:
+                            authController.otpVerifyResponseModel.message ??
+                            LocaleKeys.otp_verify_successfully.tr(),
+                      );
+                      context.push(RoutesName.resetPasswordScreen);
+                    }
+                    if (authState is VerifyOtpFailureState) {
+                      AppFunctions.errorMessage(
+                        context,
+                        message:
+                            authController.otpVerifyResponseModel.message ??
+                            LocaleKeys.otp_verify_failed.tr(),
+                      );
+                    }
+                  },
+                  builder: (context, authState) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        const MessageCode(),
+                        40.ph,
+                        const CustomPinCode(),
+                        10.ph,
+                        const CustomTimer(),
+                        20.ph,
+                        VerifyButton(
+                          formKey: formKey,
+                          authController: authController,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
           ),
-        ),
+          const DesignedByFooter(compact: true),
+        ],
       ),
     );
   }

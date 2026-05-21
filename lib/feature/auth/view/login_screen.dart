@@ -11,6 +11,7 @@ import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/brand_logo_header.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/dont_have_account_with_sign_up.dart';
@@ -202,6 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const DontHaveAccountWithSignUp(),
+                const DesignedByFooter(compact: true),
               ],
             ),
           ),

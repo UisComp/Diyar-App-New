@@ -35,8 +35,7 @@ class AppConstants {
     const FinanceScreen(),
   ];
   //!App Fonts
-  static const String manropeFont = "Manrope";
-  static const String newsReaderFont = "NewsReader";
+  static const String alexandriaFont = "Alexandria";
   static const String enableBiometric = "EnableBiometric";
 }
 

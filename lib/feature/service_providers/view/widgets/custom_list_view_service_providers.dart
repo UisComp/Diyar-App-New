@@ -165,7 +165,7 @@ class CustomListViewServiceProviders extends StatelessWidget {
                                   ? AppFormatter.formatDate(
                                       controller.getSelectedDate(item.id!)!,
                                     )
-                                  : LocaleKeys.select_date_range.tr(),
+                                  : LocaleKeys.select_booking_date.tr(),
                               style: AppStyle.fontSize14Regular(context)
                                   .copyWith(
                                     color:

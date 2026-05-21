@@ -10,16 +10,15 @@ class FacilityBookingService {
   static Future<FacilityResponse> getAllFacilityBooking() async {
     final response = await DioHelper.getData(path: ApiPaths.facilityBooking);
     try {
-      if (response != null && response.statusCode == 200) {
-        return FacilityResponse.fromJson(response.data);
-      } else {
-        return FacilityResponse.fromJson(response?.data);
+      if (response?.data is Map<String, dynamic>) {
+        return FacilityResponse.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       AppLogger.error("Error in getAllFacilityBooking: $e");
     }
-
-    return response?.data;
+    return FacilityResponse(success: false, message: 'Parsing failed');
   }
 
   static Future<CreateRequestFacilityResponseModel> createFacilityRequest({
@@ -30,16 +29,18 @@ class FacilityBookingService {
       data: createRequestFacilityRequestModel?.toJson(),
     );
     try {
-      if (response != null && response.statusCode == 201) {
-        return CreateRequestFacilityResponseModel.fromJson(response.data);
-      } else {
-        return CreateRequestFacilityResponseModel.fromJson(response?.data);
+      if (response?.data is Map<String, dynamic>) {
+        return CreateRequestFacilityResponseModel.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       AppLogger.error("Error in create Facility request: $e");
     }
-
-    return response?.data;
+    return CreateRequestFacilityResponseModel(
+      success: false,
+      message: 'Parsing failed',
+    );
   }
 
   static Future<FacilityBookingHistoryResponseModel>
@@ -48,15 +49,17 @@ class FacilityBookingService {
       path: ApiPaths.facilityBookingHistory,
     );
     try {
-      if (response != null && response.statusCode == 200) {
-        return FacilityBookingHistoryResponseModel.fromJson(response.data);
-      } else {
-        return FacilityBookingHistoryResponseModel.fromJson(response?.data);
+      if (response?.data is Map<String, dynamic>) {
+        return FacilityBookingHistoryResponseModel.fromJson(
+          response!.data as Map<String, dynamic>,
+        );
       }
     } catch (e) {
       AppLogger.error("Error in getFacilityBookingHistory: $e");
     }
-
-    return response?.data;
+    return FacilityBookingHistoryResponseModel(
+      success: false,
+      message: 'Parsing failed',
+    );
   }
 }

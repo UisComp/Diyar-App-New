@@ -5,6 +5,7 @@ import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/brand_logo_header.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/already_have_account_with_sign_in.dart';
@@ -90,6 +91,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const DesignedByFooter(compact: true),
           ],
         ),
       ),

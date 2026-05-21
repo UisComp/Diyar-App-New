@@ -7,6 +7,7 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/custom_logo.dart';
@@ -139,6 +140,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     }
                   },
                 ).paddingAll(16.sp),
+                const DesignedByFooter(compact: true),
               ],
             );
           },

@@ -47,23 +47,28 @@ class CustomCachedNetworkImage extends StatelessWidget {
             ),
             errorWidget: (context, url, error) => _buildFallback(),
           );
-    return InkWell(
-      onTap: isProjectDetails
-          ? null
-          : () {
-              if (imageUrl != null && imageUrl!.isNotEmpty) {
-                showImagePreview(context, imageUrl!);
-              }
-            },
-      child: tintBrand
-          ? ColorFiltered(
-              colorFilter: const ColorFilter.mode(
-                AppColors.primaryColor,
-                BlendMode.srcIn,
-              ),
-              child: content,
-            )
-          : content,
+    final Widget tinted = tintBrand
+        ? ColorFiltered(
+            colorFilter: const ColorFilter.mode(
+              AppColors.primaryColor,
+              BlendMode.srcIn,
+            ),
+            child: content,
+          )
+        : content;
+    if (isProjectDetails) {
+      return tinted;
+    }
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: () {
+          if (imageUrl != null && imageUrl!.isNotEmpty) {
+            showImagePreview(context, imageUrl!);
+          }
+        },
+        child: tinted,
+      ),
     );
   }
 

@@ -29,7 +29,7 @@ IconModel _$IconModelFromJson(Map<String, dynamic> json) => IconModel(
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: _sizeFromJson(json['size']),
       uploadedAt: json['uploaded_at'] as String?,
     );
 
@@ -38,7 +38,7 @@ Map<String, dynamic> _$IconModelToJson(IconModel instance) => <String, dynamic>{
       'name': instance.name,
       'file_name': instance.fileName,
       'url': instance.url,
-      'size': instance.size,
+      'size': _sizeToJson(instance.size),
       'uploaded_at': instance.uploadedAt,
     };
 

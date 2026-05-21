@@ -72,69 +72,25 @@ flutter:
     - assets/images/
     - assets/images/svg/
     - assets/translations/
-    - assets/fonts/manrope/
-    - assets/fonts/news_reader/
+    - assets/fonts/alexandria/
   fonts:
-    - family: Manrope
+    - family: Alexandria
       fonts:
-        - asset: assets/fonts/manrope/Manrope-ExtraLight.ttf
+        - asset: assets/fonts/alexandria/Alexandria-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/alexandria/Alexandria-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/manrope/Manrope-Light.ttf
+        - asset: assets/fonts/alexandria/Alexandria-Light.ttf
           weight: 300
-        - asset: assets/fonts/manrope/Manrope-Regular.ttf
+        - asset: assets/fonts/alexandria/Alexandria-Regular.ttf
           weight: 400
-        - asset: assets/fonts/manrope/Manrope-Medium.ttf
+        - asset: assets/fonts/alexandria/Alexandria-Medium.ttf
           weight: 500
-        - asset: assets/fonts/manrope/Manrope-SemiBold.ttf
+        - asset: assets/fonts/alexandria/Alexandria-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/manrope/Manrope-Bold.ttf
+        - asset: assets/fonts/alexandria/Alexandria-Bold.ttf
           weight: 700
-        - asset: assets/fonts/manrope/Manrope-ExtraBold.ttf
+        - asset: assets/fonts/alexandria/Alexandria-ExtraBold.ttf
           weight: 800
-
-    - family: Newsreader
-      fonts:
-        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraLightItalic.ttf
-          weight: 200
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-Light.ttf
-          weight: 300
-        - asset: assets/fonts/news_reader/Newsreader_60pt-LightItalic.ttf
-          weight: 300
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/news_reader/Newsreader_60pt-Italic.ttf
-          weight: 400
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/news_reader/Newsreader_60pt-MediumItalic.ttf
-          weight: 500
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/news_reader/Newsreader_60pt-SemiBoldItalic.ttf
-          weight: 600
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/news_reader/Newsreader_60pt-BoldItalic.ttf
-          weight: 700
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/news_reader/Newsreader_60pt-ExtraBoldItalic.ttf
-          weight: 800
-          style: italic
-        - asset: assets/fonts/news_reader/Newsreader_36pt-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/news_reader/Newsreader_36pt-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/news_reader/Newsreader_36pt-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/news_reader/Newsreader_36pt-SemiBoldItalic.ttf
-          weight: 600
-          style: italic
+        - asset: assets/fonts/alexandria/Alexandria-Black.ttf
+          weight: 900

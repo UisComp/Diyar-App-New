@@ -7,6 +7,7 @@ import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/feature/settings/controller/settings_state.dart';
 import 'package:diyar_app/feature/settings/view/widgets/custom_container_information.dart';
@@ -128,7 +129,9 @@ class ContactUsScreen extends StatelessWidget {
                         "",
                     svgIcon: Assets.images.svg.phoneCall,
                   ),
-                  40.ph,
+                  24.ph,
+                  const DesignedByFooter(),
+                  16.ph,
                 ],
               ),
             ),

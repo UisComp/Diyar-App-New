@@ -308,5 +308,7 @@ abstract class  LocaleKeys {
   static const announcements = 'announcements';
   static const privacy_policy_title = 'privacy_policy_title';
   static const last_updated = 'last_updated';
+  static const designed_by = 'designed_by';
+  static const diyar_co = 'diyar_co';
 
 }

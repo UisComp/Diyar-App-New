@@ -10,9 +10,6 @@
 class FontFamily {
   FontFamily._();
 
-  /// Font family: Manrope
-  static const String manrope = 'Manrope';
-
-  /// Font family: Newsreader
-  static const String newsreader = 'Newsreader';
+  /// Font family: Alexandria
+  static const String alexandria = 'Alexandria';
 }

@@ -5,6 +5,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/settings/controller/settings_controller.dart';
 import 'package:diyar_app/feature/settings/controller/settings_state.dart';
 import 'package:diyar_app/feature/settings/functions/settings_functions.dart';
@@ -150,6 +151,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       descriptionContainer: LocaleKeys.desc_contact_us.tr(),
                       svgIcon: Assets.images.svg.contactUs,
                     ),
+                    24.ph,
+                    const DesignedByFooter(),
                   ],
                 ),
               ),

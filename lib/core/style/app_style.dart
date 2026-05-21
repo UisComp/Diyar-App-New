@@ -39,7 +39,6 @@ class AppStyle {
         color: _getPrimaryTextColor(context),
         fontSize: 22.sp,
         fontWeight: FontWeight.w700,
-        fontFamily: 'Newsreader',
       );
 
   static TextStyle fontSize14RegularNewsReader(BuildContext context) =>
@@ -47,7 +46,6 @@ class AppStyle {
         color: _getSecondaryTextColor(context),
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
-        fontFamily: 'Newsreader',
       );
 
   // New styles

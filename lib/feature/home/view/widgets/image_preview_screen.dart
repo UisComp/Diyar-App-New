@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/style/app_color.dart';
@@ -37,157 +39,193 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
     final hasTitle = title != null && title!.isNotEmpty;
     final hasDescription = description != null && description!.isNotEmpty;
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      extendBodyBehindAppBar: true,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 320.h,
-            pinned: true,
-            stretch: true,
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            surfaceTintColor: Colors.transparent,
-            backgroundColor: backgroundColor,
-            systemOverlayStyle: isDark
-                ? SystemUiOverlayStyle.light
-                : SystemUiOverlayStyle.dark,
-            automaticallyImplyLeading: false,
-            leading: _CircleIconButton(
-              icon: Icons.arrow_back_rounded,
-              onTap: () => Navigator.maybePop(context),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        body: SafeArea(
+          bottom: false,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _HeaderImage(
+                  imageUrl: imageUrl,
+                  backgroundColor: backgroundColor,
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 20.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(color: dividerColor),
+                      boxShadow: isDark
+                          ? null
+                          : [
+                              BoxShadow(
+                                color: AppColors.blackColor
+                                    .withValues(alpha: 0.05),
+                                blurRadius: 18,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: AppColors.accentGradient,
+                              borderRadius: BorderRadius.circular(20.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.25),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.campaign_rounded,
+                                  size: 14.sp,
+                                  color: AppColors.whiteColor,
+                                ),
+                                6.pw,
+                                AppText(
+                                  LocaleKeys.announcement_details.tr(),
+                                  style: TextStyle(
+                                    color: AppColors.whiteColor,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (hasTitle) ...[
+                          16.ph,
+                          AppText(
+                            title!.capitalize(),
+                            style: AppStyle.fontSize22Bold(context).copyWith(
+                              fontWeight: FontWeight.w800,
+                              height: 1.35,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ],
+                        if (hasDescription) ...[
+                          16.ph,
+                          Container(
+                            height: 1,
+                            color: dividerColor,
+                          ),
+                          16.ph,
+                          AppText(
+                            description!,
+                            style: AppStyle.fontSize16Regular(context).copyWith(
+                              color: secondaryText,
+                              fontSize: 14.sp,
+                              height: 1.7,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            actions: [
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderImage extends StatelessWidget {
+  const _HeaderImage({required this.imageUrl, required this.backgroundColor});
+  final String? imageUrl;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.topStart,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(28.r),
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            height: 300.h,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Hero(
+                  tag: 'announcement_${imageUrl ?? ''}',
+                  child: CustomCachedNetworkImage(
+                    isProjectDetails: true,
+                    imageUrl: imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.blackColor.withValues(alpha: 0.35),
+                        Colors.transparent,
+                        AppColors.blackColor.withValues(alpha: 0.12),
+                      ],
+                      stops: const [0.0, 0.5, 1.0],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 0),
+          child: Row(
+            children: [
+              _CircleIconButton(
+                icon: Directionality.of(context) == ui.TextDirection.rtl
+                    ? Icons.arrow_forward_rounded
+                    : Icons.arrow_back_rounded,
+                onTap: () => Navigator.maybePop(context),
+              ),
+              const Spacer(),
               _CircleIconButton(
                 icon: Icons.close_rounded,
                 onTap: () => Navigator.maybePop(context),
               ),
-              12.pw,
             ],
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.parallax,
-              stretchModes: const [
-                StretchMode.zoomBackground,
-                StretchMode.blurBackground,
-              ],
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Hero(
-                    tag: 'announcement_${imageUrl ?? ''}',
-                    child: CustomCachedNetworkImage(
-                      isProjectDetails: true,
-                      imageUrl: imageUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.blackColor.withValues(alpha: 0.45),
-                          Colors.transparent,
-                          backgroundColor.withValues(alpha: 0.0),
-                          backgroundColor,
-                        ],
-                        stops: const [0.0, 0.35, 0.75, 1.0],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
-          SliverToBoxAdapter(
-            child: Transform.translate(
-              offset: Offset(0, -24.h),
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.w,
-                  vertical: 18.h,
-                ),
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(color: dividerColor),
-                  boxShadow: isDark
-                      ? null
-                      : [
-                          BoxShadow(
-                            color: AppColors.blackColor.withValues(alpha: 0.06),
-                            blurRadius: 18,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 4.h,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: AppColors.accentGradient,
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: AppText(
-                        LocaleKeys.announcement_details.tr(),
-                        style: TextStyle(
-                          color: AppColors.whiteColor,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.6,
-                        ),
-                      ),
-                    ),
-                    if (hasTitle) ...[
-                      14.ph,
-                      AppText(
-                        title!.capitalize(),
-                        style: AppStyle.fontSize22Bold(context).copyWith(
-                          fontWeight: FontWeight.w800,
-                          height: 1.3,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ],
-                    if (hasDescription) ...[
-                      14.ph,
-                      Container(
-                        height: 1,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              dividerColor,
-                              dividerColor.withValues(alpha: 0.0),
-                            ],
-                          ),
-                        ),
-                      ),
-                      16.ph,
-                      AppText(
-                        description!,
-                        style: AppStyle.fontSize16Regular(context).copyWith(
-                          color: secondaryText,
-                          fontSize: 14.sp,
-                          height: 1.6,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 24.h)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -199,28 +237,25 @@ class _CircleIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20.r),
-          onTap: onTap,
-          child: Container(
-            width: 40.w,
-            height: 40.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.blackColor.withValues(alpha: 0.45),
-              border: Border.all(
-                color: AppColors.whiteColor.withValues(alpha: 0.18),
-              ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(22.r),
+        onTap: onTap,
+        child: Container(
+          width: 40.w,
+          height: 40.w,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.blackColor.withValues(alpha: 0.5),
+            border: Border.all(
+              color: AppColors.whiteColor.withValues(alpha: 0.18),
             ),
-            child: Icon(
-              icon,
-              color: AppColors.whiteColor,
-              size: 20.sp,
-            ),
+          ),
+          child: Icon(
+            icon,
+            color: AppColors.whiteColor,
+            size: 20.sp,
           ),
         ),
       ),
