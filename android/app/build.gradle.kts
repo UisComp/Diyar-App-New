@@ -17,7 +17,7 @@ android {
         applicationId = "com.uis.diyar"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
-        versionCode = 12
+        versionCode = 15
         versionName = "1.0.0"
     }
 
