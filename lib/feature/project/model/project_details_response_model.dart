@@ -109,7 +109,7 @@ class ProjectMedia extends Equatable {
   @JsonKey(name: 'file_name')
   final String? fileName;
   final String? url;
-  final String? size;
+  final int? size;
   @JsonKey(name: 'mime_type')
   final String? mimeType;
 

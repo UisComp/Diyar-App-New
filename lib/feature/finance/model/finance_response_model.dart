@@ -225,7 +225,7 @@ class PaymentStatistics {
 @JsonSerializable()
 class NextInstallment {
   final int?  id;
-  final String?  number;
+  final int?  number;
   final String?  amount;
   @JsonKey(name: 'due_date')
   final String?  dueDate;
@@ -249,7 +249,7 @@ class NextInstallment {
 @JsonSerializable()
 class Installment {
   final int?  id;
-  final String?  number;
+  final int?  number;
   final double?  amount;
 
   @JsonKey(name: 'due_date')

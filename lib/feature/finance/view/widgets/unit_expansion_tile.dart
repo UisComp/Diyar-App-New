@@ -27,6 +27,7 @@ class UnitExpansionTile extends StatelessWidget {
         return Skeletonizer(
           enabled: isLoading,
           child: ExpansionTile(
+            initiallyExpanded: true,
             title: AppText(
               unit.unitName ?? '',
               style: AppStyle.fontSize18Bold(

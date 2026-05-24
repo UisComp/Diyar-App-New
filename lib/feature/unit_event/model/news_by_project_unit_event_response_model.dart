@@ -100,7 +100,7 @@ class MediaForNewsByProjectUnitEvent extends Equatable {
   final String? name;
   final String? fileName;
   final String? url;
-  final String? size;
+  final int? size;
   final String? mimeType;
 
   const MediaForNewsByProjectUnitEvent({
@@ -121,7 +121,7 @@ class MediaForNewsByProjectUnitEvent extends Equatable {
     String? name,
     String? fileName,
     String? url,
-    String? size,
+    int? size,
     String? mimeType,
   }) {
     return MediaForNewsByProjectUnitEvent(

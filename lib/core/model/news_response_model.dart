@@ -96,7 +96,7 @@ class MediaForAllNews extends Equatable {
   @JsonKey(name: 'file_name')
   final String? fileName;
   final String? url;
-  final String? size;
+  final int? size;
   @JsonKey(name: 'mime_type')
   final String? mimeType;
 
@@ -118,7 +118,7 @@ class MediaForAllNews extends Equatable {
     String? name,
     String? fileName,
     String? url,
-    String? size,
+    int? size,
     String? mimeType,
   }) {
     return MediaForAllNews(
@@ -140,7 +140,7 @@ class Unit extends Equatable {
   final int? id;
   final String? name;
   @JsonKey(name: 'project_id')
-  final String? projectId;
+  final int? projectId;
   @JsonKey(name: 'user_id')
   final String? userId;
 
@@ -158,7 +158,7 @@ class Unit extends Equatable {
   Unit copyWith({
     int? id,
     String? name,
-    String? projectId,
+    int? projectId,
     String? userId,
   }) {
     return Unit(

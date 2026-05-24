@@ -55,7 +55,7 @@ DocumentFile _$DocumentFileFromJson(Map<String, dynamic> json) => DocumentFile(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: (json['size'] as num?)?.toInt(),
       mimeType: json['mime_type'] as String?,
       uploadedAt: json['uploaded_at'] as String?,
     );

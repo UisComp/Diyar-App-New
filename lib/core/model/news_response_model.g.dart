@@ -59,7 +59,7 @@ MediaForAllNews _$MediaForAllNewsFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: (json['size'] as num?)?.toInt(),
       mimeType: json['mime_type'] as String?,
     );
 
@@ -76,7 +76,7 @@ Map<String, dynamic> _$MediaForAllNewsToJson(MediaForAllNews instance) =>
 Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
-      projectId: json['project_id'] as String?,
+      projectId: (json['project_id'] as num?)?.toInt(),
       userId: json['user_id'] as String?,
     );
 

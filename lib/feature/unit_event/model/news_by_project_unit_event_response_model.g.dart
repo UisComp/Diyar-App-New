@@ -63,7 +63,7 @@ MediaForNewsByProjectUnitEvent _$MediaForNewsByProjectUnitEventFromJson(
       name: json['name'] as String?,
       fileName: json['fileName'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: (json['size'] as num?)?.toInt(),
       mimeType: json['mimeType'] as String?,
     );
 

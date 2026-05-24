@@ -26,7 +26,7 @@ class IconModel {
 
   final String? url;
   @JsonKey(fromJson: _sizeFromJson, toJson: _sizeToJson)
-  final String? size;
+  final int? size;
 
   @JsonKey(name: 'uploaded_at')
   final String? uploadedAt;
@@ -86,5 +86,5 @@ class ServiceProvider {
   Map<String, dynamic> toJson() => _$ServiceProviderToJson(this);
 }
 
-String? _sizeFromJson(dynamic value) => value?.toString();
-String? _sizeToJson(String? value) => value;
+int? _sizeFromJson(dynamic value) => value is int ? value : int.tryParse(value?.toString() ?? '');
+int? _sizeToJson(int? value) => value;

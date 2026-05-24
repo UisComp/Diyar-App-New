@@ -56,7 +56,7 @@ ProfilePicture _$ProfilePictureFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: (json['size'] as num?)?.toInt(),
       mimeType: json['mime_type'] as String?,
     );
 

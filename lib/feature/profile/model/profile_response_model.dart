@@ -74,7 +74,7 @@ class ProfilePicture {
   @JsonKey(name: 'file_name')
   final String? fileName;
   final String? url;
-  final String? size;
+  final int? size;
   @JsonKey(name: 'mime_type')
   final String? mimeType;
 
@@ -93,7 +93,7 @@ class ProfilePicture {
       name: json['name']?.toString(),
       fileName: json['file_name']?.toString(),
       url: json['url']?.toString(),
-      size: json['size']?.toString(),
+      size: json['size'] is int ? json['size'] : int.tryParse(json['size']?.toString() ?? ''),
       mimeType: json['mime_type']?.toString(),
     );
   }

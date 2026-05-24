@@ -51,7 +51,7 @@ class DocumentFile {
   final int? id;
   final String? name;
   final String? url;
-  final String? size;
+  final int? size;
   @JsonKey(name: 'mime_type')
   final String? mimeType;
 

@@ -103,7 +103,7 @@ class FacilityIconModel {
   final String? fileName;
 
   final String? url;
-  final String? size;
+  final int? size;
 
   @JsonKey(name: 'uploaded_at')
   final String? uploadedAt;

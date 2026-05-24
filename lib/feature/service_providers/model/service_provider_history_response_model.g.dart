@@ -92,7 +92,7 @@ ServiceProviderIconModel _$ServiceProviderIconModelFromJson(
       name: json['name'] as String?,
       fileName: json['file_name'] as String?,
       url: json['url'] as String?,
-      size: json['size'] as String?,
+      size: (json['size'] as num?)?.toInt(),
       uploadedAt: json['uploaded_at'] as String?,
     );
 

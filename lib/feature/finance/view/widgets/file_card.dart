@@ -124,7 +124,7 @@ class FileCard extends StatelessWidget {
                     "${LocaleKeys.date.tr()}: ${file.uploadedAt?.split('T').first ?? ''}",
                   ),
                   AppText(
-                    "${LocaleKeys.size.tr()}: ${formatFileSize(int.tryParse(file.size ?? '0') ?? 0)}",
+                    "${LocaleKeys.size.tr()}: ${formatFileSize(file.size ?? 0)}",
                   ),
                 ],
               ),

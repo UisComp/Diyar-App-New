@@ -164,7 +164,7 @@ Map<String, dynamic> _$PaymentStatisticsToJson(PaymentStatistics instance) =>
 NextInstallment _$NextInstallmentFromJson(Map<String, dynamic> json) =>
     NextInstallment(
       id: (json['id'] as num?)?.toInt(),
-      number: json['number'] as String?,
+      number: (json['number'] as num?)?.toInt(),
       amount: json['amount'] as String?,
       dueDate: json['due_date'] as String?,
       daysUntilDue: (json['days_until_due'] as num?)?.toDouble(),
@@ -181,7 +181,7 @@ Map<String, dynamic> _$NextInstallmentToJson(NextInstallment instance) =>
 
 Installment _$InstallmentFromJson(Map<String, dynamic> json) => Installment(
       id: (json['id'] as num?)?.toInt(),
-      number: json['number'] as String?,
+      number: (json['number'] as num?)?.toInt(),
       amount: (json['amount'] as num?)?.toDouble(),
       dueDate: json['due_date'] as String?,
       status: json['status'] as String?,
