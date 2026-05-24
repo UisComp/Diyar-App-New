@@ -2,8 +2,8 @@ name: diyar_app
 description: "A new Flutter project."
 publish_to: 'none'
 
-version: 1.0.0+15
-# version: 1.2.1+2 #for appstore
+# version: 1.0.0+15 #for playstore
+version: 1.2.2+2 #for appstore
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
