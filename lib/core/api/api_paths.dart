@@ -25,6 +25,7 @@ class ApiPaths {
   static const String getAllAnnouncementsBannersPath = "announcements";
   static const String getLinkedUnitsForUser = "units";
   static const String getProjects = "projects";
+  static const String getUserProjects = "projects/user";
   static const String facilityBooking = "facilities";
   static const String createFacilityRequest = "facility-bookings";
   static const String createServiceProvider = "service-provider-bookings";

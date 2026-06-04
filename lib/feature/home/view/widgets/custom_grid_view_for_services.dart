@@ -35,12 +35,13 @@ class CustomGridViewForServices extends StatelessWidget {
             ? homeController.filteredServices
             : (homeController.userServicesResponse.data ?? []);
 
+        // News (type 1) is now surfaced as the standalone "Project Timeline"
+        // feature banner, so it is intentionally excluded from the grid.
         final services = allServices
             .where(
               (service) =>
                   service.isActive == true &&
-                  (service.type == 1 ||
-                      service.type == 8 ||
+                  (service.type == 8 ||
                       service.type == 10 ||
                       service.type == 5),
             )

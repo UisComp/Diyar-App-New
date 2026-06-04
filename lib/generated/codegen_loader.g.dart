@@ -321,7 +321,13 @@ class CodegenLoader extends AssetLoader{
   "privacy_policy_title": "سياسة الخصوصية",
   "last_updated": "آخر تحديث",
   "designed_by": "تصميم",
-  "diyar_co": "شركة ديار"
+  "diyar_co": "شركة ديار",
+  "project_timeline": "الجدول الزمني للمشروع",
+  "project_timeline_subtitle": "تابع أحداث ومراحل مشروعك أولاً بأول",
+  "no_events_or_mapped_units_here": "لا توجد أحداث أو وحدات مرتبطة في هذا القسم",
+  "tap_section_to_view_events": "اضغط على قسم مميز في الصورة لعرض أحداثه",
+  "select_project": "اختر المشروع",
+  "no_projects_found": "لا توجد مشاريع"
 };
 static const Map<String,dynamic> _en = {
   "diyar": "LA'MER",
@@ -630,7 +636,13 @@ static const Map<String,dynamic> _en = {
   "privacy_policy_title": "Privacy Policy",
   "last_updated": "Last Updated",
   "designed_by": "Designed by",
-  "diyar_co": "Diyar Co."
+  "diyar_co": "Diyar Co.",
+  "project_timeline": "Project Timeline",
+  "project_timeline_subtitle": "Follow your project's events and milestones",
+  "no_events_or_mapped_units_here": "No events or linked units in this section",
+  "tap_section_to_view_events": "Tap a highlighted section on the image to view its events",
+  "select_project": "Select Project",
+  "no_projects_found": "No projects found"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }

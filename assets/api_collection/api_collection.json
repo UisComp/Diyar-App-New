@@ -1,0 +1,4949 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Diyar API Documentation",
+    "description": "Comprehensive API documentation for Diyar application",
+    "contact": {
+      "email": "admin@example.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://diyar.sherif-elzeny.com/",
+      "description": "live Deployment"
+    },
+    {
+      "url": "http://localhost:8000",
+      "description": "Local Development"
+    },
+    {
+      "url": "http://diyar.test",
+      "description": "Local Development domain"
+    }
+  ],
+  "paths": {
+    "/api/announcements": {
+      "get": {
+        "tags": ["Announcements"],
+        "summary": "Get all announcements",
+        "description": "Retrieve all announcements with their main images",
+        "operationId": "018442d06de1537ba02109efdadd7a51",
+        "responses": {
+          "200": {
+            "description": "Announcements retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Announcements retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "New Update"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Some text..."
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://example.com/storage/..."
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve announcements"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/announcements/{id}": {
+      "get": {
+        "tags": ["Announcements"],
+        "summary": "Get a specific announcement",
+        "description": "Retrieve a single announcement by ID",
+        "operationId": "660ee51b5fea9766415012e4d8cddf9d",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Announcement retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Announcement retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "New Update"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Some text..."
+                        },
+                        "url": {
+                          "type": "string",
+                          "example": "https://example.com/storage/..."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Announcement not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Announcement not found"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config": {
+      "get": {
+        "tags": ["Configuration"],
+        "summary": "Get application configuration",
+        "description": "Retrieve contact information and emergency numbers",
+        "operationId": "5c5738963d0889796f1db14c564164a5",
+        "responses": {
+          "200": {
+            "description": "Configuration retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Configuration retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "contact_email": {
+                          "type": "string",
+                          "example": "contact@example.com"
+                        },
+                        "contact_phone": {
+                          "type": "string",
+                          "example": "+1234567890"
+                        },
+                        "emergency_number": {
+                          "type": "string",
+                          "example": "+1987654321"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve configuration"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/facility-bookings": {
+      "get": {
+        "tags": ["Facility Bookings"],
+        "summary": "Get user's facility bookings",
+        "description": "Retrieve all facility bookings for the authenticated user",
+        "operationId": "37c6e5282cb2150efe6ff39ca46a3fd7",
+        "responses": {
+          "200": {
+            "description": "Facility bookings retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Facility bookings retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "booking_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-12-01 15:00:00"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "Special requirements"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "datetime"
+                          },
+                          "facility": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Swimming Pool"
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "Olympic size swimming pool"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthenticated"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Facility Bookings"],
+        "summary": "Create facility booking(s)",
+        "description": "Create one or more facility bookings for the authenticated user",
+        "operationId": "288141c19ccc70082ee86e8bdace330d",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "facilities": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "Facility ID",
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "notes": {
+                          "description": "Optional notes for this facility booking",
+                          "type": "string",
+                          "example": "Specific note for pool"
+                        },
+                        "booking_date": {
+                          "description": "Preferred date and time for this facility",
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-12-01 10:00:00"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "example": [
+                      {
+                        "id": 1,
+                        "notes": "Specific note for pool",
+                        "booking_date": "2024-12-05 15:00:00"
+                      },
+                      {
+                        "id": 2,
+                        "booking_date": "2024-12-01 08:00:00"
+                      }
+                    ]
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Facility booking(s) created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Facility bookings created successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "booking_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-12-01 10:00:00"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "Special requirements"
+                          },
+                          "facility": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "example": "Swimming Pool"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error or facility unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Validation failed"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/facilities": {
+      "get": {
+        "tags": ["Facilities"],
+        "summary": "Get all available facilities",
+        "description": "Retrieve all active facilities that can be booked",
+        "operationId": "11eafb078d1797dd2d2a2a8459ead7f9",
+        "responses": {
+          "200": {
+            "description": "Facilities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Facilities retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Swimming Pool"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Olympic size swimming pool"
+                          },
+                          "is_active": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "icon_url": {
+                            "type": "string",
+                            "example": "https://example.com/storage/..."
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve facilities"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notifications": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get user notifications",
+        "description": "Get paginated list of notifications for the authenticated user",
+        "operationId": "getUserNotifications",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of notifications per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "unread_only",
+            "in": "query",
+            "description": "Show only unread notifications",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifications retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notifications retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "notifications": {
+                          "type": "object"
+                        },
+                        "unread_count": {
+                          "type": "integer",
+                          "example": 5
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/notifications/{id}": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get specific notification",
+        "description": "Get details of a specific notification",
+        "operationId": "getNotification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Notification ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification retrieved successfully"
+          },
+          "404": {
+            "description": "Notification not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Notifications"],
+        "summary": "Delete notification",
+        "description": "Delete a specific notification (only for specific user notifications)",
+        "operationId": "deleteNotification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Notification ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification deleted successfully"
+          },
+          "403": {
+            "description": "Cannot delete global notifications"
+          },
+          "404": {
+            "description": "Notification not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/notifications/{id}/mark-read": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Mark notification as read",
+        "description": "Mark a specific notification as read",
+        "operationId": "markNotificationAsRead",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Notification ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification marked as read successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification marked as read successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Notification not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/notifications/mark-all-read": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Mark all notifications as read",
+        "description": "Mark all user notifications as read",
+        "operationId": "markAllNotificationsAsRead",
+        "responses": {
+          "200": {
+            "description": "All notifications marked as read successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All notifications marked as read successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "updated_count": {
+                          "type": "integer",
+                          "example": 5
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/notifications/unread-count": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get unread notifications count",
+        "description": "Get the count of unread notifications for the authenticated user",
+        "operationId": "getUnreadNotificationsCount",
+        "responses": {
+          "200": {
+            "description": "Unread count retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unread count retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "unread_count": {
+                          "type": "integer",
+                          "example": 5
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/service-provider-bookings": {
+      "get": {
+        "tags": ["Service Provider Bookings"],
+        "summary": "Get user's service provider bookings",
+        "description": "Retrieve all service provider bookings for the authenticated user",
+        "operationId": "a98555d8bbd38123f05b09f7e88de55e",
+        "responses": {
+          "200": {
+            "description": "Service provider bookings retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Service provider bookings retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "booking_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-12-01 14:30:00"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "Special requirements"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "datetime"
+                          },
+                          "service_provider": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "job_title": {
+                                "type": "string",
+                                "example": "Maintenance Technician"
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "Experienced maintenance professional"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthenticated"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Service Provider Bookings"],
+        "summary": "Create service provider booking(s)",
+        "description": "Create one or more service provider bookings for the authenticated user",
+        "operationId": "f4b1a3efb40d5b5692b2e7e9851bc356",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "services": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "Service provider ID",
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "title": {
+                          "description": "Note/title for this service",
+                          "type": "string",
+                          "example": "Fix the leaky faucet"
+                        },
+                        "booking_date": {
+                          "description": "Preferred date and time for this service",
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-12-01 10:00:00"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "example": [
+                      {
+                        "id": 1,
+                        "title": "Fix the leaky faucet",
+                        "booking_date": "2024-12-01 10:00:00"
+                      },
+                      {
+                        "id": 2,
+                        "title": "Clean the air conditioning",
+                        "booking_date": "2024-12-05 14:30:00"
+                      }
+                    ]
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Service provider booking(s) created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Service provider bookings created successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "booking_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-12-01 10:00:00"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "example": "Special requirements"
+                          },
+                          "service_provider": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "job_title": {
+                                "type": "string",
+                                "example": "Maintenance Technician"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error or service provider unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Validation failed"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/service-providers": {
+      "get": {
+        "tags": ["Service Providers"],
+        "summary": "Get all available service providers",
+        "description": "Retrieve all active service providers that can be booked",
+        "operationId": "0551eda0fcc1189cafca224757f52d01",
+        "responses": {
+          "200": {
+            "description": "Service providers retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Service providers retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "job_title": {
+                            "type": "string",
+                            "example": "Maintenance Technician"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Experienced maintenance professional"
+                          },
+                          "is_active": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "icon_url": {
+                            "type": "string",
+                            "example": "https://example.com/storage/..."
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve service providers"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/financial-summary": {
+      "get": {
+        "tags": ["User Financial"],
+        "summary": "Get user financial summary across all units",
+        "operationId": "3b5f0da45bbecec8693686c45c641cf2",
+        "responses": {
+          "200": {
+            "description": "Financial summary retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Financial summary retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "user_id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "user_name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "summary": {
+                          "properties": {
+                            "total_units": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "total_unit_value": {
+                              "type": "number",
+                              "example": 500000
+                            },
+                            "total_paid": {
+                              "type": "number",
+                              "example": 150000
+                            },
+                            "remaining_balance": {
+                              "type": "number",
+                              "example": 350000
+                            },
+                            "overall_paid_percentage": {
+                              "type": "number",
+                              "example": 30
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/units": {
+      "get": {
+        "tags": ["User Financial"],
+        "summary": "Get user's units with financial data",
+        "operationId": "befa7290ec23ac2ae370bc94e674ca85",
+        "responses": {
+          "200": {
+            "description": "User units with financial data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User units retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Unit A-101"
+                          },
+                          "financial_summary": {
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/units/{unitId}/installments": {
+      "get": {
+        "tags": ["User Financial"],
+        "summary": "Get installments for a specific unit",
+        "operationId": "a4da0ab47217bb49d1bba83c597566c5",
+        "parameters": [
+          {
+            "name": "unitId",
+            "in": "path",
+            "description": "Unit ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unit installments retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unit installments retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "unit": {
+                          "type": "object"
+                        },
+                        "installments": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "number": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "amount": {
+                                "type": "number",
+                                "example": 5000
+                              },
+                              "due_date": {
+                                "type": "string",
+                                "example": "2024-01-15"
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "pending"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Unauthorized to access this unit"
+          },
+          "404": {
+            "description": "Unit not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/installments/upcoming": {
+      "get": {
+        "tags": ["User Financial"],
+        "summary": "Get upcoming installments for the user",
+        "operationId": "f8c38cf3883e6f02eaa696759652367a",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "description": "Number of days to look ahead (default: 30)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 30
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upcoming installments retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Upcoming installments retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "number": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "amount": {
+                            "type": "number",
+                            "example": 5000
+                          },
+                          "due_date": {
+                            "type": "string",
+                            "example": "2024-01-15"
+                          },
+                          "days_until_due": {
+                            "type": "integer",
+                            "example": 15
+                          },
+                          "unit": {
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/user/finance": {
+      "get": {
+        "tags": ["User Financial"],
+        "summary": "Get full authenticated user financial details with all installments by units",
+        "operationId": "9b350f97131547149e0c7f00370c0de9",
+        "responses": {
+          "200": {
+            "description": "Full user financial details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User financial details retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "user": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "john@example.com"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "financial_summary": {
+                          "properties": {
+                            "total_units": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "total_unit_value": {
+                              "type": "number",
+                              "example": 500000
+                            },
+                            "total_paid": {
+                              "type": "number",
+                              "example": 150000
+                            },
+                            "remaining_balance": {
+                              "type": "number",
+                              "example": 350000
+                            },
+                            "overall_paid_percentage": {
+                              "type": "number",
+                              "example": 30
+                            },
+                            "total_overdue_amount": {
+                              "type": "number",
+                              "example": 5000
+                            },
+                            "units_with_overdue": {
+                              "type": "integer",
+                              "example": 1
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "units": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "unit_id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "unit_name": {
+                                "type": "string",
+                                "example": "Unit A-101"
+                              },
+                              "unit_number": {
+                                "type": "string",
+                                "example": "A101"
+                              },
+                              "project": {
+                                "type": "object"
+                              },
+                              "financials": {
+                                "type": "object"
+                              },
+                              "installments": {
+                                "type": "array",
+                                "items": {
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "number": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "amount": {
+                                      "type": "number",
+                                      "example": 5000
+                                    },
+                                    "due_date": {
+                                      "type": "string",
+                                      "example": "2024-01-15"
+                                    },
+                                    "status": {
+                                      "type": "string",
+                                      "example": "pending"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              }
+                            },
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/visitor-passes": {
+      "get": {
+        "tags": ["Visitor Passes"],
+        "summary": "Get user's visitor passes",
+        "description": "Retrieve a paginated list of visitor passes created by the authenticated user.",
+        "operationId": "7efb8cf237461e81886d096d96a3fce6",
+        "responses": {
+          "200": {
+            "description": "Visitor passes retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Visitor passes retrieved successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "description": "Token field is sufficient for QR code generation",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "token": {
+                            "description": "QR code token (no longer hidden)",
+                            "type": "string",
+                            "example": "64-char-token"
+                          },
+                          "visitor_name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "visitor_phone": {
+                            "type": "string",
+                            "example": "01000000000"
+                          },
+                          "visitor_vehicle": {
+                            "type": "string",
+                            "example": "ABC123"
+                          },
+                          "purpose": {
+                            "type": "string",
+                            "example": "Delivery"
+                          },
+                          "unit": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Unit A"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "owner": {
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 10
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Owner Name"
+                              },
+                              "phone": {
+                                "type": "string",
+                                "example": "01022222222"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "valid_from": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-10-30T12:00:00Z"
+                          },
+                          "valid_until": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-10-30T14:00:00Z"
+                          },
+                          "is_one_time_use": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "is_used": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "used_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": null
+                          },
+                          "scan_count": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "is_valid": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "is_expired": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "is_not_yet_valid": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-10-30T10:00:00Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-10-30T10:00:00Z"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "meta": {
+                      "description": "Pagination metadata using getPaginationMeta method",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 15
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 42
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve visitor passes"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Visitor Passes"],
+        "summary": "Create a new visitor pass",
+        "description": "Create a visitor pass for a unit. User must own the specified unit. Uses separate date and time fields for better UX.",
+        "operationId": "d23f1dcb5e17b26c2b822c2115c42060",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "unit_id",
+                  "start_date",
+                  "start_time",
+                  "end_date",
+                  "end_time"
+                ],
+                "properties": {
+                  "unit_id": {
+                    "description": "ID of the unit being visited",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "visitor_name": {
+                    "description": "Name of the visitor",
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "visitor_phone": {
+                    "description": "Phone number of the visitor",
+                    "type": "string",
+                    "example": "01000000000"
+                  },
+                  "visitor_vehicle": {
+                    "description": "License plate of visitor's vehicle",
+                    "type": "string",
+                    "example": "ABC123"
+                  },
+                  "purpose": {
+                    "description": "Purpose of the visit",
+                    "type": "string",
+                    "example": "Delivery"
+                  },
+                  "start_date": {
+                    "description": "Pass validity start date (YYYY-MM-DD)",
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-10-30"
+                  },
+                  "start_time": {
+                    "description": "Pass validity start time (HH:MM)",
+                    "type": "string",
+                    "format": "time",
+                    "example": "12:00"
+                  },
+                  "end_date": {
+                    "description": "Pass validity end date (YYYY-MM-DD)",
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-10-30"
+                  },
+                  "end_time": {
+                    "description": "Pass validity end time (HH:MM)",
+                    "type": "string",
+                    "format": "time",
+                    "example": "14:00"
+                  },
+                  "is_one_time_use": {
+                    "description": "Whether the pass can only be used once",
+                    "type": "boolean",
+                    "example": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Visitor pass created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Visitor pass created successfully"
+                    },
+                    "data": {
+                      "description": "Token field is sufficient for QR code generation",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 12
+                        },
+                        "token": {
+                          "description": "QR code token (no longer hidden)",
+                          "type": "string",
+                          "example": "64-char-token"
+                        },
+                        "visitor_name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "unit": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Unit A"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "valid_from": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-10-30T12:00:00Z"
+                        },
+                        "valid_until": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-10-30T14:00:00Z"
+                        },
+                        "is_one_time_use": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not authorized to create visitor passes for this unit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not authorized to create visitor passes for this unit."
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "The given data was invalid."
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to create visitor pass"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/visitor-passes/validate": {
+      "post": {
+        "tags": ["Visitor Passes"],
+        "summary": "Validate a visitor pass",
+        "description": "Validate a visitor pass QR code token. Only users with guard role can access this endpoint.",
+        "operationId": "078bb66007ec60814371c2d174374515",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["token"],
+                "properties": {
+                  "token": {
+                    "description": "QR code token to validate",
+                    "type": "string",
+                    "example": "64-char-token"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pass validation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "description": "Valid pass response - simplified structure with single resource",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Access granted"
+                        },
+                        "data": {
+                          "properties": {
+                            "valid": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "visitor_name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "visitor_phone": {
+                              "type": "string",
+                              "example": "01000000000"
+                            },
+                            "visitor_vehicle": {
+                              "type": "string",
+                              "example": "ABC123"
+                            },
+                            "purpose": {
+                              "type": "string",
+                              "example": "Delivery"
+                            },
+                            "unit": {
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Unit A"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "owner": {
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Owner Name"
+                                },
+                                "phone": {
+                                  "type": "string",
+                                  "example": "01022222222"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "valid_until": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2025-10-30T14:00:00Z"
+                            },
+                            "first_scan": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "scan_count": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "is_one_time_use": {
+                              "type": "boolean",
+                              "example": true
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "description": "Invalid pass response - simplified error structure",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Visitor pass has expired."
+                        },
+                        "data": {
+                          "properties": {
+                            "valid": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "reason": {
+                              "type": "string",
+                              "enum": [
+                                "expired",
+                                "already_used",
+                                "not_found",
+                                "not_yet_valid",
+                                "revoked",
+                                "system_error"
+                              ],
+                              "example": "expired"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not authorized to validate visitor passes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not authorized to validate visitor passes."
+                    },
+                    "data": {
+                      "properties": {
+                        "valid": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "access_granted": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "unauthorized"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "The given data was invalid."
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "System error occurred"
+                    },
+                    "data": {
+                      "properties": {
+                        "valid": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "access_granted": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "system_error"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/visitor-passes/{id}": {
+      "delete": {
+        "tags": ["Visitor Passes"],
+        "summary": "Revoke a visitor pass",
+        "description": "Soft delete (revoke) a visitor pass. User must own the pass.",
+        "operationId": "3b965ad41eec07b5643b58f383355e09",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Visitor pass ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Visitor pass revoked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Visitor pass revoked successfully"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not authorized to revoke this visitor pass",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not authorized to revoke this visitor pass."
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Visitor pass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Visitor pass not found."
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to revoke visitor pass"
+                    },
+                    "data": {
+                      "type": "null"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Register a new user",
+        "description": "Creates a new user account and returns user details",
+        "operationId": "ca7c0cb6772de9bffbb8c896980cebc8",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "phone_number",
+                  "unit_number"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "secret123"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "secret123"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "example": "+201234567890"
+                  },
+                  "unit_number": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully - pending approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Registration successful. Your account is pending approval and you will be notified once reviewed."
+                    },
+                    "data": {
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 16
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john+11@example.com"
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "example": "+201284567890"
+                        },
+                        "approval_status": {
+                          "type": "string",
+                          "example": "pending"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2025-09-28T11:05:58.000000Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2025-09-28T11:05:58.000000Z"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content - Validation error"
+          },
+          "500": {
+            "description": "Registration failed"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User login",
+        "description": "Logs in a user and returns an access token",
+        "operationId": "c373bc4cffa4a56fc64e3979b8ee7b96",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email", "password", "fcm_token"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "secret123"
+                  },
+                  "fcm_token": {
+                    "type": "string",
+                    "example": "fcm_token_example"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "data": {
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "example": "7|qTm9QPBGGSZhWRmNOtSZ6T9nI6Zzmsh29pVkaJK40c846d1f"
+                        },
+                        "token_type": {
+                          "type": "string",
+                          "example": "Bearer"
+                        },
+                        "user": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 15
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "john@example.com"
+                            },
+                            "phone_number": {
+                              "type": "string",
+                              "example": "+201234567890"
+                            },
+                            "email_verified_at": {
+                              "type": "string",
+                              "example": null,
+                              "nullable": true
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "example": "2025-09-28T11:03:02.000000Z"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "example": "2025-09-28T11:03:02.000000Z"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "Account pending approval or access denied"
+          },
+          "500": {
+            "description": "Login failed"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User logout",
+        "description": "Logs out the authenticated user (invalidates current token)",
+        "operationId": "5ff2dc8b48bff52908d3821a0ecc9b3e",
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Logout failed"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/check-unit-availability/{unitNumber}": {
+      "get": {
+        "tags": ["Authentication"],
+        "summary": "Check unit availability",
+        "description": "Check if a unit number is available for registration",
+        "operationId": "9c35aaed69a8df8248537bc12e3ec688",
+        "parameters": [
+          {
+            "name": "unitNumber",
+            "in": "path",
+            "description": "Unit number to check",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unit availability status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unit is available"
+                    },
+                    "data": {
+                      "properties": {
+                        "available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "unit_number": {
+                          "type": "string",
+                          "example": "123"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unit not available or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unit is not available"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/password/request-otp": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Request OTP for password reset",
+        "description": "Sends a 6-digit OTP to the user's email for password reset.",
+        "operationId": "3c7c49ed068b19f8edcfce70fc94c0f2",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP sent successfully or user not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": true,
+                  "message": "If an account with this email exists, an OTP has been sent.",
+                  "data": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": false,
+                  "message": "The given data was invalid.",
+                  "errors": {
+                    "email": ["The email field is required."]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/password/verify-otp": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Verify OTP for password reset",
+        "description": "Verifies the provided OTP and returns a reset token if successful.",
+        "operationId": "583a92a0f6d3d49f73d0e4d14d65c691",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email", "otp_code"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "otp_code": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": true,
+                  "message": "OTP verified successfully.",
+                  "data": {
+                    "reset_token": "secure_random_string_here"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired OTP",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": false,
+                  "message": "Invalid or expired OTP.",
+                  "errors": []
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": false,
+                  "message": "The given data was invalid.",
+                  "errors": {
+                    "email": ["The email field is required."],
+                    "otp_code": ["The otp code field is required."]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/password/reset": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Reset password with OTP and reset token",
+        "description": "Resets the user's password using the verified OTP and reset token.",
+        "operationId": "bf02f6b22ac44b960325dfb1f9bed104",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "reset_token",
+                  "password",
+                  "password_confirmation"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "reset_token": {
+                    "type": "string",
+                    "example": "secure_random_string_here"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "newpassword123"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "newpassword123"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": true,
+                  "message": "Password reset successful.",
+                  "data": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired reset token",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": false,
+                  "message": "Invalid or expired reset token.",
+                  "errors": []
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "success": false,
+                  "message": "The given data was invalid.",
+                  "errors": {
+                    "password": ["The password field is required."]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/projects": {
+      "get": {
+        "tags": ["Dashboard - Projects"],
+        "summary": "Get all projects",
+        "operationId": "928f9431b38e1fe7ed6feedf3bb68e0d",
+        "responses": {
+          "200": {
+            "description": "List of all projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Projects fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Project"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch projects"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Dashboard - Projects"],
+        "summary": "Create a new project",
+        "operationId": "f10fea0c530eac03d3ae4c4504c156e2",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["name", "description"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "New Project"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "This is a project description."
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Project created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create project"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/dashboard/projects/{projectId}": {
+      "put": {
+        "tags": ["Dashboard - Projects"],
+        "summary": "Update a project",
+        "operationId": "9de4b02cccc0e20c87a5b632b4bd5acf",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "ID of the project",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Updated Project"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Updated description"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Project updated"
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "500": {
+            "description": "Failed to update project"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dashboard/projects/{projectId}": {
+      "delete": {
+        "tags": ["Dashboard - Projects"],
+        "summary": "Soft delete a project",
+        "operationId": "f92190f3da195a6149143ec2622797c2",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "ID of the project to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Project deleted successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete project"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dashboard/projects/{projectId}/force": {
+      "delete": {
+        "tags": ["Dashboard - Projects"],
+        "summary": "Permanently delete a project",
+        "operationId": "fda5b236dd2c6cfc1a111bd5ca673141",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "ID of the project to permanently delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project permanently deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Project permanently deleted successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to permanently delete project"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/news": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get all published news with optional date filtering",
+        "operationId": "76e5c001367068169e8c0cfd3af19e75",
+        "parameters": [
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of results per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for filtering (YYYY-MM-DD). If only start is provided, filters for that specific day",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for filtering (YYYY-MM-DD). Must be used with start date for range filtering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "News fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "News fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/News"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["News"],
+        "summary": "Create a news item",
+        "operationId": "0f4eb346303a332d2913beb75ec10f02",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["title", "content"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "New Release: API v2"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "We are excited to announce..."
+                  },
+                  "is_featured": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "is_published": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "News created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "News created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/News"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create news"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/news/featured": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get featured news with optional date filtering",
+        "operationId": "d84d38a2e3fb24f979f6251b946415fd",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for filtering (YYYY-MM-DD). If only start is provided, filters for that specific day",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for filtering (YYYY-MM-DD). Must be used with start date for range filtering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Featured news fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Featured news fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/News"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/news/{id}": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get a specific news item",
+        "operationId": "66f0947b5aea2da4ce4a8d2dada8e962",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "News ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "News fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "News fetched successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/News"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "News not found"
+          }
+        }
+      }
+    },
+    "/api/news/project/{projectId}": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get news by project with optional date filtering",
+        "operationId": "4837b8cd4ca30009a0c231aa6fdb6e2b",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 2
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for filtering (YYYY-MM-DD). If only start is provided, filters for that specific day",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for filtering (YYYY-MM-DD). Must be used with start date for range filtering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project news fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Project news fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/News"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
+    "/api/news/unit/{unitId}": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get news by unit with optional date filtering",
+        "operationId": "f79e974e2820a11d163e71415f76259a",
+        "parameters": [
+          {
+            "name": "unitId",
+            "in": "path",
+            "description": "Unit ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of results per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for filtering (YYYY-MM-DD). If only start is provided, filters for that specific day",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for filtering (YYYY-MM-DD). Must be used with start date for range filtering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unit news fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unit news fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/News"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unit not found"
+          }
+        }
+      }
+    },
+    "/api/news/user": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get all news related to the authenticated user units with optional date filtering",
+        "operationId": "6266dc996f131545f447fcdb118999c8",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for filtering (YYYY-MM-DD). If only start is provided, filters for that specific day",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for filtering (YYYY-MM-DD). Must be used with start date for range filtering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user's news",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user news fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/News"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch user news"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects": {
+      "get": {
+        "tags": ["Projects"],
+        "summary": "Get all projects",
+        "operationId": "4c37b7034d5b8b1cc2ea08f5cc2445c7",
+        "responses": {
+          "200": {
+            "description": "List of all projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Projects fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Project"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch projects"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects/{id}": {
+      "get": {
+        "tags": ["Projects"],
+        "summary": "Get project by ID",
+        "operationId": "e31eeae1e3d214a00e94dd15c69cd2a8",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Project fetched successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "500": {
+            "description": "Failed to fetch project"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/projects/user": {
+      "get": {
+        "tags": ["Projects"],
+        "summary": "Get all projects for authenticated user",
+        "operationId": "b71f9ae7e3b043e0ee926d9c37f56afc",
+        "responses": {
+          "200": {
+            "description": "List of user's projects with associated units"
+          },
+          "500": {
+            "description": "Failed to fetch user projects"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/services/user": {
+      "get": {
+        "tags": ["Services"],
+        "summary": "Get services for the authenticated user",
+        "operationId": "4a0f229981cd798b511f986fb982426c",
+        "responses": {
+          "200": {
+            "description": "List of services accessible to the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User services fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Service"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch user services"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/services": {
+      "get": {
+        "tags": ["Services"],
+        "summary": "Get all services",
+        "operationId": "a17bdeb8e0ab75501b7830d0c99311fd",
+        "responses": {
+          "200": {
+            "description": "List of all services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "All services fetched successfully"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Service"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch all services"
+          }
+        }
+      }
+    },
+    "/api/units": {
+      "get": {
+        "tags": ["Units"],
+        "summary": "Get all units for the authenticated user (with filters)",
+        "operationId": "62726c1be986487ce621a6a7b5758a75",
+        "responses": {
+          "200": {
+            "description": "Units retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Units retrieved successfully."
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Unit"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/units/{id}": {
+      "get": {
+        "tags": ["Units"],
+        "summary": "Get a specific unit by ID",
+        "operationId": "6e4077ca530a7669ae6f365cb5d648ec",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unit ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unit retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unit retrieved successfully."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Unit"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Unauthorized to access this unit."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/units/user": {
+      "get": {
+        "tags": ["Units"],
+        "summary": "Get all units belonging to the authenticated user",
+        "operationId": "ebdd21ebd4a1dd5e343234b8bf0ede7f",
+        "responses": {
+          "200": {
+            "description": "User units retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User units retrieved successfully."
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Unit"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user profile",
+        "operationId": "fe077c52c5104976be6c79bb8ef99982",
+        "responses": {
+          "200": {
+            "description": "Profile fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile fetched successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to fetch profile"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user profile (JSON only)",
+        "description": "Use for JSON-only updates without file uploads",
+        "operationId": "aca29ab43861c9afbb2abcff801b8bca",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "email_notifications": {
+                    "description": "Enable or disable email notifications",
+                    "type": "boolean",
+                    "example": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Update user profile (with file upload support)",
+        "description": "Use POST with _method=PUT for file uploads. For JSON-only updates, use PUT directly.",
+        "operationId": "15701a90f5bb848269242037fc70cd11",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "_method": {
+                    "description": "HTTP method override for file uploads",
+                    "type": "string",
+                    "example": "PUT"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "email_notifications": {
+                    "description": "Enable or disable email notifications",
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "profile_picture": {
+                    "description": "Profile picture image file",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "500": {
+            "description": "Failed to update profile"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user account",
+        "operationId": "2590f1c3be321194048f874a6ab5cfd7",
+        "responses": {
+          "200": {
+            "description": "Account deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Account deleted successfully"
+                    },
+                    "data": {
+                      "type": "null",
+                      "example": null
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete account"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Partially update user profile (JSON only)",
+        "description": "Use for partial JSON-only updates without file uploads",
+        "operationId": "cad8f2ae5d8ef0dbffc19293736773c4",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "email_notifications": {
+                    "description": "Enable or disable email notifications",
+                    "type": "boolean",
+                    "example": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/profile/change-password": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Change user password",
+        "operationId": "49c454dcb41b367c6f47c2e891635824",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["current_password", "new_password"],
+                "properties": {
+                  "current_password": {
+                    "type": "string",
+                    "example": "oldPass123"
+                  },
+                  "new_password": {
+                    "type": "string",
+                    "example": "newPass456"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password changed successfully"
+                    },
+                    "data": {
+                      "type": "null",
+                      "example": null
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Current password is incorrect"
+          },
+          "500": {
+            "description": "Failed to change password"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/profile/documents": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user documents",
+        "operationId": "a8a80f9a90235cddd94191c9503cbe61",
+        "responses": {
+          "200": {
+            "description": "Documents retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Documents retrieved successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "engineering_structure": {
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "integer"
+                            },
+                            "mime_type": {
+                              "type": "string"
+                            },
+                            "uploaded_at": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          },
+                          "type": "object",
+                          "nullable": true
+                        },
+                        "contract": {
+                          "type": "object",
+                          "nullable": true
+                        },
+                        "installments_table": {
+                          "type": "object",
+                          "nullable": true
+                        },
+                        "other_documents": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to retrieve documents"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["User"],
+        "summary": "Upload user documents",
+        "operationId": "3038d9e228c2b0dfa23576704f7044ac",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "engineering_structure": {
+                    "description": "Engineering structure document",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "contract": {
+                    "description": "Contract document",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "installments_table": {
+                    "description": "Installments table document",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "other_documents[]": {
+                    "description": "Other documents",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documents uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Documents uploaded successfully"
+                    },
+                    "data": {
+                      "properties": {
+                        "uploaded_documents": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "500": {
+            "description": "Failed to upload documents"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "News": {
+        "title": "News",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Breaking News"
+          },
+          "content": {
+            "type": "string",
+            "example": "Full content of the news..."
+          },
+          "is_featured": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_published": {
+            "type": "boolean",
+            "example": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T10:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T10:00:00Z"
+          },
+          "author": {
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 5
+              },
+              "name": {
+                "type": "string",
+                "example": "John Doe"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "Project": {
+        "title": "Project",
+        "description": "Project resource representation",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Smart City Development"
+          },
+          "description": {
+            "type": "string",
+            "example": "A project focused on building smart infrastructure."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T12:34:56Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T12:34:56Z"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T12:34:56Z"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "type": "object"
+      },
+      "Service": {
+        "title": "Service",
+        "description": "Service model schema",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Room Booking"
+          },
+          "name_ar": {
+            "type": "string",
+            "example": "حجز الغرف"
+          },
+          "localized_name": {
+            "type": "string",
+            "example": "Room Booking"
+          },
+          "description": {
+            "type": "string",
+            "example": "Service to manage and book rooms",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "example": "fa-solid fa-bed",
+            "nullable": true
+          },
+          "type": {
+            "type": "integer",
+            "example": 1001
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "type": "object"
+      },
+      "Unit": {
+        "title": "Unit",
+        "description": "Unit model",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Unit A"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 10
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 5
+          }
+        },
+        "type": "object"
+      },
+      "User": {
+        "title": "User",
+        "required": ["id", "name", "email"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "+201234567890"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T12:34:56Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-09-28T12:34:56Z"
+          }
+        },
+        "type": "object"
+      },
+      "VisitorPass": {
+        "title": "Visitor Pass",
+        "description": "Visitor pass model for QR code access control",
+        "required": [
+          "id",
+          "user_id",
+          "unit_id",
+          "token",
+          "valid_from",
+          "valid_until"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier",
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "description": "ID of the unit owner who created the pass",
+            "type": "integer",
+            "example": 10
+          },
+          "unit_id": {
+            "description": "ID of the unit being visited",
+            "type": "integer",
+            "example": 5
+          },
+          "token": {
+            "description": "Unique token for QR code (hidden in responses)",
+            "type": "string",
+            "example": "64-char-secure-token"
+          },
+          "visitor_name": {
+            "description": "Name of the visitor",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "visitor_phone": {
+            "description": "Phone number of the visitor",
+            "type": "string",
+            "example": "01000000000"
+          },
+          "visitor_vehicle": {
+            "description": "License plate of visitor's vehicle",
+            "type": "string",
+            "example": "ABC123"
+          },
+          "purpose": {
+            "description": "Purpose of the visit",
+            "type": "string",
+            "example": "Delivery"
+          },
+          "valid_from": {
+            "description": "Pass validity start time",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-30T12:00:00Z"
+          },
+          "valid_until": {
+            "description": "Pass validity end time",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-30T14:00:00Z"
+          },
+          "is_one_time_use": {
+            "description": "Whether the pass can only be used once",
+            "type": "boolean",
+            "example": true
+          },
+          "is_used": {
+            "description": "Whether the pass has been used",
+            "type": "boolean",
+            "example": false
+          },
+          "used_at": {
+            "description": "Timestamp when the pass was first used",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-30T13:00:00Z"
+          },
+          "used_by_user_id": {
+            "description": "ID of the guard who scanned the pass",
+            "type": "integer",
+            "example": 15
+          },
+          "scan_count": {
+            "description": "Number of times the pass has been scanned",
+            "type": "integer",
+            "example": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-30T10:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-30T13:00:00Z"
+          },
+          "deleted_at": {
+            "description": "Soft delete timestamp",
+            "type": "string",
+            "format": "date-time",
+            "example": null
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "name": "Authorization",
+        "in": "header",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Announcements",
+      "description": "Announcements"
+    },
+    {
+      "name": "Configuration",
+      "description": "Configuration"
+    },
+    {
+      "name": "Facility Bookings",
+      "description": "Facility Bookings"
+    },
+    {
+      "name": "Facilities",
+      "description": "Facilities"
+    },
+    {
+      "name": "Notifications",
+      "description": "Notifications"
+    },
+    {
+      "name": "Service Provider Bookings",
+      "description": "Service Provider Bookings"
+    },
+    {
+      "name": "Service Providers",
+      "description": "Service Providers"
+    },
+    {
+      "name": "User Financial",
+      "description": "User Financial"
+    },
+    {
+      "name": "Visitor Passes",
+      "description": "Visitor Passes"
+    },
+    {
+      "name": "Authentication",
+      "description": "Authentication"
+    },
+    {
+      "name": "Dashboard - Projects",
+      "description": "Dashboard - Projects"
+    },
+    {
+      "name": "News",
+      "description": "News"
+    },
+    {
+      "name": "Projects",
+      "description": "Projects"
+    },
+    {
+      "name": "Services",
+      "description": "Services"
+    },
+    {
+      "name": "Units",
+      "description": "Units"
+    },
+    {
+      "name": "User",
+      "description": "User"
+    }
+  ]
+}

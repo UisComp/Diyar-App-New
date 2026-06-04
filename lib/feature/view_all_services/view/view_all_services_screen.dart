@@ -66,8 +66,12 @@ class _ViewAllServicesScreenState extends State<ViewAllServicesScreen> {
                   searchText.isNotEmpty
               ? homeController.filteredServices
               : (homeController.userServicesResponse.data ?? []);
+          // News (type 1) is surfaced as the standalone "Project Timeline"
+          // feature, so it is excluded from the services list.
           final services = allServices
-              .where((service) => service.isActive == true)
+              .where(
+                (service) => service.isActive == true && service.type != 1,
+              )
               .toList();
 
           return Skeletonizer(

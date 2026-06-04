@@ -305,5 +305,11 @@
   "privacy_policy_title": "سياسة الخصوصية",
   "last_updated": "آخر تحديث",
   "designed_by": "تصميم",
-  "diyar_co": "شركة ديار"
+  "diyar_co": "شركة ديار",
+  "project_timeline": "الجدول الزمني للمشروع",
+  "project_timeline_subtitle": "تابع أحداث ومراحل مشروعك أولاً بأول",
+  "no_events_or_mapped_units_here": "لا توجد أحداث أو وحدات مرتبطة في هذا القسم",
+  "tap_section_to_view_events": "اضغط على قسم مميز في الصورة لعرض أحداثه",
+  "select_project": "اختر المشروع",
+  "no_projects_found": "لا توجد مشاريع"
 }

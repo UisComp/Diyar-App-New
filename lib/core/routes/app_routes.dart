@@ -32,6 +32,7 @@ import 'package:diyar_app/feature/profile/view/linked_units_detail_screen.dart';
 import 'package:diyar_app/feature/profile/view/profile_screen.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/view/project_details.dart';
+import 'package:diyar_app/feature/project/view/project_timeline_screen.dart';
 import 'package:diyar_app/feature/report/view/report_screen.dart';
 import 'package:diyar_app/feature/service_providers/controller/service_provider_controller.dart';
 import 'package:diyar_app/feature/service_providers/view/service_provider_history_screen.dart';
@@ -333,14 +334,30 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         final projectId = state.extra as String?;
         return buildAnimatedPage(
-          child: BlocProvider(
-            create: (_) =>
-                ProjectController()..getProjectDetails(id: projectId ?? ''),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) =>
+                    ProjectController()..getProjectDetails(id: projectId ?? ''),
+              ),
+              BlocProvider(create: (_) => UnitEventController()),
+            ],
             child: const ProjectDetails(),
           ),
           transition: scaleIn,
         );
       },
+    ),
+    GoRoute(
+      name: RoutesName.projectTimeline,
+      path: RoutesName.projectTimeline,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => ProjectController()..getUserProjects(),
+          child: const ProjectTimelineScreen(),
+        ),
+        transition: scaleIn,
+      ),
     ),
     GoRoute(
       name: RoutesName.unitEvents,

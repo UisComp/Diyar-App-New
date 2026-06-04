@@ -31,6 +31,26 @@ class ProjectController extends Cubit<ProjectState> {
         });
   }
 
+  Future<void> getUserProjects() async {
+    emit(GetUserProjectsLoadingState());
+    await ProjectService.getUserProjects()
+        .then((value) {
+          projectsResponseModel = value;
+          if (value.success == true) {
+            AppLogger.success(
+              'userProjectsResponseModel: ${projectsResponseModel.toJson()}',
+            );
+            emit(GetUserProjectsSuccessfullyState());
+          } else {
+            emit(GetUserProjectsFailureState(error: value.message));
+          }
+        })
+        .catchError((error) {
+          AppLogger.error('Error Happen While Get User Projects is $error');
+          emit(GetUserProjectsFailureState(error: error.toString()));
+        });
+  }
+
   Future<void> getProjectDetails({required String id}) async {
     emit(GetProjectDetailsLoadingState());
     await ProjectService.getProjectDetails(id: id)

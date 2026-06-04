@@ -15,6 +15,7 @@ import 'package:diyar_app/feature/home/controller/home_state.dart';
 import 'package:diyar_app/feature/home/view/widgets/custom_grid_view_for_services.dart';
 import 'package:diyar_app/feature/home/view/widgets/custom_service_and_view_all_texts.dart';
 import 'package:diyar_app/feature/home/view/widgets/diyar_banner_slider.dart';
+import 'package:diyar_app/feature/home/view/widgets/project_timeline_banner.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_state.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
@@ -258,6 +259,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 250.h,
                           ),
                           20.ph,
+                          const ProjectTimelineBanner().paddingSymmetric(
+                            horizontal: 16.w,
+                          ),
+                          24.ph,
                           const CustomServiceAndViewAllTexts(),
                           20.ph,
                           CustomGridViewForServices(

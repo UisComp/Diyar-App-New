@@ -1,16 +1,18 @@
-
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:flutter/material.dart';
 
 class PolygonsPainter extends CustomPainter {
   final List<List<Offset>> polygons;
 
-  PolygonsPainter(this.polygons);
+  /// Indices of polygons that should be drawn as "selected" (highlighted).
+  final Set<int> selectedIndices;
+
+  PolygonsPainter(this.polygons, {this.selectedIndices = const {}});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppColors.redColor.withOpacity(0.35)
+    final fillPaint = Paint()
+      ..color = AppColors.redColor.withOpacity(0.25)
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()
@@ -18,7 +20,17 @@ class PolygonsPainter extends CustomPainter {
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    for (final points in polygons) {
+    final selectedFillPaint = Paint()
+      ..color = AppColors.primaryColor.withOpacity(0.40)
+      ..style = PaintingStyle.fill;
+
+    final selectedBorderPaint = Paint()
+      ..color = AppColors.primaryColor
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke;
+
+    for (int index = 0; index < polygons.length; index++) {
+      final points = polygons[index];
       if (points.isEmpty) continue;
 
       final path = Path()..moveTo(points.first.dx, points.first.dy);
@@ -29,11 +41,14 @@ class PolygonsPainter extends CustomPainter {
 
       path.close();
 
-      canvas.drawPath(path, paint);
-      canvas.drawPath(path, borderPaint);
+      final isSelected = selectedIndices.contains(index);
+      canvas.drawPath(path, isSelected ? selectedFillPaint : fillPaint);
+      canvas.drawPath(path, isSelected ? selectedBorderPaint : borderPaint);
     }
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant PolygonsPainter oldDelegate) =>
+      oldDelegate.polygons != polygons ||
+      oldDelegate.selectedIndices != selectedIndices;
 }

@@ -18,6 +18,22 @@ class ProjectService {
     return ProjectsResponseModel.fromJson(projectResponse?.data);
   }
 
+  static Future<ProjectsResponseModel> getUserProjects() async {
+    final userProjectsResponse = await DioHelper.getData(
+      path: ApiPaths.getUserProjects,
+    );
+    try {
+      AppLogger.info("userProjectsResponse==>$userProjectsResponse");
+      if (userProjectsResponse != null &&
+          userProjectsResponse.statusCode == 200) {
+        return ProjectsResponseModel.fromJson(userProjectsResponse.data);
+      }
+    } catch (e) {
+      AppLogger.error('Error Happen While Get User Projects is $e');
+    }
+    return ProjectsResponseModel.fromJson(userProjectsResponse?.data);
+  }
+
   static Future<ProjectDetailsResponseModel> getProjectDetails({
     required String id,
   }) async {

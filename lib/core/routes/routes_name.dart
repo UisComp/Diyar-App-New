@@ -12,6 +12,7 @@ class RoutesName {
   static const String contactUsScreen = '/contactUsScreen';
   static const String financeScreen = '/FinanceScreen';
   static const String projectDetails = '/projectDetails';
+  static const String projectTimeline = '/projectTimeline';
   static const String unitEvents = '/unitEvents';
   static const String newsScreen = '/newsScreen';
   static const String newsDetailsScreen = '/newsDetailsScreen';

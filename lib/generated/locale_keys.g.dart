@@ -310,5 +310,11 @@ abstract class  LocaleKeys {
   static const last_updated = 'last_updated';
   static const designed_by = 'designed_by';
   static const diyar_co = 'diyar_co';
+  static const project_timeline = 'project_timeline';
+  static const project_timeline_subtitle = 'project_timeline_subtitle';
+  static const no_events_or_mapped_units_here = 'no_events_or_mapped_units_here';
+  static const tap_section_to_view_events = 'tap_section_to_view_events';
+  static const select_project = 'select_project';
+  static const no_projects_found = 'no_projects_found';
 
 }

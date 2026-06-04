@@ -11,6 +11,15 @@ class GetProjectsFailureState extends ProjectState {
   GetProjectsFailureState({this.error});
 }
 
+class GetUserProjectsLoadingState extends ProjectState {}
+
+class GetUserProjectsSuccessfullyState extends ProjectState {}
+
+class GetUserProjectsFailureState extends ProjectState {
+  final String? error;
+  GetUserProjectsFailureState({this.error});
+}
+
 class GetProjectDetailsLoadingState extends ProjectState {}
 
 class GetProjectDetailsSuccessfullyState extends ProjectState {}

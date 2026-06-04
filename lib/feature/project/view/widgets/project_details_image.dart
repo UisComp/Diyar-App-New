@@ -1,7 +1,6 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
-import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
@@ -11,7 +10,6 @@ import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class ProjectDetailsImage extends StatelessWidget {
   const ProjectDetailsImage({
@@ -19,11 +17,24 @@ class ProjectDetailsImage extends StatelessWidget {
     required this.controller,
     required this.isLoading,
     required this.project,
+    this.onUnitSelected,
+    this.onUnmappedSectionTapped,
+    this.selectedUnitId,
   });
 
   final ProjectController controller;
   final bool isLoading;
   final ProjectDetailsResponseModel project;
+
+  /// Called when a mapped section (a shape that has a [Shape.unitId]) is tapped
+  /// by an authenticated user.
+  final void Function(int unitId)? onUnitSelected;
+
+  /// Called when a drawn section that is NOT linked to any unit is tapped.
+  final VoidCallback? onUnmappedSectionTapped;
+
+  /// The currently selected unit, so its polygon can be highlighted.
+  final int? selectedUnitId;
 
   @override
   Widget build(BuildContext context) {
@@ -78,19 +89,20 @@ class ProjectDetailsImage extends StatelessWidget {
                           AppLogger.log(
                             "Tapped shape details: ${shape.toJson()}",
                           );
-                          if (shape.unitId != null &&
-                              userModel?.data?.accessToken != null) {
-                            context.push(
-                              RoutesName.unitEvents,
-                              extra: shape.unitId,
-                            );
+                          if (shape.unitId != null) {
+                            if (userModel?.data?.accessToken != null) {
+                              onUnitSelected?.call(shape.unitId!);
+                            } else {
+                              AppFunctions.warningMessage(
+                                context,
+                                message: LocaleKeys
+                                    .available_for_logged_in_users_only
+                                    .tr(),
+                              );
+                            }
                           } else {
-                            AppFunctions.warningMessage(
-                              context,
-                              message: LocaleKeys
-                                  .available_for_logged_in_users_only
-                                  .tr(),
-                            );
+                            // A drawn section with no linked unit.
+                            onUnmappedSectionTapped?.call();
                           }
                           break;
                         }
@@ -111,6 +123,12 @@ class ProjectDetailsImage extends StatelessWidget {
                               )
                               .toList();
                         }).toList(),
+                        selectedIndices: {
+                          for (var i = 0; i < shapes.length; i++)
+                            if (selectedUnitId != null &&
+                                shapes[i].unitId == selectedUnitId)
+                              i,
+                        },
                       ),
                     ),
                   ),
