@@ -314,6 +314,21 @@ abstract class  LocaleKeys {
   static const project_timeline_subtitle = 'project_timeline_subtitle';
   static const no_events_or_mapped_units_here = 'no_events_or_mapped_units_here';
   static const tap_section_to_view_events = 'tap_section_to_view_events';
+  static const select_months_to_view_events = 'select_months_to_view_events';
+  static const months_selected = 'months_selected';
+  static const month_selected = 'month_selected';
+  static const showing_all_project_news = 'showing_all_project_news';
+  static const showing_selected_unit = 'showing_selected_unit';
+  static const clear = 'clear';
+  static const good_morning = 'good_morning';
+  static const good_afternoon = 'good_afternoon';
+  static const good_evening = 'good_evening';
+  static const view_timeline = 'view_timeline';
+  static const projects = 'projects';
+  static const today = 'today';
+  static const yesterday = 'yesterday';
+  static const in_partnership_with = 'in_partnership_with';
+  static const lamar = 'lamar';
   static const select_project = 'select_project';
   static const no_projects_found = 'no_projects_found';
 

@@ -40,4 +40,35 @@ class UnitEventController extends Cubit<UnitEventStates> {
       emit(GetUnitsByEventErrorState(error: e.toString()));
     }
   }
+
+  /// Loads news for a whole project (no unit selected) within a date range.
+  /// Shares the same state/model as [getUnitsByEvent] so the timeline UI is
+  /// agnostic to which scope is active.
+  Future<void> getProjectNewsByEvent({
+    required String id,
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    emit(GetUnitsByEventLoadingState());
+    try {
+      final projectNews = await UnitEventService.getNewsByProjectByEvent(
+        id: id,
+        start: start,
+        end: end,
+      );
+      newByProjectUnitEventResponseModel = projectNews;
+      if (newByProjectUnitEventResponseModel.success == true) {
+        emit(GetUnitsByEventSuccessfullyState());
+      } else {
+        emit(
+          GetUnitsByEventErrorState(
+            error: newByProjectUnitEventResponseModel.message,
+          ),
+        );
+      }
+    } catch (e) {
+      AppLogger.error('Error Happen While Get Project News By Event is $e');
+      emit(GetUnitsByEventErrorState(error: e.toString()));
+    }
+  }
 }

@@ -29,4 +29,35 @@ class UnitEventService {
     }
     return NewByProjectUnitEventResponseModel.fromJson(unitEventResponse?.data);
   }
+
+  /// Fetches every news item for a whole project within an optional date range.
+  /// Returns the same shape as the unit endpoint so the timeline can render
+  /// both with one model.
+  static Future<NewByProjectUnitEventResponseModel> getNewsByProjectByEvent({
+    required String id,
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    final projectEventResponse = await DioHelper.getData(
+      path: ApiPaths.getNewsByProject(
+        id: id,
+        start: start.toString(),
+        end: end.toString(),
+      ),
+    );
+    AppLogger.info("projectEventResponse==>$projectEventResponse");
+    try {
+      if (projectEventResponse != null &&
+          projectEventResponse.statusCode == 200) {
+        return NewByProjectUnitEventResponseModel.fromJson(
+          projectEventResponse.data,
+        );
+      }
+    } catch (e) {
+      AppLogger.error('Error Happen While Get Project News By Event is $e');
+    }
+    return NewByProjectUnitEventResponseModel.fromJson(
+      projectEventResponse?.data,
+    );
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/feature/active_work/view/active_work_screen.dart';
 import 'package:diyar_app/feature/add_property/view/add_property_screen.dart';
@@ -43,6 +42,7 @@ import 'package:diyar_app/feature/settings/view/change_password.dart';
 import 'package:diyar_app/feature/settings/view/contact_us_screen.dart';
 import 'package:diyar_app/feature/profile/view/personal_information.dart';
 import 'package:diyar_app/feature/settings/view/privacy_policy.dart';
+import 'package:diyar_app/feature/splash/view/splash_screen.dart';
 import 'package:diyar_app/feature/unit_event/controller/unit_event_controller.dart';
 import 'package:diyar_app/feature/unit_event/view/unit_event.dart';
 import 'package:diyar_app/feature/view_all_services/view/view_all_services_screen.dart';
@@ -195,10 +195,16 @@ SlideTransition elasticSlideUp(
 }
 
 final GoRouter router = GoRouter(
-  initialLocation: userModel?.data?.accessToken != null
-      ? RoutesName.homeLayout
-      : RoutesName.onBoarding,
+  initialLocation: RoutesName.splash,
   routes: <RouteBase>[
+    GoRoute(
+      name: RoutesName.splash,
+      path: RoutesName.splash,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const SplashScreen(),
+        transition: fadeIn,
+      ),
+    ),
     GoRoute(
       name: RoutesName.onBoarding,
       path: RoutesName.onBoarding,

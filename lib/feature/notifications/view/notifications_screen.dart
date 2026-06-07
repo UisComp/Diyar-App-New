@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_state.dart';
@@ -60,18 +61,29 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
             ],
           ),
-          body: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Skeletonizer(
-              enabled: isLoading && notifications.isEmpty,
-              child: notifications.isEmpty && !isLoading
-                  ? const EmptyNotifications()
-                  : CustomNotificationsListView(
-                      state: state,
-                      scrollController: _scrollController,
-                      notifications: notifications,
-                      notificationController: notificationController,
-                    ),
+          body: RefreshIndicator(
+            color: AppColors.primaryColor,
+            onRefresh: () =>
+                notificationController.fetchAllNotifications(refresh: true),
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Skeletonizer(
+                enabled: isLoading && notifications.isEmpty,
+                child: notifications.isEmpty && !isLoading
+                    ? ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(height: 120.h),
+                          const EmptyNotifications(),
+                        ],
+                      )
+                    : CustomNotificationsListView(
+                        state: state,
+                        scrollController: _scrollController,
+                        notifications: notifications,
+                        notificationController: notificationController,
+                      ),
+              ),
             ),
           ),
         );

@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/formatter/app_formatter.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/feature/notifications/model/notification_response_model.dart';
@@ -11,12 +12,23 @@ class NotificationTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppText(
-      AppFormatter.formatDate(
+    final date =
         DateTime.tryParse(notification.createdAt ?? '')?.toUtc().toLocal() ??
-            DateTime.now().toUtc().toLocal(),
-      ),
-      style: TextStyle(color: Colors.grey.shade500, fontSize: 12.sp),
+        DateTime.now().toUtc().toLocal();
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.access_time_rounded,
+          size: 13.sp,
+          color: Colors.grey.shade500,
+        ),
+        4.0.pw,
+        AppText(
+          AppFormatter.formatTimeOnly(date),
+          style: TextStyle(color: Colors.grey.shade500, fontSize: 12.sp),
+        ),
+      ],
     );
   }
 }

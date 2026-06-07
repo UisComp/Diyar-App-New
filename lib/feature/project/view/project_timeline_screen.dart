@@ -86,16 +86,44 @@ class _ProjectTimelineScreenState extends State<ProjectTimelineScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText(
-                  LocaleKeys.select_project.tr(),
-                  style: AppStyle.fontSize18Bold(context),
+                Row(
+                  children: [
+                    Container(
+                      width: 4.w,
+                      height: 26.h,
+                      decoration: BoxDecoration(
+                        gradient: AppColors.accentGradient,
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                    ),
+                    10.pw,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          LocaleKeys.select_project.tr(),
+                          style: AppStyle.fontSize22Bold(context).copyWith(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        AppText(
+                          '${projects.length} ${LocaleKeys.projects.tr()}',
+                          style: AppStyle.fontSize12Regular(context).copyWith(
+                            color: AppColors.descContainerColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                16.ph,
+                20.ph,
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: projects.length,
-                  separatorBuilder: (_, _) => 12.ph,
+                  separatorBuilder: (_, _) => 16.ph,
                   itemBuilder: (context, index) {
                     final project = projects[index];
                     return _ProjectCard(
@@ -117,6 +145,8 @@ class _ProjectTimelineScreenState extends State<ProjectTimelineScreen> {
   }
 }
 
+/// Premium project card: an image banner with the project name overlaid on a
+/// gradient scrim, plus a "View timeline" call-to-action footer.
 class _ProjectCard extends StatelessWidget {
   const _ProjectCard({required this.project, required this.onTap});
 
@@ -125,54 +155,120 @@ class _ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16.r),
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.whiteColor,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: AppColors.primaryColor.withValues(alpha: 0.12),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: AppColors.primaryColor.withValues(alpha: 0.10),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.blackColor.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryColor.withValues(alpha: 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.r),
+        child: Material(
+          color: AppColors.whiteColor,
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _banner(context),
+                _ctaFooter(context),
+              ],
             ),
-          ],
+          ),
         ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.horizontal(left: Radius.circular(16.r)),
-              child: CustomCachedNetworkImage(
-                imageUrl: project.mainImage?.url,
-                width: 110.w,
-                height: 90.h,
-                fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _banner(BuildContext context) {
+    return Stack(
+      children: [
+        CustomCachedNetworkImage(
+          imageUrl: project.mainImage?.url,
+          width: double.infinity,
+          height: 150.h,
+          fit: BoxFit.cover,
+          isProjectDetails: true,
+        ),
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                colors: [
+                  AppColors.blackColor.withValues(alpha: 0.65),
+                  Colors.transparent,
+                ],
               ),
             ),
-            12.pw,
-            Expanded(
-              child: AppText(
-                project.name ?? '',
-                style: AppStyle.fontSize18Bold(
-                  context,
-                ).copyWith(fontSize: 16.sp),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+          ),
+        ),
+        Positioned(
+          left: 16.w,
+          right: 16.w,
+          bottom: 12.h,
+          child: AppText(
+            project.name ?? '',
+            style: TextStyle(
+              color: AppColors.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.2,
+              shadows: const [
+                Shadow(color: Colors.black54, blurRadius: 6),
+              ],
             ),
-            Icon(
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _ctaFooter(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      child: Row(
+        children: [
+          Icon(
+            Icons.timeline_rounded,
+            size: 18.sp,
+            color: AppColors.primaryColor,
+          ),
+          8.pw,
+          Expanded(
+            child: AppText(
+              LocaleKeys.view_timeline.tr(),
+              style: AppStyle.fontSize14Bold(
+                context,
+              ).copyWith(color: AppColors.primaryColor),
+            ),
+          ),
+          Container(
+            height: 32.w,
+            width: 32.w,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              gradient: AppColors.accentGradient,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
               Icons.arrow_forward_ios_rounded,
-              size: 16.sp,
-              color: AppColors.primaryColor,
+              size: 14.sp,
+              color: AppColors.whiteColor,
             ),
-            12.pw,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

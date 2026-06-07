@@ -57,9 +57,9 @@ class DesignedByFooter extends StatelessWidget {
           AppText(
             LocaleKeys.diyar_co.tr(),
             style: TextStyle(
-              color: AppColors.primaryColor,
+              color: AppColors.diyarColor,
               fontSize: fontSize,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w900,
               letterSpacing: 0.2,
             ),
           ),

@@ -7,6 +7,7 @@ class AppColors {
   static const Color containerColor = Color(0xFFF5F5F5);
   static const Color descContainerColor = Color(0xFF5C5C5C);
   static const Color dividerColor = Color(0xFF0084E4);
+  static const Color diyarColor = Color(0xFF795548);
 
   // Basic text and background colors
   static const Color whiteColor = Colors.white;
