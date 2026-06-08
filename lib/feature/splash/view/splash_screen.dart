@@ -201,7 +201,7 @@ class _SplashScreenState extends State<SplashScreen>
               AppText(
                 LocaleKeys.diyar_co.tr(),
                 style: TextStyle(
-                  color: AppColors.whiteColor,
+                  color: AppColors.diyarColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.2,
