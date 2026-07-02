@@ -69,12 +69,17 @@ jobs:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: printf '%s' "$PLAY_SERVICE_ACCOUNT_JSON" > android/fastlane/play-service-account.json
 
-      - name: Setup Ruby & Fastlane
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2"
-          bundler-cache: true
           working-directory: android
+
+      - name: Install Fastlane
+        working-directory: android
+        run: |
+          rm -f Gemfile.lock
+          bundle install
 
       - name: Deploy to Google Play (${{ steps.cfg.outputs.play_track }})
         working-directory: android
@@ -95,7 +100,7 @@ jobs:
   # ---------------------------------------------------------------------- IOS
   ios:
     name: iOS → App Store
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 

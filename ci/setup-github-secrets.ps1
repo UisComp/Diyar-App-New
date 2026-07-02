@@ -54,7 +54,7 @@ function Set-Secret([string]$Name, [string]$Value) {
   else { Write-Host "  ! failed $Name" -ForegroundColor Red }
 }
 function Set-SecretFromFile([string]$Name, [string]$Path) {
-  if (-not (Test-Path $Path)) { Write-Host "  ! file not found for $Name: $Path" -ForegroundColor Red; return }
+  if (-not (Test-Path $Path)) { Write-Host "  ! file not found for ${Name}: $Path" -ForegroundColor Red; return }
   Set-Secret $Name (Get-Content -Raw -Path $Path)
 }
 
