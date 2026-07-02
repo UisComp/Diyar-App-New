@@ -1,0 +1,8 @@
+app_identifier("com.uis.diyariosapp")
+
+# Apple Developer Team ID (from the Xcode project)
+team_id("4W6AGQ2622")
+
+# App Store Connect authentication is handled in the Fastfile via the
+# App Store Connect API key (ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_CONTENT).
+# apple_id / itc_team_id are not needed when using an API key.

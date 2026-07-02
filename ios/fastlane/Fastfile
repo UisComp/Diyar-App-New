@@ -1,0 +1,173 @@
+# iOS Fastfile for Diyar App
+# Docs: https://docs.fastlane.tools
+#
+# Lanes:
+#   fastlane ios firebase    -> build a signed IPA and upload to Firebase App Distribution
+#   fastlane ios testflight  -> build a signed IPA and upload to TestFlight
+#   fastlane ios beta        -> build once, upload to BOTH Firebase and TestFlight
+#
+# Code signing uses `match` (https://docs.fastlane.tools/actions/match).
+# App Store Connect auth uses an API key (recommended for CI).
+
+default_platform(:ios)
+
+BUNDLE_ID       = "com.uis.diyariosapp"
+FIREBASE_APP_ID = "1:241715939585:ios:5130c62115d2e362f97300"
+SCHEME          = "Runner"
+WORKSPACE       = "Runner.xcworkspace"
+OUTPUT_IPA      = "Runner.ipa"
+
+def flutter_root
+  File.expand_path("../..", __dir__)
+end
+
+def flutter(cmd)
+  sh("cd #{flutter_root.shellescape} && flutter #{cmd}")
+end
+
+# Build the App Store Connect API token from env (used by match + pilot + deliver)
+def asc_api_key
+  app_store_connect_api_key(
+    key_id: ENV["ASC_KEY_ID"],
+    issuer_id: ENV["ASC_ISSUER_ID"],
+    key_content: ENV["ASC_KEY_CONTENT"], # base64 or raw .p8 contents
+    is_key_content_base64: true,
+    in_house: false
+  )
+end
+
+platform :ios do
+  desc "Prepare: flutter packages, codegen and pods"
+  lane :prepare do
+    flutter("pub get")
+    flutter("pub run build_runner build --delete-conflicting-outputs")
+    # Pre-build the Flutter assets/frameworks without codesigning so gym can sign.
+    flutter("build ios --release --no-codesign")
+    cocoapods(podfile: "#{flutter_root}/ios/Podfile")
+  end
+
+  desc "Sync signing certificates & provisioning profiles via match (read-only)"
+  lane :signing do
+    api_key = asc_api_key
+    match(
+      type: "appstore",
+      app_identifier: BUNDLE_ID,
+      api_key: api_key,
+      readonly: is_ci,
+      git_url: ENV["MATCH_GIT_URL"],
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
+    )
+  end
+
+  # يتشغّل مرة واحدة فقط (يدويًا من تبويب Actions) لتوليد شهادة التوقيع
+  # وملف التزويد وتخزينهم في ريبو الشهادات — بدون الحاجة لجهاز ماك.
+  desc "One-time: generate & store App Store cert + profile via match (read-write)"
+  lane :bootstrap_signing do
+    match(
+      type: "appstore",
+      app_identifier: BUNDLE_ID,
+      api_key: asc_api_key,
+      readonly: false,
+      git_url: ENV["MATCH_GIT_URL"],
+      git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
+    )
+  end
+
+  desc "Build a signed release IPA (App Store distribution)"
+  lane :build do
+    prepare
+    signing
+    # match installs profiles named "match AppStore <bundle id>".
+    # Force manual signing so gym picks the match profile instead of Xcode automatic.
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "#{flutter_root}/ios/Runner.xcodeproj",
+      team_id: "4W6AGQ2622",
+      bundle_identifier: BUNDLE_ID,
+      code_sign_identity: "Apple Distribution",
+      profile_name: "match AppStore #{BUNDLE_ID}"
+    )
+    build_app(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      export_method: "app-store",
+      output_name: OUTPUT_IPA,
+      output_directory: "#{flutter_root}/build/ios/ipa",
+      export_options: {
+        provisioningProfiles: {
+          BUNDLE_ID => "match AppStore #{BUNDLE_ID}"
+        }
+      }
+    )
+  end
+
+  desc "Build and upload the IPA to Firebase App Distribution"
+  lane :firebase do
+    build
+    firebase_app_distribution(
+      app: FIREBASE_APP_ID,
+      groups: "testers",
+      release_notes: ENV["RELEASE_NOTES"] || "Fastlane build",
+      service_credentials_file: ENV["FIREBASE_SERVICE_ACCOUNT_FILE"],
+      ipa_path: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}"
+    )
+  end
+
+  desc "Build and upload the IPA to TestFlight"
+  lane :testflight do
+    build
+    pilot(
+      api_key: asc_api_key,
+      ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true
+    )
+  end
+
+  desc "Build, upload to App Store Connect, and submit for App Store review"
+  lane :release do
+    build
+    upload_to_app_store(
+      api_key: asc_api_key,
+      ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
+      # Apple REQUIRES human-reviewed metadata; we only push the binary here.
+      skip_metadata: true,
+      skip_screenshots: true,
+      precheck_include_in_app_purchases: false,
+      submit_for_review: true,
+      automatic_release_after_processing: true,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false
+      },
+      force: true # skip the interactive HTML preview (CI is non-interactive)
+    )
+  end
+
+  desc "Production push: TestFlight + submit to the App Store for review"
+  lane :beta do
+    build
+    # 1) TestFlight (available to testers immediately after processing)
+    pilot(
+      api_key: asc_api_key,
+      ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true
+    )
+    # 2) Submit the same build to the App Store for review
+    upload_to_app_store(
+      api_key: asc_api_key,
+      ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
+      skip_metadata: true,
+      skip_screenshots: true,
+      precheck_include_in_app_purchases: false,
+      submit_for_review: true,
+      automatic_release_after_processing: true,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false
+      },
+      force: true
+    )
+  end
+end

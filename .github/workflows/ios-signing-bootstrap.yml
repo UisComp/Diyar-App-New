@@ -1,0 +1,36 @@
+name: iOS Signing Bootstrap (run once)
+
+# تشغيل يدوي فقط: Actions -> "iOS Signing Bootstrap" -> Run workflow.
+# يولّد شهادة توقيع App Store وملف التزويد على سيرفر ماك بتاع GitHub
+# ويخزّنهم في ريبو الشهادات (match). شغّله مرة واحدة قبل أول نشر iOS.
+# مش محتاج جهاز ماك عندك إطلاقًا.
+on:
+  workflow_dispatch:
+
+jobs:
+  bootstrap:
+    name: Generate iOS signing (match)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          working-directory: ios
+
+      - name: Install Fastlane
+        working-directory: ios
+        run: bundle install
+
+      - name: Generate & store signing (match, read-write)
+        working-directory: ios
+        run: bundle exec fastlane ios bootstrap_signing
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}

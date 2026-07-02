@@ -1,54 +1,70 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
+# Android Fastfile for Diyar App
+# Docs: https://docs.fastlane.tools
 #
-# For a list of all available actions, check out
+# Lanes:
+#   fastlane android firebase   -> build signed APK and upload to Firebase App Distribution
+#   fastlane android playstore  -> build signed AAB and upload to Google Play (internal track)
+#   fastlane android beta       -> build + upload to BOTH Firebase and Google Play
 #
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+# All Flutter commands run from the project root (one level above android/).
 
 default_platform(:android)
 
-platform :android do
-  desc "Distribute the app to Firebase App Distribution"
-  lane :deploy_to_firebase do
-    sh "flutter build apk"
+# Firebase App ID for the Android app (from firebase.json)
+FIREBASE_APP_ID = "1:241715939585:android:262b24bc128b7f41f97300"
 
-    firebase_app_distribution(
-      app: "1:241715939585:android:262b24bc128b7f41f97300",
-      groups: "testers",
-      release_notes: "This Fastlane Build",
-      firebase_cli_token: ENV["FIREBASE_TOKEN"], 
-      android_artifact_path: "build/app/outputs/flutter-apk/app-release.apk",
-      android_artifact_type: "APK",
-      debug: true
-    )
-  end
+# Absolute path to the Flutter project root (android/ -> ..)
+def flutter_root
+  File.expand_path("../..", __dir__)
 end
 
+# Run a flutter command from the project root
+def flutter(cmd)
+  sh("cd #{flutter_root.shellescape} && flutter #{cmd}")
+end
 
+platform :android do
+  desc "Prepare: fetch packages and run code generation"
+  lane :prepare do
+    flutter("pub get")
+    flutter("pub run build_runner build --delete-conflicting-outputs")
+  end
 
+  desc "Build a signed release APK and distribute it to Firebase App Distribution"
+  lane :firebase do
+    prepare
+    flutter("build apk --release")
 
+    firebase_app_distribution(
+      app: FIREBASE_APP_ID,
+      groups: "testers",
+      release_notes: ENV["RELEASE_NOTES"] || "Fastlane build",
+      service_credentials_file: ENV["FIREBASE_SERVICE_ACCOUNT_FILE"],
+      android_artifact_path: "#{flutter_root}/build/app/outputs/flutter-apk/app-release.apk",
+      android_artifact_type: "APK"
+    )
+  end
 
- # desc "Runs all the tests"
-  # lane :test do
-  #   gradle(task: "test")
-  # end
+  desc "Build a signed release AAB and upload it to Google Play (internal track)"
+  lane :playstore do
+    prepare
+    flutter("build appbundle --release")
 
-  # desc "Submit a new Beta Build to Crashlytics Beta"
-  # lane :beta do
-  #   gradle(task: "clean assembleRelease")
-  #   crashlytics
-  # end
+    upload_to_play_store(
+      track: ENV["PLAY_TRACK"] || "production",
+      aab: "#{flutter_root}/build/app/outputs/bundle/release/app-release.aab",
+      json_key: ENV["PLAY_JSON_KEY_FILE"] || "fastlane/play-service-account.json",
+      # "completed" = roll out to 100% of the chosen track once Google review passes.
+      release_status: ENV["PLAY_RELEASE_STATUS"] || "completed",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
 
-  # desc "Deploy a new version to the Google Play"
-  # lane :deploy do
-  #   gradle(task: "clean assembleRelease")
-  #   upload_to_play_store
-  # end
+  desc "Distribute to BOTH Firebase App Distribution and Google Play"
+  lane :beta do
+    firebase
+    playstore
+  end
+end

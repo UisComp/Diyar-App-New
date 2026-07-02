@@ -1,0 +1,16 @@
+# match configuration
+# Docs: https://docs.fastlane.tools/actions/match
+#
+# match stores your signing certificates and provisioning profiles in a private
+# git repo (encrypted). Set MATCH_GIT_URL and MATCH_PASSWORD as CI secrets.
+
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+
+type("appstore") # the default; lanes override when needed
+
+app_identifier(["com.uis.diyariosapp"])
+team_id("4W6AGQ2622")
+
+# Keep CI non-interactive and never regenerate certs from the runner.
+readonly(true)
