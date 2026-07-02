@@ -69,6 +69,13 @@ jobs:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: printf '%s' "$PLAY_SERVICE_ACCOUNT_JSON" > android/fastlane/play-service-account.json
 
+      - name: Set unique build number
+        run: |
+          BN=$((1000 + GITHUB_RUN_NUMBER))
+          CUR=$(grep -E '^version:' pubspec.yaml | sed -E 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          sed -i -E "s/^version:.*/version: ${CUR}+${BN}/" pubspec.yaml
+          grep '^version:' pubspec.yaml
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -123,6 +130,13 @@ jobs:
           IOS_GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.IOS_GOOGLE_SERVICE_INFO_PLIST }}
         run: printf '%s' "$IOS_GOOGLE_SERVICE_INFO_PLIST" > ios/Runner/GoogleService-Info.plist
 
+      - name: Set unique build number
+        run: |
+          BN=$((1000 + GITHUB_RUN_NUMBER))
+          CUR=$(grep -E '^version:' pubspec.yaml | sed -E 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          sed -i -E "s/^version:.*/version: ${CUR}+${BN}/" pubspec.yaml
+          grep '^version:' pubspec.yaml
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -143,6 +157,9 @@ jobs:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          # xcodebuild -showBuildSettings can be slow on CI with SPM; give it more room
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: "180"
+          FASTLANE_XCODEBUILD_SETTINGS_RETRIES: "10"
 
       - name: Upload IPA artifact
         if: always()
