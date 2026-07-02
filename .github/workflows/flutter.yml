@@ -108,6 +108,7 @@ jobs:
   ios:
     name: iOS → App Store
     runs-on: macos-15
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 

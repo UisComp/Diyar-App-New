@@ -75,6 +75,9 @@ platform :ios do
 
   desc "Build a signed release IPA (App Store distribution)"
   lane :build do
+    # On CI, create a temporary keychain so codesign never blocks on a UI prompt
+    # (this is the usual cause of multi-hour hangs during build_app).
+    setup_ci if is_ci
     prepare
     signing
     # match installs profiles named "match AppStore <bundle id>".
