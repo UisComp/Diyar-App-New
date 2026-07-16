@@ -10,7 +10,11 @@ class DesignedByFooter extends StatelessWidget {
     super.key,
     this.padding,
     this.compact = false,
+    this.showLogo = false,
   });
+
+  /// Diyar logo shown inside the branded badge.
+  static const String _logoAsset = 'assets/images/diyar_new.png';
 
   /// Outer padding around the footer.
   final EdgeInsetsGeometry? padding;
@@ -19,6 +23,10 @@ class DesignedByFooter extends StatelessWidget {
   /// inside tight footers (e.g. login form bottom).
   final bool compact;
 
+  /// When true, renders the modern branded variant: the Diyar logo inside a
+  /// brand-colored badge wrapped in a subtle pill next to the credit text.
+  final bool showLogo;
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -26,6 +34,8 @@ class DesignedByFooter extends StatelessWidget {
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     final fontSize = compact ? 11.sp : 12.sp;
+
+    if (showLogo) return _brandedVariant(mutedColor, fontSize);
 
     return Padding(
       padding: padding ?? EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
@@ -61,6 +71,58 @@ class DesignedByFooter extends StatelessWidget {
               fontSize: fontSize,
               fontWeight: FontWeight.w900,
               letterSpacing: 0.2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Modern branded footer: [ logo badge ] · Designed by Diyar Co.
+  Widget _brandedVariant(Color mutedColor, double fontSize) {
+    return Padding(
+      padding: padding ?? EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AppText(
+            LocaleKeys.designed_by.tr(),
+            style: TextStyle(
+              color: mutedColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.2,
+            ),
+          ),
+          SizedBox(width: 4.w),
+          AppText(
+            LocaleKeys.diyar_co.tr(),
+            style: TextStyle(
+              color: AppColors.diyarColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.2,
+            ),
+          ),
+          SizedBox(width: 10.w),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.diyarColor.withValues(alpha: 0.28),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: Image.asset(
+                _logoAsset,
+                height: 28.h,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ],

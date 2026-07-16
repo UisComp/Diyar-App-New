@@ -8,6 +8,7 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
+import 'package:diyar_app/core/widgets/designed_by_footer.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/controller/home_state.dart';
 import 'package:diyar_app/feature/home/view/widgets/custom_grid_view_for_services.dart';
@@ -181,7 +182,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     cardImageColor: cardImageColor,
                                     textColor: textColor,
                                   ),
-                                  30.ph,
+                                  20.ph,
+                                  const DesignedByFooter(showLogo: true),
+                                  16.ph,
                                 ],
                               ),
                             ),

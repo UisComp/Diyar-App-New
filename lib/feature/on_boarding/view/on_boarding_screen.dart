@@ -69,7 +69,7 @@ class OnBoardingScreen extends StatelessWidget {
                 context,
               ).copyWith(fontSize: 14.sp, color: AppColors.greyColor),
             ).paddingAll(16.sp),
-            const DesignedByFooter(),
+            const DesignedByFooter(showLogo: true),
           ],
         ),
       ),

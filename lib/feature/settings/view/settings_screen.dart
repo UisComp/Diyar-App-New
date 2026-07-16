@@ -152,7 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       svgIcon: Assets.images.svg.contactUs,
                     ),
                     24.ph,
-                    const DesignedByFooter(),
+                    const DesignedByFooter(showLogo: true),
                   ],
                 ),
               ),

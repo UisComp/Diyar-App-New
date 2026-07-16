@@ -203,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const DontHaveAccountWithSignUp(),
-                const DesignedByFooter(compact: true),
+                const DesignedByFooter(compact: true,showLogo: true),
               ],
             ),
           ),
