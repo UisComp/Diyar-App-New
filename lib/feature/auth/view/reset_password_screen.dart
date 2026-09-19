@@ -60,7 +60,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: Column(
                       children: [
                         40.ph,
-                       const CustomLogo(),
+                        const CustomLogo(),
                         40.ph,
                         CustomTextFormField(
                           suffixIcon: IconButton(
@@ -149,4 +149,3 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 }
-

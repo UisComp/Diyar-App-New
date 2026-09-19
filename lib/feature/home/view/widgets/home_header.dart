@@ -61,10 +61,9 @@ class HomeHeader extends StatelessWidget {
               2.ph,
               AppText(
                 name,
-                style: AppStyle.fontSize18Bold(context).copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: AppStyle.fontSize18Bold(
+                  context,
+                ).copyWith(fontSize: 18.sp, fontWeight: FontWeight.w800),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -93,7 +92,11 @@ class HomeHeader extends StatelessWidget {
         ],
       ),
       child: isGuest
-          ? Icon(Icons.person_outline_rounded, color: AppColors.whiteColor, size: 24.sp)
+          ? Icon(
+              Icons.person_outline_rounded,
+              color: AppColors.whiteColor,
+              size: 24.sp,
+            )
           : AppText(
               name.characters.first.toUpperCase(),
               style: TextStyle(
@@ -133,8 +136,7 @@ class _NotificationBell extends StatelessWidget {
               if (isGuest) {
                 AppFunctions.warningMessage(
                   context,
-                  message: LocaleKeys
-                      .notifications_for_logged_in_users_only
+                  message: LocaleKeys.notifications_for_logged_in_users_only
                       .tr(),
                 );
                 return;
@@ -165,8 +167,8 @@ class _NotificationBell extends StatelessWidget {
                             isGuest
                                 ? AppColors.greyColor
                                 : darkTheme
-                                    ? AppColors.whiteColor
-                                    : AppColors.black87,
+                                ? AppColors.whiteColor
+                                : AppColors.black87,
                             BlendMode.srcIn,
                           ),
                         ),

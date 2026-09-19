@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
+import 'package:diyar_app/core/helper/api_request.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
+import 'package:diyar_app/core/model/api_result.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:diyar_app/feature/profile/model/unit_model_details_for_linked_user.dart';
@@ -31,8 +33,8 @@ class ProfileService {
       final formData = FormData.fromMap({
         "_method": "PUT",
         "name": authRequestModel?.name,
-        "email": authRequestModel?.email,
-        "phone_number": authRequestModel?.phoneNumber,
+        // Optional for residents: an empty value clears it.
+        "email": authRequestModel?.email ?? '',
         if (image != null)
           "profile_picture": await MultipartFile.fromFile(
             image.path,
@@ -61,6 +63,24 @@ class ProfileService {
     }
   }
 
+  /// Replaces this device's push token (Firebase rotated it).
+  static Future<ApiResult<void>> updateFcmToken({
+    required String fcmToken,
+    required String platform,
+  }) => apiRequest(
+    'POST ${ApiPaths.fcmToken}',
+    () => DioHelper.postData(
+      path: ApiPaths.fcmToken,
+      data: {'fcm_token': fcmToken, 'platform': platform},
+    ),
+  );
+
+  /// The language of the resident's SMS and pushes: `ar` or `en`.
+  static Future<ApiResult<void>> updateLocale(String locale) => apiRequest(
+    'PATCH ${ApiPaths.profile}',
+    () => DioHelper.patchData(path: ApiPaths.profile, data: {'locale': locale}),
+  );
+
   static Future<UserUnitsResponseModel> getLinkedUnitsForUser() async {
     final response = await DioHelper.getData(
       path: ApiPaths.getLinkedUnitsForUser,
@@ -79,7 +99,7 @@ class ProfileService {
   }
 
   static Future<UnitModelDetailsForLinkedUserResponseModel>
-  getUnitForLinkedUserService({ String? id}) async {
+  getUnitForLinkedUserService({String? id}) async {
     final response = await DioHelper.getData(
       path: ApiPaths.getUnitById(id: id),
     );

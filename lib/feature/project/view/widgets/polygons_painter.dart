@@ -1,8 +1,22 @@
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:flutter/material.dart';
 
+/// Colors used for buildings on the master plan (also shown in the legend).
+/// The API only returns the user's own buildings, so they share one color.
+abstract class MasterPlanColors {
+  static const Color owned = AppColors.primaryColor;
+  static const Color selected = Color(0xFFFFB300);
+}
+
+class MapPolygon {
+  const MapPolygon({required this.points, required this.color});
+
+  final List<Offset> points;
+  final Color color;
+}
+
 class PolygonsPainter extends CustomPainter {
-  final List<List<Offset>> polygons;
+  final List<MapPolygon> polygons;
 
   /// Indices of polygons that should be drawn as "selected" (highlighted).
   final Set<int> selectedIndices;
@@ -11,39 +25,32 @@ class PolygonsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final fillPaint = Paint()
-      ..color = AppColors.redColor.withOpacity(0.25)
-      ..style = PaintingStyle.fill;
-
-    final borderPaint = Paint()
-      ..color = AppColors.redColor
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-
-    final selectedFillPaint = Paint()
-      ..color = AppColors.primaryColor.withOpacity(0.40)
-      ..style = PaintingStyle.fill;
-
-    final selectedBorderPaint = Paint()
-      ..color = AppColors.primaryColor
-      ..strokeWidth = 3
-      ..style = PaintingStyle.stroke;
-
     for (int index = 0; index < polygons.length; index++) {
-      final points = polygons[index];
-      if (points.isEmpty) continue;
+      final polygon = polygons[index];
+      final points = polygon.points;
+      if (points.length < 3) continue;
 
       final path = Path()..moveTo(points.first.dx, points.first.dy);
-
       for (int i = 1; i < points.length; i++) {
         path.lineTo(points[i].dx, points[i].dy);
       }
-
       path.close();
 
       final isSelected = selectedIndices.contains(index);
-      canvas.drawPath(path, isSelected ? selectedFillPaint : fillPaint);
-      canvas.drawPath(path, isSelected ? selectedBorderPaint : borderPaint);
+      final color = isSelected ? MasterPlanColors.selected : polygon.color;
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = color.withValues(alpha: isSelected ? 0.45 : 0.28)
+          ..style = PaintingStyle.fill,
+      );
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = color
+          ..strokeWidth = isSelected ? 3 : 1.8
+          ..style = PaintingStyle.stroke,
+      );
     }
   }
 

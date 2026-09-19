@@ -24,6 +24,17 @@ class CreateFacilityRequestFailureState extends FacilityBookingState {
   CreateFacilityRequestFailureState({this.errorMessage});
 }
 
+/// The server refused the whole request with a `422` — **no** booking was
+/// created. Usually a chosen facility stopped taking bookings after the list
+/// was fetched, so the list is re-fetched right after this.
+class CreateFacilityRequestRejectedState extends FacilityBookingState {
+  final String? errorMessage;
+  CreateFacilityRequestRejectedState({this.errorMessage});
+}
+
+/// The resident tapped a facility that isn't taking bookings.
+class FacilityNotBookableState extends FacilityBookingState {}
+
 class PleaseSelectYourFacilityState extends FacilityBookingState {}
 
 class FacilityBookingHistoryLoadingState extends FacilityBookingState {}
@@ -34,4 +45,5 @@ class FacilityBookingHistoryFailureState extends FacilityBookingState {
   final String? errorMessage;
   FacilityBookingHistoryFailureState({this.errorMessage});
 }
+
 class FacilityBookingRefreshState extends FacilityBookingState {}

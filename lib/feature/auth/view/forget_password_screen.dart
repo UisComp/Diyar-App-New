@@ -69,10 +69,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (email) => ValidatorHelper.validateEmail(
                           email,
-                          emptyMessage:
-                              LocaleKeys.please_enter_your_email.tr(),
-                          invalidMessage:
-                              LocaleKeys.please_enter_a_valid_email.tr(),
+                          emptyMessage: LocaleKeys.please_enter_your_email.tr(),
+                          invalidMessage: LocaleKeys.please_enter_a_valid_email
+                              .tr(),
                         ),
                         hintText: LocaleKeys.email.tr(),
                         controller:

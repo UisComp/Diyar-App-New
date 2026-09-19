@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:async';
+
 import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
 import 'package:diyar_app/core/enums/language_mode.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -45,5 +48,7 @@ class LanguageController extends Cubit<LanguageState> {
     );
     await context.setLocale(newLocale);
     emit(ChangeCurrentLanguageState());
+    // SMS and pushes follow the app's language.
+    unawaited(AuthSession.syncLocale(newLocale.languageCode));
   }
 }

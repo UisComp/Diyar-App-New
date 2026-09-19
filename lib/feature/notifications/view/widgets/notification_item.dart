@@ -6,7 +6,14 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
+import 'package:diyar_app/feature/finance/view/finance_screen.dart'
+    show canAccessFinance;
+import 'package:diyar_app/feature/finance/view/unit_payment_plan_screen.dart';
+import 'package:diyar_app/feature/home/controller/home_controller.dart';
+import 'package:diyar_app/feature/home/enums/app_tab.dart';
+import 'package:diyar_app/feature/notifications/helper/notification_routing.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/feature/notifications/model/notification_response_model.dart';
 import 'package:diyar_app/feature/notifications/view/widgets/delete_notification_icon.dart';
@@ -58,14 +65,42 @@ class NotificationItem extends StatelessWidget {
     }
   }
 
+  /// Payment (entity 4) and overdue (entity 3) notifications open the
+  /// related payment plan, or the finance tab for the nightly overdue summary.
+  Future<void> _openFinancialTarget(BuildContext context) async {
+    final target = NotificationRouting.financialTarget(
+      type: notification.type,
+      entityType: notification.entityType,
+      entityId: notification.entityId,
+    );
+    if (target == null || !canAccessFinance) return;
+    if (notification.isRead == false && notification.id != null) {
+      notificationController.markAsRead(notification.id!);
+    }
+    if (!context.mounted) return;
+    switch (target) {
+      case UnitPaymentPlanTarget(:final installmentId):
+        context.push(
+          RoutesName.unitPaymentPlanScreen,
+          extra: UnitPaymentPlanArgs(installmentId: installmentId),
+        );
+      case FinanceTabTarget():
+        HomeController.get(context).changeTab(AppTab.finance);
+        context.go(RoutesName.homeLayout);
+      case NotificationsListTarget():
+      case PhoneNumbersTarget():
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return const LoadingNotifications();
     }
     final isRead = notification.isRead == true || notification.type == 'all';
-    final isDark = AppThemeController.get(context).currentThemeMode ==
-        AppThemeMode.dark;
+    final isDark =
+        AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
 
     final Color cardBg = isRead
         ? (isDark ? const Color(0xFF111418) : AppColors.whiteColor)
@@ -73,10 +108,12 @@ class NotificationItem extends StatelessWidget {
     final Color borderColor = isRead
         ? (isDark ? const Color(0xFF1F242B) : const Color(0xFFE5E9F0))
         : AppColors.primaryColor.withValues(alpha: 0.35);
-    final Color titleColor =
-        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
-    final Color descColor =
-        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final Color titleColor = isDark
+        ? AppColors.darkTextPrimary
+        : AppColors.lightTextPrimary;
+    final Color descColor = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Material(
       color: Colors.transparent,
@@ -107,6 +144,17 @@ class NotificationItem extends StatelessWidget {
               RoutesName.serviceProviderHistoryScreen,
               extra: controller,
             );
+          } else if (notification.type ==
+              NotificationRouting.phoneRequestType) {
+            // Staff reviewed a phone number request.
+            if (notification.isRead == false &&
+                notification.entityType != null) {
+              notificationController.markAsRead(notification.id!);
+            }
+            if (!context.mounted || !AuthSession.isResident) return;
+            context.push(RoutesName.phoneNumbersScreen);
+          } else {
+            await _openFinancialTarget(context);
           }
         },
         child: Container(
@@ -131,6 +179,12 @@ class NotificationItem extends StatelessWidget {
               _Leading(
                 imageUrl: notification.imageUrl,
                 isRead: isRead,
+                icon: switch (notification.type) {
+                  NotificationRouting.paymentType => Icons.payments_outlined,
+                  NotificationRouting.overdueType =>
+                    Icons.warning_amber_rounded,
+                  _ => null,
+                },
               ),
               12.pw,
               Expanded(
@@ -159,8 +213,9 @@ class NotificationItem extends StatelessWidget {
                             style: AppStyle.fontSize16Regular(context).copyWith(
                               color: titleColor,
                               fontSize: 15.sp,
-                              fontWeight:
-                                  isRead ? FontWeight.w600 : FontWeight.w800,
+                              fontWeight: isRead
+                                  ? FontWeight.w600
+                                  : FontWeight.w800,
                               height: 1.3,
                             ),
                             maxLines: 2,
@@ -199,10 +254,13 @@ class NotificationItem extends StatelessWidget {
 }
 
 class _Leading extends StatelessWidget {
-  const _Leading({required this.imageUrl, required this.isRead});
+  const _Leading({required this.imageUrl, required this.isRead, this.icon});
 
   final String? imageUrl;
   final bool isRead;
+
+  /// Replaces the default bell for typed notifications (payment, overdue).
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -221,9 +279,7 @@ class _Leading extends StatelessWidget {
                   AppColors.accentHoverColor.withValues(alpha: 0.10),
                 ],
               ),
-        color: isRead
-            ? AppColors.primaryColor.withValues(alpha: 0.10)
-            : null,
+        color: isRead ? AppColors.primaryColor.withValues(alpha: 0.10) : null,
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: ClipRRect(
@@ -235,6 +291,10 @@ class _Leading extends StatelessWidget {
                 width: size,
                 height: size,
                 fit: BoxFit.cover,
+              )
+            : icon != null
+            ? Center(
+                child: Icon(icon, size: 26.sp, color: AppColors.primaryColor),
               )
             : Center(
                 child: SvgPicture.asset(

@@ -32,15 +32,28 @@ Future<void> saveRefreshToken(String? token) async {
 }
 
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+/// The login used by biometric sign-in: a resident's phone number, or a
+/// guard's email (older versions saved residents' emails here too).
 String? savedEmailForLoginWithBioMetric;
 String? savedPasswordForLoginWithBioMetric;
-Future<void> savedCredentials({required String email, String? password}) async {
-  savedEmailForLoginWithBioMetric = email;
-  await HiveHelper.addToHive(key: AppConstants.myEmail, value: email);
+Future<void> savedCredentials({
+  required String identifier,
+  String? password,
+}) async {
+  savedEmailForLoginWithBioMetric = identifier;
+  await HiveHelper.addToHive(key: AppConstants.myEmail, value: identifier);
   savedPasswordForLoginWithBioMetric = password;
   if (password != null) {
     await secureStorage.write(key: AppConstants.myPassword, value: password);
   }
+}
+
+/// Forgets the biometric login, e.g. when it no longer works.
+Future<void> clearSavedCredentials() async {
+  savedEmailForLoginWithBioMetric = null;
+  savedPasswordForLoginWithBioMetric = null;
+  await HiveHelper.removeFromHive(key: AppConstants.myEmail);
+  await secureStorage.delete(key: AppConstants.myPassword);
 }
 
 bool? enableBiometric;

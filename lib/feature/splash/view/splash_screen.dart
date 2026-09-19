@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
+import 'package:diyar_app/core/helper/notification_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
@@ -88,6 +89,8 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
     final loggedIn = userModel?.data?.accessToken != null;
     context.go(loggedIn ? RoutesName.homeLayout : RoutesName.onBoarding);
+    // A notification tapped during a cold start opens once home is shown.
+    if (loggedIn) NotificationService().consumePendingNavigation();
   }
 
   @override

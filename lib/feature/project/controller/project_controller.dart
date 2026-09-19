@@ -19,7 +19,9 @@ class ProjectController extends Cubit<ProjectState> {
         .then((value) {
           projectsResponseModel = value;
           if (value.success == true) {
-            AppLogger.success('projectsResponseModel: ${projectsResponseModel.toJson()}');
+            AppLogger.success(
+              'projectsResponseModel: ${projectsResponseModel.toJson()}',
+            );
             emit(GetProjectsSuccessfullyState());
           } else {
             emit(GetProjectsFailureState(error: value.message));
@@ -57,7 +59,8 @@ class ProjectController extends Cubit<ProjectState> {
         .then((value) {
           projectDetailsResponseModel = value;
           AppLogger.info(
-            'projectDetailsResponseModel: ${projectDetailsResponseModel.toJson()}',
+            'projectDetails: ${value.data?.buildings.length} buildings, '
+            'mapping: ${value.data?.hasBuildingMapping}',
           );
           if (value.success == true) {
             emit(GetProjectDetailsSuccessfullyState());

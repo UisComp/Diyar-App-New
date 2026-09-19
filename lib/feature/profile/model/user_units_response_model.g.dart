@@ -32,6 +32,8 @@ UserUnit _$UserUnitFromJson(Map<String, dynamic> json) => UserUnit(
       imageUrl: json['imageUrl'] == null
           ? null
           : ProfilePicture.fromJson(json['imageUrl'] as Map<String, dynamic>),
+      code: json['code'] as String?,
+      floor: (json['floor'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$UserUnitToJson(UserUnit instance) => <String, dynamic>{
@@ -40,4 +42,6 @@ Map<String, dynamic> _$UserUnitToJson(UserUnit instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'user_id': instance.userId,
       'project_id': instance.projectId,
+      'code': instance.code,
+      'floor': instance.floor,
     };

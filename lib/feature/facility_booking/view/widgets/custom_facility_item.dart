@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/booking_closed_badge.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_response_model.dart';
@@ -24,6 +25,13 @@ class CustomFacilityItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Closed facilities stay in the list with a badge and a disabled
+    // checkbox, so the resident doesn't assume the amenity is gone.
+    final bookable = item.canBook;
+    final secondaryColor = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -35,7 +43,7 @@ class CustomFacilityItem extends StatelessWidget {
         border: Border.all(
           color: selected
               ? AppColors.primaryColor
-              : AppColors.greyColor.withOpacity(0.3),
+              : AppColors.greyColor.withOpacity(bookable ? 0.3 : 0.5),
           width: 1.2,
         ),
         boxShadow: [
@@ -49,19 +57,27 @@ class CustomFacilityItem extends StatelessWidget {
       ),
       child: CheckboxListTile(
         value: selected,
-        onChanged: (_) => facilityBookingController.toggleItem(item.id!),
+        // A null callback disables the checkbox; the tap handler in the list
+        // explains why.
+        onChanged: bookable
+            ? (_) => facilityBookingController.toggleItem(item.id!)
+            : null,
         activeColor: AppColors.primaryColor,
         checkColor: AppColors.whiteColor,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         title: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: CustomCachedNetworkImage(
-                isProjectDetails: false,
-                width: 70.w,
-                height: 70.h,
-                imageUrl: item.icon?.url ?? '',
+            Opacity(
+              opacity: bookable ? 1 : 0.55,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: CustomCachedNetworkImage(
+                  isProjectDetails: false,
+                  width: 70.w,
+                  height: 70.h,
+                  imageUrl: item.icon?.url ?? '',
+                ),
               ),
             ),
             12.pw,
@@ -71,6 +87,8 @@ class CustomFacilityItem extends StatelessWidget {
                 children: [
                   AppText(
                     item.title ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -79,30 +97,35 @@ class CustomFacilityItem extends StatelessWidget {
                           : Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
-                  4.ph,
-                  AppText(
-                    item.description ?? '',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isDark
-                          ? AppColors.darkTextSecondary
-                          : AppColors.lightTextSecondary,
-                      fontSize: 13,
+                  if ((item.description ?? '').isNotEmpty) ...[
+                    4.ph,
+                    AppText(
+                      item.description!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: secondaryColor,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  4.ph,
-                  AppText(
-                    item.createdAt != null
-                        ? DateFormat(
-                            'yyyy-MM-dd HH:mm',
-                          ).format(DateTime.parse(item.createdAt!))
-                        : '',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isDark
-                          ? AppColors.darkTextSecondary
-                          : AppColors.lightTextSecondary,
-                      fontSize: 12,
+                  ],
+                  if (item.createdAt != null) ...[
+                    4.ph,
+                    AppText(
+                      DateFormat(
+                        'yyyy-MM-dd HH:mm',
+                      ).format(DateTime.parse(item.createdAt!)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: secondaryColor,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
+                  ],
+                  // Its own line, so the title and description keep the full
+                  // width of the card.
+                  if (!bookable) ...[6.ph, const BookingClosedBadge()],
                 ],
               ),
             ),

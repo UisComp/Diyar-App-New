@@ -29,6 +29,8 @@ Announcement _$AnnouncementFromJson(Map<String, dynamic> json) => Announcement(
       title: json['title'] as String?,
       description: json['description'] as String?,
       url: json['url'] as String?,
+      rawYoutubeUrl: json['youtube_url'] as String?,
+      rawYoutubeVideoId: json['youtube_video_id'] as String?,
     );
 
 Map<String, dynamic> _$AnnouncementToJson(Announcement instance) =>
@@ -37,4 +39,6 @@ Map<String, dynamic> _$AnnouncementToJson(Announcement instance) =>
       'title': instance.title,
       'description': instance.description,
       'url': instance.url,
+      'youtube_url': instance.rawYoutubeUrl,
+      'youtube_video_id': instance.rawYoutubeVideoId,
     };

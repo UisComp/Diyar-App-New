@@ -1,6 +1,7 @@
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_state.dart';
 import 'package:diyar_app/feature/facility_booking/model/create_request_facility_request_model.dart';
-import 'package:diyar_app/feature/facility_booking/model/create_request_facility_response_model.dart';
+import 'package:diyar_app/feature/facility_booking/model/create_request_facility_response_model.dart'
+    show CreateRequestFacilityResponseModel;
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_response_model.dart';
 import 'package:diyar_app/feature/facility_booking/model/facility_booking_history_response_model.dart';
 import 'package:diyar_app/feature/facility_booking/service/facility_booking_service.dart';
@@ -48,6 +49,7 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
 
       if (value.success == true) {
         AppLogger.success("Facility Booking fetched successfully");
+        _dropClosedSelections();
         _safeEmit(FacilityBookingSuccessState());
       } else {
         _safeEmit(FacilityBookingFailureState(errorMessage: value.message));
@@ -58,13 +60,62 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
     }
   }
 
+  /// Every facility the last fetch listed.
+  List<Facility> get facilities =>
+      facilityBookingResponseModel.data ?? const <Facility>[];
+
+  /// The listed facility with [id], or null once it's gone from the list.
+  Facility? facilityById(int id) {
+    for (final facility in facilities) {
+      if (facility.id == id) return facility;
+    }
+    return null;
+  }
+
+  /// Whether [id] may be added to the request.
+  bool canBook(int id) => facilityById(id)?.canBook ?? false;
+
+  /// Whether anything in the list is taking bookings at all.
+  bool get hasBookableFacilities =>
+      facilities.any((facility) => facility.canBook);
+
+  /// Adds or removes a facility. Deselecting always works; selecting is
+  /// refused for a facility that isn't taking bookings, because the API
+  /// creates the batch all-or-nothing — one closed facility would sink the
+  /// whole request, and the resident would have picked a slot for nothing.
   void toggleItem(int id) {
     if (selectedIds.contains(id)) {
       selectedIds.remove(id);
     } else {
+      if (!canBook(id)) {
+        _safeEmit(FacilityNotBookableState());
+        return;
+      }
       selectedIds.add(id);
     }
     _safeEmit(FacilityBookingSelectionUpdated());
+  }
+
+  /// Drops picks that stopped being bookable while the list was on screen,
+  /// along with the slot chosen for them.
+  void _dropClosedSelections() {
+    final closed = selectedIds.where((id) => !canBook(id)).toList();
+    for (final id in closed) {
+      selectedIds.remove(id);
+      facilityStartDates.remove(id);
+      facilityEndDates.remove(id);
+    }
+  }
+
+  /// Forgets the current picks and their details, after a request went
+  /// through.
+  void clearSelection() {
+    selectedIds.clear();
+    for (final c in notesControllers.values) {
+      c.clear();
+    }
+    facilityStartDates.clear();
+    facilityEndDates.clear();
   }
 
   bool isItemSelected(int id) => selectedIds.contains(id);
@@ -126,6 +177,14 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
   Future<void> createFacilityRequest() async {
     if (!validateSelection()) return;
 
+    // Last check before sending: the list is a snapshot, and a facility the
+    // resident picked may have closed its bookings since.
+    if (selectedIds.any((id) => !canBook(id))) {
+      _dropClosedSelections();
+      _safeEmit(CreateFacilityRequestRejectedState());
+      return getAllFacilityBooking();
+    }
+
     _safeEmit(CreateFacilityRequestLoadingState());
 
     try {
@@ -142,7 +201,17 @@ class FacilityBookingController extends Cubit<FacilityBookingState> {
       createRequestFacilityResponseModel = value;
 
       if (value.success == true) {
+        clearSelection();
         _safeEmit(CreateFacilityRequestSuccessState());
+      } else if (value.isRejected) {
+        // Nothing in the batch was created. The usual cause is a facility
+        // that closed its bookings after the list was fetched, so refresh it
+        // rather than retrying with the stale one. The server's own message
+        // is passed through: it also covers a slot clash.
+        _safeEmit(
+          CreateFacilityRequestRejectedState(errorMessage: value.message),
+        );
+        await getAllFacilityBooking();
       } else {
         _safeEmit(
           CreateFacilityRequestFailureState(errorMessage: value.message),

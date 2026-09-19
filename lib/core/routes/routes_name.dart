@@ -1,7 +1,17 @@
 class RoutesName {
   static const String splash = '/splash';
+
+  /// Everyone: phone number or email + password.
   static const String login = '/loginScreen';
+  static const String phoneOtpScreen = '/phoneOtpScreen';
+  static const String setPasswordScreen = '/setPasswordScreen';
+
+  /// Registration: phone → code → details → under review.
   static const String register = '/registerScreen';
+  static const String registerDetailsScreen = '/registerDetailsScreen';
+  static const String registrationPendingScreen = '/registrationPendingScreen';
+
+  static const String phoneNumbersScreen = '/phoneNumbersScreen';
   static const String home = '/homeScreen';
   static const String onBoarding = '/onBoardingScreen';
   static const String homeLayout = '/homeLayout';
@@ -12,6 +22,8 @@ class RoutesName {
   static const String helpSupportScreen = '/helpSupportScreen';
   static const String contactUsScreen = '/contactUsScreen';
   static const String financeScreen = '/FinanceScreen';
+  static const String unitPaymentPlanScreen = '/unitPaymentPlanScreen';
+  static const String documentsScreen = '/documentsScreen';
   static const String projectDetails = '/projectDetails';
   static const String projectTimeline = '/projectTimeline';
   static const String unitEvents = '/unitEvents';
@@ -40,6 +52,8 @@ class RoutesName {
   static const String guardRoleScreen = "/guardRoleScreen";
   static const String imagePreviewScreen = "/imagePreviewScreen";
   static const String linkedUnitsDetailScreen = "/linkedUnitsDetail";
-  static const String serviceProviderHistoryScreen = "/serviceProviderHistoryScreen";
-  static const String facilityBookingHistoryScreen = "/facilityBookingHistoryScreen";
+  static const String serviceProviderHistoryScreen =
+      "/serviceProviderHistoryScreen";
+  static const String facilityBookingHistoryScreen =
+      "/facilityBookingHistoryScreen";
 }

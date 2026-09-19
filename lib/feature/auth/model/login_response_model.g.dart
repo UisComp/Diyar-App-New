@@ -100,11 +100,11 @@ class UserAdapter extends TypeAdapter<User> {
       roles: (fields[7] as List?)?.cast<String>(),
       id: fields[0] as int,
       name: fields[1] as String,
-      email: fields[2] as String,
-      phoneNumber: fields[3] as String,
+      email: fields[2] as String?,
+      phones: (fields[8] as List?)?.cast<UserPhone>(),
       emailVerifiedAt: fields[4] as String?,
-      createdAt: fields[5] as String,
-      updatedAt: fields[6] as String,
+      createdAt: fields[5] as String?,
+      updatedAt: fields[6] as String?,
     );
   }
 
@@ -118,8 +118,6 @@ class UserAdapter extends TypeAdapter<User> {
       ..write(obj.name)
       ..writeByte(2)
       ..write(obj.email)
-      ..writeByte(3)
-      ..write(obj.phoneNumber)
       ..writeByte(4)
       ..write(obj.emailVerifiedAt)
       ..writeByte(5)
@@ -127,7 +125,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(6)
       ..write(obj.updatedAt)
       ..writeByte(7)
-      ..write(obj.roles);
+      ..write(obj.roles)
+      ..writeByte(8)
+      ..write(obj.phones);
   }
 
   @override
@@ -162,36 +162,35 @@ Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
     };
 
 LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
-      accessToken: json['access_token'] as String,
-      tokenType: json['token_type'] as String,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-    );
+  accessToken: json['access_token'] as String,
+  tokenType: json['token_type'] as String,
+  user: User.fromJson(json['user'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
-      'access_token': instance.accessToken,
-      'token_type': instance.tokenType,
-      'user': instance.user.toJson(),
-    };
+  'access_token': instance.accessToken,
+  'token_type': instance.tokenType,
+  'user': instance.user.toJson(),
+};
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      roles:
-          (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      email: json['email'] as String,
-      phoneNumber: json['phone_number'] as String,
-      emailVerifiedAt: json['email_verified_at'] as String?,
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
-    );
+  roles: (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+  email: json['email'] as String?,
+  phones: parseUserPhones(json['phones']),
+  emailVerifiedAt: json['email_verified_at'] as String?,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+);
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'email': instance.email,
-      'phone_number': instance.phoneNumber,
-      'email_verified_at': instance.emailVerifiedAt,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'roles': instance.roles,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'email': instance.email,
+  'email_verified_at': instance.emailVerifiedAt,
+  'created_at': instance.createdAt,
+  'updated_at': instance.updatedAt,
+  'roles': instance.roles,
+  'phones': instance.phones?.map((e) => e.toJson()).toList(),
+};

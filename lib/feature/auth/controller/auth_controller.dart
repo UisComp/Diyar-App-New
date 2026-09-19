@@ -1,41 +1,21 @@
 import 'dart:async';
-import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
-import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/feature/auth/controller/auth_state.dart';
-import 'package:diyar_app/core/model/request_model.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:diyar_app/core/model/general_response_model.dart';
-import 'package:diyar_app/feature/auth/model/login_response_model.dart';
-import 'package:diyar_app/feature/auth/model/register_response_model.dart';
 import 'package:diyar_app/feature/auth/model/reset_or_forget_password_response_model.dart';
 import 'package:diyar_app/feature/auth/model/reset_password_request_model.dart';
 import 'package:diyar_app/feature/auth/model/verify_otp_response_model.dart';
 import 'package:diyar_app/feature/auth/service/auth_service.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:phone_form_field/phone_form_field.dart';
 
+/// The email password reset of security staff, and logging anyone out.
+/// Signing in is [LoginController]'s job.
 class AuthController extends Cubit<AuthState> {
   AuthController() : super(AuthInitialState());
   static AuthController get(BuildContext context) => BlocProvider.of(context);
-  //! login
-  TextEditingController emailControllerForLogin = TextEditingController();
-  TextEditingController passwordControllerForLogin = TextEditingController();
-  //!=============================================================================
-  //! Register
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController unitNumberController = TextEditingController();
-  final TextEditingController emailControllerForRegister =
-      TextEditingController();
-  final TextEditingController passwordControllerForRegister =
-      TextEditingController();
-  final TextEditingController passwordConfirmationControllerForRegister =
-      TextEditingController();
-  // final TextEditingController phoneController = TextEditingController();
-  //!==========================================================================
-
   final TextEditingController emailForForgetPasswordController =
       TextEditingController();
   //!==================================Reset Password Controller=========================================
@@ -44,86 +24,13 @@ class AuthController extends Cubit<AuthState> {
   final TextEditingController passwordConfirmationControllerForResetPassword =
       TextEditingController();
   //!============================================================================
-  LoginResponseModel loginResponseModel = LoginResponseModel();
-  RegisterResponseModel registerResponseModel = RegisterResponseModel();
   ResetOrForgetPasswordResponseModel forgetPasswordResponseModel =
       ResetOrForgetPasswordResponseModel();
   OtpVerificationResponse otpVerifyResponseModel = OtpVerificationResponse();
   ResetOrForgetPasswordResponseModel resetOrForgetPasswordResponseModel =
       ResetOrForgetPasswordResponseModel();
   TextEditingController otpController = TextEditingController();
-  final phoneController = PhoneController(
-    initialValue: const PhoneNumber(isoCode: IsoCode.EG, nsn: ''),
-  );
   GeneralResponseModel logoutResponseModel = GeneralResponseModel();
-  void initController() {
-    emailControllerForLogin.clear();
-    passwordControllerForLogin.clear();
-    emailControllerForLogin.text = '';
-    passwordControllerForLogin.text = '';
-  }
-
-  Future<void> login() async {
-    emit(LoginLoadingState());
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    await AuthService.login(
-          authRequestModel: RequestModel(
-            fcmToken: fcmToken,
-            email: emailControllerForLogin.text,
-            password: passwordControllerForLogin.text,
-          ),
-        )
-        .then((value) async {
-          loginResponseModel = value;
-          if (value.success == true) {
-            emit(LoginSuccessState());
-            await updateUserModel(value);
-            await HiveHelper.addToHive(
-              key: AppConstants.token,
-              value: value.data?.accessToken,
-            );
-            await HiveHelper.storeUserModel(value, AppConstants.userModelKey);
-            await savedCredentials(
-              email: emailControllerForLogin.text,
-              password: passwordControllerForLogin.text,
-            );
-          } else {
-            emit(LoginFailureState(error: value.message));
-          }
-        })
-        .catchError((error) {
-          AppLogger.error('Error Happen While Login is $error');
-          emit(LoginFailureState(error: error.toString()));
-        });
-  }
-
-  Future<void> register() async {
-    emit(RegisterLoadingState());
-    await AuthService.register(
-          authRequestModel: RequestModel(
-            phoneNumber: phoneController.value.international,
-            passwordConfirmation:
-                passwordConfirmationControllerForRegister.text,
-            name: nameController.text,
-            email: emailControllerForRegister.text,
-            password: passwordControllerForRegister.text,
-            unitNumber: unitNumberController.text,
-          ),
-        )
-        .then((value) {
-          registerResponseModel = value;
-          if (value.success == true) {
-            emit(RegisterSuccessState());
-          } else {
-            emit(RegisterFailureState(error: value.message));
-          }
-        })
-        .catchError((error) {
-          AppLogger.error('Error Happen While Register is $error');
-          emit(RegisterFailureState(error: error.toString()));
-        });
-  }
-
   Future<void> forgetPassword() async {
     emit(ForgetPasswordLoadingState());
     await AuthService.forgetPassword(
@@ -257,32 +164,25 @@ class AuthController extends Cubit<AuthState> {
         });
   }
 
+  /// Logs this device out. The local session is cleared even if the
+  /// request fails, so the device never keeps a half-valid login.
   Future<void> logOut() async {
+    if (state is LogOutLoadingState) return;
     emit(LogOutLoadingState());
-    await AuthService.logOut()
-        .then((value) async {
-          logoutResponseModel = value;
-          if (value.success == true) {
-            emit(LogOutSuccessState());
-            await HiveHelper.removeFromHive(key: AppConstants.token);
-            await updateUserModel(null);
-            await HiveHelper.removeUserModel(key: AppConstants.userModelKey);
-            await HiveHelper.clearUserDataOnly();
-            await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
-          } else {
-            await HiveHelper.removeFromHive(key: AppConstants.token);
-            await updateUserModel(null);
-            await HiveHelper.removeUserModel(key: AppConstants.userModelKey);
-
-            await HiveHelper.clearUserDataOnly();
-            await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
-            emit(LogOutFailureState(error: value.message));
-          }
-        })
-        .catchError((error) {
-          AppLogger.error('Error Happen While log out is $error');
-          emit(LoginFailureState(error: error.toString()));
-        });
+    GeneralResponseModel? response;
+    try {
+      response = await AuthService.logOut();
+    } catch (error) {
+      AppLogger.error('Error Happen While log out is $error');
+    }
+    logoutResponseModel = response ?? GeneralResponseModel();
+    await AuthSession.clear();
+    if (isClosed) return;
+    emit(
+      response?.success == true
+          ? LogOutSuccessState()
+          : LogOutFailureState(error: response?.message),
+    );
   }
 
   @override

@@ -5,7 +5,10 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/feature/finance/view/finance_screen.dart'
+    show canAccessFinance;
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
+import 'package:diyar_app/feature/home/enums/app_tab.dart';
 import 'package:diyar_app/feature/home/enums/enum_service.dart';
 import 'package:diyar_app/feature/home/model/user_services_model.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -23,8 +26,13 @@ class GridViewServiceItem extends StatelessWidget {
     required this.textColor,
     required this.service,
     this.isFromViewAll = false,
+    this.compact = false,
   });
   final bool? isFromViewAll;
+
+  /// Tighter layout for narrow three-column grids: smaller icon and a
+  /// two-line label so longer service names aren't cut off.
+  final bool compact;
   final Color cardColor;
   final Color cardImageColor;
   final Color textColor;
@@ -56,10 +64,10 @@ class GridViewServiceItem extends StatelessWidget {
 
           if (screenName != null) {
             if (service?.type == 5) {
-              if (isFromViewAll == true) {
+              if (isFromViewAll == true || !canAccessFinance) {
                 context.push(screenName, extra: service);
               } else {
-                context.read<HomeController>().changeIndexBottomNavBar(3);
+                context.read<HomeController>().changeTab(AppTab.finance);
               }
             } else {
               context.push(screenName, extra: service);
@@ -114,13 +122,15 @@ class GridViewServiceItem extends StatelessWidget {
                     top: Radius.circular(16.r),
                   ),
                 ),
-                child: CustomCachedNetworkImage(
-                  isProjectDetails: true,
-                  tintBrand: true,
-                  fit: BoxFit.scaleDown,
-                  height: 56.h,
-                  width: 56.w,
-                  imageUrl: service?.icon?.url,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.r),
+                  child: CustomCachedNetworkImage(
+                    isProjectDetails: true,
+                    fit: BoxFit.scaleDown,
+                    height: compact ? 40.h : 56.h,
+                    width: compact ? 40.w : 56.w,
+                    imageUrl: service?.icon?.url,
+                  ),
                 ),
               ),
             ),
@@ -130,21 +140,25 @@ class GridViewServiceItem extends StatelessWidget {
               color: AppColors.primaryColor.withValues(alpha: 0.10),
             ),
             Expanded(
-              flex: 3,
+              flex: compact ? 4 : 3,
               child: Center(
-                child: AppText(
-                  context.locale.languageCode == AppConstants.enLanguage
-                      ? service?.name ?? ''
-                      : service?.nameAr ?? '',
-                  style: AppStyle.fontSize16Regular(context).copyWith(
-                    color: textColor,
-                    fontSize: 13.5.sp,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.2,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w),
+                  child: AppText(
+                    context.locale.languageCode == AppConstants.enLanguage
+                        ? service?.name ?? ''
+                        : service?.nameAr ?? '',
+                    style: AppStyle.fontSize16Regular(context).copyWith(
+                      color: textColor,
+                      fontSize: compact ? 12.sp : 13.5.sp,
+                      height: 1.25,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                    maxLines: compact ? 2 : 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),

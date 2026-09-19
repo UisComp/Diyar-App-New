@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:diyar_app/feature/auth/model/login_response_model.dart';
+import 'package:diyar_app/feature/auth/model/user_phone.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class HiveHelper {
@@ -13,20 +14,27 @@ abstract class HiveHelper {
   //     Hive.registerAdapter(UserAdapter());
   //   }
   // }
-  static Future<void> init({bool isTest = false}) async {
+  static Future<void> init({bool isTest = false, String? testPath}) async {
     if (isTest) {
-      Hive.init(Directory.current.path);
+      Hive.init(testPath ?? Directory.current.path);
     } else {
       await Hive.initFlutter();
-      if (!Hive.isAdapterRegistered(0)) {
-        Hive.registerAdapter(LoginResponseModelAdapter());
-      }
-      if (!Hive.isAdapterRegistered(1)) {
-        Hive.registerAdapter(LoginDataAdapter());
-      }
-      if (!Hive.isAdapterRegistered(2)) {
-        Hive.registerAdapter(UserAdapter());
-      }
+    }
+    registerAdapters();
+  }
+
+  static void registerAdapters() {
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(LoginResponseModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(LoginDataAdapter());
+    }
+    if (!Hive.isAdapterRegistered(2)) {
+      Hive.registerAdapter(UserAdapter());
+    }
+    if (!Hive.isAdapterRegistered(3)) {
+      Hive.registerAdapter(UserPhoneAdapter());
     }
   }
 

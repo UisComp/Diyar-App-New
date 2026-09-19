@@ -1,4 +1,3 @@
-
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
@@ -18,11 +17,11 @@ class ListViewMainImageForProjectDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gallery = project.data?.gallery ?? const <ProjectMedia>[];
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount:
-          project.data?.media?.length ?? (isLoading ? 4 : 0),
+      itemCount: isLoading ? 4 : gallery.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: 10.h,
@@ -30,7 +29,7 @@ class ListViewMainImageForProjectDetails extends StatelessWidget {
         childAspectRatio: .95,
       ),
       itemBuilder: (context, index) {
-        final imageUrl = project.data?.media?[index].url;
+        final imageUrl = isLoading ? null : gallery[index].url;
         return Card(
           color: AppColors.whiteColor,
           elevation: 2,

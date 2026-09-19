@@ -58,6 +58,10 @@ dependencies:
   image_picker: ^1.2.1
   flutter_spinkit: ^5.2.2
   rename_app: ^1.6.5
+  smart_auth: ^3.2.0
+  phone_numbers_parser: ^9.0.17
+  wakelock_plus: ^1.5.2
+  youtube_player_iframe: ^6.0.2
 
 dev_dependencies:
   flutter_gen_runner: 5.4.0

@@ -6,6 +6,7 @@ import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
+import 'package:diyar_app/feature/profile/view/widgets/unit_info_card.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,9 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
 
         return Scaffold(
           appBar: CustomAppBar(
-            titleAppBar: unitData?.name ?? LocaleKeys.unit_details.tr(),
+            titleAppBar: (unitData?.label ?? widget.unitData.label).isNotEmpty
+                ? (unitData?.label ?? widget.unitData.label)
+                : LocaleKeys.unit_details.tr(),
             centerTitle: true,
           ),
           body: Skeletonizer(
@@ -92,7 +95,7 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   16.ph,
                   AppText(
-                    unitData?.name ?? '',
+                    unitData?.label ?? widget.unitData.label,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -100,13 +103,11 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                     ),
                   ),
                   12.ph,
-                  AppText(
-                    "${LocaleKeys.building.tr()} ${unitData?.building ?? LocaleKeys.un_defined.tr()}",
-                    style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
-                  ),
-                  AppText(
-                    "${LocaleKeys.number.tr()} ${unitData?.number ?? LocaleKeys.un_defined.tr()}",
-                    style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
+                  UnitInfoCard(
+                    building: unitData?.building ?? widget.unitData.building,
+                    code: unitData?.code ?? widget.unitData.code,
+                    floor: unitData?.floor ?? widget.unitData.floor,
+                    status: unitData?.status ?? widget.unitData.status,
                   ),
                   20.ph,
                   AppText(

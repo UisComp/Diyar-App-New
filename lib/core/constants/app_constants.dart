@@ -1,9 +1,5 @@
 import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/feature/finance/view/finance_screen.dart';
 import 'package:diyar_app/feature/home/enums/enum_service.dart';
-import 'package:diyar_app/feature/home/view/home_screen.dart';
-import 'package:diyar_app/feature/profile/view/profile_screen.dart';
-import 'package:diyar_app/feature/settings/view/settings_screen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +24,6 @@ class AppConstants {
     const Locale(arLanguage),
   ];
   static const String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-  static final List<Widget> screens = [
-    const SettingsScreen(),
-    const HomeScreen(),
-    const ProfileScreen(),
-    const FinanceScreen(),
-  ];
   //!App Fonts
   static const String alexandriaFont = "Alexandria";
   static const String enableBiometric = "EnableBiometric";

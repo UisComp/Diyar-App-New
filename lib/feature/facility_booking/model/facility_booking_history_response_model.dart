@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/enums/bookable_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'facility_booking_history_response_model.g.dart';
@@ -63,8 +64,19 @@ class FacilityModel {
   final String? title;
   final String? description;
 
+  /// A booking keeps its facility even after staff change its status, so this
+  /// is the one place `hidden` (with `is_active: false`) can show up.
+  @JsonKey(
+    unknownEnumValue: BookableStatus.unknown,
+    defaultValue: BookableStatus.unknown,
+  )
+  final BookableStatus status;
+
   @JsonKey(name: 'is_active')
   final bool? isActive;
+
+  @JsonKey(name: 'is_bookable', defaultValue: false)
+  final bool isBookable;
 
   final FacilityIconModel? icon;
 
@@ -81,12 +93,18 @@ class FacilityModel {
     this.id,
     this.title,
     this.description,
+    this.status = BookableStatus.unknown,
     this.isActive,
+    this.isBookable = false,
     this.icon,
     this.iconUrl,
     this.createdAt,
     this.updatedAt,
   });
+
+  /// Whether this facility still takes new bookings. A booking already made
+  /// stays visible either way — this only gates offering another one.
+  bool get canBook => isBookable && status.allowsBooking;
 
   factory FacilityModel.fromJson(Map<String, dynamic> json) =>
       _$FacilityModelFromJson(json);

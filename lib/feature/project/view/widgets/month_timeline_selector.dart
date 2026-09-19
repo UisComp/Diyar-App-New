@@ -167,8 +167,9 @@ class _MonthTimelineSelectorState extends State<MonthTimelineSelector> {
     final isSelected = widget.selectedMonths.contains(month);
     final isBlackout = month > widget.lastAvailableMonth;
     final isCurrent = month == widget.lastAvailableMonth;
-    final label = AppFormatter.monthShortFormatter()
-        .format(DateTime(widget.year, month));
+    final label = AppFormatter.monthShortFormatter().format(
+      DateTime(widget.year, month),
+    );
 
     final Color bgColor;
     final Color textColor;

@@ -5,6 +5,7 @@ import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/booking_closed_banner.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/facility_booking/view/widgets/loading_skeleton.dart';
@@ -88,6 +89,14 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
                     LocaleKeys.your_request_has_been_sent_failed.tr(),
               );
             }
+            if (state is CreateServiceProviderRejectedState) {
+              // The API creates the batch all-or-nothing, so nothing was
+              // requested. The list is being re-fetched behind this message.
+              AppFunctions.warningMessage(
+                context,
+                message: LocaleKeys.service_providers_became_unavailable.tr(),
+              );
+            }
             if (state is CreateServiceProviderSuccessState) {
               context.pop();
               AppFunctions.successMessage(
@@ -106,6 +115,11 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
             }
 
             final providers = controller.serviceProviderResponse.data ?? [];
+            // Every provider is listed but closed — e.g. while a project is
+            // still being handed over. Say so instead of leaving the resident
+            // with a list of dead rows.
+            final allClosed =
+                providers.isNotEmpty && !controller.hasBookableProviders;
 
             return Form(
               key: _formKey,
@@ -131,6 +145,13 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
                           : AppColors.lightTextSecondary,
                     ),
                   ),
+                  if (allClosed) ...[
+                    12.ph,
+                    BookingsClosedBanner(
+                      message: LocaleKeys.no_service_providers_taking_bookings
+                          .tr(),
+                    ),
+                  ],
                   16.ph,
                   CustomListViewServiceProviders(
                     providers: providers,
@@ -141,11 +162,13 @@ class _ServiceProvidersScreenState extends State<ServiceProvidersScreen> {
                   Center(
                     child: CustomButton(
                       isLoading: state is CreateServiceProviderLoadingState,
-                      buttonColor: userModel?.data?.accessToken == null
+                      buttonColor:
+                          userModel?.data?.accessToken == null || allClosed
                           ? AppColors.greyColor
                           : AppColors.primaryColor,
                       buttonText: LocaleKeys.request_now.tr(),
-                      onPressed: userModel?.data?.accessToken == null
+                      onPressed:
+                          userModel?.data?.accessToken == null || allClosed
                           ? null
                           : () async {
                               if (userModel?.data?.accessToken == null) {

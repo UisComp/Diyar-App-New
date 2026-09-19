@@ -59,8 +59,8 @@ NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       imageUrl: json['image_url'] as String?,
-      entityType: json['entity_type'] as String?,
-      entityId: json['entity_id'] as String?,
+      entityType: stringOrNull(json['entity_type']),
+      entityId: stringOrNull(json['entity_id']),
     );
 
 Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>

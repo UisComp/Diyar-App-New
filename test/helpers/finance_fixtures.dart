@@ -1,0 +1,243 @@
+// JSON fixtures taken from MOBILE-API-CHANGES-INSTALLMENTS.md, with units in
+// the shape of MOBILE-API-CHANGES-BUILDINGS.md (both 2026-09-18).
+
+Map<String, dynamic> partiallyPaidInstallmentJson() => {
+  'id': 3,
+  'number': 3,
+  'type': 'installment',
+  'amount': 900000,
+  'paid_amount': 250000,
+  'remaining_amount': 650000,
+  'due_date': '2026-10-01',
+  'paid_at': null,
+  'status': 'partially_paid',
+  'is_overdue': false,
+  'days_until_due': 13,
+  'payments': [
+    {
+      'id': 3,
+      'amount': 250000,
+      'paid_at': '2026-09-15',
+      'method': 'cheque',
+      'receipt_no': 'RC-260918-TFWQVO',
+    },
+  ],
+  'unit': {
+    'id': 1,
+    'code': 'B1-G-01',
+    'name': null,
+    'label': 'Block 1 · B1-G-01',
+    'floor': 0,
+    'status': 'sold',
+    'building': {
+      'id': 1,
+      'type': 'block',
+      'code': 'B1',
+      'name': 'Block 1',
+      'label': 'Block 1',
+    },
+  },
+};
+
+Map<String, dynamic> unitFinancialsJson({
+  num overdueAmount = 0,
+  num clubHouseTotal = 60000,
+}) => {
+  'unit_value': 3000000,
+  'maintenance_deposit_amount': 240000,
+  'club_house_amount': clubHouseTotal,
+  'contract_total': 3300000,
+  'scheduled_total': 3300000,
+  'has_payment_plan': true,
+  'is_balanced': true,
+  'total_paid': 1150000,
+  'remaining_balance': 2150000,
+  'overdue_amount': overdueAmount,
+  'paid_percentage': 34.85,
+  'components': {
+    'unit': {
+      'total': 3000000,
+      'scheduled': 3000000,
+      'paid': 1150000,
+      'remaining': 1850000,
+    },
+    'maintenance_deposit': {
+      'total': 240000,
+      'scheduled': 240000,
+      'paid': 0,
+      'remaining': 240000,
+    },
+    'club_house': {
+      'total': clubHouseTotal,
+      'scheduled': clubHouseTotal,
+      'paid': 0,
+      'remaining': clubHouseTotal,
+    },
+  },
+  'installment_counts': {
+    'total': 6,
+    'paid': 2,
+    'partially_paid': 1,
+    'pending': 3,
+    'overdue': 0,
+  },
+  'next_installment': {
+    'id': 3,
+    'number': 3,
+    'type': 'installment',
+    'amount': 900000,
+    'paid_amount': 250000,
+    'remaining_amount': 650000,
+    'due_date': '2026-10-01',
+    'days_until_due': 13,
+    'status': 'partially_paid',
+  },
+};
+
+Map<String, dynamic> noPlanFinancialsJson() => {
+  'unit_value': 2500000,
+  'maintenance_deposit_amount': 200000,
+  'club_house_amount': 0,
+  'contract_total': 2700000,
+  'scheduled_total': 0,
+  'has_payment_plan': false,
+  'is_balanced': false,
+  'total_paid': 0,
+  'remaining_balance': 2700000,
+  'overdue_amount': 0,
+  'paid_percentage': 0,
+  'components': {
+    'unit': {'total': 2500000, 'scheduled': 0, 'paid': 0, 'remaining': 2500000},
+    'maintenance_deposit': {
+      'total': 200000,
+      'scheduled': 0,
+      'paid': 0,
+      'remaining': 200000,
+    },
+    'club_house': {'total': 0, 'scheduled': 0, 'paid': 0, 'remaining': 0},
+  },
+  'installment_counts': {
+    'total': 0,
+    'paid': 0,
+    'partially_paid': 0,
+    'pending': 0,
+    'overdue': 0,
+  },
+  'next_installment': null,
+};
+
+List<Map<String, dynamic>> planInstallmentsJson() => [
+  {
+    'id': 1,
+    'number': 1,
+    'type': 'down_payment',
+    'amount': 600000,
+    'paid_amount': 600000,
+    'remaining_amount': 0,
+    'due_date': '2026-06-01',
+    'paid_at': '2026-06-01',
+    'status': 'paid',
+    'is_overdue': false,
+    'days_until_due': null,
+    'payments': [
+      {
+        'id': 1,
+        'amount': 600000,
+        'paid_at': '2026-06-01',
+        'method': 'bank_transfer',
+        'receipt_no': null,
+      },
+    ],
+  },
+  {
+    'id': 2,
+    'number': 2,
+    'type': 'installment',
+    'amount': 300000,
+    'paid_amount': 100000,
+    'remaining_amount': 200000,
+    'due_date': '2026-09-15',
+    'paid_at': null,
+    // The nightly job hasn't run yet: status still says partially_paid, but
+    // is_overdue is already true.
+    'status': 'partially_paid',
+    'is_overdue': true,
+    'days_until_due': -3,
+    'payments': [
+      {
+        'id': 2,
+        'amount': 100000,
+        'paid_at': '2026-09-01',
+        'method': 'cash',
+        'receipt_no': null,
+      },
+    ],
+  },
+  partiallyPaidInstallmentJson()..remove('unit'),
+  {
+    'id': 4,
+    'number': 4,
+    'type': 'maintenance_deposit',
+    'amount': 240000,
+    'paid_amount': 0,
+    'remaining_amount': 240000,
+    'due_date': '2026-09-18',
+    'paid_at': null,
+    'status': 'pending',
+    'is_overdue': false,
+    'days_until_due': 0,
+    'payments': [],
+  },
+];
+
+Map<String, dynamic> financeResponseJson() => {
+  'success': true,
+  'message': 'ok',
+  'data': {
+    'financial_summary': {
+      'total_units': 2,
+      'units_with_plan': 1,
+      'units_awaiting_plan': 1,
+      'total_contract_value': 3300000,
+      'total_paid': 1150000,
+      'remaining_balance': 2150000,
+      'overall_paid_percentage': 34.85,
+      'total_overdue_amount': 200000,
+      'units_with_overdue': 1,
+    },
+    'units': [
+      {
+        'unit_id': 1,
+        'unit_code': 'B1-G-01',
+        'unit_name': null,
+        'unit_label': 'Block 1 · B1-G-01',
+        'building': {
+          'id': 1,
+          'type': 'block',
+          'code': 'B1',
+          'name': 'Block 1',
+          'label': 'Block 1',
+        },
+        'project': {'id': 7, 'name': "La'Mer Residences"},
+        'financials': unitFinancialsJson(overdueAmount: 200000),
+        'installments': planInstallmentsJson(),
+      },
+      {
+        'unit_id': 2,
+        'unit_code': 'V-3',
+        'unit_name': null,
+        'unit_label': 'V-3',
+        'building': {
+          'id': 3,
+          'type': 'villa',
+          'code': 'V-3',
+          'name': null,
+          'label': 'V-3',
+        },
+        'project': null,
+        'financials': noPlanFinancialsJson(),
+        'installments': [],
+      },
+    ],
+  },
+};

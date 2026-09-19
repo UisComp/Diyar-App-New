@@ -4,6 +4,18 @@ import 'package:diyar_app/feature/add_property/view/add_property_screen.dart';
 import 'package:diyar_app/feature/add_tenant/view/add_tenant_screen.dart';
 import 'package:diyar_app/feature/announcement/view/announcement_screen.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
+import 'package:diyar_app/feature/auth/controller/otp_controller.dart';
+import 'package:diyar_app/feature/auth/controller/login_controller.dart';
+import 'package:diyar_app/feature/auth/controller/register_controller.dart';
+import 'package:diyar_app/feature/auth/controller/set_password_controller.dart';
+import 'package:diyar_app/feature/auth/model/phone_auth_models.dart';
+import 'package:diyar_app/feature/auth/view/phone_otp_screen.dart';
+import 'package:diyar_app/feature/auth/view/register_details_screen.dart';
+import 'package:diyar_app/feature/auth/view/registration_pending_screen.dart';
+import 'package:diyar_app/feature/auth/view/set_password_screen.dart';
+import 'package:diyar_app/feature/phone_numbers/controller/phone_numbers_controller.dart';
+import 'package:diyar_app/feature/phone_numbers/view/phone_numbers_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:diyar_app/feature/auth/view/forget_password_screen.dart';
 import 'package:diyar_app/feature/auth/view/login_screen.dart';
 import 'package:diyar_app/feature/auth/view/otp_screen.dart';
@@ -14,7 +26,9 @@ import 'package:diyar_app/feature/emergency/view/emergency_screen.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
 import 'package:diyar_app/feature/facility_booking/view/facility_booking_history_screen.dart';
 import 'package:diyar_app/feature/facility_booking/view/facility_booking_screen.dart';
+import 'package:diyar_app/feature/documents/view/documents_screen.dart';
 import 'package:diyar_app/feature/finance/view/finance_screen.dart';
+import 'package:diyar_app/feature/finance/view/unit_payment_plan_screen.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/layout/home_layout.dart';
 import 'package:diyar_app/feature/home/model/announcements_response_model.dart';
@@ -200,10 +214,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: RoutesName.splash,
       path: RoutesName.splash,
-      pageBuilder: (context, state) => buildAnimatedPage(
-        child: const SplashScreen(),
-        transition: fadeIn,
-      ),
+      pageBuilder: (context, state) =>
+          buildAnimatedPage(child: const SplashScreen(), transition: fadeIn),
     ),
     GoRoute(
       name: RoutesName.onBoarding,
@@ -235,26 +247,83 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) =>
           buildAnimatedPage(child: const HomeScreen(), transition: fadeIn),
     ),
+    //! One login for everyone: phone (residents) or email (security staff)
+    //! + password. SMS codes only via "Sign in with SMS code" and
+    //! "Forgot password?".
     GoRoute(
       name: RoutesName.login,
       path: RoutesName.login,
       pageBuilder: (context, state) => buildAnimatedPage(
         child: BlocProvider(
-          create: (context) => AuthController(),
-          child: LoginScreen(),
+          create: (_) => LoginController(),
+          child: const LoginScreen(),
         ),
         transition: slideFromRight,
       ),
     ),
     GoRoute(
+      name: RoutesName.phoneOtpScreen,
+      path: RoutesName.phoneOtpScreen,
+      redirect: (_, state) => _requireExtra<OtpArgs>(state),
+      pageBuilder: (context, state) {
+        // Read here: a provider's create() can't subscribe to the locale.
+        final locale = context.locale.languageCode;
+        return buildAnimatedPage(
+          child: BlocProvider(
+            create: (_) =>
+                OtpController(args: state.extra as OtpArgs, locale: locale),
+            child: const PhoneOtpScreen(),
+          ),
+          transition: slideFromRight,
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutesName.setPasswordScreen,
+      path: RoutesName.setPasswordScreen,
+      redirect: (_, state) => _requireExtra<SetPasswordArgs>(state),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) =>
+              SetPasswordController(args: state.extra as SetPasswordArgs),
+          child: const SetPasswordScreen(),
+        ),
+        transition: slideFromRight,
+      ),
+    ),
+    //! Registration: phone → code → details → under review.
+    GoRoute(
       name: RoutesName.register,
       path: RoutesName.register,
       pageBuilder: (context, state) => buildAnimatedPage(
-        child: BlocProvider(
-          create: (_) => AuthController(),
-          child: RegisterScreen(),
+        child: RegisterScreen(
+          initialPhone: state.extra is String ? state.extra as String : null,
         ),
         transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.registerDetailsScreen,
+      path: RoutesName.registerDetailsScreen,
+      redirect: (_, state) => _requireExtra<RegisterDetailsArgs>(
+        state,
+        orElse: RoutesName.register,
+      ),
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) =>
+              RegisterController(args: state.extra as RegisterDetailsArgs),
+          child: const RegisterDetailsScreen(),
+        ),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.registrationPendingScreen,
+      path: RoutesName.registrationPendingScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const RegistrationPendingScreen(),
+        transition: fadeIn,
       ),
     ),
     GoRoute(
@@ -262,7 +331,11 @@ final GoRouter router = GoRouter(
       path: RoutesName.forgetPasswordScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
         child: BlocProvider(
-          create: (_) => AuthController(),
+          // Security staff: the email typed on the login screen, if any.
+          create: (_) => AuthController()
+            ..emailForForgetPasswordController.text = state.extra is String
+                ? state.extra as String
+                : '',
           child: const ForgetPasswordScreen(),
         ),
         transition: slideFromBottom,
@@ -288,6 +361,17 @@ final GoRouter router = GoRouter(
           child: const OtpScreen(),
         ),
         transition: scaleIn,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.phoneNumbersScreen,
+      path: RoutesName.phoneNumbersScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: BlocProvider(
+          create: (_) => PhoneNumbersController()..load(),
+          child: const PhoneNumbersScreen(),
+        ),
+        transition: slideFromRight,
       ),
     ),
     GoRoute(
@@ -428,6 +512,22 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
+      name: RoutesName.unitPaymentPlanScreen,
+      path: RoutesName.unitPaymentPlanScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: UnitPaymentPlanScreen(args: state.extra as UnitPaymentPlanArgs),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
+      name: RoutesName.documentsScreen,
+      path: RoutesName.documentsScreen,
+      pageBuilder: (context, state) => buildAnimatedPage(
+        child: const DocumentsScreen(),
+        transition: slideFromRight,
+      ),
+    ),
+    GoRoute(
       name: RoutesName.notificationsScreen,
       path: RoutesName.notificationsScreen,
       pageBuilder: (context, state) => buildAnimatedPage(
@@ -555,7 +655,9 @@ final GoRouter router = GoRouter(
         final imageUrl = state.extra as Announcement;
         return buildAnimatedPage(
           child: AnnouncementImagePreviewScreen(
-            imageUrl: imageUrl.url ?? '',
+            imageUrl: imageUrl.imageUrl,
+            videoId: imageUrl.youtubeVideoId,
+            watchUrl: imageUrl.youtubeUrl,
             title: imageUrl.title ?? '',
             description: imageUrl.description ?? '',
           ),
@@ -593,3 +695,10 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
+
+/// Screens that need arguments go back to [orElse] when opened without them
+/// (e.g. the app was restored after the system killed it).
+String? _requireExtra<T>(
+  GoRouterState state, {
+  String orElse = RoutesName.login,
+}) => state.extra is T ? null : orElse;

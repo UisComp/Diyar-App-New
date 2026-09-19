@@ -1,116 +1,189 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-part 'project_details_response_model.g.dart';
+import 'package:diyar_app/core/model/building_models.dart';
 
-@JsonSerializable()
-class ProjectDetailsResponseModel extends Equatable {
+export 'package:diyar_app/core/model/building_models.dart';
+
+int? _toInt(dynamic value) {
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
+}
+
+Map<String, dynamic>? _asMap(dynamic value) =>
+    value is Map ? Map<String, dynamic>.from(value) : null;
+
+List<Map<String, dynamic>> _asMapList(dynamic value) => value is List
+    ? value.whereType<Map>().map(Map<String, dynamic>.from).toList()
+    : const [];
+
+/// `GET /api/projects/{id}`. Signed in: only the buildings holding the
+/// user's own units, each with only those units. Signed out (or owning
+/// nothing here): project info, master plan and gallery, no buildings.
+class ProjectDetailsResponseModel {
   final bool? success;
   final String? message;
   final ProjectData? data;
 
   const ProjectDetailsResponseModel({this.success, this.message, this.data});
 
-  factory ProjectDetailsResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$ProjectDetailsResponseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectDetailsResponseModelToJson(this);
-
-  @override
-  List<Object?> get props => [success, message, data];
+  factory ProjectDetailsResponseModel.fromJson(Map<String, dynamic>? json) {
+    final data = _asMap(json?['data']);
+    return ProjectDetailsResponseModel(
+      success: json?['success'] == true,
+      message: json?['message']?.toString(),
+      data: data == null ? null : ProjectData.fromJson(data),
+    );
+  }
 }
-@JsonSerializable()
-class ProjectData extends Equatable {
+
+class ProjectData {
   final int? id;
   final String? name;
   final String? description;
 
-  @JsonKey(name: 'main_image')
+  /// The master plan the building map is drawn on.
   final ProjectMedia? mainImage;
-
   final List<ProjectMedia>? media;
 
-  @JsonKey(name: 'has_unit_mapping')
-  final bool? hasUnitMapping;
+  /// The user's buildings only. Blocks first, then towns, then villas; by
+  /// code within each type.
+  final List<Building> buildings;
 
-  @JsonKey(name: 'unit_mapping')
-  final UnitMapping? unitMapping;
+  /// At least one shape was returned.
+  final bool hasBuildingMapping;
+
+  /// Sent whenever the project has a map (even with no shapes), so the
+  /// picture's size is known. Absent when no map was drawn yet.
+  final BuildingMapping? buildingMapping;
 
   const ProjectData({
     this.id,
     this.name,
+    this.description,
     this.mainImage,
     this.media,
-    this.description,
-    this.hasUnitMapping,
-    this.unitMapping,
+    this.buildings = const [],
+    this.hasBuildingMapping = false,
+    this.buildingMapping,
   });
 
-  factory ProjectData.fromJson(Map<String, dynamic> json) =>
-      _$ProjectDataFromJson(json);
+  factory ProjectData.fromJson(Map<String, dynamic> json) {
+    final mainImage = _asMap(json['main_image']);
+    final mapping = _asMap(json['building_mapping']);
+    return ProjectData(
+      id: _toInt(json['id']),
+      name: json['name']?.toString(),
+      description: json['description']?.toString(),
+      mainImage: mainImage == null ? null : ProjectMedia.fromJson(mainImage),
+      media: json['media'] is List
+          ? _asMapList(json['media']).map(ProjectMedia.fromJson).toList()
+          : null,
+      buildings: _asMapList(json['buildings']).map(Building.fromJson).toList(),
+      hasBuildingMapping:
+          json['has_building_mapping'] == true ||
+          json['has_building_mapping'] == 'true',
+      buildingMapping: mapping == null
+          ? null
+          : BuildingMapping.fromJson(mapping),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$ProjectDataToJson(this);
+  /// The gallery's images, in the dashboard's order.
+  List<ProjectMedia> get gallery => [
+    for (final item in media ?? const <ProjectMedia>[])
+      if (item.isImage) item,
+  ];
 
-  @override
-  List<Object?> get props =>
-      [id, name, mainImage, media, description, hasUnitMapping, unitMapping];
+  Building? buildingById(int? id) {
+    if (id == null) return null;
+    for (final building in buildings) {
+      if (building.id == id) return building;
+    }
+    return null;
+  }
+
+  /// Map shapes that point at a building still in [buildings]. Shapes for a
+  /// deleted building are skipped.
+  List<(BuildingShape, Building)> get linkedShapes {
+    final mapping = buildingMapping;
+    if (!hasBuildingMapping || mapping == null) return const [];
+    return [
+      for (final shape in mapping.shapes)
+        if (shape.points.length >= 3 && buildingById(shape.buildingId) != null)
+          (shape, buildingById(shape.buildingId)!),
+    ];
+  }
 }
-@JsonSerializable()
-class UnitMapping extends Equatable {
+
+class BuildingMapping {
   final String? version;
   final int? imageWidth;
   final int? imageHeight;
-  final List<Shape>? shapes;
+  final List<BuildingShape> shapes;
 
-  const UnitMapping({
+  const BuildingMapping({
     this.version,
     this.imageWidth,
     this.imageHeight,
-    this.shapes,
+    this.shapes = const [],
   });
 
-  factory UnitMapping.fromJson(Map<String, dynamic> json) =>
-      _$UnitMappingFromJson(json);
+  factory BuildingMapping.fromJson(Map<String, dynamic> json) =>
+      BuildingMapping(
+        version: json['version']?.toString(),
+        imageWidth: _toInt(json['imageWidth'] ?? json['image_width']),
+        imageHeight: _toInt(json['imageHeight'] ?? json['image_height']),
+        shapes: _asMapList(json['shapes']).map(BuildingShape.fromJson).toList(),
+      );
 
-  Map<String, dynamic> toJson() => _$UnitMappingToJson(this);
-
-  @override
-  List<Object?> get props => [version, imageWidth, imageHeight, shapes];
+  /// width / height of the master plan, when known and sane.
+  double? get aspectRatio {
+    final w = imageWidth, h = imageHeight;
+    if (w == null || h == null || w <= 0 || h <= 0) return null;
+    return w / h;
+  }
 }
-@JsonSerializable()
-class Shape extends Equatable {
+
+/// A shape on the master plan. `rect` and `polygon` both arrive as a list of
+/// `[x, y]` points normalised to 0–1, so both are drawn as polygons.
+class BuildingShape {
   final String? id;
-
   final String? shapeType;
+  final int? buildingId;
+  final List<List<double>> points;
 
-  final int? unitId;
-
-  final List<List<double>>? points;
-
-  const Shape({
+  const BuildingShape({
     this.id,
     this.shapeType,
-    this.unitId,
-    this.points,
+    this.buildingId,
+    this.points = const [],
   });
 
-  factory Shape.fromJson(Map<String, dynamic> json) => _$ShapeFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ShapeToJson(this);
-
-  @override
-  List<Object?> get props => [id, shapeType, unitId, points];
+  factory BuildingShape.fromJson(Map<String, dynamic> json) {
+    final raw = json['points'];
+    final points = <List<double>>[];
+    if (raw is List) {
+      for (final p in raw) {
+        if (p is List && p.length >= 2 && p[0] is num && p[1] is num) {
+          points.add([(p[0] as num).toDouble(), (p[1] as num).toDouble()]);
+        }
+      }
+    }
+    return BuildingShape(
+      id: json['id']?.toString(),
+      shapeType: (json['shapeType'] ?? json['shape_type'])?.toString(),
+      buildingId: _toInt(json['buildingId'] ?? json['building_id']),
+      points: points,
+    );
+  }
 }
 
-
-@JsonSerializable()
-class ProjectMedia extends Equatable {
+class ProjectMedia {
   final int? id;
   final String? name;
-  @JsonKey(name: 'file_name')
   final String? fileName;
   final String? url;
   final int? size;
-  @JsonKey(name: 'mime_type')
   final String? mimeType;
 
   const ProjectMedia({
@@ -122,11 +195,18 @@ class ProjectMedia extends Equatable {
     this.mimeType,
   });
 
-  factory ProjectMedia.fromJson(Map<String, dynamic> json) =>
-      _$ProjectMediaFromJson(json);
+  /// The gallery only takes images; anything else is skipped. Older
+  /// backends sent no `mime_type`, so a missing one counts as an image.
+  bool get isImage =>
+      (url?.isNotEmpty ?? false) &&
+      (mimeType == null || mimeType!.startsWith('image/'));
 
-  Map<String, dynamic> toJson() => _$ProjectMediaToJson(this);
-
-  @override
-  List<Object?> get props => [id, name, fileName, url, size, mimeType];
+  factory ProjectMedia.fromJson(Map<String, dynamic> json) => ProjectMedia(
+    id: _toInt(json['id']),
+    name: json['name']?.toString(),
+    fileName: json['file_name']?.toString(),
+    url: json['url']?.toString(),
+    size: _toInt(json['size']),
+    mimeType: json['mime_type']?.toString(),
+  );
 }

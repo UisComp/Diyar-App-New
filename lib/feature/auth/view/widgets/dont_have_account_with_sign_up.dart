@@ -1,12 +1,8 @@
-import 'package:diyar_app/core/extension/padding.dart';
-import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
-import 'package:diyar_app/core/style/app_style.dart';
-import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/feature/auth/view/widgets/auth_widgets.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class DontHaveAccountWithSignUp extends StatelessWidget {
@@ -14,24 +10,10 @@ class DontHaveAccountWithSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AppText(
-          LocaleKeys.donnot_have_account.tr(),
-          style: AppStyle.fontSize16Regular(context),
-        ),
-        5.pw,
-        InkWell(
-          onTap: () {
-            context.go(RoutesName.register);
-          },
-          child: AppText(
-            LocaleKeys.sign_up.tr(),
-            style: AppStyle.fontSize16Regular(context),
-          ),
-        ),
-      ],
-    ).paddingOnly(bottom: 20.h);
+    return AuthLinkRow(
+      prompt: LocaleKeys.donnot_have_account.tr(),
+      action: LocaleKeys.sign_up.tr(),
+      onTap: () => context.push(RoutesName.register),
+    );
   }
 }

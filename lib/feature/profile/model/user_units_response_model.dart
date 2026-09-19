@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/model/building_models.dart';
 import 'package:diyar_app/feature/profile/model/profile_response_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -33,6 +34,8 @@ class UserUnitsResponseModel extends Equatable {
   List<Object?> get props => [success, message, data];
 }
 
+/// A unit in `GET /api/units` (the owner's units). `name` can be null:
+/// display [label].
 @JsonSerializable()
 class UserUnit extends Equatable {
   final int? id;
@@ -42,6 +45,14 @@ class UserUnit extends Equatable {
   final int? userId;
   @JsonKey(name: 'project_id')
   final int? projectId;
+  final String? code;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final String? apiLabel;
+  final int? floor;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final UnitStatus status;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Building? building;
 
   const UserUnit({
     this.id,
@@ -49,23 +60,43 @@ class UserUnit extends Equatable {
     this.userId,
     this.projectId,
     this.imageUrl,
+    this.code,
+    this.apiLabel,
+    this.floor,
+    this.status = UnitStatus.unknown,
+    this.building,
   });
 
   factory UserUnit.fromJson(Map<String, dynamic> json) {
+    final building = json['building'];
     return UserUnit(
       id: _toInt(json['id']),
-      name: json['name'] as String?,
+      name: json['name']?.toString(),
       userId: _toInt(json['user_id']),
       projectId: _toInt(json['project_id']),
-      imageUrl: json['main_image'] != null
+      imageUrl: json['main_image'] is Map<String, dynamic>
           ? ProfilePicture.fromJson(json['main_image'])
+          : null,
+      code: json['code']?.toString(),
+      apiLabel: json['label']?.toString(),
+      floor: _toInt(json['floor']),
+      status: UnitStatus.parse(json['status']),
+      building: building is Map
+          ? Building.fromJson(Map<String, dynamic>.from(building))
           : null,
     );
   }
 
+  /// "Town 1 · T-1-G": the API's label, falling back to name then code.
+  String get label => apiLabel ?? name ?? code ?? '';
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
+    'code': code,
+    'label': apiLabel,
+    'floor': floor,
+    'status': status.name,
     'user_id': userId,
     'project_id': projectId,
     'main_image': imageUrl,
@@ -75,29 +106,21 @@ class UserUnit extends Equatable {
     if (value == null) return null;
     if (value is int) return value;
     if (value is num) return value.toInt();
-    if (value is String) {
-      final parsed = int.tryParse(value);
-      return parsed;
-    }
+    if (value is String) return int.tryParse(value);
     return null;
   }
 
-  UserUnit copyWith({
-    int? id,
-    String? name,
-    int? userId,
-    int? projectId,
-    ProfilePicture? imageUrl,
-  }) {
-    return UserUnit(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      userId: userId ?? this.userId,
-      projectId: projectId ?? this.projectId,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
-  }
-
   @override
-  List<Object?> get props => [id, name, userId, projectId, imageUrl];
+  List<Object?> get props => [
+    id,
+    name,
+    userId,
+    projectId,
+    imageUrl,
+    code,
+    apiLabel,
+    floor,
+    status,
+    building?.id,
+  ];
 }

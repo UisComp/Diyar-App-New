@@ -20,9 +20,14 @@ class HomeService {
       return UserServicesResponse.fromJson(response?.data);
     }
   }
-    static Future<AnnouncementsResponseModel> getAllAnnouncements() async {
-    final response = await DioHelper.getData(path: ApiPaths.getAllAnnouncementsBannersPath);
-    AppLogger.info('getAllAnnouncements path ==> ${ApiPaths.getAllAnnouncementsBannersPath}');
+
+  static Future<AnnouncementsResponseModel> getAllAnnouncements() async {
+    final response = await DioHelper.getData(
+      path: ApiPaths.getAllAnnouncementsBannersPath,
+    );
+    AppLogger.info(
+      'getAllAnnouncements path ==> ${ApiPaths.getAllAnnouncementsBannersPath}',
+    );
     try {
       AppLogger.info('getAllAnnouncements==> ${response?.data}');
       if (response != null && response.statusCode == 200) {

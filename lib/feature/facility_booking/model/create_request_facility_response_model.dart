@@ -8,7 +8,21 @@ class CreateRequestFacilityResponseModel {
   final String? message;
   final List<RequestFacilityData>? data;
 
-  CreateRequestFacilityResponseModel({this.success, this.message, this.data});
+  /// The HTTP status, filled in by the service after parsing. A `422` means
+  /// the whole batch was rejected and **no** booking was created — either a
+  /// chosen facility stopped taking bookings, or a slot clashed.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int? statusCode;
+
+  CreateRequestFacilityResponseModel({
+    this.success,
+    this.message,
+    this.data,
+    this.statusCode,
+  });
+
+  /// True when the server refused the batch rather than failing outright.
+  bool get isRejected => statusCode == 422;
 
   factory CreateRequestFacilityResponseModel.fromJson(
     Map<String, dynamic> json,

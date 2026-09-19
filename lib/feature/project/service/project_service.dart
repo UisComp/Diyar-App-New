@@ -40,15 +40,10 @@ class ProjectService {
     final projectResponseDetails = await DioHelper.getData(
       path: ApiPaths.getProjectDetails(id: id),
     );
-    try {
-      AppLogger.info("projectResponseDetails==>$projectResponseDetails");
-      if (projectResponseDetails != null &&
-          projectResponseDetails.statusCode == 200) {
-        return ProjectDetailsResponseModel.fromJson(projectResponseDetails.data);
-      }
-    } catch (e) {
-      AppLogger.error('Error Happen While Get Project Details is $e');
-    }
-    return ProjectDetailsResponseModel.fromJson(projectResponseDetails?.data);
+    final body = projectResponseDetails?.data;
+    AppLogger.info("projectResponseDetails==>$body");
+    return ProjectDetailsResponseModel.fromJson(
+      body is Map<String, dynamic> ? body : null,
+    );
   }
 }

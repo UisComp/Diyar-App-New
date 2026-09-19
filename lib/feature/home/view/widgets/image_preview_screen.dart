@@ -5,6 +5,7 @@ import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/youtube_player/announcement_youtube_player.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,18 +17,27 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
   const AnnouncementImagePreviewScreen({
     super.key,
     this.imageUrl,
+    this.videoId,
+    this.watchUrl,
     this.title,
     this.description,
   });
   final String? imageUrl;
+
+  /// `youtube_video_id`, or null when the announcement has no video.
+  final String? videoId;
+
+  /// `youtube_url`, for the "Open in YouTube" fallback.
+  final String? watchUrl;
   final String? title;
   final String? description;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor =
-        isDark ? AppColors.darkBackground : AppColors.lightBackground;
+    final backgroundColor = isDark
+        ? AppColors.darkBackground
+        : AppColors.lightBackground;
     final cardColor = isDark ? AppColors.darkCard : AppColors.whiteColor;
     final secondaryText = isDark
         ? AppColors.darkTextSecondary
@@ -50,10 +60,17 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _HeaderImage(
-                  imageUrl: imageUrl,
-                  backgroundColor: backgroundColor,
-                ),
+                if (videoId != null && videoId!.isNotEmpty)
+                  _HeaderVideo(
+                    videoId: videoId!,
+                    watchUrl: watchUrl ?? '',
+                    posterUrl: imageUrl,
+                  )
+                else
+                  _HeaderImage(
+                    imageUrl: imageUrl,
+                    backgroundColor: backgroundColor,
+                  ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
                   child: Container(
@@ -70,8 +87,9 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                           ? null
                           : [
                               BoxShadow(
-                                color: AppColors.blackColor
-                                    .withValues(alpha: 0.05),
+                                color: AppColors.blackColor.withValues(
+                                  alpha: 0.05,
+                                ),
                                 blurRadius: 18,
                                 offset: const Offset(0, 6),
                               ),
@@ -92,8 +110,9 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20.r),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primaryColor
-                                      .withValues(alpha: 0.25),
+                                  color: AppColors.primaryColor.withValues(
+                                    alpha: 0.25,
+                                  ),
                                   blurRadius: 10,
                                   offset: const Offset(0, 4),
                                 ),
@@ -134,10 +153,7 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
                         ],
                         if (hasDescription) ...[
                           16.ph,
-                          Container(
-                            height: 1,
-                            color: dividerColor,
-                          ),
+                          Container(height: 1, color: dividerColor),
                           16.ph,
                           AppText(
                             description!,
@@ -161,6 +177,56 @@ class AnnouncementImagePreviewScreen extends StatelessWidget {
   }
 }
 
+/// The video takes the header; the image (if any) becomes its poster.
+class _HeaderVideo extends StatelessWidget {
+  const _HeaderVideo({
+    required this.videoId,
+    required this.watchUrl,
+    required this.posterUrl,
+  });
+  final String videoId;
+  final String watchUrl;
+  final String? posterUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+          child: Row(
+            children: [
+              _CircleIconButton(
+                icon: Directionality.of(context) == ui.TextDirection.rtl
+                    ? Icons.arrow_forward_rounded
+                    : Icons.arrow_back_rounded,
+                onTap: () => Navigator.maybePop(context),
+              ),
+              const Spacer(),
+              _CircleIconButton(
+                icon: Icons.close_rounded,
+                onTap: () => Navigator.maybePop(context),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+            child: AnnouncementYoutubePlayer(
+              videoId: videoId,
+              watchUrl: watchUrl,
+              posterUrl: posterUrl,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _HeaderImage extends StatelessWidget {
   const _HeaderImage({required this.imageUrl, required this.backgroundColor});
   final String? imageUrl;
@@ -172,9 +238,7 @@ class _HeaderImage extends StatelessWidget {
       alignment: AlignmentDirectional.topStart,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(28.r),
-          ),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(28.r)),
           child: SizedBox(
             width: double.infinity,
             height: 300.h,
@@ -252,11 +316,7 @@ class _CircleIconButton extends StatelessWidget {
               color: AppColors.whiteColor.withValues(alpha: 0.18),
             ),
           ),
-          child: Icon(
-            icon,
-            color: AppColors.whiteColor,
-            size: 20.sp,
-          ),
+          child: Icon(icon, color: AppColors.whiteColor, size: 20.sp),
         ),
       ),
     );

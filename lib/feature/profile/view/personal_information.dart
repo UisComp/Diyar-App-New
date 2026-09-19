@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
+import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
@@ -9,6 +10,7 @@ import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_phone_field.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/view/widgets/profile_image.dart';
@@ -106,22 +108,51 @@ class _PersonalInformationState extends State<PersonalInformation> {
                             CustomTextFormField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
+                              // Optional for residents.
                               validator: (emailProfile) =>
-                                  ValidatorHelper.validateEmail(
-                                    emailProfile,
-                                    emptyMessage: LocaleKeys
-                                        .please_enter_your_email
-                                        .tr(),
-                                    invalidMessage: LocaleKeys
-                                        .please_enter_a_valid_email
-                                        .tr(),
-                                  ),
+                                  (emailProfile ?? '').trim().isEmpty
+                                  ? null
+                                  : ValidatorHelper.validateEmail(
+                                      emailProfile!.trim(),
+                                      emptyMessage: LocaleKeys
+                                          .please_enter_your_email
+                                          .tr(),
+                                      invalidMessage: LocaleKeys
+                                          .please_enter_a_valid_email
+                                          .tr(),
+                                    ),
                               controller:
                                   profileController.emailProfileController,
                             ),
                             24.ph,
-                            AppText(
-                              LocaleKeys.contact_mobile_number.tr(),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    LocaleKeys.contact_mobile_number.tr(),
+                                  ),
+                                ),
+                                // Numbers change through staff-reviewed
+                                // requests.
+                                if (AuthSession.isResident)
+                                  TextButton(
+                                    onPressed: () async {
+                                      await context.push(
+                                        RoutesName.phoneNumbersScreen,
+                                      );
+                                      if (mounted) {
+                                        await profileController.getMyProfile();
+                                      }
+                                    },
+                                    child: AppText(
+                                      LocaleKeys.manage.tr(),
+                                      style: const TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ).paddingSymmetric(horizontal: 16.w),
                             8.ph,
                             CustomPhoneField(

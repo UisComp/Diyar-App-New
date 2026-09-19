@@ -8,7 +8,9 @@ import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/helper/notification_helper.dart';
+import 'package:diyar_app/core/helper/sms_code_retriever.dart';
 import 'package:diyar_app/feature/app/diyar_app.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/internet/controller/internet_controller.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
@@ -18,6 +20,7 @@ import 'package:diyar_app/firebase_options.dart';
 import 'package:diyar_app/generated/codegen_loader.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +63,12 @@ Future<void> main() async {
       ]);
       FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
       FlutterError.onError = (FlutterErrorDetails details) {
+        if (_isHarmlessWebViewTeardownAssert(details.exception)) {
+          AppLogger.warning(
+            'Ignored WebView teardown message: ${details.exception}',
+          );
+          return;
+        }
         FlutterError.presentError(details);
         Zone.current.handleUncaughtError(details.exception, details.stack!);
       };
@@ -70,6 +79,7 @@ Future<void> main() async {
       await EasyLocalization.ensureInitialized();
       await HiveHelper.init();
       await DioHelper.init();
+      DioHelper.onSessionExpired = AuthSession.expire;
 
       Bloc.observer = AppBlocObserver();
 
@@ -92,6 +102,8 @@ Future<void> main() async {
           fallbackLocale: const Locale(AppConstants.enLanguage),
           startLocale: languageController.getLocaleFromMode(),
           saveLocale: true,
+          // Apply each language's plural rules (Arabic has few/many forms).
+          ignorePluralRules: false,
           child: MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => InternetConnectionController()),
@@ -112,10 +124,27 @@ Future<void> main() async {
       FlutterNativeSplash.remove();
     },
     (error, stackTrace) {
+      if (_isHarmlessWebViewTeardownAssert(error)) {
+        AppLogger.warning("Ignored WebView teardown message: $error");
+        return;
+      }
       AppLogger.error("Caught by runZonedGuarded: $error");
       AppLogger.error(stackTrace.toString());
     },
   );
+}
+
+/// A JavaScript message that lands after its WKWebView is gone, which
+/// webview_flutter_wkwebview reports as a failed assertion.
+///
+/// It happens while a video player is being disposed: the message is dropped
+/// and nothing else breaks, and the assert is compiled out of release builds.
+/// Not fixed upstream in any version this Flutter SDK can resolve, so it is
+/// logged as a warning instead of a crash.
+bool _isHarmlessWebViewTeardownAssert(Object error) {
+  final text = error.toString();
+  return text.contains('didReceiveScriptMessage') &&
+      text.contains('WKUserContentController');
 }
 
 String? fcmToken;
@@ -130,10 +159,21 @@ Future<void> setupNotifications() async {
     AppLogger.log("exception on fcm init ${ex.toString()}");
   }
 
+  // Each login is a device; when Firebase rotates this device's token,
+  // replace it on the account.
+  FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+    fcmToken = token;
+    await HiveHelper.addToHive(key: AppConstants.fcmToken, value: token);
+    await AuthSession.onPushTokenRefreshed(token);
+  }, onError: (e) => AppLogger.log("onTokenRefresh error: $e"));
+
   if (Platform.isIOS) {
     String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
     AppLogger.log("apnsToken: $apnsToken");
   }
+
+  // The backend team needs this hash for SMS code autofill on Android.
+  if (kDebugMode) unawaited(SmsCodeRetriever.logAppSignature());
 
   final NotificationService localNotificationService = NotificationService();
   await localNotificationService.init();

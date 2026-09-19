@@ -1,4 +1,3 @@
-
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/auth/controller/auth_controller.dart';

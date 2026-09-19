@@ -1,3 +1,4 @@
+import 'package:diyar_app/feature/auth/model/user_phone.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_response_model.g.dart';
@@ -20,9 +21,12 @@ class ProfileResponseModel {
 class ProfileData {
   final int? id;
   final String? name;
+  /// Optional for residents.
   final String? email;
-  @JsonKey(name: 'phone_number')
-  final String? phoneNumber;
+
+  /// Primary first.
+  @JsonKey(includeToJson: false)
+  final List<UserPhone> phones;
   @JsonKey(name: 'email_verified_at')
   final String? emailVerifiedAt;
   @JsonKey(name: 'profile_picture')
@@ -36,7 +40,7 @@ class ProfileData {
     this.id,
     this.name,
     this.email,
-    this.phoneNumber,
+    this.phones = const [],
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
@@ -48,13 +52,18 @@ class ProfileData {
       id: _toInt(json['id']),
       name: json['name']?.toString(),
       email: json['email']?.toString(),
-      phoneNumber: json['phone_number']?.toString(),
+      phones: parseUserPhones(json['phones']),
       emailVerifiedAt: json['email_verified_at']?.toString(),
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
-      profilePicture: json['profile_picture'] != null ? ProfilePicture.fromJson(json['profile_picture']) : null,
+      profilePicture: json['profile_picture'] != null
+          ? ProfilePicture.fromJson(json['profile_picture'])
+          : null,
     );
   }
+
+  /// The number SMS messages go to.
+  UserPhone? get primaryPhone => phones.primary;
 
   static int? _toInt(dynamic value) {
     if (value == null) return null;
@@ -93,7 +102,9 @@ class ProfilePicture {
       name: json['name']?.toString(),
       fileName: json['file_name']?.toString(),
       url: json['url']?.toString(),
-      size: json['size'] is int ? json['size'] : int.tryParse(json['size']?.toString() ?? ''),
+      size: json['size'] is int
+          ? json['size']
+          : int.tryParse(json['size']?.toString() ?? ''),
       mimeType: json['mime_type']?.toString(),
     );
   }

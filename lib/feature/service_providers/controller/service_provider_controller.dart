@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/feature/service_providers/controller/service_provider_state.dart';
-import 'package:diyar_app/feature/service_providers/model/create_service_provider_response_model.dart';
+import 'package:diyar_app/feature/service_providers/model/create_service_provider_response_model.dart'
+    show CreateServiceProviderResponseModel;
 import 'package:diyar_app/feature/service_providers/model/request_service_provider_model.dart';
 import 'package:diyar_app/feature/service_providers/model/service_provider_history_response_model.dart';
 import 'package:diyar_app/feature/service_providers/model/service_provider_response.dart';
@@ -25,13 +26,53 @@ class ServiceProviderController extends Cubit<ServiceProviderState> {
     serviceDates.clear();
   }
 
-  void toggleService(int id) {
+  /// Every provider the last fetch listed.
+  List<ServiceProvider> get providers =>
+      serviceProviderResponse.data ?? const <ServiceProvider>[];
+
+  /// The listed provider with [id], or null once it's gone from the list.
+  ServiceProvider? providerById(int id) {
+    for (final provider in providers) {
+      if (provider.id == id) return provider;
+    }
+    return null;
+  }
+
+  /// Whether [id] may be added to the request.
+  bool canBook(int id) => providerById(id)?.canBook ?? false;
+
+  /// Whether anything in the list is taking requests at all.
+  bool get hasBookableProviders =>
+      providers.any((provider) => provider.canBook);
+
+  /// Adds or removes a provider. Deselecting always works; selecting is
+  /// refused for a provider that isn't taking requests, because the API
+  /// creates the batch all-or-nothing — one closed provider would sink the
+  /// whole request. Returns false when the selection was refused.
+  bool toggleService(int id) {
     if (selectedIds.contains(id)) {
       selectedIds.remove(id);
     } else {
+      if (!canBook(id)) return false;
       selectedIds.add(id);
     }
     emit(ServiceProviderRefreshState());
+    return true;
+  }
+
+  /// Drops picks that stopped being bookable while the list was on screen.
+  void _dropClosedSelections() {
+    selectedIds.removeWhere((id) => !canBook(id));
+  }
+
+  /// Forgets the current picks and their details, after a request went
+  /// through.
+  void clearSelection() {
+    selectedIds.clear();
+    for (final c in descControllers.values) {
+      c.clear();
+    }
+    serviceDates.clear();
   }
 
   TextEditingController getDescController(int id) {
@@ -58,6 +99,7 @@ class ServiceProviderController extends Cubit<ServiceProviderState> {
         .then((value) {
           serviceProviderResponse = value;
           if (value.success == true) {
+            _dropClosedSelections();
             emit(ServiceProviderSuccessState());
           } else {
             emit(ServiceProviderFailureState(errorMessage: value.message));
@@ -128,6 +170,14 @@ class ServiceProviderController extends Cubit<ServiceProviderState> {
       CreateServiceProviderResponseModel();
 
   Future<void> createServiceProvider() async {
+    // Last check before sending: the list is a snapshot, and a provider the
+    // resident picked may have closed its bookings since.
+    if (selectedIds.any((id) => !canBook(id))) {
+      _dropClosedSelections();
+      emit(CreateServiceProviderRejectedState());
+      return getServiceProviders();
+    }
+
     emit(CreateServiceProviderLoadingState());
 
     final req = RequestServiceProviderModel(
@@ -143,8 +193,23 @@ class ServiceProviderController extends Cubit<ServiceProviderState> {
           createServiceProviderResponseModel = value;
 
           if (value.success == true) {
+            clearSelection();
             emit(CreateServiceProviderSuccessState());
+            return;
           }
+
+          if (value.isRejected) {
+            // Nothing in the batch was created. The usual cause is a provider
+            // that closed its bookings after the list was fetched, so refresh
+            // it rather than retrying with the stale one.
+            emit(
+              CreateServiceProviderRejectedState(errorMessage: value.message),
+            );
+            getServiceProviders();
+            return;
+          }
+
+          emit(CreateServiceProviderFailureState(errorMessage: value.message));
         })
         .catchError((error) {
           AppLogger.error(

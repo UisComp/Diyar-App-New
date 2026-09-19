@@ -13,14 +13,12 @@ class CustomCachedNetworkImage extends StatelessWidget {
     this.height,
     this.fit,
     this.isProjectDetails = false,
-    this.tintBrand = false,
   });
   final String? imageUrl;
   final double? width;
   final double? height;
   final BoxFit? fit;
   final bool isProjectDetails;
-  final bool tintBrand;
   @override
   Widget build(BuildContext context) {
     final bool emptyUrl = imageUrl == null || imageUrl!.trim().isEmpty;
@@ -47,17 +45,8 @@ class CustomCachedNetworkImage extends StatelessWidget {
             ),
             errorWidget: (context, url, error) => _buildFallback(),
           );
-    final Widget tinted = tintBrand
-        ? ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              AppColors.primaryColor,
-              BlendMode.srcIn,
-            ),
-            child: content,
-          )
-        : content;
     if (isProjectDetails) {
-      return tinted;
+      return content;
     }
     return Material(
       type: MaterialType.transparency,
@@ -67,7 +56,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
             showImagePreview(context, imageUrl!);
           }
         },
-        child: tinted,
+        child: content,
       ),
     );
   }

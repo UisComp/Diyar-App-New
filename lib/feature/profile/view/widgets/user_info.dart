@@ -34,7 +34,7 @@ class UserInfo extends StatelessWidget {
         ),
         5.ph,
         AppText(
-          profile?.phoneNumber ?? '',
+          profile?.primaryPhone?.phone ?? '',
           style: AppStyle.fontSize16Regular(
             context,
           ).copyWith(color: AppColors.descContainerColor),

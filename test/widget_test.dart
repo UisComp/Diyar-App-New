@@ -1,7 +1,6 @@
 // Tests for the "Project Timeline" feature data contracts:
 // - the user's projects response (used to resolve which project to open), and
-// - the project details unit-mapping (used to drive the interactive image and
-//   the inline events calendar).
+// - the project details building map (buildings drawn on the master plan).
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
 import 'package:diyar_app/feature/project/model/projects_response_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,41 +42,68 @@ void main() {
     });
   });
 
-  group('ProjectDetailsResponseModel unit mapping', () {
-    test('parses mapped and unmapped sections', () {
+  group('ProjectDetailsResponseModel building mapping', () {
+    test('links map shapes to buildings and skips unknown ones', () {
       final json = {
         'success': true,
         'message': 'ok',
         'data': {
           'id': 1,
-          'name': 'Project',
+          'name': 'La Mer',
           'description': 'desc',
-          'main_image': {'id': 2, 'url': 'https://example.com/main.jpg'},
+          'main_image': {'id': 2, 'url': 'https://example.com/plan.jpg'},
           'media': [],
-          'has_unit_mapping': true,
-          'unit_mapping': {
+          'buildings': [
+            {
+              'id': 1,
+              'type': 'block',
+              'code': 'B1',
+              'name': 'Block 1',
+              'label': 'Block 1',
+              'unit_counts': {
+                'total': 2,
+                'available': 1,
+                'reserved': 0,
+                'sold': 1,
+              },
+              'units': [
+                {
+                  'id': 1,
+                  'code': 'B1-G-01',
+                  'name': null,
+                  'label': 'B1-G-01',
+                  'floor': 0,
+                  'status': 'available',
+                },
+              ],
+            },
+          ],
+          'has_building_mapping': true,
+          'building_mapping': {
             'version': '1.0',
-            'imageWidth': 1000,
-            'imageHeight': 800,
+            'imageWidth': 1600,
+            'imageHeight': 900,
             'shapes': [
               {
-                'id': 's1',
+                'id': 'shape_1',
                 'shapeType': 'polygon',
-                'unitId': 42,
+                'buildingId': 1,
                 'points': [
                   [0.1, 0.1],
-                  [0.2, 0.1],
-                  [0.2, 0.2],
+                  [0.3, 0.1],
+                  [0.3, 0.4],
                 ],
               },
               {
-                'id': 's2',
-                'shapeType': 'polygon',
-                'unitId': null,
+                'id': 'shape_2',
+                'shapeType': 'rect',
+                // Building deleted since the map was drawn.
+                'buildingId': 99,
                 'points': [
                   [0.5, 0.5],
                   [0.6, 0.5],
                   [0.6, 0.6],
+                  [0.5, 0.6],
                 ],
               },
             ],
@@ -85,23 +111,27 @@ void main() {
         },
       };
 
-      final model = ProjectDetailsResponseModel.fromJson(json);
-      final mapping = model.data?.unitMapping;
+      final data = ProjectDetailsResponseModel.fromJson(json).data!;
 
-      expect(model.data?.hasUnitMapping, isTrue);
-      expect(mapping, isNotNull);
-      expect(mapping!.imageWidth, 1000);
-      expect(mapping.imageHeight, 800);
-      expect(mapping.shapes!.length, 2);
+      expect(data.hasBuildingMapping, isTrue);
+      expect(data.buildingMapping!.aspectRatio, closeTo(1600 / 900, 1e-9));
+      expect(data.buildingMapping!.shapes, hasLength(2));
+      expect(data.buildingMapping!.shapes.first.points.first, [0.1, 0.1]);
 
-      // A mapped section exposes a unitId -> drives the inline calendar.
-      final mapped = mapping.shapes!.first;
-      expect(mapped.unitId, 42);
-      expect(mapped.points!.first, [0.1, 0.1]);
+      final linked = data.linkedShapes;
+      expect(linked, hasLength(1));
+      expect(linked.single.$1.id, 'shape_1');
+      expect(linked.single.$2.code, 'B1');
+    });
 
-      // An unmapped section has a null unitId -> shows the "no events" message.
-      final unmapped = mapping.shapes!.last;
-      expect(unmapped.unitId, isNull);
+    test('no shapes when has_building_mapping is false', () {
+      final data = ProjectDetailsResponseModel.fromJson({
+        'success': true,
+        'data': {'id': 1, 'has_building_mapping': false, 'buildings': []},
+      }).data!;
+      expect(data.hasBuildingMapping, isFalse);
+      expect(data.buildingMapping, isNull);
+      expect(data.linkedShapes, isEmpty);
     });
   });
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/model/request_model.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
@@ -38,6 +37,16 @@ class ProfileController extends Cubit<ProfileState> {
 
   late PhoneController phoneProfileController;
 
+  /// The primary number for the read-only phone field.
+  static PhoneNumber _phoneNumber(String? phone) {
+    if (phone != null && phone.isNotEmpty) {
+      try {
+        return PhoneNumber.parse(phone);
+      } catch (_) {}
+    }
+    return const PhoneNumber(isoCode: IsoCode.EG, nsn: '');
+  }
+
   UserUnitsResponseModel userLinkedUnitsResponseModel =
       UserUnitsResponseModel();
 
@@ -54,9 +63,8 @@ class ProfileController extends Cubit<ProfileState> {
       if (value.data != null) {
         nameProfileController.text = value.data!.name ?? '';
         emailProfileController.text = value.data!.email ?? '';
-        phoneProfileController.value = PhoneNumber(
-          isoCode: IsoCode.EG,
-          nsn: value.data!.phoneNumber ?? '',
+        phoneProfileController.value = _phoneNumber(
+          value.data!.primaryPhone?.phone,
         );
       }
 
@@ -119,22 +127,17 @@ class ProfileController extends Cubit<ProfileState> {
   Future<void> editProfile() async {
     emit(EditingProfileLoadingState());
     try {
+      // Numbers change through phone requests (Phone numbers screen).
       final value = await ProfileService.editProfile(
         authRequestModel: RequestModel(
-          email: emailProfileController.text,
-          name: nameProfileController.text,
-          phoneNumber: phoneProfileController.value.international,
+          email: emailProfileController.text.trim(),
+          name: nameProfileController.text.trim(),
         ),
         image: image,
       );
 
       if (value.success == true) {
         await getMyProfile();
-        await savedCredentials(
-          email: emailProfileController.text,
-          password: savedPasswordForLoginWithBioMetric,
-        );
-
         image = null;
         emit(EditingProfileSuccessfullyState());
         emit(GetMyProfileSuccessState());
@@ -146,23 +149,34 @@ class ProfileController extends Cubit<ProfileState> {
     }
   }
 
+  // Start as loading so the profile shows skeleton rows, not an empty state,
+  // until the first request settles.
+  bool isUnitsLoading = true;
+  bool unitsFailed = false;
+
   Future<void> getUserLinkedUnits() async {
     if (isClosed) return;
+    isUnitsLoading = true;
+    unitsFailed = false;
     emit(GetUserLinkedUnitsLoadingState());
     try {
       final value = await ProfileService.getLinkedUnitsForUser();
       if (isClosed) return;
 
       userLinkedUnitsResponseModel = value;
+      isUnitsLoading = false;
       AppLogger.info('getUserLinkedUnits==> ${value.data}');
 
       if (value.success == true) {
         emit(GetUserLinkedUnitsSuccessfullyState());
       } else {
+        unitsFailed = true;
         emit(GetUserLinkedUnitsFailureState());
       }
     } catch (error) {
       AppLogger.error('Error Happen While Get User Linked Units is $error');
+      isUnitsLoading = false;
+      unitsFailed = true;
       if (!isClosed) emit(GetUserLinkedUnitsFailureState());
     }
   }
@@ -170,7 +184,7 @@ class ProfileController extends Cubit<ProfileState> {
   UnitModelDetailsForLinkedUserResponseModel
   unitModelDetailsForLinkedUserResponseModel =
       UnitModelDetailsForLinkedUserResponseModel();
-  Future<void> getUnitsForUserLinkedUnits({ String? id}) async {
+  Future<void> getUnitsForUserLinkedUnits({String? id}) async {
     if (isClosed) return;
     emit(GetUnitsForUserLinkedLoadingState());
     try {

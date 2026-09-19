@@ -31,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.readOnly=false,
     this.onTap,
+    this.horizontalPadding,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -54,6 +55,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool ?readOnly ;
   final void Function()? onTap;
+  final double? horizontalPadding;
   @override
   Widget build(BuildContext context) {
     final darkTheme =
@@ -135,6 +137,6 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: radius,
         ),
       ),
-    ).paddingSymmetric(horizontal: 16.w);
+    ).paddingSymmetric(horizontal: horizontalPadding ?? 16.w);
   }
 }

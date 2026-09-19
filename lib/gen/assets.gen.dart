@@ -41,8 +41,12 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/diyar_native_splash.png');
 
   /// File path: assets/images/diyar_new.jpg
-  AssetGenImage get diyarNew =>
+  AssetGenImage get diyarNewJpg =>
       const AssetGenImage('assets/images/diyar_new.jpg');
+
+  /// File path: assets/images/diyar_new.png
+  AssetGenImage get diyarNewPng =>
+      const AssetGenImage('assets/images/diyar_new.png');
 
   /// File path: assets/images/diyar_pmc.png
   AssetGenImage get diyarPmc =>
@@ -72,7 +76,8 @@ class $AssetsImagesGen {
         backgroundCard,
         diyar,
         diyarNativeSplash,
-        diyarNew,
+        diyarNewJpg,
+        diyarNewPng,
         diyarPmc,
         emptyRealState,
         forgetPassword,

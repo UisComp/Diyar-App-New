@@ -1,3 +1,4 @@
+import 'package:diyar_app/feature/auth/model/user_phone.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -50,48 +51,49 @@ class LoginData {
 }
 
 @HiveType(typeId: 2)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class User {
   @HiveField(0)
   final int id;
-
   @HiveField(1)
   final String name;
 
+  /// Optional for residents.
   @HiveField(2)
-  final String email;
-
-  @HiveField(3)
-  @JsonKey(name: 'phone_number')
-  final String phoneNumber;
-
+  final String? email;
+  // HiveField(3) was `phone_number`, which the API no longer sends. Don't
+  // reuse the index: sessions saved by older versions still carry it.
   @HiveField(4)
   @JsonKey(name: 'email_verified_at')
   final String? emailVerifiedAt;
-
   @HiveField(5)
   @JsonKey(name: 'created_at')
-  final String createdAt;
-
+  final String? createdAt;
   @HiveField(6)
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final String? updatedAt;
   @HiveField(7)
+  final List<String>? roles;
 
-final List<String>? roles;
+  /// Primary number first. Null in sessions saved by older versions.
+  @HiveField(8)
+  @JsonKey(fromJson: parseUserPhones)
+  final List<UserPhone>? phones;
 
   User({
-     this.roles,
+    this.roles,
     required this.id,
     required this.name,
-    required this.email,
-    required this.phoneNumber,
+    this.email,
+    this.phones,
     this.emailVerifiedAt,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  /// The number SMS messages go to.
+  UserPhone? get primaryPhone => phones?.primary;
 
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

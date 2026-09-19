@@ -1,108 +1,144 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:diyar_app/core/model/building_models.dart';
 
-part 'unit_model_details_for_linked_user.g.dart';
+export 'package:diyar_app/core/model/building_models.dart';
 
-@JsonSerializable(explicitToJson: true)
+int? _toInt(dynamic value) {
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
+}
+
+double? _toDouble(dynamic value) {
+  if (value is num) return value.toDouble();
+  if (value is String) return double.tryParse(value);
+  return null;
+}
+
+Map<String, dynamic>? _asMap(dynamic value) =>
+    value is Map ? Map<String, dynamic>.from(value) : null;
+
+List<Map<String, dynamic>> _asMapList(dynamic value) => value is List
+    ? value.whereType<Map>().map(Map<String, dynamic>.from).toList()
+    : const [];
+
+/// `GET /api/units/{id}`.
 class UnitModelDetailsForLinkedUserResponseModel {
   final bool? success;
   final String? message;
   final UnitData? data;
 
-  UnitModelDetailsForLinkedUserResponseModel({this.success, this.message, this.data});
+  UnitModelDetailsForLinkedUserResponseModel({
+    this.success,
+    this.message,
+    this.data,
+  });
 
-  factory UnitModelDetailsForLinkedUserResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$UnitModelDetailsForLinkedUserResponseModelFromJson(json);
-  Map<String, dynamic> toJson() => _$UnitModelDetailsForLinkedUserResponseModelToJson(this);
+  factory UnitModelDetailsForLinkedUserResponseModel.fromJson(dynamic json) {
+    final map = _asMap(json);
+    final data = _asMap(map?['data']);
+    return UnitModelDetailsForLinkedUserResponseModel(
+      success: map?['success'] == true,
+      message: map?['message']?.toString(),
+      data: data == null ? null : UnitData.fromJson(data),
+    );
+  }
 }
 
-@JsonSerializable(explicitToJson: true)
+/// The full unit, for its owner (Swagger `Unit`): the [UnitSummary] fields
+/// plus ids, money, image and news.
 class UnitData {
   final int? id;
+  final String? code;
   final String? name;
-  final String? building;
-  final String? number;
-  @JsonKey(name: 'project_id')
-  final String? projectId;
-  @JsonKey(name: 'user_id')
-  final String? userId;
-  @JsonKey(name: 'unit_value')
+  final String? _label;
+
+  /// 0 is the ground floor; null for villas.
+  final int? floor;
+  final UnitStatus status;
+  final int? projectId;
+  final int? buildingId;
+  final Building? building;
+  final int? userId;
   final double? unitValue;
-  @JsonKey(name: 'down_payment')
-  final double? downPayment;
-  @JsonKey(name: 'interest_rate')
-  final double? interestRate;
-  @JsonKey(name: 'installments_count')
-  final int? installmentCount;
-  @JsonKey(name: 'first_installment_date')
-  final String? firstInstallmentDate;
-  @JsonKey(name: 'main_image')
+  final double? maintenanceDepositAmount;
+  final double? clubHouseAmount;
+
+  /// Unit value + Maintenance Deposit + Club House.
+  final double? contractTotal;
   final Media? mainImage;
   final List<News>? news;
 
   UnitData({
     this.id,
+    this.code,
     this.name,
-    this.building,
-    this.number,
+    String? label,
+    this.floor,
+    this.status = UnitStatus.unknown,
     this.projectId,
+    this.buildingId,
+    this.building,
     this.userId,
     this.unitValue,
-    this.downPayment,
-    this.interestRate,
-    this.installmentCount,
-    this.firstInstallmentDate,
+    this.maintenanceDepositAmount,
+    this.clubHouseAmount,
+    this.contractTotal,
     this.mainImage,
     this.news,
-  });
+  }) : _label = label;
 
   factory UnitData.fromJson(Map<String, dynamic> json) {
+    final building = _asMap(json['building']);
+    final mainImage = _asMap(json['main_image']);
     return UnitData(
       id: _toInt(json['id']),
+      code: json['code']?.toString(),
       name: json['name']?.toString(),
-      building: json['building']?.toString(),
-      number: json['number']?.toString(),
-      projectId: json['project_id']?.toString(),
-      userId: json['user_id']?.toString(),
+      label: json['label']?.toString(),
+      floor: _toInt(json['floor']),
+      status: UnitStatus.parse(json['status']),
+      projectId: _toInt(json['project_id']),
+      buildingId: _toInt(json['building_id']),
+      building: building == null ? null : Building.fromJson(building),
+      userId: _toInt(json['user_id']),
       unitValue: _toDouble(json['unit_value']),
-      downPayment: _toDouble(json['down_payment']),
-      interestRate: _toDouble(json['interest_rate']),
-      installmentCount: _toInt(json['installments_count']),
-      firstInstallmentDate: json['first_installment_date']?.toString(),
-      mainImage: json['main_image'] != null ? Media.fromJson(json['main_image']) : null,
-      news: json['news'] != null
-          ? (json['news'] as List).map((e) => News.fromJson(e)).toList()
+      maintenanceDepositAmount: _toDouble(json['maintenance_deposit_amount']),
+      clubHouseAmount: _toDouble(json['club_house_amount']),
+      contractTotal: _toDouble(json['contract_total']),
+      mainImage: mainImage == null ? null : Media.fromJson(mainImage),
+      news: json['news'] is List
+          ? _asMapList(json['news']).map(News.fromJson).toList()
           : null,
     );
   }
 
-  Map<String, dynamic> toJson() => _$UnitDataToJson(this);
+  /// "Town 1 · T-1-G": the API's label, falling back to name then code.
+  String get label => _label ?? name ?? code ?? '';
 
-  static int? _toInt(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return value;
-    if (value is num) return value.toInt();
-    if (value is String) return int.tryParse(value);
-    return null;
-  }
-
-  static double? _toDouble(dynamic value) {
-    if (value == null) return null;
-    if (value is double) return value;
-    if (value is num) return value.toDouble();
-    if (value is String) return double.tryParse(value);
-    return null;
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'code': code,
+    'name': name,
+    'label': _label,
+    'floor': floor,
+    'status': status.name,
+    'project_id': projectId,
+    'building_id': buildingId,
+    'user_id': userId,
+    'unit_value': unitValue,
+    'maintenance_deposit_amount': maintenanceDepositAmount,
+    'club_house_amount': clubHouseAmount,
+    'contract_total': contractTotal,
+  };
 }
 
-@JsonSerializable(explicitToJson: true)
 class Media {
   final int? id;
   final String? name;
-  @JsonKey(name: 'file_name')
   final String? fileName;
   final String? url;
   final int? size;
-  @JsonKey(name: 'uploaded_at')
   final String? uploadedAt;
 
   Media({
@@ -114,29 +150,26 @@ class Media {
     this.uploadedAt,
   });
 
-  factory Media.fromJson(Map<String, dynamic> json) {
-    return Media(
-      id: UnitData._toInt(json['id']),
-      name: json['name']?.toString(),
-      fileName: json['file_name']?.toString(),
-      url: json['url']?.toString(),
-      size: json['size'] is int ? json['size'] : int.tryParse(json['size']?.toString() ?? ''),
-      uploadedAt: json['uploaded_at']?.toString(),
-    );
-  }
-  Map<String, dynamic> toJson() => _$MediaToJson(this);
+  factory Media.fromJson(Map<String, dynamic> json) => Media(
+    id: _toInt(json['id']),
+    name: json['name']?.toString(),
+    fileName: json['file_name']?.toString(),
+    url: json['url']?.toString(),
+    size: _toInt(json['size']),
+    uploadedAt: json['uploaded_at']?.toString(),
+  );
 }
 
-@JsonSerializable(explicitToJson: true)
 class News {
   final int? id;
   final String? title;
   final String? content;
-  @JsonKey(name: 'news_date')
   final String? newsDate;
   final List<Media>? media;
-  final UnitData? unit;
-  final Project? project;
+
+  /// News is public, so its unit is a [UnitSummary] (no owner, no money).
+  final UnitSummary? unit;
+  final NewsProject? project;
 
   News({
     this.id,
@@ -149,94 +182,45 @@ class News {
   });
 
   factory News.fromJson(Map<String, dynamic> json) {
+    final unit = _asMap(json['unit']);
+    final project = _asMap(json['project']);
     return News(
-      id: UnitData._toInt(json['id']),
+      id: _toInt(json['id']),
       title: json['title']?.toString(),
       content: json['content']?.toString(),
       newsDate: json['news_date']?.toString(),
-      media: json['media'] != null ? (json['media'] as List).map((e) => Media.fromJson(e)).toList() : null,
-      unit: json['unit'] != null ? UnitData.fromJson(json['unit']) : null,
-      project: json['project'] != null ? Project.fromJson(json['project']) : null,
+      media: json['media'] is List
+          ? _asMapList(json['media']).map(Media.fromJson).toList()
+          : null,
+      unit: unit == null ? null : UnitSummary.fromJson(unit),
+      project: project == null ? null : NewsProject.fromJson(project),
     );
   }
-  Map<String, dynamic> toJson() => _$NewsToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class Project {
+class NewsProject {
   final int? id;
   final String? name;
   final String? description;
-  @JsonKey(name: 'main_image')
   final Media? mainImage;
-  final List<Media>? media;
-  @JsonKey(name: 'has_unit_mapping')
-  final bool? hasUnitMapping;
-  @JsonKey(name: 'unit_mapping')
-  final UnitMapping? unitMapping;
+  final bool hasBuildingMapping;
 
-  Project({
+  NewsProject({
     this.id,
     this.name,
     this.description,
     this.mainImage,
-    this.media,
-    this.hasUnitMapping,
-    this.unitMapping,
+    this.hasBuildingMapping = false,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
-      id: UnitData._toInt(json['id']),
+  factory NewsProject.fromJson(Map<String, dynamic> json) {
+    final mainImage = _asMap(json['main_image']);
+    return NewsProject(
+      id: _toInt(json['id']),
       name: json['name']?.toString(),
       description: json['description']?.toString(),
-      mainImage: json['main_image'] != null ? Media.fromJson(json['main_image']) : null,
-      media: json['media'] != null ? (json['media'] as List).map((e) => Media.fromJson(e)).toList() : null,
-      hasUnitMapping: json['has_unit_mapping'] == true || json['has_unit_mapping'] == 'true',
-      unitMapping: json['unit_mapping'] != null ? UnitMapping.fromJson(json['unit_mapping']) : null,
+      mainImage: mainImage == null ? null : Media.fromJson(mainImage),
+      hasBuildingMapping: json['has_building_mapping'] == true,
     );
   }
-  Map<String, dynamic> toJson() => _$ProjectToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class UnitMapping {
-  final String? version;
-  final int? imageWidth;
-  final int? imageHeight;
-  final List<Shape>? shapes;
-
-  UnitMapping({this.version, this.imageWidth, this.imageHeight, this.shapes});
-
-  factory UnitMapping.fromJson(Map<String, dynamic> json) {
-    return UnitMapping(
-      version: json['version']?.toString(),
-      imageWidth: UnitData._toInt(json['imageWidth']) ?? UnitData._toInt(json['image_width']),
-      imageHeight: UnitData._toInt(json['imageHeight']) ?? UnitData._toInt(json['image_height']),
-      shapes: json['shapes'] != null ? (json['shapes'] as List).map((e) => Shape.fromJson(e)).toList() : null,
-    );
-  }
-  Map<String, dynamic> toJson() => _$UnitMappingToJson(this);
-}
-
-@JsonSerializable()
-class Shape {
-  final String? id;
-  final String? shapeType;
-  final int? unitId;
-  final List<List<double>>? points;
-
-  Shape({this.id, this.shapeType, this.unitId, this.points});
-
-  factory Shape.fromJson(Map<String, dynamic> json) {
-    return Shape(
-      id: json['id']?.toString(),
-      shapeType: json['shapeType']?.toString() ?? json['shape_type']?.toString(),
-      unitId: UnitData._toInt(json['unitId']) ?? UnitData._toInt(json['unit_id']),
-      points: json['points'] != null 
-          ? (json['points'] as List).map((e) => (e as List).map((p) => UnitData._toDouble(p) ?? 0.0).toList()).toList() 
-          : null,
-    );
-  }
-  Map<String, dynamic> toJson() => _$ShapeToJson(this);
 }

@@ -33,10 +33,7 @@ class _ProjectTimelineScreenState extends State<ProjectTimelineScreen> {
 
   void _openProject(BuildContext context, int id, {bool replace = false}) {
     if (replace) {
-      context.pushReplacement(
-        RoutesName.projectDetails,
-        extra: id.toString(),
-      );
+      context.pushReplacement(RoutesName.projectDetails, extra: id.toString());
     } else {
       context.push(RoutesName.projectDetails, extra: id.toString());
     }
@@ -110,9 +107,9 @@ class _ProjectTimelineScreenState extends State<ProjectTimelineScreen> {
                         ),
                         AppText(
                           '${projects.length} ${LocaleKeys.projects.tr()}',
-                          style: AppStyle.fontSize12Regular(context).copyWith(
-                            color: AppColors.descContainerColor,
-                          ),
+                          style: AppStyle.fontSize12Regular(
+                            context,
+                          ).copyWith(color: AppColors.descContainerColor),
                         ),
                       ],
                     ),
@@ -177,10 +174,7 @@ class _ProjectCard extends StatelessWidget {
             onTap: onTap,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _banner(context),
-                _ctaFooter(context),
-              ],
+              children: [_banner(context), _ctaFooter(context)],
             ),
           ),
         ),
@@ -223,9 +217,7 @@ class _ProjectCard extends StatelessWidget {
               fontSize: 18.sp,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.2,
-              shadows: const [
-                Shadow(color: Colors.black54, blurRadius: 6),
-              ],
+              shadows: const [Shadow(color: Colors.black54, blurRadius: 6)],
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

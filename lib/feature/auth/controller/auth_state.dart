@@ -2,26 +2,6 @@ abstract class AuthState {}
 
 class AuthInitialState extends AuthState {}
 
-class LoginLoadingState extends AuthState {}
-
-class LoginSuccessState extends AuthState {}
-
-class LoginFailureState extends AuthState {
-  final String? error;
-
-  LoginFailureState({this.error});
-}
-
-class RegisterLoadingState extends AuthState {}
-
-class RegisterSuccessState extends AuthState {}
-
-class RegisterFailureState extends AuthState {
-  final String? error;
-
-  RegisterFailureState({this.error});
-}
-
 class ForgetPasswordLoadingState extends AuthState {}
 
 class ForgetPasswordSuccessState extends AuthState {}
@@ -82,13 +62,4 @@ class ResendOtpFailureState extends AuthState {
   final String? error;
 
   ResendOtpFailureState({this.error});
-}
-class UpdateFcmTokenLoadingState extends AuthState {}
-
-class UpdateFcmTokenSuccessState extends AuthState {}
-
-class UpdateFcmTokenFailureState extends AuthState {
-  final String? error;
-
-  UpdateFcmTokenFailureState({this.error});
 }

@@ -1,14 +1,17 @@
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/controller/project_state.dart';
 import 'package:diyar_app/feature/project/view/widgets/list_view_main_image_for_project_details.dart';
-import 'package:diyar_app/feature/project/view/widgets/project_details_image.dart';
+import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
+import 'package:diyar_app/feature/project/view/widgets/building_units_sheet.dart';
+import 'package:diyar_app/feature/project/view/widgets/master_plan_map.dart';
+import 'package:diyar_app/feature/project/view/widgets/my_units_overview.dart';
 import 'package:diyar_app/feature/project/view/widgets/project_events_calendar.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,12 +28,17 @@ class ProjectDetails extends StatefulWidget {
 }
 
 class _ProjectDetailsState extends State<ProjectDetails> {
-  int? _selectedUnitId;
+  /// The unit whose news the timeline shows (null = whole project).
+  UnitSummary? _selectedUnit;
+  Building? _selectedBuilding;
   final GlobalKey _calendarKey = GlobalKey();
 
-  void _onUnitSelected(int unitId) {
-    setState(() => _selectedUnitId = unitId);
-    // Bring the freshly revealed calendar into view.
+  void _selectUnit(Building building, UnitSummary unit) {
+    setState(() {
+      _selectedBuilding = building;
+      _selectedUnit = unit;
+    });
+    // Bring the timeline, now scoped to the unit, into view.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = _calendarKey.currentContext;
       if (ctx != null) {
@@ -44,15 +52,41 @@ class _ProjectDetailsState extends State<ProjectDetails> {
     });
   }
 
-  void _onUnmappedSectionTapped() {
-    AppFunctions.warningMessage(
+  void _clearUnit() => setState(() {
+    _selectedUnit = null;
+    _selectedBuilding = null;
+  });
+
+  /// Shows the user's units in [building] in full (all of them, or just
+  /// [unit]). Only the owner gets buildings from the API, so the news button
+  /// is always theirs to use.
+  void _openBuilding(Building building, [UnitSummary? unit]) {
+    BuildingUnitsSheet.show(
       context,
-      message: LocaleKeys.no_events_or_mapped_units_here.tr(),
+      building,
+      units: unit == null ? null : [unit],
+      onViewNews: (unit) {
+        Navigator.of(context).pop();
+        _selectUnit(building, unit);
+      },
     );
   }
 
+  Future<void> _openFullScreenMap(ProjectData project) async {
+    final building = await MasterPlanFullScreen.open(
+      context,
+      project,
+      selectedBuildingId: _selectedBuilding?.id,
+    );
+    if (building != null && mounted) _openBuilding(building);
+  }
+
   /// Brand accent-bar section header with an optional subtitle.
-  Widget _sectionHeader(BuildContext context, String title, {String? subtitle}) {
+  Widget _sectionHeader(
+    BuildContext context,
+    String title, {
+    String? subtitle,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,9 +115,9 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                 2.ph,
                 AppText(
                   subtitle,
-                  style: AppStyle.fontSize12Regular(context).copyWith(
-                    color: AppColors.descContainerColor,
-                  ),
+                  style: AppStyle.fontSize12Regular(
+                    context,
+                  ).copyWith(color: AppColors.descContainerColor),
                 ),
               ],
             ],
@@ -94,10 +128,10 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   }
 
   Widget _sectionDivider() => Divider(
-        height: 1,
-        thickness: 1,
-        color: AppColors.primaryColor.withValues(alpha: 0.08),
-      );
+    height: 1,
+    thickness: 1,
+    color: AppColors.primaryColor.withValues(alpha: 0.08),
+  );
 
   Widget _tapHint(BuildContext context) {
     return Row(
@@ -110,10 +144,70 @@ class _ProjectDetailsState extends State<ProjectDetails> {
         8.pw,
         Expanded(
           child: AppText(
-            LocaleKeys.tap_section_to_view_events.tr(),
-            style: AppStyle.fontSize16Regular(context).copyWith(
-              fontSize: 13.sp,
-              color: AppColors.descContainerColor,
+            LocaleKeys.tap_your_building_to_view_units.tr(),
+            style: AppStyle.fontSize16Regular(
+              context,
+            ).copyWith(fontSize: 13.sp, color: AppColors.descContainerColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Why there's no "My units" list: signed out, or nothing owned here.
+  Widget _noUnitsNote(BuildContext context) {
+    final signedIn = AuthSession.isLoggedIn;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(14.w),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(14.r),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            signedIn ? Icons.info_outline_rounded : Icons.lock_outline_rounded,
+            size: 20.sp,
+            color: AppColors.primaryColor,
+          ),
+          10.pw,
+          Expanded(
+            child: AppText(
+              signedIn
+                  ? LocaleKeys.no_units_in_project.tr()
+                  : LocaleKeys.sign_in_to_see_your_units.tr(),
+              style: AppStyle.fontSize14Regular(
+                context,
+              ).copyWith(color: AppColors.descContainerColor, height: 1.4),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _masterPlan(ProjectData project) {
+    return Stack(
+      children: [
+        MasterPlanMap(
+          project: project,
+          selectedBuildingId: _selectedBuilding?.id,
+          onBuildingTapped: _openBuilding,
+        ),
+        PositionedDirectional(
+          top: 8.h,
+          end: 8.w,
+          child: Material(
+            color: AppColors.blackColor.withValues(alpha: 0.55),
+            shape: const CircleBorder(),
+            child: IconButton(
+              tooltip: LocaleKeys.master_plan.tr(),
+              onPressed: () => _openFullScreenMap(project),
+              icon: const Icon(
+                Icons.fullscreen_rounded,
+                color: AppColors.whiteColor,
+              ),
             ),
           ),
         ),
@@ -129,13 +223,17 @@ class _ProjectDetailsState extends State<ProjectDetails> {
         builder: (context, state) {
           final controller = ProjectController.get(context);
           final isLoading = state is GetProjectDetailsLoadingState;
-          final project = controller.projectDetailsResponseModel;
-          final hasMapping =
-              project.data?.unitMapping != null &&
-              (project.data?.unitMapping?.shapes?.isNotEmpty ?? false);
-
-          final hasGallery = (project.data?.media?.isNotEmpty ?? false) ||
-              isLoading;
+          final project = controller.projectDetailsResponseModel.data;
+          final hasMap =
+              project != null &&
+              ((project.mainImage?.url?.isNotEmpty ?? false) ||
+                  project.linkedShapes.isNotEmpty);
+          final hasLinkedShapes = project?.linkedShapes.isNotEmpty ?? false;
+          // Only the user's own buildings (empty when signed out).
+          final buildings = project?.buildings ?? const <Building>[];
+          final ownsUnits = buildings.any((b) => b.units.isNotEmpty);
+          final hasGallery =
+              (project?.gallery.isNotEmpty ?? false) || isLoading;
 
           return Skeletonizer(
             enabled: isLoading,
@@ -143,29 +241,38 @@ class _ProjectDetailsState extends State<ProjectDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ── Hero: interactive project map ──────────────────────
+                  // ── Hero: the master plan with its buildings ───────────
                   16.ph,
-                  ProjectDetailsImage(
-                    controller: controller,
-                    isLoading: isLoading,
-                    project: project,
-                    selectedUnitId: _selectedUnitId,
-                    onUnitSelected: _onUnitSelected,
-                    onUnmappedSectionTapped: _onUnmappedSectionTapped,
-                  ),
+                  if (isLoading)
+                    AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.greyColor.withValues(alpha: 0.3),
+                          borderRadius: BorderRadius.circular(14.r),
+                        ),
+                      ),
+                    )
+                  else if (hasMap) ...[
+                    _masterPlan(project),
+                    if (hasLinkedShapes) ...[
+                      10.ph,
+                      const MasterPlanLegend(),
+                      if (_selectedUnit == null) ...[10.ph, _tapHint(context)],
+                    ],
+                  ],
 
                   // ── Section: project info (name + about) ───────────────
-                  if (project.data?.name != null) ...[
+                  if (project?.name != null) ...[
                     18.ph,
                     AppText(
-                      project.data!.name!,
-                      style: AppStyle.fontSize22Bold(context).copyWith(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      project!.name!,
+                      style: AppStyle.fontSize22Bold(
+                        context,
+                      ).copyWith(fontSize: 20.sp, fontWeight: FontWeight.w800),
                     ),
                   ],
-                  if ((project.data?.description ?? '').isNotEmpty) ...[
+                  if ((project?.description ?? '').isNotEmpty) ...[
                     12.ph,
                     Container(
                       width: double.infinity,
@@ -175,7 +282,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                         borderRadius: BorderRadius.circular(14.r),
                       ),
                       child: AppText(
-                        project.data!.description!,
+                        project!.description!,
                         style: AppStyle.fontSize14Regular(context).copyWith(
                           color: AppColors.descContainerColor,
                           height: 1.5,
@@ -184,8 +291,27 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     ),
                   ],
 
+                  // ── Section: the user's own units ──────────────────────
+                  if (!isLoading && project != null) ...[
+                    24.ph,
+                    _sectionDivider(),
+                    20.ph,
+                    _sectionHeader(context, LocaleKeys.my_units.tr()),
+                    14.ph,
+                    if (ownsUnits)
+                      MyUnitsOverview(
+                        buildings: buildings,
+                        selectedUnitId: _selectedUnit?.id,
+                        onUnitTapped: _openBuilding,
+                      )
+                    else
+                      _noUnitsNote(context),
+                  ],
+
                   // ── Section: timeline & events ─────────────────────────
-                  if (!isLoading && project.data?.id != null) ...[
+                  // News is owner-only, so there's nothing to show unless
+                  // the user owns a unit here.
+                  if (!isLoading && project?.id != null && ownsUnits) ...[
                     24.ph,
                     _sectionDivider(),
                     20.ph,
@@ -195,17 +321,13 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                       subtitle: LocaleKeys.project_timeline_subtitle.tr(),
                     ),
                     14.ph,
-                    if (hasMapping && _selectedUnitId == null) ...[
-                      _tapHint(context),
-                      12.ph,
-                    ],
                     KeyedSubtree(
                       key: _calendarKey,
                       child: ProjectEventsCalendar(
-                        projectId: project.data!.id!,
-                        unitId: _selectedUnitId,
-                        onClearUnit: () =>
-                            setState(() => _selectedUnitId = null),
+                        projectId: project!.id!,
+                        unitId: _selectedUnit?.id,
+                        unitLabel: _selectedUnit?.label,
+                        onClearUnit: _clearUnit,
                       ),
                     ),
                   ],
@@ -218,7 +340,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     _sectionHeader(context, LocaleKeys.project_gallery.tr()),
                     16.ph,
                     ListViewMainImageForProjectDetails(
-                      project: project,
+                      project: controller.projectDetailsResponseModel,
                       isLoading: isLoading,
                     ),
                   ],

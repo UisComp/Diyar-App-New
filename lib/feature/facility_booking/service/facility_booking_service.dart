@@ -31,8 +31,11 @@ class FacilityBookingService {
     try {
       if (response?.data is Map<String, dynamic>) {
         return CreateRequestFacilityResponseModel.fromJson(
-          response!.data as Map<String, dynamic>,
-        );
+            response!.data as Map<String, dynamic>,
+          )
+          // Kept off the JSON so the caller can tell a rejected batch (422)
+          // from a server fault.
+          ..statusCode = response.statusCode;
       }
     } catch (e) {
       AppLogger.error("Error in create Facility request: $e");
@@ -40,6 +43,7 @@ class FacilityBookingService {
     return CreateRequestFacilityResponseModel(
       success: false,
       message: 'Parsing failed',
+      statusCode: response?.statusCode,
     );
   }
 

@@ -9,12 +9,7 @@ class NewsResponseModel extends Equatable {
   final List<AllNewsData>? data;
   final Meta? meta;
 
-  const NewsResponseModel({
-    this.success,
-    this.message,
-    this.data,
-    this.meta,
-  });
+  const NewsResponseModel({this.success, this.message, this.data, this.meta});
 
   factory NewsResponseModel.fromJson(Map<String, dynamic> json) =>
       _$NewsResponseModelFromJson(json);
@@ -86,7 +81,15 @@ class AllNewsData extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, content, newsDate, media, unit, project];
+  List<Object?> get props => [
+    id,
+    title,
+    content,
+    newsDate,
+    media,
+    unit,
+    project,
+  ];
 }
 
 @JsonSerializable()
@@ -109,7 +112,8 @@ class MediaForAllNews extends Equatable {
     this.mimeType,
   });
 
-  factory MediaForAllNews.fromJson(Map<String, dynamic> json) => _$MediaForAllNewsFromJson(json);
+  factory MediaForAllNews.fromJson(Map<String, dynamic> json) =>
+      _$MediaForAllNewsFromJson(json);
 
   Map<String, dynamic> toJson() => _$MediaForAllNewsToJson(this);
 
@@ -144,23 +148,13 @@ class Unit extends Equatable {
   @JsonKey(name: 'user_id')
   final String? userId;
 
-  const Unit({
-    this.id,
-    this.name,
-    this.projectId,
-    this.userId,
-  });
+  const Unit({this.id, this.name, this.projectId, this.userId});
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$UnitToJson(this);
 
-  Unit copyWith({
-    int? id,
-    String? name,
-    int? projectId,
-    String? userId,
-  }) {
+  Unit copyWith({int? id, String? name, int? projectId, String? userId}) {
     return Unit(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -181,12 +175,7 @@ class Project extends Equatable {
   final MediaForAllNews? mainImage;
   final List<MediaForAllNews>? media;
 
-  const Project({
-    this.id,
-    this.name,
-    this.mainImage,
-    this.media,
-  });
+  const Project({this.id, this.name, this.mainImage, this.media});
 
   factory Project.fromJson(Map<String, dynamic> json) =>
       _$ProjectFromJson(json);
@@ -218,23 +207,13 @@ class Meta extends Equatable {
   final int? totalPages;
   final int? page;
 
-  const Meta({
-    this.limit,
-    this.total,
-    this.totalPages,
-    this.page,
-  });
+  const Meta({this.limit, this.total, this.totalPages, this.page});
 
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
 
   Map<String, dynamic> toJson() => _$MetaToJson(this);
 
-  Meta copyWith({
-    int? limit,
-    int? total,
-    int? totalPages,
-    int? page,
-  }) {
+  Meta copyWith({int? limit, int? total, int? totalPages, int? page}) {
     return Meta(
       limit: limit ?? this.limit,
       total: total ?? this.total,

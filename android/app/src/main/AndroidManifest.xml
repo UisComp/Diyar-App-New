@@ -99,5 +99,13 @@
             <data
                 android:mimeType="*/*"/>
         </intent>
+        <!-- "Open in YouTube" on an announcement: launching an https link
+             needs the browser/YouTube app to be visible on Android 11+. -->
+        <intent>
+            <action
+                android:name="android.intent.action.VIEW"/>
+            <data
+                android:scheme="https"/>
+        </intent>
     </queries>
 </manifest>

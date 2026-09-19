@@ -28,7 +28,10 @@ ProfileData _$ProfileDataFromJson(Map<String, dynamic> json) => ProfileData(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       email: json['email'] as String?,
-      phoneNumber: json['phone_number'] as String?,
+      phones: (json['phones'] as List<dynamic>?)
+              ?.map((e) => UserPhone.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       emailVerifiedAt: json['email_verified_at'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
@@ -43,7 +46,6 @@ Map<String, dynamic> _$ProfileDataToJson(ProfileData instance) =>
       'id': instance.id,
       'name': instance.name,
       'email': instance.email,
-      'phone_number': instance.phoneNumber,
       'email_verified_at': instance.emailVerifiedAt,
       'profile_picture': instance.profilePicture,
       'created_at': instance.createdAt,

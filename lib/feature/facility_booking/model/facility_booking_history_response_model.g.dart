@@ -61,7 +61,11 @@ FacilityModel _$FacilityModelFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
       description: json['description'] as String?,
+      status: $enumDecodeNullable(_$BookableStatusEnumMap, json['status'],
+              unknownValue: BookableStatus.unknown) ??
+          BookableStatus.unknown,
       isActive: json['is_active'] as bool?,
+      isBookable: json['is_bookable'] as bool? ?? false,
       icon: json['icon'] == null
           ? null
           : FacilityIconModel.fromJson(json['icon'] as Map<String, dynamic>),
@@ -75,12 +79,21 @@ Map<String, dynamic> _$FacilityModelToJson(FacilityModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'status': _$BookableStatusEnumMap[instance.status]!,
       'is_active': instance.isActive,
+      'is_bookable': instance.isBookable,
       'icon': instance.icon,
       'icon_url': instance.iconUrl,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
+
+const _$BookableStatusEnumMap = {
+  BookableStatus.active: 'active',
+  BookableStatus.bookingClosed: 'booking_closed',
+  BookableStatus.hidden: 'hidden',
+  BookableStatus.unknown: 'unknown',
+};
 
 FacilityIconModel _$FacilityIconModelFromJson(Map<String, dynamic> json) =>
     FacilityIconModel(

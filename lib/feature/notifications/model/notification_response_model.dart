@@ -1,6 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'notification_response_model.g.dart';
 
+/// `entity_type` values used to route notification taps.
+abstract class NotificationEntityType {
+  static const String facilityBooking = '1';
+  static const String serviceProviderBooking = '2';
+  static const String overdue = '3';
+  static const String payment = '4';
+}
+
+String? stringOrNull(dynamic value) => value?.toString();
+
 @JsonSerializable(explicitToJson: true)
 class NotificationResponseModel {
   final bool? success;
@@ -53,9 +63,11 @@ class NotificationData {
 
   @JsonKey(name: 'image_url')
   final String? imageUrl;
-  @JsonKey(name: 'entity_type')
+  /// See [NotificationEntityType]. Arrives as a number from the API and as a
+  /// string in push data, so it is normalized to a string.
+  @JsonKey(name: 'entity_type', fromJson: stringOrNull)
   final String? entityType;
-  @JsonKey(name: 'entity_id')
+  @JsonKey(name: 'entity_id', fromJson: stringOrNull)
   final String? entityId;
   NotificationData({
     this.titleAr,

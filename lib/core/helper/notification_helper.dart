@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:diyar_app/core/constants/app_constants.dart';
@@ -5,6 +6,13 @@ import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/routes/app_routes.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
+import 'package:diyar_app/feature/finance/controller/finance_refresh_notifier.dart';
+import 'package:diyar_app/feature/finance/view/finance_screen.dart'
+    show canAccessFinance;
+import 'package:diyar_app/feature/finance/view/unit_payment_plan_screen.dart';
+import 'package:diyar_app/feature/home/enums/app_tab.dart';
+import 'package:diyar_app/feature/notifications/helper/notification_routing.dart';
 import 'package:diyar_app/feature/notifications/model/message_data_response_model.dart';
 import 'package:diyar_app/feature/notifications/controller/notification_cubit.dart';
 import 'package:diyar_app/firebase_options.dart';
@@ -61,8 +69,7 @@ class NotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       log("Notification opened (onMessageOpenedApp): ${message.data}");
-      final messageData = MessageData.fromJson(message.data);
-      handleNotificationNavigation(messageData.type);
+      handleNotificationNavigation(message.data);
     });
 
     // Handle initial message when app is opened from terminated state
@@ -73,8 +80,7 @@ class NotificationService {
         log(
           "App opened from terminated state via notification: ${message.data}",
         );
-        final messageData = MessageData.fromJson(message.data);
-        handleNotificationNavigation(messageData.type);
+        handleNotificationNavigation(message.data);
       }
     });
   }
@@ -98,6 +104,12 @@ class NotificationService {
   BigPictureStyleInformation? bigPictureStyleInformation;
 
   Future<void> showLocalNotification(RemoteMessage message) async {
+    if (NotificationRouting.isFinancial(
+      type: message.data['type']?.toString(),
+      entityType: message.data['entity_type']?.toString(),
+    )) {
+      FinanceRefreshNotifier.instance.requestRefresh();
+    }
     if (!enableNotifications) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -163,7 +175,7 @@ class NotificationService {
           ? body
           : messageData.message ?? 'No description available.',
       notificationDetails,
-      payload: messageData.type,
+      payload: _encodePayload(message.data),
     );
   }
 
@@ -221,35 +233,101 @@ class NotificationService {
           ? body
           : messageData.message ?? 'No description available.',
       platformDetails,
-      payload: messageData.type,
+      payload: _encodePayload(message.data),
     );
   }
 
-  void onSelectNotification(NotificationResponse response) {
-    final type = response.payload;
-    log('Notification tapped with type: $type');
-    handleNotificationNavigation(type);
+  /// Keeps only the routing keys; FCM data values are all strings.
+  static String _encodePayload(Map<String, dynamic> data) => jsonEncode({
+    'type': data['type'],
+    'entity_type': data['entity_type'],
+    'entity_id': data['entity_id'],
+  });
+
+  /// Older payloads were the bare `type` string.
+  static Map<String, dynamic> _decodePayload(String? payload) {
+    if (payload == null || payload.isEmpty) return {};
+    try {
+      final decoded = jsonDecode(payload);
+      if (decoded is Map<String, dynamic>) return decoded;
+    } catch (_) {}
+    return {'type': payload};
   }
 
-  void handleNotificationNavigation(String? type) {
+  void onSelectNotification(NotificationResponse response) {
+    log('Notification tapped with payload: ${response.payload}');
+    handleNotificationNavigation(_decodePayload(response.payload));
+  }
+
+  /// Set when a notification is tapped while the splash is still showing
+  /// (cold start). The splash hands off to home and then consumes it, so the
+  /// splash navigation doesn't wipe the notification's screen.
+  NotificationTarget? _pendingTarget;
+
+  void handleNotificationNavigation(Map<String, dynamic> data) {
+    final target = NotificationRouting.pushTarget(data);
+    if (target is FinanceTabTarget || target is UnitPaymentPlanTarget) {
+      FinanceRefreshNotifier.instance.requestRefresh();
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = navigatorKey.currentContext;
-      if (context != null) {
-        try {
-          NotificationController.get(
-            context,
-          ).fetchAllNotifications(refresh: true, page: 1);
-        } catch (e) {
-          log('Error refreshing notifications: $e');
-        }
-        if (type == 'overdue') {
-          HomeController.get(context).changeIndexBottomNavBar(3);
-          router.go(RoutesName.homeLayout);
-        } else {
-          router.push(RoutesName.notificationsScreen);
-        }
+      final location = router.routerDelegate.currentConfiguration.uri.path;
+      if (context == null || location == RoutesName.splash) {
+        _pendingTarget = target;
+        return;
       }
+      _navigateTo(context, target);
     });
+  }
+
+  /// Called by the splash right after it navigates a signed-in user home.
+  void consumePendingNavigation() {
+    final target = _pendingTarget;
+    _pendingTarget = null;
+    if (target == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = navigatorKey.currentContext;
+      if (context != null) _navigateTo(context, target);
+    });
+  }
+
+  void _navigateTo(BuildContext context, NotificationTarget target) {
+    try {
+      NotificationController.get(
+        context,
+      ).fetchAllNotifications(refresh: true, page: 1);
+    } catch (e) {
+      log('Error refreshing notifications: $e');
+    }
+
+    if (target is PhoneNumbersTarget) {
+      router.push(
+        AuthSession.isResident
+            ? RoutesName.phoneNumbersScreen
+            : RoutesName.notificationsScreen,
+      );
+      return;
+    }
+
+    if (!canAccessFinance) {
+      router.push(RoutesName.notificationsScreen);
+      return;
+    }
+
+    switch (target) {
+      case FinanceTabTarget():
+        HomeController.get(context).changeTab(AppTab.finance);
+        router.go(RoutesName.homeLayout);
+      case UnitPaymentPlanTarget(:final installmentId):
+        router.push(
+          RoutesName.unitPaymentPlanScreen,
+          extra: UnitPaymentPlanArgs(installmentId: installmentId),
+        );
+      // Phone requests are handled above.
+      case NotificationsListTarget():
+      case PhoneNumbersTarget():
+        router.push(RoutesName.notificationsScreen);
+    }
   }
 
   Future<String> downloadAndSaveImage(String url) async {

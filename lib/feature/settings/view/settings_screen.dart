@@ -14,6 +14,7 @@ import 'package:diyar_app/feature/settings/view/widgets/custom_title.dart';
 import 'package:diyar_app/gen/assets.gen.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:diyar_app/feature/auth/helper/auth_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,6 +81,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             .tr(),
                         svgIcon: Assets.images.svg.person,
                       ),
+                      if (AuthSession.isResident) ...[
+                        24.ph,
+                        CustomContainerInformation(
+                          onTap: () {
+                            context.push(RoutesName.phoneNumbersScreen);
+                          },
+                          titleContainer: LocaleKeys.phone_numbers.tr(),
+                          descriptionContainer: LocaleKeys.desc_phone_numbers
+                              .tr(),
+                          svgIcon: Assets.images.svg.phoneCall,
+                        ),
+                      ],
                       24.ph,
                       CustomContainerInformation(
                         onTap: () async {

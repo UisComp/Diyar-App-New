@@ -5,6 +5,7 @@ import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
+import 'package:diyar_app/core/widgets/booking_closed_banner.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/feature/facility_booking/controller/facility_booking_controller.dart';
@@ -94,6 +95,22 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
               message: LocaleKeys.your_request_has_been_sent_successfully.tr(),
             );
           }
+          if (state is FacilityNotBookableState) {
+            AppFunctions.warningMessage(
+              context,
+              message: LocaleKeys.facility_not_taking_bookings.tr(),
+            );
+          }
+          if (state is CreateFacilityRequestRejectedState) {
+            // The API creates the batch all-or-nothing, so nothing was
+            // booked. The list is being re-fetched behind this message.
+            AppFunctions.warningMessage(
+              context,
+              message:
+                  state.errorMessage ??
+                  LocaleKeys.facilities_became_unavailable.tr(),
+            );
+          }
           if (state is CreateFacilityRequestFailureState) {
             AppFunctions.errorMessage(
               context,
@@ -125,6 +142,10 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
             return EmptyFacility(isDark: isDark);
           }
 
+          // Every facility is listed but closed. Say so instead of leaving
+          // the resident with a list of dead rows.
+          final allClosed = !controller.hasBookableFacilities;
+
           return Form(
             key: _formKey,
             child: Column(
@@ -133,6 +154,12 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                 SelectAvailableFacilitiesText(isDark: isDark),
                 6.ph,
                 ServiceDescriptionText(isDark: isDark),
+                if (allClosed) ...[
+                  10.ph,
+                  BookingsClosedBanner(
+                    message: LocaleKeys.no_facilities_taking_bookings.tr(),
+                  ),
+                ],
                 10.ph,
                 // SelectAndDeselectAll(
                 //   allSelected: controller.areAllSelected,
@@ -147,11 +174,12 @@ class _FacilityBookingScreenState extends State<FacilityBookingScreen> {
                 Center(
                   child: CustomButton(
                     isLoading: state is CreateFacilityRequestLoadingState,
-                    buttonColor: userModel?.data?.accessToken == null
+                    buttonColor:
+                        userModel?.data?.accessToken == null || allClosed
                         ? AppColors.greyColor
                         : AppColors.primaryColor,
                     buttonText: LocaleKeys.request_now.tr(),
-                    onPressed: userModel?.data?.accessToken == null
+                    onPressed: userModel?.data?.accessToken == null || allClosed
                         ? null
                         : () async {
                             if (userModel?.data?.accessToken == null) {

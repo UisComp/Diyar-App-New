@@ -26,6 +26,7 @@ class ProjectEventsCalendar extends StatefulWidget {
     super.key,
     required this.projectId,
     this.unitId,
+    this.unitLabel,
     this.onClearUnit,
   });
 
@@ -34,6 +35,9 @@ class ProjectEventsCalendar extends StatefulWidget {
   /// When non-null the timeline is scoped to this unit; null means the whole
   /// project.
   final int? unitId;
+
+  /// Shown in the scope bar while [unitId] is set, e.g. "Town 1 · T-1-G".
+  final String? unitLabel;
 
   /// Invoked when the user clears the unit filter to go back to project scope.
   final VoidCallback? onClearUnit;
@@ -148,11 +152,13 @@ class _ProjectEventsCalendarState extends State<ProjectEventsCalendar> {
 
   String get _selectionSummary {
     final months = _selectedMonths.toList()..sort();
-    final startLabel =
-        AppFormatter.monthYearFormatter().format(DateTime(_year, months.first));
+    final startLabel = AppFormatter.monthYearFormatter().format(
+      DateTime(_year, months.first),
+    );
     if (months.length == 1) return startLabel;
-    final endLabel =
-        AppFormatter.monthYearFormatter().format(DateTime(_year, months.last));
+    final endLabel = AppFormatter.monthYearFormatter().format(
+      DateTime(_year, months.last),
+    );
     return '$startLabel  -  $endLabel';
   }
 
@@ -160,8 +166,7 @@ class _ProjectEventsCalendarState extends State<ProjectEventsCalendar> {
   Widget build(BuildContext context) {
     return BlocBuilder<UnitEventController, UnitEventStates>(
       builder: (context, state) {
-        final items =
-            _controller.newByProjectUnitEventResponseModel.data ?? [];
+        final items = _controller.newByProjectUnitEventResponseModel.data ?? [];
         final isLoading = state is GetUnitsByEventLoadingState;
         final isEmpty = !isLoading && items.isEmpty;
 
@@ -245,11 +250,9 @@ class _ProjectEventsCalendarState extends State<ProjectEventsCalendar> {
         8.pw,
         Expanded(
           child: AppText(
-            '${(isUnitScope ? LocaleKeys.showing_selected_unit : LocaleKeys.showing_all_project_news).tr()}'
+            '${isUnitScope ? (widget.unitLabel?.isNotEmpty ?? false ? LocaleKeys.showing_unit_news.tr(args: [widget.unitLabel!]) : LocaleKeys.showing_selected_unit.tr()) : LocaleKeys.showing_all_project_news.tr()}'
             '  •  $_selectionSummary',
-            style: AppStyle.fontSize14Bold(
-              context,
-            ).copyWith(fontSize: 13.sp),
+            style: AppStyle.fontSize14Bold(context).copyWith(fontSize: 13.sp),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

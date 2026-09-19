@@ -5,14 +5,35 @@ class ApiPaths {
   static Duration timeOutDuration = const Duration(seconds: 20);
   static Duration sendTimeOutDuration = const Duration(seconds: 20);
   static const String baseUrl = "https://diyar.uisdevs.com/api/";
-  static const String register = "register";
-  static const String login = "login";
-  static const String logOut = "logout";
-  static const String profile = "profile";
-  static const String changePassword = "profile/change-password";
+
+  //! Residents: phone + password. SMS codes only for registration, the
+  //! first login of accounts created by staff, and a forgotten password.
+  static const String loginOtp = "auth/otp";
+  static const String loginOtpVerify = "auth/otp/verify";
+  static const String setPassword = "auth/password";
+  /// Phone number or email + password, for everyone.
+  static const String authLogin = "auth/login";
+  static const String registerOtp = "auth/register/otp";
+  static const String registerVerify = "auth/register/verify";
+  static const String register = "auth/register";
+
+  //! Security staff: the email password reset.
   static const String forgetPassword = "password/request-otp";
   static const String verifyOtp = "password/verify-otp";
   static const String resetPassword = "password/reset";
+
+  /// Logs out this device only (same as `auth/logout`).
+  static const String logOut = "logout";
+  static const String profile = "profile";
+  static const String changePassword = "profile/change-password";
+  static const String fcmToken = "profile/fcm-token";
+
+  //! Phone numbers of the signed-in resident.
+  static const String phones = "profile/phones";
+  static const String phonesOtp = "profile/phones/otp";
+  static const String phoneRequests = "profile/phone-requests";
+  static String phoneRequest(int id) => "profile/phone-requests/$id";
+  static String makePhonePrimary(int id) => "profile/phones/$id/primary";
   // static final String getAllServices = userModel?.data?.accessToken != null
   //     ? "services/user"
   //     : "services";

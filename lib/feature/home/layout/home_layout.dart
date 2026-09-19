@@ -1,23 +1,15 @@
-import 'package:diyar_app/core/constants/app_constants.dart';
-import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_state.dart';
-import 'package:diyar_app/core/extension/padding.dart';
-import 'package:diyar_app/core/functions/app_functions.dart';
-import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/feature/auth/controller/auth_controller.dart';
-import 'package:diyar_app/feature/auth/controller/auth_state.dart';
+import 'package:diyar_app/core/style/app_surface.dart';
 import 'package:diyar_app/feature/home/controller/home_controller.dart';
 import 'package:diyar_app/feature/home/controller/home_state.dart';
-import 'package:diyar_app/gen/assets.gen.dart';
-import 'package:diyar_app/generated/locale_keys.g.dart';
+import 'package:diyar_app/feature/home/enums/app_tab.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -37,166 +29,115 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider.value(value: _homeController)],
+    return BlocProvider.value(
+      value: _homeController,
       child: BlocBuilder<HomeController, HomeState>(
+        buildWhen: (_, current) => current is ChangeIndexBottomNavBarState,
         builder: (context, homeState) {
+          final tabs = AppTab.visible;
+          // A tab can disappear (e.g. Finance after the role changes), so fall
+          // back to Home instead of pointing past the end of the list.
+          final selected = tabs.contains(_homeController.currentTab)
+              ? tabs.indexOf(_homeController.currentTab)
+              : 0;
+
           return Scaffold(
             body: SafeArea(
+              bottom: false,
               child: IndexedStack(
-                index: _homeController.currentIndex,
-                children: AppConstants.screens,
+                index: selected,
+                children: [for (final tab in tabs) tab.screen],
               ),
             ),
             bottomNavigationBar: BlocBuilder<LanguageController, LanguageState>(
-              builder: (context, languageState) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: AppColors.primaryColor.withValues(alpha: 0.18),
-                        width: 1,
-                      ),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accentHoverColor.withValues(alpha: 0.10),
-                        blurRadius: 16,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
-                  ),
-                  child: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: _homeController.currentIndex,
-                  onTap: (index) {
-                    _homeController.changeIndexBottomNavBar(index);
-                  },
-                  selectedItemColor: AppColors.primaryColor,
-                  unselectedItemColor: AppColors.greyColor,
-                  showUnselectedLabels: true,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        Assets.images.svg.settings,
-                        colorFilter: ColorFilter.mode(
-                          _homeController.currentIndex == 0
-                              ? AppColors.primaryColor
-                              : AppColors.greyColor,
-                          BlendMode.srcIn,
-                        ),
-                        height: 24.h,
-                        width: 24.w,
-                      ),
-                      label: LocaleKeys.settings.tr(),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        Assets.images.svg.home,
-                        colorFilter: ColorFilter.mode(
-                          _homeController.currentIndex == 1
-                              ? AppColors.primaryColor
-                              : AppColors.greyColor,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      label: LocaleKeys.home.tr(),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        Assets.images.svg.person,
-                        colorFilter: ColorFilter.mode(
-                          _homeController.currentIndex == 2
-                              ? AppColors.primaryColor
-                              : AppColors.greyColor,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      label: LocaleKeys.profile.tr(),
-                    ),
-                    if (userModel?.data != null &&
-                        userModel!.data!.user.roles != null &&
-                        !userModel!.data!.user.roles!.contains("guard"))
-                      BottomNavigationBarItem(
-                        icon: SvgPicture.asset(
-                          Assets.images.svg.finance,
-                          height: 24.h,
-                          width: 24.w,
-                          colorFilter: ColorFilter.mode(
-                            _homeController.currentIndex == 3
-                                ? AppColors.primaryColor
-                                : AppColors.greyColor,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                        label: LocaleKeys.finance.tr(),
-                      ),
-                  ],
-                ),
-                );
-              },
+              builder: (context, _) => _BottomNavBar(
+                tabs: tabs,
+                selectedIndex: selected,
+                onSelected: (index) => _homeController.changeTab(tabs[index]),
+              ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endDocked,
-            floatingActionButton:
-                (_homeController.currentIndex == 2 &&
-                    userModel?.data?.accessToken != null)
-                ? BlocProvider(
-                    create: (context) => AuthController(),
-                    child: BlocConsumer<AuthController, AuthState>(
-                      listener: (context, authState) {
-                        if (authState is LogOutSuccessState) {
-                          AppFunctions.successMessage(
-                            context,
-                            message:
-                                context
-                                    .read<AuthController>()
-                                    .logoutResponseModel
-                                    .message ??
-                                LocaleKeys.logout_successfully.tr(),
-                          );
-                          context.go(RoutesName.login);
-                        }
-                        if (authState is LogOutFailureState) {
-                          AppFunctions.errorMessage(
-                            context,
-                            message:
-                                context
-                                    .read<AuthController>()
-                                    .logoutResponseModel
-                                    .message ??
-                                LocaleKeys.logout_failure.tr(),
-                          );
-                        }
-                      },
-                      builder: (context, authState) {
-                        final isLoading = authState is LogOutLoadingState;
-
-                        return FloatingActionButton(
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  await context.read<AuthController>().logOut();
-                                },
-                          backgroundColor: AppColors.redColor,
-                          child: isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.5,
-                                    color: AppColors.whiteColor,
-                                  ),
-                                )
-                              : const Icon(Icons.logout, color: AppColors.whiteColor),
-                        ).paddingOnly(bottom: 60.h, right: 16.w);
-                      },
-                    ),
-                  )
-                : null,
           );
         },
       ),
     );
   }
+}
+
+class _BottomNavBar extends StatelessWidget {
+  const _BottomNavBar({
+    required this.tabs,
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  final List<AppTab> tabs;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final surface = AppSurface.of(context);
+    final unselected = surface.textSecondary;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: surface.card,
+        border: Border(top: BorderSide(color: surface.border)),
+        boxShadow: surface.isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: AppColors.blackColor.withValues(alpha: 0.04),
+                  blurRadius: 16,
+                  offset: const Offset(0, -4),
+                ),
+              ],
+      ),
+      child: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          backgroundColor: surface.card,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          height: 64.h,
+          indicatorColor: AppColors.primaryColor.withValues(alpha: 0.12),
+          indicatorShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          labelTextStyle: WidgetStateProperty.resolveWith(
+            (states) => TextStyle(
+              fontSize: 11.5.sp,
+              fontWeight: states.contains(WidgetState.selected)
+                  ? FontWeight.w700
+                  : FontWeight.w500,
+              color: states.contains(WidgetState.selected)
+                  ? AppColors.primaryColor
+                  : unselected,
+            ),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: selectedIndex,
+          onDestinationSelected: onSelected,
+          animationDuration: const Duration(milliseconds: 350),
+          destinations: [
+            for (final tab in tabs)
+              NavigationDestination(
+                icon: _icon(tab.iconAsset, unselected),
+                selectedIcon: _icon(tab.iconAsset, AppColors.primaryColor),
+                label: tab.labelKey.tr(),
+                tooltip: '',
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _icon(String asset, Color color) => SvgPicture.asset(
+    asset,
+    height: 22.r,
+    width: 22.r,
+    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+  );
 }

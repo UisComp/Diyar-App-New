@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/enums/bookable_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'service_provider_history_response_model.g.dart';
@@ -8,15 +9,11 @@ class ServiceProviderHistoryResponseModel {
   final String? message;
   final List<ServiceProviderBookingModel>? data;
 
-  ServiceProviderHistoryResponseModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  ServiceProviderHistoryResponseModel({this.success, this.message, this.data});
 
   factory ServiceProviderHistoryResponseModel.fromJson(
-          Map<String, dynamic> json) =>
-      _$ServiceProviderHistoryResponseModelFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$ServiceProviderHistoryResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() =>
       _$ServiceProviderHistoryResponseModelToJson(this);
@@ -57,8 +54,7 @@ class ServiceProviderBookingModel {
   factory ServiceProviderBookingModel.fromJson(Map<String, dynamic> json) =>
       _$ServiceProviderBookingModelFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$ServiceProviderBookingModelToJson(this);
+  Map<String, dynamic> toJson() => _$ServiceProviderBookingModelToJson(this);
 }
 
 @JsonSerializable()
@@ -70,8 +66,19 @@ class ServiceProviderModel {
 
   final String? description;
 
+  /// A booking keeps its provider even after staff change its status, so this
+  /// is the one place `hidden` (with `is_active: false`) can show up.
+  @JsonKey(
+    unknownEnumValue: BookableStatus.unknown,
+    defaultValue: BookableStatus.unknown,
+  )
+  final BookableStatus status;
+
   @JsonKey(name: 'is_active')
   final bool? isActive;
+
+  @JsonKey(name: 'is_bookable', defaultValue: false)
+  final bool isBookable;
 
   final ServiceProviderIconModel? icon;
 
@@ -88,12 +95,18 @@ class ServiceProviderModel {
     this.id,
     this.jobTitle,
     this.description,
+    this.status = BookableStatus.unknown,
     this.isActive,
+    this.isBookable = false,
     this.icon,
     this.iconUrl,
     this.createdAt,
     this.updatedAt,
   });
+
+  /// Whether this provider still takes new requests. A booking already made
+  /// stays visible either way — this only gates offering another one.
+  bool get canBook => isBookable && status.allowsBooking;
 
   factory ServiceProviderModel.fromJson(Map<String, dynamic> json) =>
       _$ServiceProviderModelFromJson(json);
@@ -127,8 +140,7 @@ class ServiceProviderIconModel {
   factory ServiceProviderIconModel.fromJson(Map<String, dynamic> json) =>
       _$ServiceProviderIconModelFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$ServiceProviderIconModelToJson(this);
+  Map<String, dynamic> toJson() => _$ServiceProviderIconModelToJson(this);
 }
 
 @JsonSerializable()
@@ -137,11 +149,7 @@ class UserModel {
   final String? name;
   final String? email;
 
-  UserModel({
-    this.id,
-    this.name,
-    this.email,
-  });
+  UserModel({this.id, this.name, this.email});
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

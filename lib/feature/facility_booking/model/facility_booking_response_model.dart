@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/enums/bookable_status.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'facility_booking_response_model.g.dart';
 
@@ -7,11 +8,7 @@ class FacilityResponse {
   final String? message;
   final List<Facility>? data;
 
-  FacilityResponse({
-    this.success,
-    this.message,
-    this.data,
-  });
+  FacilityResponse({this.success, this.message, this.data});
 
   factory FacilityResponse.fromJson(Map<String, dynamic> json) =>
       _$FacilityResponseFromJson(json);
@@ -25,8 +22,25 @@ class Facility {
   final String? title;
   final String? description;
 
+  /// `active`, `booking_closed` or `hidden`; [BookableStatus.unknown] for
+  /// anything a later backend adds, and when the key is missing.
+  @JsonKey(
+    unknownEnumValue: BookableStatus.unknown,
+    defaultValue: BookableStatus.unknown,
+  )
+  final BookableStatus status;
+
+  /// Whether the API still lists this facility. It is `true` for everything
+  /// the list endpoint returns, including facilities that closed their
+  /// bookings, so it is **not** a booking check — read [canBook] instead.
   @JsonKey(name: "is_active")
   final bool? isActive;
+
+  /// The API's own booking gate. Defaults to `false`, so a facility from a
+  /// backend that doesn't send the flag is treated as closed rather than
+  /// wrongly bookable.
+  @JsonKey(name: "is_bookable", defaultValue: false)
+  final bool isBookable;
 
   final FacilityIcon? icon;
 
@@ -43,12 +57,18 @@ class Facility {
     this.id,
     this.title,
     this.description,
+    this.status = BookableStatus.unknown,
     this.isActive,
+    this.isBookable = false,
     this.icon,
     this.iconUrl,
     this.createdAt,
     this.updatedAt,
   });
+
+  /// Whether the resident may book this facility. A facility that fails this
+  /// is still listed, with a badge and a disabled control.
+  bool get canBook => isBookable && status.allowsBooking;
 
   factory Facility.fromJson(Map<String, dynamic> json) =>
       _$FacilityFromJson(json);

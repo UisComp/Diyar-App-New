@@ -9,11 +9,7 @@ class UserServicesResponse extends Equatable {
   final String? message;
   final List<UserServiceData>? data;
 
-  const UserServicesResponse({
-    this.success,
-    this.message,
-    this.data,
-  });
+  const UserServicesResponse({this.success, this.message, this.data});
 
   factory UserServicesResponse.fromJson(Map<String, dynamic> json) =>
       _$UserServicesResponseFromJson(json);
@@ -111,18 +107,18 @@ class UserServiceData extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        nameAr,
-        localizedName,
-        description,
-        isActive,
-        roles,
-        type,
-        icon,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    name,
+    nameAr,
+    localizedName,
+    description,
+    isActive,
+    roles,
+    type,
+    icon,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 @JsonSerializable()
@@ -136,14 +132,8 @@ class Role extends Equatable {
 
   Map<String, dynamic> toJson() => _$RoleToJson(this);
 
-  Role copyWith({
-    int? id,
-    String? name,
-  }) {
-    return Role(
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
+  Role copyWith({int? id, String? name}) {
+    return Role(id: id ?? this.id, name: name ?? this.name);
   }
 
   @override
