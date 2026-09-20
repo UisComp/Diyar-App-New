@@ -1,2 +1,6 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+
+// APNs environment baked into Runner.entitlements.
+// Profile builds use Release.xcconfig, so they ship production too.
+APS_ENVIRONMENT=production

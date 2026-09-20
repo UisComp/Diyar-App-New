@@ -107,5 +107,32 @@
             <data
                 android:scheme="https"/>
         </intent>
+        <!-- Emergency call: canLaunchUrl on a tel: URL resolves to nothing on
+             Android 11+ unless the dialer is visible to us. -->
+        <intent>
+            <action
+                android:name="android.intent.action.VIEW"/>
+            <data
+                android:scheme="tel"/>
+        </intent>
+        <intent>
+            <action
+                android:name="android.intent.action.DIAL"/>
+            <data
+                android:scheme="tel"/>
+        </intent>
+        <!-- "Contact us" opens the mail composer the same way. -->
+        <intent>
+            <action
+                android:name="android.intent.action.VIEW"/>
+            <data
+                android:scheme="mailto"/>
+        </intent>
+        <intent>
+            <action
+                android:name="android.intent.action.SENDTO"/>
+            <data
+                android:scheme="mailto"/>
+        </intent>
     </queries>
 </manifest>

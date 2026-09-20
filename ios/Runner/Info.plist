@@ -79,11 +79,14 @@
 		</array>
 		<key>NSUserNotificationUsageDescription</key>
 		<string>This app would like to send you notifications about new updates, offers, and orders.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>This app uses Face ID to unlock your account with biometrics.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app requires access to your photo library to select and upload images.</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>tel</string>
+			<string>mailto</string>
 		</array>
 		<!-- CRITICAL FOR FIREBASE MESSAGING ON iOS -->
 		<key>FirebaseAppDelegateProxyEnabled</key>
