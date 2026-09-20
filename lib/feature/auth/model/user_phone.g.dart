@@ -54,15 +54,15 @@ class UserPhoneAdapter extends TypeAdapter<UserPhone> {
 // **************************************************************************
 
 UserPhone _$UserPhoneFromJson(Map<String, dynamic> json) => UserPhone(
-  id: (json['id'] as num).toInt(),
-  phone: json['phone'] as String,
-  isPrimary: json['is_primary'] as bool? ?? false,
-  verified: json['verified'] as bool? ?? false,
-);
+      id: (json['id'] as num).toInt(),
+      phone: json['phone'] as String,
+      isPrimary: json['is_primary'] as bool? ?? false,
+      verified: json['verified'] as bool? ?? false,
+    );
 
 Map<String, dynamic> _$UserPhoneToJson(UserPhone instance) => <String, dynamic>{
-  'id': instance.id,
-  'phone': instance.phone,
-  'is_primary': instance.isPrimary,
-  'verified': instance.verified,
-};
+      'id': instance.id,
+      'phone': instance.phone,
+      'is_primary': instance.isPrimary,
+      'verified': instance.verified,
+    };

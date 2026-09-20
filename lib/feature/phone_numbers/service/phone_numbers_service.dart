@@ -38,9 +38,9 @@ class PhoneNumbersService {
       path: ApiPaths.phoneRequests,
       data: {
         'type': type.name,
-        'phone': ?phone,
-        'phone_id': ?phoneId,
-        'code': ?code,
+        if (phone != null) 'phone': phone,
+        if (phoneId != null) 'phone_id': phoneId,
+        if (code != null) 'code': code,
       },
     ),
     parse: PhoneChangeRequest.fromJson,

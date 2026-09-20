@@ -43,7 +43,7 @@ class AuthService {
     {
       'password': password,
       'password_confirmation': passwordConfirmation,
-      'fcm_token': ?fcmToken,
+      if (fcmToken != null) 'fcm_token': fcmToken,
       'platform': platform,
     },
     headers: {'Authorization': 'Bearer $setupToken'},
@@ -60,7 +60,7 @@ class AuthService {
   }) => _post(ApiPaths.authLogin, {
     'login': login,
     'password': password,
-    'fcm_token': ?fcmToken,
+    if (fcmToken != null) 'fcm_token': fcmToken,
     'platform': platform,
   }, parse: LoginData.fromJson);
 
@@ -99,7 +99,7 @@ class AuthService {
   }) => _post(ApiPaths.register, {
     'registration_token': registrationToken,
     'name': name,
-    'email': ?email,
+    if (email != null) 'email': email,
     'unit_codes': unitCodes,
     'password': password,
     'password_confirmation': passwordConfirmation,

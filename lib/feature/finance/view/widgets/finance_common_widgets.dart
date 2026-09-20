@@ -167,7 +167,8 @@ class FinanceSectionTitle extends StatelessWidget {
               ),
             ),
           ),
-          ?trailing,
+          // Read into a local: a public field can't be type-promoted.
+          if (trailing case final Widget t) t,
         ],
       ),
     );

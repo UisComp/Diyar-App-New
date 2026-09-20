@@ -45,8 +45,11 @@ ApiResult<void> _error(
   int? retryAfter,
 }) => ApiResult<void>.fromJson({
   'success': false,
-  'message': ?message,
-  'errors': {'code': ?code, 'retry_after': ?retryAfter},
+  if (message != null) 'message': message,
+  'errors': {
+    if (code != null) 'code': code,
+    if (retryAfter != null) 'retry_after': retryAfter,
+  },
 }, statusCode: status);
 
 void main() {

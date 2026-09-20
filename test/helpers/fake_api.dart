@@ -140,7 +140,10 @@ Map<String, dynamic> apiError(
 }) => {
   'success': false,
   'message': message ?? code,
-  'errors': {'code': code, 'retry_after': ?retryAfter},
+  'errors': {
+    'code': code,
+    if (retryAfter != null) 'retry_after': retryAfter,
+  },
 };
 
 Map<String, dynamic> apiOk(Object? data, {String message = ''}) => {

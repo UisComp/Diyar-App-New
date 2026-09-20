@@ -92,7 +92,10 @@ class _OwnedUnitTile extends StatelessWidget {
     final surface = AppSurface.of(context);
     final imageUrl = unit.imageUrl;
     final total = unit.contractTotal ?? unit.unitValue;
-    final subtitle = [?unit.code, ?floorText].join(' · ');
+    final subtitle = [
+      if (unit.code case final String code) code,
+      if (floorText case final String floor) floor,
+    ].join(' · ');
 
     return Material(
       color: Colors.transparent,
