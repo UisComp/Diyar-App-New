@@ -193,6 +193,7 @@ class _ProjectEventsCalendarState extends State<ProjectEventsCalendar> {
                         newsId: news.id ?? 0,
                         title: news.title ?? '',
                         description: news.content ?? '',
+                        newsDate: news.newsDate,
                         imageUrl: news.media?.isNotEmpty == true
                             ? news.media![0].url ?? ''
                             : '',

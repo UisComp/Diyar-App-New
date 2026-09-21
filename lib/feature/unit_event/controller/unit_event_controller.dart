@@ -12,7 +12,7 @@ class UnitEventController extends Cubit<UnitEventStates> {
 
   NewByProjectUnitEventResponseModel newByProjectUnitEventResponseModel =
       NewByProjectUnitEventResponseModel();
-  Future<void> getUnitsByEvent( {
+  Future<void> getUnitsByEvent({
     required String id,
     DateTime? start,
     DateTime? end,

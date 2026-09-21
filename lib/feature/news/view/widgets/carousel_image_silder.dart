@@ -17,14 +17,20 @@ class CarouselImageSilder extends StatelessWidget {
   final NewsDataDetails? newsDetails;
   final NewsController newsController;
 
+  /// Width / height of the pictures (also the loading placeholder's).
+  static const double aspectRatio = 4 / 3;
+
   @override
   Widget build(BuildContext context) {
     final media = newsDetails?.media ?? const [];
     // One picture (or none) stays still: no auto-play, no swiping onto a
-    // looped copy of itself, no dots.
+    // looped copy of itself, no counter.
     final hasMany = media.length > 1;
+    // The index outlives the article; the next one may have fewer pictures.
+    final current = media.isEmpty
+        ? 0
+        : newsController.currentIndex.clamp(0, media.length - 1);
     return Stack(
-      alignment: Alignment.bottomCenter,
       children: [
         CarouselSlider.builder(
           itemCount: media.length,
@@ -35,10 +41,10 @@ class CarouselImageSilder extends StatelessWidget {
             );
           },
           options: CarouselOptions(
-            aspectRatio: 1.2,
+            aspectRatio: aspectRatio,
             viewportFraction: 1,
             autoPlay: hasMany,
-            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayInterval: const Duration(seconds: 4),
             enableInfiniteScroll: hasMany,
             scrollPhysics: hasMany
                 ? const PageScrollPhysics()
@@ -50,19 +56,34 @@ class CarouselImageSilder extends StatelessWidget {
           ),
         ),
         if (hasMany)
-          DotsIndicator(
-            dotsCount: media.length,
-            // The index outlives the article; the next one may have fewer
-            // pictures.
-            position: newsController.currentIndex
-                .clamp(0, media.length - 1)
-                .toDouble(),
-            decorator: DotsDecorator(
-              spacing: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-              activeColor: AppColors.primaryColor,
-              color: AppColors.greyColor,
-              size: Size(15.w, 15.h),
-              activeSize: Size(15.w, 15.h),
+          PositionedDirectional(
+            bottom: 12.h,
+            start: 0,
+            end: 0,
+            child: Center(
+              child: IgnorePointer(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.blackColor.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: DotsIndicator(
+                    dotsCount: media.length,
+                    position: current.toDouble(),
+                    decorator: DotsDecorator(
+                      spacing: EdgeInsets.symmetric(horizontal: 3.w),
+                      activeColor: AppColors.whiteColor,
+                      color: AppColors.whiteColor.withValues(alpha: 0.5),
+                      size: Size(6.r, 6.r),
+                      activeSize: Size(18.r, 6.r),
+                      activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.r),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
       ],

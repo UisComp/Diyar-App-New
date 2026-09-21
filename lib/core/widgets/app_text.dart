@@ -1,3 +1,4 @@
+import 'package:diyar_app/core/helper/text_direction_helper.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_style.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +22,12 @@ class AppText extends StatelessWidget {
     this.softWrap,
     this.textDirection,
   });
-  bool _isRtl(String text) {
-    return RegExp(r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]+').hasMatch(text);
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Content (a news title, a name) reads in its own language's direction,
+    // whatever the app's language is.
     final detectedDirection =
-        textDirection ?? (_isRtl(text) ? TextDirection.rtl : TextDirection.ltr);
+        textDirection ?? TextDirectionHelper.resolve(context, text);
 
     return Text(
       text,

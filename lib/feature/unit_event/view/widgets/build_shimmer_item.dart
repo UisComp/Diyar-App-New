@@ -1,4 +1,3 @@
-
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

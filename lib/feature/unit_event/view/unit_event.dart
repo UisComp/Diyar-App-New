@@ -107,8 +107,12 @@ class UnitEventState extends State<UnitEvent> {
                         color: Colors.brown[200],
                         shape: BoxShape.circle,
                       ),
-                      todayTextStyle: const TextStyle(color: AppColors.whiteColor),
-                      defaultTextStyle: const TextStyle(color: AppColors.blackColor),
+                      todayTextStyle: const TextStyle(
+                        color: AppColors.whiteColor,
+                      ),
+                      defaultTextStyle: const TextStyle(
+                        color: AppColors.blackColor,
+                      ),
                     ),
                     headerStyle: const HeaderStyle(
                       formatButtonVisible: false,
@@ -145,6 +149,7 @@ class UnitEventState extends State<UnitEvent> {
                                 newsId: news.id ?? 0,
                                 title: news.title ?? '',
                                 description: news.content ?? '',
+                                newsDate: news.newsDate,
                                 imageUrl: news.media?.isNotEmpty == true
                                     ? news.media![0].url ?? ''
                                     : '',

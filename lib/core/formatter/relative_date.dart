@@ -10,17 +10,22 @@ import 'package:easy_localization/easy_localization.dart';
 /// (`2026-09-21T10:30:00Z`) gets minutes and hours. A date in the future (a
 /// scheduled item) is shown as a date.
 abstract class RelativeDate {
-  /// Null when [raw] is missing or not a date.
-  static String? format(String? raw, {DateTime? now, String? locale}) {
-    if (raw == null || raw.trim().isEmpty) return null;
-    final parsed = DateTime.tryParse(raw.trim());
-    if (parsed == null) return null;
-    final hasTime = raw.trim().length > 10;
-    final date = parsed.isUtc ? parsed.toLocal() : parsed;
+  /// Null when [raw] is missing or not a date. [orDate]: false gives null
+  /// instead of a date once the item is too old (or ahead) to say "ago",
+  /// for screens that already show the date.
+  static String? format(
+    String? raw, {
+    DateTime? now,
+    String? locale,
+    bool orDate = true,
+  }) {
+    final date = parse(raw);
+    if (date == null) return null;
+    final hasTime = raw!.trim().length > 10;
     final current = now ?? DateTime.now();
 
     final days = _day(current).difference(_day(date)).inDays;
-    if (days < 0) return _fullDate(date, locale);
+    if (days < 0) return orDate ? _fullDate(date, locale) : null;
 
     if (days == 0) {
       if (!hasTime) return LocaleKeys.today.tr();
@@ -35,7 +40,21 @@ abstract class RelativeDate {
     if (days == 1) return LocaleKeys.yesterday.tr();
     if (days < 7) return LocaleKeys.days_ago.plural(days);
     if (days < 28) return LocaleKeys.weeks_ago.plural(days ~/ 7);
-    return _fullDate(date, locale);
+    return orDate ? _fullDate(date, locale) : null;
+  }
+
+  /// "21 September 2026", in [locale].
+  static String? longDate(String? raw, {String? locale}) {
+    final date = parse(raw);
+    return date == null ? null : DateFormat('d MMMM yyyy', locale).format(date);
+  }
+
+  /// [raw] in local time; null when missing or not a date.
+  static DateTime? parse(String? raw) {
+    if (raw == null || raw.trim().isEmpty) return null;
+    final parsed = DateTime.tryParse(raw.trim());
+    if (parsed == null) return null;
+    return parsed.isUtc ? parsed.toLocal() : parsed;
   }
 
   /// Midnight of [d]'s day. Built from the date's fields, so a daylight
