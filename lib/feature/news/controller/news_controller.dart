@@ -35,6 +35,8 @@ class NewsController extends Cubit<NewsState> {
   }
 
   Future<void> getNewsDetails({required String id}) async {
+    // A new article's pictures start from the first one.
+    currentIndex = 0;
     emit(GetNewsDetailsLoadingState());
     try {
       final newsDetailsResponse = await NewsService.getNewsDetails(id: id);

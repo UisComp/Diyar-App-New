@@ -139,6 +139,10 @@ class FinanceUnit {
   final UnitFinancials? financials;
   final List<Installment> installments;
 
+  /// `main_image` / `media`, when the finance payload carries them.
+  final String? imageUrl;
+  final List<String> gallery;
+
   const FinanceUnit({
     this.unitId,
     this.unitName,
@@ -148,6 +152,8 @@ class FinanceUnit {
     this.project,
     this.financials,
     this.installments = const [],
+    this.imageUrl,
+    this.gallery = const [],
   });
 
   factory FinanceUnit.fromJson(Map<String, dynamic> json) {
@@ -167,10 +173,16 @@ class FinanceUnit {
       installments: _asMapList(
         json['installments'],
       ).map(Installment.fromJson).toList(),
+      imageUrl: mediaUrl(json['main_image'] ?? json['unit_image']),
+      gallery: mediaUrls(json['media']),
     );
   }
 
   bool get hasPaymentPlan => financials?.hasPaymentPlan ?? false;
+
+  /// Main image first, then the gallery: what the full-screen viewer pages
+  /// through.
+  List<String> get images => [if (imageUrl != null) imageUrl!, ...gallery];
 
   /// "Town 1 · T-1-G": the API's label, falling back to name then code.
   String get label => unitLabel ?? unitName ?? unitCode ?? '';

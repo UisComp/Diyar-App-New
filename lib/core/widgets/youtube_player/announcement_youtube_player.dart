@@ -219,7 +219,7 @@ class YoutubePoster extends StatelessWidget {
               CustomCachedNetworkImage(
                 imageUrl: posterUrl,
                 fit: BoxFit.cover,
-                isProjectDetails: true,
+                enablePreview: false,
               )
             else
               const VideoPlaceholderBackground(),

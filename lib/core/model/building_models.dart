@@ -21,6 +21,17 @@ String? _toStr(dynamic value) {
   return (s == null || s.isEmpty) ? null : s;
 }
 
+/// `main_image` and every `media` entry arrive as `{ id, url, … }`.
+String? mediaUrl(dynamic value) => value is Map ? _toStr(value['url']) : null;
+
+/// The urls of a `media` array, skipping entries without one.
+List<String> mediaUrls(dynamic value) => value is List
+    ? [
+        for (final item in value)
+          if (mediaUrl(item) case final String url) url,
+      ]
+    : const [];
+
 enum BuildingType {
   block,
   town,
@@ -158,6 +169,10 @@ class UnitSummary {
   final double? contractTotal;
   final String? imageUrl;
 
+  /// `media`: the unit's other pictures (floor plan, finishes…). Empty when
+  /// the backend doesn't send them.
+  final List<String> gallery;
+
   const UnitSummary({
     this.id,
     this.code,
@@ -171,11 +186,11 @@ class UnitSummary {
     this.clubHouseAmount,
     this.contractTotal,
     this.imageUrl,
+    this.gallery = const [],
   }) : _label = label;
 
   factory UnitSummary.fromJson(Map<String, dynamic> json) {
     final building = json['building'];
-    final image = json['main_image'];
     return UnitSummary(
       id: _toInt(json['id']),
       code: _toStr(json['code']),
@@ -190,12 +205,17 @@ class UnitSummary {
       maintenanceDepositAmount: _toDouble(json['maintenance_deposit_amount']),
       clubHouseAmount: _toDouble(json['club_house_amount']),
       contractTotal: _toDouble(json['contract_total']),
-      imageUrl: image is Map ? _toStr(image['url']) : null,
+      imageUrl: mediaUrl(json['main_image']),
+      gallery: mediaUrls(json['media']),
     );
   }
 
   /// "Town 1 · T-1-G": the API's label, falling back to name then code.
   String get label => _label ?? name ?? code ?? '';
+
+  /// Main image first, then the gallery: what the full-screen viewer pages
+  /// through.
+  List<String> get images => [if (imageUrl != null) imageUrl!, ...gallery];
 
   bool get hasMoney =>
       unitValue != null ||

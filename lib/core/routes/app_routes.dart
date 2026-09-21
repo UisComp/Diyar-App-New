@@ -652,15 +652,9 @@ final GoRouter router = GoRouter(
       path: RoutesName.imagePreviewScreen,
 
       pageBuilder: (context, state) {
-        final imageUrl = state.extra as Announcement;
+        final announcement = state.extra as Announcement;
         return buildAnimatedPage(
-          child: AnnouncementImagePreviewScreen(
-            imageUrl: imageUrl.imageUrl,
-            videoId: imageUrl.youtubeVideoId,
-            watchUrl: imageUrl.youtubeUrl,
-            title: imageUrl.title ?? '',
-            description: imageUrl.description ?? '',
-          ),
+          child: AnnouncementImagePreviewScreen(announcement: announcement),
           transition: slideFromRight,
         );
       },

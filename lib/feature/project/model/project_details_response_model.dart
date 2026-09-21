@@ -102,15 +102,34 @@ class ProjectData {
     return null;
   }
 
-  /// Map shapes that point at a building still in [buildings]. Shapes for a
-  /// deleted building are skipped.
+  /// The buildings the user actually holds a unit in. `buildings` is meant
+  /// to be exactly those, but a backend that also lists neighbouring
+  /// buildings sends them with an empty `units`, and those are not the
+  /// user's to see on the plan or in the list.
+  List<Building> get ownedBuildings => [
+    for (final building in buildings)
+      if (building.units.isNotEmpty) building,
+  ];
+
+  Building? ownedBuildingById(int? id) {
+    if (id == null) return null;
+    for (final building in buildings) {
+      if (building.id == id && building.units.isNotEmpty) return building;
+    }
+    return null;
+  }
+
+  /// Map shapes that point at a building the user owns a unit in. Shapes for
+  /// a deleted building, or for one the user owns nothing in, are skipped:
+  /// the plan highlights their own units and nothing else.
   List<(BuildingShape, Building)> get linkedShapes {
     final mapping = buildingMapping;
     if (!hasBuildingMapping || mapping == null) return const [];
     return [
       for (final shape in mapping.shapes)
-        if (shape.points.length >= 3 && buildingById(shape.buildingId) != null)
-          (shape, buildingById(shape.buildingId)!),
+        if (shape.points.length >= 3 &&
+            ownedBuildingById(shape.buildingId) != null)
+          (shape, ownedBuildingById(shape.buildingId)!),
     ];
   }
 }

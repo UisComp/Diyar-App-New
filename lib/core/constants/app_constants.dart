@@ -17,6 +17,10 @@ class AppConstants {
   static const String myEmail = "myEmail";
   static const String myPassword = "myPassword";
   static const String fcmToken = "fcmToken";
+
+  /// The push token the backend last accepted for this device, so a
+  /// relaunch only re-registers when it actually changed.
+  static const String registeredFcmToken = "registeredFcmToken";
   static const String token = "token";
   static const String enableNotification = "enableNotification";
   static List<Locale> supportedLocales = [

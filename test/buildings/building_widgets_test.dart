@@ -1,5 +1,5 @@
 import 'package:diyar_app/core/constants/app_variable.dart';
-import 'package:diyar_app/feature/auth/view/widgets/register_unit_widgets.dart';
+import 'package:diyar_app/core/formatter/unit_code.dart';
 import 'package:diyar_app/feature/profile/view/widgets/unit_info_card.dart';
 import 'package:diyar_app/feature/project/controller/project_controller.dart';
 import 'package:diyar_app/feature/project/model/project_details_response_model.dart';
@@ -245,6 +245,139 @@ void main() {
     });
   });
 
+  testWidgets('tapping the plan away from a building opens it full screen', (
+    tester,
+  ) async {
+    var zoomed = 0;
+    Building? tapped;
+    await pumpLocalized(
+      tester,
+      Center(
+        child: SizedBox(
+          width: 320,
+          child: MasterPlanMap(
+            project: _project(),
+            onBuildingTapped: (b) => tapped = b,
+            onTapElsewhere: () => zoomed++,
+          ),
+        ),
+      ),
+    );
+    final map = find.byType(MasterPlanMap);
+    final topLeft = tester.getTopLeft(map);
+    final size = tester.getSize(map);
+
+    // On a building: opens the building, not the zoom view.
+    await tester.tapAt(topLeft + Offset(size.width * 0.2, size.height * 0.2));
+    expect(tapped?.code, 'B1');
+    expect(zoomed, 0);
+
+    // Anywhere else: zoom.
+    await tester.tapAt(topLeft + Offset(size.width * 0.55, size.height * 0.1));
+    expect(zoomed, 1);
+  });
+
+  group('MasterPlanFullScreen', () {
+    Future<InteractiveViewer> pumpViewer(WidgetTester tester) async {
+      await pumpLocalized(
+        tester,
+        MasterPlanFullScreen(project: _project(withImage: true)),
+        wrapInScaffold: false,
+        settle: false,
+      );
+      return tester.widget<InteractiveViewer>(find.byType(InteractiveViewer));
+    }
+
+    // Two taps in a row: `tapAt` twice is too slow to count as a double tap.
+    Future<void> doubleTap(WidgetTester tester, Offset at) async {
+      for (var i = 0; i < 2; i++) {
+        final tap = await tester.startGesture(at);
+        await tap.up();
+        await tester.pump(const Duration(milliseconds: 50));
+      }
+      await pumpFrames(tester);
+    }
+
+    double scaleOf(WidgetTester tester) => tester
+        .widget<InteractiveViewer>(find.byType(InteractiveViewer))
+        .transformationController!
+        .value
+        .getMaxScaleOnAxis();
+
+    testWidgets('pinch range, double-tap zooms in and back out', (
+      tester,
+    ) async {
+      final viewer = await pumpViewer(tester);
+      expect(viewer.minScale, 1);
+      expect(viewer.maxScale, 8);
+      expect(scaleOf(tester), 1);
+
+      final plan = tester.getRect(find.byType(MasterPlanMap));
+      final empty = plan.topLeft + Offset(plan.width * 0.55, plan.height * 0.1);
+
+      await doubleTap(tester, empty);
+      expect(scaleOf(tester), greaterThan(2));
+
+      await doubleTap(tester, empty);
+      expect(scaleOf(tester), closeTo(1, 0.01));
+    });
+
+    testWidgets('the zoom buttons zoom in and out', (tester) async {
+      await pumpViewer(tester);
+      // Zooming out is off until there is something to zoom back from.
+      expect(
+        tester
+            .widget<IconButton>(
+              find.widgetWithIcon(IconButton, Icons.remove_rounded),
+            )
+            .onPressed,
+        isNull,
+      );
+
+      await tester.tap(find.byIcon(Icons.add_rounded));
+      await pumpFrames(tester);
+      final zoomed = scaleOf(tester);
+      expect(zoomed, greaterThan(1));
+
+      await tester.tap(find.byIcon(Icons.remove_rounded));
+      await pumpFrames(tester);
+      expect(scaleOf(tester), lessThan(zoomed));
+    });
+
+    testWidgets('opened on a building, zooms to it and centres it', (
+      tester,
+    ) async {
+      await pumpLocalized(
+        tester,
+        MasterPlanFullScreen(project: _project(), focusBuildingId: 2),
+        wrapInScaffold: false,
+        settle: false,
+      );
+      await pumpFrames(tester);
+      // A large shape (30% of the plan) needs only a little zoom.
+      expect(scaleOf(tester), greaterThan(1.2));
+
+      // The town's shape (0.6–0.9 of the plan) is now in the middle.
+      final controller = tester
+          .widget<InteractiveViewer>(find.byType(InteractiveViewer))
+          .transformationController!;
+      final viewer = tester.getRect(find.byType(InteractiveViewer));
+      final map = tester.renderObject<RenderBox>(find.byType(MasterPlanMap));
+      final plan = map.size;
+      final corner = controller.toScene(
+        map.localToGlobal(Offset.zero) - viewer.topLeft,
+      );
+      final townCentre = MatrixUtils.transformPoint(
+        controller.value,
+        corner + Offset(plan.width * 0.75, plan.height * 0.75),
+      );
+      expect(
+        (townCentre - viewer.size.center(Offset.zero)).distance,
+        lessThan(viewer.shortestSide / 4),
+      );
+    });
+  });
+
   testWidgets('MyUnitsOverview groups units by building and floor', (
     tester,
   ) async {
@@ -269,6 +402,30 @@ void main() {
     expect(tapped?.id, 5);
   });
 
+  testWidgets('MyUnitsOverview: "show on the map" only for mapped buildings', (
+    tester,
+  ) async {
+    Building? shown;
+    await pumpLocalized(
+      tester,
+      SingleChildScrollView(
+        child: MyUnitsOverview(
+          buildings: [_block(), _town(), _villa()],
+          onUnitTapped: (_, _) {},
+          // The villa has no shape on the plan.
+          mappedBuildingIds: const {1, 2},
+          onShowOnMap: (b) => shown = b,
+        ),
+      ),
+    );
+    // Block 1 has two units, Town 5 one: one button per unit row.
+    final buttons = find.byIcon(Icons.location_searching_rounded);
+    expect(buttons, findsNWidgets(3));
+
+    await tester.tap(buttons.last);
+    expect(shown?.id, 2);
+  });
+
   testWidgets('UnitInfoCard shows building, code, floor and status', (
     tester,
   ) async {
@@ -288,9 +445,12 @@ void main() {
   });
 
   test('unit code field upper-cases input', () {
-    final result = UpperCaseTextFormatter().formatEditUpdate(
+    final result = const UnitCodeInputFormatter().formatEditUpdate(
       TextEditingValue.empty,
-      const TextEditingValue(text: 'b1-g-01'),
+      const TextEditingValue(
+        text: 'b1-g-01',
+        selection: TextSelection.collapsed(offset: 7),
+      ),
     );
     expect(result.text, 'B1-G-01');
   });
@@ -329,7 +489,8 @@ void main() {
       expect(find.textContaining('available'), findsNothing);
       expect(
         find.text(
-          'Tap one of your buildings on the master plan to see your units.',
+          'Tap one of your buildings to see your units, or tap the plan to '
+          'zoom in.',
         ),
         findsOneWidget,
       );

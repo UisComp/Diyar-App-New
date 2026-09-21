@@ -190,7 +190,7 @@ class _ProjectCard extends StatelessWidget {
           width: double.infinity,
           height: 150.h,
           fit: BoxFit.cover,
-          isProjectDetails: true,
+          enablePreview: false,
         ),
         Positioned.fill(
           child: DecoratedBox(

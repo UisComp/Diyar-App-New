@@ -29,9 +29,10 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.enabled,
     this.inputFormatters,
-    this.readOnly=false,
+    this.readOnly = false,
     this.onTap,
     this.horizontalPadding,
+    this.textCapitalization = TextCapitalization.none,
   });
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -53,22 +54,26 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final bool? enabled;
   final List<TextInputFormatter>? inputFormatters;
-  final bool ?readOnly ;
+  final bool? readOnly;
   final void Function()? onTap;
   final double? horizontalPadding;
+  final TextCapitalization textCapitalization;
   @override
   Widget build(BuildContext context) {
     final darkTheme =
         AppThemeController.get(context).currentThemeMode == AppThemeMode.dark;
-    final Color fillColor =
-        darkTheme ? const Color(0xFF111418) : AppColors.secondaryColor;
-    final Color enabledBorderColor =
-        darkTheme ? const Color(0xFF1F242B) : const Color(0xFFE3E7EE);
+    final Color fillColor = darkTheme
+        ? const Color(0xFF111418)
+        : AppColors.secondaryColor;
+    final Color enabledBorderColor = darkTheme
+        ? const Color(0xFF1F242B)
+        : const Color(0xFFE3E7EE);
     final BorderRadius radius = BorderRadius.all(Radius.circular(14.r));
     return TextFormField(
-      onTap:onTap,
-      readOnly:readOnly?? false,
+      onTap: onTap,
+      readOnly: readOnly ?? false,
       inputFormatters: inputFormatters,
+      textCapitalization: textCapitalization,
       maxLines: maxLines,
       maxLength: maxLength,
       obscureText: obscureText ?? false,
@@ -80,7 +85,8 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         isDense: isDense,
-        hintStyle: hintStyle ??
+        hintStyle:
+            hintStyle ??
             AppStyle.fontSize16Regular(context).copyWith(
               color: darkTheme
                   ? AppColors.darkTextSecondary
@@ -88,9 +94,11 @@ class CustomTextFormField extends StatelessWidget {
               fontSize: 14.sp,
             ),
         hintText: hintText ?? labelText,
-        contentPadding: contentPadding ??
+        contentPadding:
+            contentPadding ??
             EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        labelStyle: labelStyle ??
+        labelStyle:
+            labelStyle ??
             AppStyle.fontSize16Regular(context).copyWith(
               color: darkTheme
                   ? AppColors.darkTextSecondary
@@ -128,8 +136,7 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: radius,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: AppColors.primaryColor, width: 1.6),
+          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.6),
           borderRadius: radius,
         ),
         focusedErrorBorder: OutlineInputBorder(

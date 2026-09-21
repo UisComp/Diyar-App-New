@@ -347,6 +347,23 @@ class CodegenLoader extends AssetLoader{
   "projects": "Projects",
   "today": "Today",
   "yesterday": "Yesterday",
+  "just_now": "Just now",
+  "minutes_ago": {
+    "one": "1 minute ago",
+    "other": "{} minutes ago"
+  },
+  "hours_ago": {
+    "one": "1 hour ago",
+    "other": "{} hours ago"
+  },
+  "days_ago": {
+    "one": "1 day ago",
+    "other": "{} days ago"
+  },
+  "weeks_ago": {
+    "one": "1 week ago",
+    "other": "{} weeks ago"
+  },
   "in_partnership_with": "In partnership with",
   "lamar": "LAMAR",
   "select_project": "Select Project",
@@ -423,8 +440,9 @@ class CodegenLoader extends AssetLoader{
   "floor_number": "Floor {}",
   "floor": "Floor",
   "unit_code": "Unit code",
-  "unit_code_hint": "e.g. B1-G-01",
+  "unit_code_hint": "B1-G-01 · T-35-G · V-1",
   "please_enter_unit_code": "Please enter your unit code",
+  "unit_code_invalid": "Check the unit code. Use B1-G-01 for an apartment, T-35-G for a town house or V-1 for a villa.",
   "project": "Project",
   "please_select_project": "Please choose the project your unit is in",
   "no_projects_available": "No projects available right now",
@@ -432,7 +450,12 @@ class CodegenLoader extends AssetLoader{
   "view_unit_news": "View unit news",
   "no_units_in_building": "No units in this building yet",
   "legend_your_buildings": "Your buildings",
-  "tap_your_building_to_view_units": "Tap one of your buildings on the master plan to see your units.",
+  "zoom_in": "Zoom in",
+  "zoom_out": "Zoom out",
+  "reset_zoom": "Reset zoom",
+  "show_on_map": "Show on the master plan",
+  "pinch_to_zoom_hint": "Pinch or double-tap to zoom",
+  "tap_your_building_or_zoom": "Tap one of your buildings to see your units, or tap the plan to zoom in.",
   "no_units_in_project": "You don't own any units in this project.",
   "sign_in_to_see_your_units": "Sign in to see your units and their news.",
   "unit_value": "Unit value",
@@ -540,7 +563,7 @@ class CodegenLoader extends AssetLoader{
   "reg_email_hint": "For updates about your account. You can leave it empty.",
   "reg_email_placeholder": "name@example.com",
   "reg_units_title": "Your units",
-  "reg_units_hint": "Add the code of every unit you own, e.g. B1-G-01. You'll find it in your contract, or ask the sales office. Our team confirms each one.",
+  "reg_units_hint": "Add the code of every unit you own: B1-G-01 for an apartment, T-35-G for a town house, V-1 for a villa. You'll find it in your contract, or ask the sales office. Our team confirms each one.",
   "reg_unit_n": "Unit {}",
   "add_another_unit": "Add another unit",
   "remove_unit": "Remove unit",
@@ -571,7 +594,9 @@ class CodegenLoader extends AssetLoader{
   "qr_validity_note": "The QR code works only during the selected date and time window.",
   "valid_window": "Valid window",
   "loading_units": "Loading your units…",
-  "no_linked_units": "No linked units found"
+  "no_linked_units": "No linked units found",
+  "unit_photos": "Unit photos",
+  "tap_to_zoom": "Tap a photo to open it full screen and zoom"
 };
 static const Map<String,dynamic> _ar = {
   "diyar": "LA'MER",
@@ -905,6 +930,35 @@ static const Map<String,dynamic> _ar = {
   "projects": "المشاريع",
   "today": "اليوم",
   "yesterday": "أمس",
+  "just_now": "الآن",
+  "minutes_ago": {
+    "one": "منذ دقيقة",
+    "two": "منذ دقيقتين",
+    "few": "منذ {} دقائق",
+    "many": "منذ {} دقيقة",
+    "other": "منذ {} دقيقة"
+  },
+  "hours_ago": {
+    "one": "منذ ساعة",
+    "two": "منذ ساعتين",
+    "few": "منذ {} ساعات",
+    "many": "منذ {} ساعة",
+    "other": "منذ {} ساعة"
+  },
+  "days_ago": {
+    "one": "منذ يوم",
+    "two": "منذ يومين",
+    "few": "منذ {} أيام",
+    "many": "منذ {} يومًا",
+    "other": "منذ {} يوم"
+  },
+  "weeks_ago": {
+    "one": "منذ أسبوع",
+    "two": "منذ أسبوعين",
+    "few": "منذ {} أسابيع",
+    "many": "منذ {} أسبوعًا",
+    "other": "منذ {} أسبوع"
+  },
   "in_partnership_with": "بالشراكة مع",
   "lamar": "لامار",
   "select_project": "اختر المشروع",
@@ -987,8 +1041,9 @@ static const Map<String,dynamic> _ar = {
   "floor_number": "الدور {}",
   "floor": "الدور",
   "unit_code": "كود الوحدة",
-  "unit_code_hint": "مثال: B1-G-01",
+  "unit_code_hint": "B1-G-01 · T-35-G · V-1",
   "please_enter_unit_code": "من فضلك أدخل كود الوحدة",
+  "unit_code_invalid": "تأكد من كود الوحدة. استخدم B1-G-01 للشقة، أو T-35-G للتاون، أو V-1 للفيلا.",
   "project": "المشروع",
   "please_select_project": "من فضلك اختر المشروع الذي تقع به وحدتك",
   "no_projects_available": "لا توجد مشاريع متاحة حاليًا",
@@ -996,7 +1051,12 @@ static const Map<String,dynamic> _ar = {
   "view_unit_news": "عرض أخبار الوحدة",
   "no_units_in_building": "لا توجد وحدات في هذا المبنى بعد",
   "legend_your_buildings": "مبانيك",
-  "tap_your_building_to_view_units": "اضغط على أحد مبانيك في المخطط العام لعرض وحداتك.",
+  "zoom_in": "تكبير",
+  "zoom_out": "تصغير",
+  "reset_zoom": "إعادة الحجم",
+  "show_on_map": "عرض على المخطط العام",
+  "pinch_to_zoom_hint": "قرّب بإصبعين أو اضغط مرتين للتكبير",
+  "tap_your_building_or_zoom": "اضغط على أحد مبانيك لعرض وحداتك، أو اضغط على المخطط للتكبير.",
   "no_units_in_project": "لا تمتلك أي وحدات في هذا المشروع.",
   "sign_in_to_see_your_units": "سجّل الدخول لعرض وحداتك وأخبارها.",
   "unit_value": "قيمة الوحدة",
@@ -1104,7 +1164,7 @@ static const Map<String,dynamic> _ar = {
   "reg_email_hint": "لتلقي تحديثات حسابك. يمكنك تركه فارغاً.",
   "reg_email_placeholder": "name@example.com",
   "reg_units_title": "وحداتك",
-  "reg_units_hint": "أضف رمز كل وحدة تملكها، مثل B1-G-01. ستجده في عقدك، أو اسأل مكتب المبيعات. سيؤكد فريقنا كل وحدة.",
+  "reg_units_hint": "أضف كود كل وحدة تملكها: B1-G-01 للشقة، أو T-35-G للتاون، أو V-1 للفيلا. ستجده في عقدك، أو اسأل مكتب المبيعات. سيؤكد فريقنا كل وحدة.",
   "reg_unit_n": "الوحدة {}",
   "add_another_unit": "إضافة وحدة أخرى",
   "remove_unit": "حذف الوحدة",
@@ -1135,7 +1195,9 @@ static const Map<String,dynamic> _ar = {
   "qr_validity_note": "يعمل رمز الاستجابة السريع فقط خلال نطاق التاريخ والوقت المحدد.",
   "valid_window": "فترة الصلاحية",
   "loading_units": "جارٍ تحميل وحداتك…",
-  "no_linked_units": "لا توجد وحدات مرتبطة"
+  "no_linked_units": "لا توجد وحدات مرتبطة",
+  "unit_photos": "صور الوحدة",
+  "tap_to_zoom": "اضغط على الصورة لعرضها بالحجم الكامل والتكبير"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "ar": _ar};
 }

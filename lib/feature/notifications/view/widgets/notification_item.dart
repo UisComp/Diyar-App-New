@@ -286,7 +286,7 @@ class _Leading extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.r),
         child: imageUrl != null && imageUrl!.isNotEmpty
             ? CustomCachedNetworkImage(
-                isProjectDetails: true,
+                enablePreview: false,
                 imageUrl: imageUrl,
                 width: size,
                 height: size,

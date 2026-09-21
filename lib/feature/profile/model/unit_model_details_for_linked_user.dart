@@ -67,6 +67,9 @@ class UnitData {
   /// Unit value + Maintenance Deposit + Club House.
   final double? contractTotal;
   final Media? mainImage;
+
+  /// `media`: the unit's other pictures. Empty when the backend omits them.
+  final List<Media> gallery;
   final List<News>? news;
 
   UnitData({
@@ -85,6 +88,7 @@ class UnitData {
     this.clubHouseAmount,
     this.contractTotal,
     this.mainImage,
+    this.gallery = const [],
     this.news,
   }) : _label = label;
 
@@ -107,6 +111,7 @@ class UnitData {
       clubHouseAmount: _toDouble(json['club_house_amount']),
       contractTotal: _toDouble(json['contract_total']),
       mainImage: mainImage == null ? null : Media.fromJson(mainImage),
+      gallery: _asMapList(json['media']).map(Media.fromJson).toList(),
       news: json['news'] is List
           ? _asMapList(json['news']).map(News.fromJson).toList()
           : null,
@@ -115,6 +120,14 @@ class UnitData {
 
   /// "Town 1 · T-1-G": the API's label, falling back to name then code.
   String get label => _label ?? name ?? code ?? '';
+
+  /// Main image first, then the gallery: what the full-screen viewer pages
+  /// through.
+  List<String> get images => [
+    if (mainImage?.url case final String url) url,
+    for (final media in gallery)
+      if (media.url case final String url) url,
+  ];
 
   Map<String, dynamic> toJson() => {
     'id': id,

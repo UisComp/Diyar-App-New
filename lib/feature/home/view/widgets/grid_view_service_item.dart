@@ -125,7 +125,7 @@ class GridViewServiceItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
                   child: CustomCachedNetworkImage(
-                    isProjectDetails: true,
+                    enablePreview: false,
                     fit: BoxFit.scaleDown,
                     height: compact ? 40.h : 56.h,
                     width: compact ? 40.w : 56.w,

@@ -5,6 +5,7 @@ import 'package:diyar_app/core/constants/app_variable.dart' hide navigatorKey;
 import 'package:diyar_app/core/constants/custom_logger.dart';
 import 'package:diyar_app/core/cubits/app_theme/app_theme_controller.dart';
 import 'package:diyar_app/core/cubits/language/language_controller.dart';
+import 'package:diyar_app/core/helper/device_helper.dart';
 import 'package:diyar_app/core/helper/dio_helper.dart';
 import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/helper/notification_helper.dart';
@@ -31,19 +32,22 @@ import 'dart:async';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // 1. Initialize Firebase FIRST
+  // Runs in its own isolate with none of `main`'s setup, so Firebase and Hive
+  // have to be started again here.
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
   await HiveHelper.init();
-  bool enable =
+  enableNotifications =
       await HiveHelper.getFromHive(key: AppConstants.enableNotification) ??
       true;
-  if (!enable) return;
+  if (!enableNotifications) return;
   final service = NotificationService();
-  await service.init();
+  // Only the local-notifications plugin: the FCM listeners and the navigation
+  // `init` wires up belong to the UI isolate and would leak here.
+  await service.initLocalNotifications();
   await service.showLocalNotificationFromBackground(message);
   AppLogger.log('Background message handled: ${message.messageId}');
 }
@@ -149,16 +153,6 @@ bool _isHarmlessWebViewTeardownAssert(Object error) {
 
 String? fcmToken;
 Future<void> setupNotifications() async {
-  try {
-    fcmToken = await FirebaseMessaging.instance.getToken();
-    if (fcmToken != null) {
-      await HiveHelper.addToHive(key: AppConstants.fcmToken, value: fcmToken!);
-      AppLogger.log("FCM Token saved: $fcmToken");
-    }
-  } catch (ex) {
-    AppLogger.log("exception on fcm init ${ex.toString()}");
-  }
-
   // Each login is a device; when Firebase rotates this device's token,
   // replace it on the account.
   FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
@@ -167,14 +161,36 @@ Future<void> setupNotifications() async {
     await AuthSession.onPushTokenRefreshed(token);
   }, onError: (e) => AppLogger.log("onTokenRefresh error: $e"));
 
-  if (Platform.isIOS) {
-    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-    AppLogger.log("apnsToken: $apnsToken");
-  }
-
   // The backend team needs this hash for SMS code autofill on Android.
   if (kDebugMode) unawaited(SmsCodeRetriever.logAppSignature());
 
-  final NotificationService localNotificationService = NotificationService();
-  await localNotificationService.init();
+  // Handlers first: a tap that launched the app is waiting to be read, and
+  // reading the token can block for seconds on iOS.
+  await NotificationService().init();
+  unawaited(_registerPushToken());
+}
+
+/// Reads this device's push token and makes sure the account carries it.
+///
+/// On iOS this waits for APNs to register, which can take a moment after
+/// launch, so it runs off the startup path rather than holding up the first
+/// frame.
+Future<void> _registerPushToken() async {
+  try {
+    if (Platform.isIOS) {
+      AppLogger.log("apnsToken: ${await DeviceHelper.awaitApnsToken()}");
+    }
+    fcmToken = await DeviceHelper.pushToken();
+    if (fcmToken == null) {
+      AppLogger.warning("No FCM token yet; this device won't receive pushes.");
+      return;
+    }
+    await HiveHelper.addToHive(key: AppConstants.fcmToken, value: fcmToken!);
+    AppLogger.log("FCM Token saved: $fcmToken");
+    // A login that ran before APNs was ready sent no token at all, and the
+    // token never rotates again on its own.
+    await AuthSession.ensurePushTokenRegistered(fcmToken);
+  } catch (ex) {
+    AppLogger.log("exception on fcm init ${ex.toString()}");
+  }
 }

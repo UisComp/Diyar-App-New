@@ -2,6 +2,7 @@ import 'package:diyar_app/core/constants/app_constants.dart';
 import 'package:diyar_app/core/extension/padding.dart';
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/functions/api_error_message.dart';
+import 'package:diyar_app/core/formatter/unit_code.dart';
 import 'package:diyar_app/core/functions/app_functions.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
@@ -17,7 +18,6 @@ import 'package:diyar_app/feature/auth/controller/register_controller.dart';
 import 'package:diyar_app/feature/auth/controller/register_state.dart';
 import 'package:diyar_app/feature/auth/view/widgets/auth_error_handler.dart';
 import 'package:diyar_app/feature/auth/view/widgets/auth_widgets.dart';
-import 'package:diyar_app/feature/auth/view/widgets/register_unit_widgets.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -301,8 +301,9 @@ class _UnitCodeRow extends StatelessWidget {
             controller: entry.controller,
             hintText: LocaleKeys.unit_code_hint.tr(),
             keyboardType: TextInputType.visiblePassword,
+            textCapitalization: TextCapitalization.characters,
             inputFormatters: [
-              UpperCaseTextFormatter(),
+              const UnitCodeInputFormatter(),
               LengthLimitingTextInputFormatter(
                 RegisterController.maxCodeLength,
               ),
@@ -310,15 +311,44 @@ class _UnitCodeRow extends StatelessWidget {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (code) {
               if (entry.serverError != null) return entry.serverError;
-              if ((code ?? '').trim().isEmpty) {
-                return LocaleKeys.please_enter_unit_code.tr();
-              }
+              final badCode = UnitCode.validate(code);
+              if (badCode != null) return badCode;
               if (controller.isDuplicate(entry)) {
                 return LocaleKeys.reg_unit_duplicate.tr();
               }
               return null;
             },
             prefixIcon: const Icon(Icons.domain),
+          ),
+          // What we read the code as, so a resident catches a wrong block
+          // or floor before staff do.
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: entry.controller,
+            builder: (context, value, _) {
+              final unit = UnitCode.tryParse(value.text);
+              if (unit == null) return const SizedBox.shrink();
+              return Padding(
+                padding: EdgeInsets.only(top: 6.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      size: 14.sp,
+                      color: AppColors.primaryColor,
+                    ),
+                    6.pw,
+                    Expanded(
+                      child: AppText(
+                        unit.label,
+                        style: AppStyle.fontSize12Regular(
+                          context,
+                        ).copyWith(color: surface.textSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+              ).paddingSymmetric(horizontal: 16.w);
+            },
           ),
         ],
       ),

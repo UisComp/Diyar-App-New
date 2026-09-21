@@ -2,6 +2,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_surface.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
+import 'package:diyar_app/core/widgets/unit_image_gallery.dart';
 import 'package:diyar_app/feature/finance/controller/finance_controller.dart';
 import 'package:diyar_app/feature/finance/controller/finance_state.dart';
 import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
@@ -161,11 +162,25 @@ class _PlanContent extends StatelessWidget {
     final surface = AppSurface.of(context);
     final financials = unit.financials;
 
+    // Only when the finance payload carries pictures; no empty placeholder
+    // on a screen that is about money.
+    final gallery = UnitImageGallery(
+      images: unit.images,
+      title: unit.label,
+      height: 170.h,
+      showWhenEmpty: false,
+      showHint: false,
+    );
+    final hasImages = unit.images.isNotEmpty;
+
     if (!unit.hasPaymentPlan || financials == null) {
       return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.all(16.w),
-        children: const [AwaitingPlanView()],
+        children: [
+          if (hasImages) ...[gallery, 16.ph],
+          const AwaitingPlanView(),
+        ],
       );
     }
 
@@ -175,6 +190,7 @@ class _PlanContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (hasImages) ...[gallery, 14.ph],
           Container(
             padding: EdgeInsets.all(14.w),
             decoration: surface.cardDecoration(),

@@ -19,39 +19,52 @@ class CarouselImageSilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final media = newsDetails?.media ?? const [];
+    // One picture (or none) stays still: no auto-play, no swiping onto a
+    // looped copy of itself, no dots.
+    final hasMany = media.length > 1;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
         CarouselSlider.builder(
-          itemCount: newsDetails?.media!.length,
+          itemCount: media.length,
           itemBuilder: (context, index, _) {
             return CustomCachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: newsDetails?.media![index].url,
+              imageUrl: media[index].url,
             );
           },
           options: CarouselOptions(
             aspectRatio: 1.2,
             viewportFraction: 1,
-            autoPlay: true,
+            autoPlay: hasMany,
             autoPlayInterval: const Duration(seconds: 3),
+            enableInfiniteScroll: hasMany,
+            scrollPhysics: hasMany
+                ? const PageScrollPhysics()
+                : const NeverScrollableScrollPhysics(),
             enlargeCenterPage: false,
             onPageChanged: (index, reason) {
               newsController.changeCarouselIndex(index);
             },
           ),
         ),
-        DotsIndicator(
-          dotsCount: newsDetails?.media!.length ?? 0,
-          position: newsController.currentIndex.toDouble(),
-          decorator: DotsDecorator(
-            spacing: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-            activeColor: AppColors.primaryColor,
-            color: AppColors.greyColor,
-            size: Size(15.w, 15.h),
-            activeSize: Size(15.w, 15.h),
+        if (hasMany)
+          DotsIndicator(
+            dotsCount: media.length,
+            // The index outlives the article; the next one may have fewer
+            // pictures.
+            position: newsController.currentIndex
+                .clamp(0, media.length - 1)
+                .toDouble(),
+            decorator: DotsDecorator(
+              spacing: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+              activeColor: AppColors.primaryColor,
+              color: AppColors.greyColor,
+              size: Size(15.w, 15.h),
+              activeSize: Size(15.w, 15.h),
+            ),
           ),
-        ),
       ],
     );
   }

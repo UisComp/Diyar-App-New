@@ -1,6 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_surface.dart';
+import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/finance/model/finance_response_model.dart';
 import 'package:diyar_app/feature/finance/view/widgets/awaiting_plan_view.dart';
 import 'package:diyar_app/feature/finance/view/widgets/next_payment_card.dart';
@@ -43,17 +44,31 @@ class UnitFinanceCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 40.r,
-                      height: 40.r,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withValues(alpha: 0.10),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Icon(
-                        Icons.apartment_rounded,
-                        color: AppColors.primaryColor,
-                        size: 22.sp,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: SizedBox(
+                        width: 40.r,
+                        height: 40.r,
+                        child: unit.imageUrl != null
+                            ? CustomCachedNetworkImage(
+                                imageUrl: unit.imageUrl,
+                                width: 40.r,
+                                height: 40.r,
+                                fit: BoxFit.cover,
+                                // The card opens the payment plan, which
+                                // shows the picture large and zoomable.
+                                enablePreview: false,
+                              )
+                            : ColoredBox(
+                                color: AppColors.primaryColor.withValues(
+                                  alpha: 0.10,
+                                ),
+                                child: Icon(
+                                  Icons.apartment_rounded,
+                                  color: AppColors.primaryColor,
+                                  size: 22.sp,
+                                ),
+                              ),
                       ),
                     ),
                     10.pw,

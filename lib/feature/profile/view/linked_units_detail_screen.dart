@@ -3,6 +3,7 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
 import 'package:diyar_app/core/widgets/custom_app_bar.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/core/widgets/unit_image_gallery.dart';
 import 'package:diyar_app/feature/profile/controller/profile_controller.dart';
 import 'package:diyar_app/feature/profile/controller/profile_state.dart';
 import 'package:diyar_app/feature/profile/model/user_units_response_model.dart';
@@ -46,12 +47,18 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
         final unitData =
             profileController.unitModelDetailsForLinkedUserResponseModel.data;
         final isLoading = state is GetUnitsForUserLinkedLoadingState;
+        final unitLabel = (unitData?.label ?? widget.unitData.label).isNotEmpty
+            ? (unitData?.label ?? widget.unitData.label)
+            : LocaleKeys.unit_details.tr();
+        // The details call carries the full gallery; until it lands, the
+        // picture the list already had stands in.
+        final unitImages = unitData?.images.isNotEmpty ?? false
+            ? unitData!.images
+            : widget.unitData.images;
 
         return Scaffold(
           appBar: CustomAppBar(
-            titleAppBar: (unitData?.label ?? widget.unitData.label).isNotEmpty
-                ? (unitData?.label ?? widget.unitData.label)
-                : LocaleKeys.unit_details.tr(),
+            titleAppBar: unitLabel,
             centerTitle: true,
           ),
           body: Skeletonizer(
@@ -61,38 +68,11 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (profileController
-                          .unitModelDetailsForLinkedUserResponseModel
-                          .data
-                          ?.mainImage !=
-                      null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      // child: CachedImage(
-                      //   url:
-                      //       profileController
-                      //           .unitModelDetailsForLinkedUserResponseModel
-                      //           .data
-                      //           ?.mainImage!
-                      //           .url ??
-                      //       '',
-                      //   width: double.infinity,
-                      //   height: 200.h,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      child: CustomCachedNetworkImage(
-                        imageUrl:
-                            profileController
-                                .unitModelDetailsForLinkedUserResponseModel
-                                .data
-                                ?.mainImage
-                                ?.url ??
-                            '',
-                        width: double.infinity,
-                        height: 200.h,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  UnitImageGallery(
+                    images: unitImages,
+                    title: unitLabel,
+                    height: 200.h,
+                  ),
                   16.ph,
                   AppText(
                     unitData?.label ?? widget.unitData.label,
@@ -144,6 +124,9 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                                         itemCount: newsItem.media!.length,
                                         itemBuilder: (context, index) {
                                           final media = newsItem.media![index];
+                                          final newsImages = newsItem.media!
+                                              .map((m) => m.url)
+                                              .toList();
                                           return Padding(
                                             padding: EdgeInsets.only(
                                               right: 8.w,
@@ -156,6 +139,11 @@ class _LinkedUnitsDetailScreenState extends State<LinkedUnitsDetailScreen> {
                                                 width: 100.w,
                                                 height: 100.h,
                                                 fit: BoxFit.cover,
+                                                previewImages: newsImages,
+                                                previewIndex: index,
+                                                previewTitle: newsItem.title,
+                                                previewDescription:
+                                                    newsItem.content,
                                               ),
                                             ),
                                           );

@@ -175,6 +175,10 @@ class _UnitRow extends StatelessWidget {
                   width: 52.r,
                   height: 52.r,
                   fit: BoxFit.cover,
+                  placeholderIcon: Icons.home_work_outlined,
+                  // The row opens the unit's details, where the picture is
+                  // large and zoomable.
+                  enablePreview: false,
                 ),
               ),
             ),

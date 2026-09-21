@@ -4,6 +4,7 @@ import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_surface.dart';
 import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/feature/finance/helper/finance_formatter.dart';
+import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +17,17 @@ class MyUnitsOverview extends StatelessWidget {
     required this.buildings,
     required this.onUnitTapped,
     this.selectedUnitId,
+    this.onShowOnMap,
+    this.mappedBuildingIds = const {},
   });
 
   final List<Building> buildings;
   final void Function(Building building, UnitSummary unit) onUnitTapped;
+
+  /// Zooms the master plan to the unit's building. Offered only for the
+  /// buildings in [mappedBuildingIds] (those drawn on the plan).
+  final ValueChanged<Building>? onShowOnMap;
+  final Set<int> mappedBuildingIds;
 
   /// The unit whose news the timeline shows.
   final int? selectedUnitId;
@@ -64,6 +72,11 @@ class MyUnitsOverview extends StatelessWidget {
                   floorText: floorLabel(floor, building.type),
                   selected: unit.id != null && unit.id == selectedUnitId,
                   onTap: () => onUnitTapped(building, unit),
+                  onShowOnMap:
+                      onShowOnMap != null &&
+                          mappedBuildingIds.contains(building.id)
+                      ? () => onShowOnMap!(building)
+                      : null,
                 ),
                 8.ph,
               ],
@@ -80,12 +93,14 @@ class _OwnedUnitTile extends StatelessWidget {
     required this.onTap,
     this.floorText,
     this.selected = false,
+    this.onShowOnMap,
   });
 
   final UnitSummary unit;
   final String? floorText;
   final VoidCallback onTap;
   final bool selected;
+  final VoidCallback? onShowOnMap;
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +141,9 @@ class _OwnedUnitTile extends StatelessWidget {
                           width: 56.r,
                           height: 56.r,
                           fit: BoxFit.cover,
+                          // The row opens the unit sheet, which shows the
+                          // picture large and zoomable.
+                          enablePreview: false,
                         )
                       : ColoredBox(
                           color: AppColors.primaryColor.withValues(alpha: 0.10),
@@ -176,6 +194,23 @@ class _OwnedUnitTile extends StatelessWidget {
                   ],
                 ),
               ),
+              if (onShowOnMap != null) ...[
+                IconButton(
+                  tooltip: LocaleKeys.show_on_map.tr(),
+                  onPressed: onShowOnMap,
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor.withValues(
+                      alpha: 0.10,
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.location_searching_rounded,
+                    size: 20.sp,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                4.pw,
+              ],
               // Mirrored automatically in Arabic.
               Icon(
                 Icons.arrow_forward_ios_rounded,

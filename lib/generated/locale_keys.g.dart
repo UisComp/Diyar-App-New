@@ -335,6 +335,11 @@ abstract class  LocaleKeys {
   static const projects = 'projects';
   static const today = 'today';
   static const yesterday = 'yesterday';
+  static const just_now = 'just_now';
+  static const minutes_ago = 'minutes_ago';
+  static const hours_ago = 'hours_ago';
+  static const days_ago = 'days_ago';
+  static const weeks_ago = 'weeks_ago';
   static const in_partnership_with = 'in_partnership_with';
   static const lamar = 'lamar';
   static const select_project = 'select_project';
@@ -406,6 +411,7 @@ abstract class  LocaleKeys {
   static const unit_code = 'unit_code';
   static const unit_code_hint = 'unit_code_hint';
   static const please_enter_unit_code = 'please_enter_unit_code';
+  static const unit_code_invalid = 'unit_code_invalid';
   static const project = 'project';
   static const please_select_project = 'please_select_project';
   static const no_projects_available = 'no_projects_available';
@@ -413,7 +419,12 @@ abstract class  LocaleKeys {
   static const view_unit_news = 'view_unit_news';
   static const no_units_in_building = 'no_units_in_building';
   static const legend_your_buildings = 'legend_your_buildings';
-  static const tap_your_building_to_view_units = 'tap_your_building_to_view_units';
+  static const zoom_in = 'zoom_in';
+  static const zoom_out = 'zoom_out';
+  static const reset_zoom = 'reset_zoom';
+  static const show_on_map = 'show_on_map';
+  static const pinch_to_zoom_hint = 'pinch_to_zoom_hint';
+  static const tap_your_building_or_zoom = 'tap_your_building_or_zoom';
   static const no_units_in_project = 'no_units_in_project';
   static const sign_in_to_see_your_units = 'sign_in_to_see_your_units';
   static const unit_value = 'unit_value';
@@ -553,5 +564,7 @@ abstract class  LocaleKeys {
   static const valid_window = 'valid_window';
   static const loading_units = 'loading_units';
   static const no_linked_units = 'no_linked_units';
+  static const unit_photos = 'unit_photos';
+  static const tap_to_zoom = 'tap_to_zoom';
 
 }

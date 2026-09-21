@@ -1,12 +1,14 @@
+import 'package:diyar_app/core/formatter/unit_code.dart';
 import 'package:diyar_app/feature/auth/controller/register_state.dart';
 import 'package:diyar_app/feature/auth/model/phone_auth_models.dart';
 import 'package:diyar_app/feature/auth/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// A unit code as the server stores it: trimmed and upper case
-/// (` b1-g-01 ` → `B1-G-01`).
-String normalizeUnitCode(String code) => code.trim().toUpperCase();
+/// A unit code as the server stores it: trimmed, upper case and in its
+/// shape's canonical form (` b1g1 ` → `B1-G-01`). A code of no known shape
+/// is only trimmed and upper-cased, never rewritten.
+String normalizeUnitCode(String code) => UnitCode.normalize(code);
 
 /// One unit code on the registration form. Codes aren't checked while
 /// typing: staff match or reject each one when they review the account.

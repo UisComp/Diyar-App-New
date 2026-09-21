@@ -41,6 +41,11 @@ class UserUnit extends Equatable {
   final int? id;
   final String? name;
   final ProfilePicture? imageUrl;
+
+  /// `media`: the unit's other pictures, so the list row can open the whole
+  /// set full screen without a second request.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final List<String> gallery;
   @JsonKey(name: 'user_id')
   final int? userId;
   @JsonKey(name: 'project_id')
@@ -60,6 +65,7 @@ class UserUnit extends Equatable {
     this.userId,
     this.projectId,
     this.imageUrl,
+    this.gallery = const [],
     this.code,
     this.apiLabel,
     this.floor,
@@ -77,6 +83,7 @@ class UserUnit extends Equatable {
       imageUrl: json['main_image'] is Map<String, dynamic>
           ? ProfilePicture.fromJson(json['main_image'])
           : null,
+      gallery: mediaUrls(json['media']),
       code: json['code']?.toString(),
       apiLabel: json['label']?.toString(),
       floor: _toInt(json['floor']),
@@ -89,6 +96,13 @@ class UserUnit extends Equatable {
 
   /// "Town 1 · T-1-G": the API's label, falling back to name then code.
   String get label => apiLabel ?? name ?? code ?? '';
+
+  /// Main image first, then the gallery: what the full-screen viewer pages
+  /// through.
+  List<String> get images => [
+    if (imageUrl?.url case final String url) url,
+    ...gallery,
+  ];
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -117,6 +131,7 @@ class UserUnit extends Equatable {
     userId,
     projectId,
     imageUrl,
+    gallery,
     code,
     apiLabel,
     floor,

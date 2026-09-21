@@ -73,7 +73,6 @@ class CustomFacilityItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),
                 child: CustomCachedNetworkImage(
-                  isProjectDetails: false,
                   width: 70.w,
                   height: 70.h,
                   imageUrl: item.icon?.url ?? '',

@@ -2,6 +2,7 @@ import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
 import 'package:diyar_app/core/widgets/youtube_player/announcement_youtube_player.dart';
 import 'package:diyar_app/feature/home/model/announcements_response_model.dart';
 import 'package:diyar_app/feature/home/view/widgets/announcement_media_thumbnail.dart';
+import 'package:diyar_app/feature/home/view/widgets/image_preview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -110,6 +111,72 @@ void main() {
         Announcement(id: 1, title: 't', url: _imageUrl, rawYoutubeUrl: ''),
       );
       expect(find.text('Video'), findsNothing);
+    });
+  });
+
+  group('AnnouncementImagePreviewScreen', () {
+    Future<void> pumpScreen(WidgetTester tester, Announcement a) =>
+        pumpLocalized(
+          tester,
+          AnnouncementImagePreviewScreen(announcement: a),
+          wrapInScaffold: false,
+          settle: false,
+        );
+
+    testWidgets('shows image, text and video as three separate blocks', (
+      tester,
+    ) async {
+      await pumpScreen(
+        tester,
+        Announcement(
+          id: 7,
+          title: 'Pool reopening',
+          description: 'The pool reopens on Monday at 8 am.',
+          url: _imageUrl,
+          rawYoutubeUrl: _watchUrl,
+          rawYoutubeVideoId: _videoId,
+        ),
+      );
+
+      expect(find.text('Pool reopening'), findsOneWidget);
+      expect(find.text('The pool reopens on Monday at 8 am.'), findsOneWidget);
+      expect(find.byType(YoutubePoster), findsOneWidget);
+
+      // The announcement image keeps its own block; the player falls back to
+      // YouTube's thumbnail so the same picture isn't shown twice.
+      final urls = tester
+          .widgetList<CustomCachedNetworkImage>(
+            find.byType(CustomCachedNetworkImage),
+          )
+          .map((image) => image.imageUrl)
+          .toList();
+      expect(urls, containsAll(<String>[_imageUrl, _thumbnailUrl]));
+    });
+
+    testWidgets('no video section when there is no video', (tester) async {
+      await pumpScreen(
+        tester,
+        Announcement(id: 6, title: 'Office closed', url: _imageUrl),
+      );
+
+      expect(find.byType(YoutubePoster), findsNothing);
+      expect(find.text('Video'), findsNothing);
+    });
+
+    testWidgets('a video-only announcement still reads top to bottom', (
+      tester,
+    ) async {
+      await pumpScreen(tester, _withVideo());
+
+      expect(find.text('Pool reopening'), findsOneWidget);
+      expect(find.byType(YoutubePoster), findsOneWidget);
+      final urls = tester
+          .widgetList<CustomCachedNetworkImage>(
+            find.byType(CustomCachedNetworkImage),
+          )
+          .map((image) => image.imageUrl)
+          .toList();
+      expect(urls, <String>[_thumbnailUrl]);
     });
   });
 

@@ -72,11 +72,16 @@ class _ProjectDetailsState extends State<ProjectDetails> {
     );
   }
 
-  Future<void> _openFullScreenMap(ProjectData project) async {
+  /// [focus]: zoom straight to that building ("show on the map").
+  Future<void> _openFullScreenMap(
+    ProjectData project, {
+    Building? focus,
+  }) async {
     final building = await MasterPlanFullScreen.open(
       context,
       project,
       selectedBuildingId: _selectedBuilding?.id,
+      focusBuildingId: focus?.id,
     );
     if (building != null && mounted) _openBuilding(building);
   }
@@ -144,7 +149,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
         8.pw,
         Expanded(
           child: AppText(
-            LocaleKeys.tap_your_building_to_view_units.tr(),
+            LocaleKeys.tap_your_building_or_zoom.tr(),
             style: AppStyle.fontSize16Regular(
               context,
             ).copyWith(fontSize: 13.sp, color: AppColors.descContainerColor),
@@ -194,6 +199,8 @@ class _ProjectDetailsState extends State<ProjectDetails> {
           project: project,
           selectedBuildingId: _selectedBuilding?.id,
           onBuildingTapped: _openBuilding,
+          // A tap that missed the buildings opens the zoomable plan.
+          onTapElsewhere: () => _openFullScreenMap(project),
         ),
         PositionedDirectional(
           top: 8.h,
@@ -229,9 +236,10 @@ class _ProjectDetailsState extends State<ProjectDetails> {
               ((project.mainImage?.url?.isNotEmpty ?? false) ||
                   project.linkedShapes.isNotEmpty);
           final hasLinkedShapes = project?.linkedShapes.isNotEmpty ?? false;
-          // Only the user's own buildings (empty when signed out).
-          final buildings = project?.buildings ?? const <Building>[];
-          final ownsUnits = buildings.any((b) => b.units.isNotEmpty);
+          // Only buildings the user holds a unit in (empty when signed
+          // out), the same set the plan highlights.
+          final buildings = project?.ownedBuildings ?? const <Building>[];
+          final ownsUnits = buildings.isNotEmpty;
           final hasGallery =
               (project?.gallery.isNotEmpty ?? false) || isLoading;
 
@@ -303,6 +311,12 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                         buildings: buildings,
                         selectedUnitId: _selectedUnit?.id,
                         onUnitTapped: _openBuilding,
+                        mappedBuildingIds: {
+                          for (final (_, building) in project.linkedShapes)
+                            if (building.id case final int id) id,
+                        },
+                        onShowOnMap: (building) =>
+                            _openFullScreenMap(project, focus: building),
                       )
                     else
                       _noUnitsNote(context),

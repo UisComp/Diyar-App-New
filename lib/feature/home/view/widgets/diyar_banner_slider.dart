@@ -57,6 +57,15 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
           itemCount: banners.length,
           itemBuilder: (context, index, realIndex) {
             final banner = banners[index];
+            // Infinite scroll keeps the neighbouring pages alive, so with a
+            // handful of banners the same one is built more than once at a
+            // time. Only the centred page (the one that can be tapped) flies
+            // to the preview, so its tag stays unique in the subtree.
+            final flies = index == current;
+            final Widget thumbnail = AnnouncementMediaThumbnail(
+              announcement: banner,
+              height: widget.height,
+            );
             return GestureDetector(
               onTap: () =>
                   context.push(RoutesName.imagePreviewScreen, extra: banner),
@@ -74,13 +83,12 @@ class _DiyarBannerSliderState extends State<DiyarBannerSlider> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.r),
-                  child: Hero(
-                    tag: 'announcement_${banner.url ?? index}',
-                    child: AnnouncementMediaThumbnail(
-                      announcement: banner,
-                      height: widget.height,
-                    ),
-                  ),
+                  child: flies
+                      ? Hero(
+                          tag: 'announcement_${banner.imageUrl ?? index}',
+                          child: thumbnail,
+                        )
+                      : thumbnail,
                 ),
               ),
             );

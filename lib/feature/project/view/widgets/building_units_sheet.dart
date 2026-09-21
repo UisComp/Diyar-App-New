@@ -2,7 +2,7 @@ import 'package:diyar_app/core/extension/sized_box.dart';
 import 'package:diyar_app/core/model/building_models.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/style/app_surface.dart';
-import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/core/widgets/unit_image_gallery.dart';
 import 'package:diyar_app/feature/finance/helper/finance_formatter.dart';
 import 'package:diyar_app/feature/profile/view/widgets/unit_info_card.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
@@ -173,7 +173,6 @@ class OwnedUnitDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final surface = AppSurface.of(context);
-    final imageUrl = unit.imageUrl;
     final money = <(String, double, bool)>[
       if (unit.unitValue != null)
         (LocaleKeys.unit_value.tr(), unit.unitValue!, false),
@@ -192,18 +191,12 @@ class OwnedUnitDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (imageUrl != null) ...[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(14.r),
-            child: CustomCachedNetworkImage(
-              imageUrl: imageUrl,
-              width: double.infinity,
-              height: 170.h,
-              fit: BoxFit.cover,
-            ),
-          ),
-          12.ph,
-        ],
+        UnitImageGallery(
+          images: unit.images,
+          title: unit.label,
+          height: 170.h,
+        ),
+        12.ph,
         Text(
           unit.label,
           style: TextStyle(

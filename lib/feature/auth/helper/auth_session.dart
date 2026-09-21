@@ -48,6 +48,9 @@ abstract class AuthSession {
     }
     // SMS and pushes use the language saved on the account.
     unawaited(syncLocale());
+    // The login request carries whatever token was readable at the time,
+    // which on iOS is often none. Register it again now that we're signed in.
+    unawaited(DeviceHelper.pushToken().then(ensurePushTokenRegistered));
   }
 
   /// Forgets the login on this device (biometric credentials are kept).
@@ -57,6 +60,7 @@ abstract class AuthSession {
     await HiveHelper.removeUserModel(key: AppConstants.userModelKey);
     await HiveHelper.clearUserDataOnly();
     await HiveHelper.removeFromHive(key: AppConstants.fcmToken);
+    await HiveHelper.removeFromHive(key: AppConstants.registeredFcmToken);
   }
 
   static bool _expiring = false;
@@ -100,11 +104,39 @@ abstract class AuthSession {
   }
 
   /// Firebase rotated the token: replace this device's token only.
-  static Future<void> onPushTokenRefreshed(String token) async {
-    if (!isLoggedIn) return;
-    await ProfileService.updateFcmToken(
+  static Future<void> onPushTokenRefreshed(String token) =>
+      _registerPushToken(token, force: true);
+
+  /// Makes sure the backend holds this device's current push token.
+  ///
+  /// A login sends the token it can read at that moment, and on iOS that is
+  /// often null because APNs hasn't registered yet. Nothing retries it: the
+  /// token never rotates again, so the account stays unreachable until the
+  /// next reinstall. Called on every launch, it costs one request the first
+  /// time and nothing afterwards.
+  static Future<void> ensurePushTokenRegistered(String? token) =>
+      _registerPushToken(token);
+
+  static Future<void> _registerPushToken(
+    String? token, {
+    bool force = false,
+  }) async {
+    if (token == null || token.isEmpty || !isLoggedIn) return;
+    if (!force) {
+      final registered = await HiveHelper.getFromHive(
+        key: AppConstants.registeredFcmToken,
+      );
+      if (registered == token) return;
+    }
+    final result = await ProfileService.updateFcmToken(
       fcmToken: token,
       platform: DeviceHelper.platform,
     );
+    if (result.success) {
+      await HiveHelper.addToHive(
+        key: AppConstants.registeredFcmToken,
+        value: token,
+      );
+    }
   }
 }

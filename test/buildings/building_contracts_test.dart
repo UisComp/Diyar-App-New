@@ -191,6 +191,62 @@ void main() {
       expect(p.gallery.map((m) => m.id), [11, 13]);
     });
 
+    test('a building the user owns nothing in gets no shape', () {
+      final p = ProjectDetailsResponseModel.fromJson({
+        'success': true,
+        'data': {
+          'id': 1,
+          'name': 'La Mer',
+          'buildings': [
+            {
+              'id': 23,
+              'type': 'villa',
+              'code': 'V-9',
+              'label': 'V-9',
+              'units': [unitSummaryJson()],
+            },
+            // Listed by the backend, but none of its units are the user's.
+            {
+              'id': 24,
+              'type': 'villa',
+              'code': 'V-8',
+              'label': 'V-8',
+              'units': [],
+            },
+          ],
+          'has_building_mapping': true,
+          'building_mapping': map(
+            shapes: [
+              {
+                'id': 'shape_23',
+                'buildingId': 23,
+                'points': [
+                  [0.1, 0.1],
+                  [0.2, 0.1],
+                  [0.2, 0.2],
+                ],
+              },
+              {
+                'id': 'shape_24',
+                'buildingId': 24,
+                'points': [
+                  [0.5, 0.5],
+                  [0.6, 0.5],
+                  [0.6, 0.6],
+                ],
+              },
+            ],
+          ),
+        },
+      }).data!;
+      // Both shapes arrived; only the owned one is drawn, so the plan and
+      // the "My units" list agree.
+      expect(p.buildingMapping!.shapes, hasLength(2));
+      expect(p.ownedBuildings.map((b) => b.id), [23]);
+      expect(p.linkedShapes.map((s) => s.$1.id), ['shape_23']);
+      expect(p.ownedBuildingById(24), isNull);
+    });
+
     test('signed out: no buildings, but the map size is still sent', () {
       final p = ProjectDetailsResponseModel.fromJson({
         'success': true,

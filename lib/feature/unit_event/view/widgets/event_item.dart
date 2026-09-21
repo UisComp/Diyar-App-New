@@ -54,10 +54,13 @@ class EventItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.r),
             child: CustomCachedNetworkImage(
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               imageUrl: imageUrl,
               width: 100.w,
               height: 100.h,
+              // The row opens the news item; the thumbnail must not swallow
+              // that tap.
+              enablePreview: false,
             ),
           ),
         ],

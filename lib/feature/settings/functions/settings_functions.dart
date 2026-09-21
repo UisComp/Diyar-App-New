@@ -1,8 +1,7 @@
 import 'package:diyar_app/core/extension/sized_box.dart';
-import 'package:diyar_app/core/extension/string_extension.dart';
 import 'package:diyar_app/core/style/app_color.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
-import 'package:diyar_app/core/widgets/custom_cached_network_image.dart';
+import 'package:diyar_app/core/widgets/zoomable_image_viewer.dart';
 import 'package:diyar_app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -107,111 +106,23 @@ Future<void> showDeleteAccountDialog(
   );
 }
 
+/// Opens [imageUrl] full screen, zoomable. Kept as a function so the many
+/// existing call sites stay put; the viewer itself lives in
+/// [ZoomableImageViewer].
 void showImagePreview(
   BuildContext context,
   String? imageUrl, {
   String? title,
   String? description,
+  List<String?>? images,
+  int initialIndex = 0,
 }) {
-  showGeneralDialog(
-    context: context,
-    barrierDismissible: true,
-    fullscreenDialog: true,
-    barrierLabel: 'ImagePreview',
-    transitionDuration: const Duration(milliseconds: 300),
-    pageBuilder: (context, animation, secondaryAnimation) {
-      return Scaffold(
-        backgroundColor: AppColors.blackColor.withValues(alpha: 0.9),
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomCachedNetworkImage(
-                      isProjectDetails: true,
-                      imageUrl: imageUrl,
-                      fit: BoxFit.contain,
-                    ),
-                    20.ph,
-                    if (title != null && title.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 6.h,
-                          horizontal: 16.w,
-                        ),
-                        child: AppText(
-                          title.capitalize(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: AppColors.whiteColor,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-
-                    if (description != null && description.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 20.h,
-                          left: 16.w,
-                          right: 16.w,
-                        ),
-                        child: AppText(
-                          description.capitalize(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: AppColors.white70Color,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-
-            /// CLOSE BUTTON
-            Positioned(
-              top: 50.h,
-              right: 20.w,
-              child: AnimatedOpacity(
-                opacity: 1,
-                duration: const Duration(milliseconds: 500),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(50.r),
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.black54Color,
-                    ),
-                    child: Icon(
-                      Icons.close_rounded,
-                      color: AppColors.whiteColor,
-                      size: 30.sp,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      return FadeTransition(
-        opacity: animation,
-        child: ScaleTransition(
-          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
-          child: child,
-        ),
-      );
-    },
+  openImageViewer(
+    context,
+    images: images ?? [imageUrl],
+    initialIndex: initialIndex,
+    title: title,
+    description: description,
   );
 }
 
