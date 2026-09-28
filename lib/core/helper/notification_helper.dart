@@ -121,13 +121,18 @@ class NotificationService {
   Future<void> init() async {
     await initLocalNotifications();
 
-    // The OS draws background/terminated notifications; showing the remote one
-    // in the foreground too would duplicate the local one we draw there.
+    // On iOS these options decide whether *any* foreground notification gets a
+    // banner, not just the remote one. firebase_messaging answers iOS's
+    // `willPresentNotification` for every notification — it has no check for
+    // whose notification it is — and because it registers before
+    // flutter_local_notifications it wins the shared completion handler. With
+    // `alert: false` here, the local notifications we post are suppressed too
+    // and nothing is ever shown in the foreground on iPhone.
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-          alert: false,
+          alert: true,
           badge: true,
-          sound: false,
+          sound: true,
         );
 
     FirebaseMessaging.onMessage.listen(showLocalNotification);
@@ -183,8 +188,12 @@ class NotificationService {
     return data[enKey] ?? data[arKey] ?? '';
   }
 
-  /// A message in the foreground: neither platform displays it for us, so we
-  /// always draw it (and refresh the screens it affects).
+  /// A message that arrived while the app was on screen.
+  ///
+  /// Android never displays a `notification` payload in the foreground, so we
+  /// draw it. iOS does, through the presentation options set in [init], and
+  /// drawing ours on top would show the user two banners — so there we only
+  /// draw data-only messages, which iOS has nothing to display for.
   Future<void> showLocalNotification(RemoteMessage message) async {
     if (NotificationRouting.isFinancial(
       type: message.data['type']?.toString(),
@@ -206,6 +215,11 @@ class NotificationService {
         }
       }
     });
+
+    if (Platform.isIOS && message.notification != null) {
+      log('Foreground message shown by iOS; not drawing a second one.');
+      return;
+    }
 
     log("Notification received data: ${message.data}");
     await _show(message);
