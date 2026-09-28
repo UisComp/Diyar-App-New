@@ -31,6 +31,35 @@ void main() {
       expect(target, const UnitPaymentPlanTarget(7));
     });
 
+    test('installment_due reminder opens that installment plan', () {
+      final target = NotificationRouting.pushTarget({
+        'type': 'installment_due',
+        'entity_type': '5',
+        'entity_id': '1234',
+      });
+      expect(target, const UnitPaymentPlanTarget(1234));
+    });
+
+    test('payment_plan and late_tax open the finance tab, never a plan', () {
+      // Their entity_id is a plan/tax record, not an installment, so it must
+      // not be parsed into a deep link.
+      expect(
+        NotificationRouting.pushTarget({
+          'type': 'payment_plan',
+          'entity_type': '6',
+          'entity_id': '9',
+        }),
+        isA<FinanceTabTarget>(),
+      );
+      expect(
+        NotificationRouting.pushTarget({
+          'type': 'late_tax',
+          'entity_id': '3',
+        }),
+        isA<FinanceTabTarget>(),
+      );
+    });
+
     test('other pushes open the notifications list', () {
       expect(
         NotificationRouting.pushTarget({'type': 'all'}),

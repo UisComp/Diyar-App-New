@@ -182,10 +182,17 @@ class NotificationService {
     );
     final bool isArabic = savedLocale == 'ar';
 
-    if (isArabic) {
-      return data[arKey] ?? data[enKey] ?? '';
+    // The backend casts nulls to '' when building the payload, so an absent
+    // translation arrives as an empty string, not a missing key.
+    String? valueOf(String key) {
+      final value = data[key]?.toString().trim();
+      return (value == null || value.isEmpty) ? null : value;
     }
-    return data[enKey] ?? data[arKey] ?? '';
+
+    if (isArabic) {
+      return valueOf(arKey) ?? valueOf(enKey) ?? '';
+    }
+    return valueOf(enKey) ?? valueOf(arKey) ?? '';
   }
 
   /// A message that arrived while the app was on screen.

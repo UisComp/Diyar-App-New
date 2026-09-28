@@ -7,6 +7,10 @@ abstract class NotificationEntityType {
   static const String serviceProviderBooking = '2';
   static const String overdue = '3';
   static const String payment = '4';
+
+  /// Backend `NotificationEntityType`: an `installment_due` reminder carries
+  /// entity 5 with the installment's id.
+  static const String installmentDue = '5';
 }
 
 String? stringOrNull(dynamic value) => value?.toString();

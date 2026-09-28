@@ -149,7 +149,7 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('phone + password on one screen, no SMS', (tester) async {
+  testWidgets('phone + password on one screen, no code sent', (tester) async {
     api.on('POST', 'auth/login', body: apiOk(loginData(token: '13|Zp')));
     await start(tester);
     await run(tester);
@@ -221,7 +221,7 @@ void main() {
     await finish(tester);
   });
 
-  testWidgets('first login by SMS code: code, then set password', (
+  testWidgets('first login by WhatsApp code: code, then set password', (
     tester,
   ) async {
     api.on(
@@ -235,9 +235,9 @@ void main() {
     await run(tester);
 
     await typeIdentifier(tester, '01012345678');
-    await tapText(tester, 'Sign in with SMS code');
+    await tapText(tester, 'Sign in with WhatsApp code');
 
-    // The code is texted only now, because it was asked for.
+    // The code is sent only now, because it was asked for.
     expect(find.text('Verify your number'), findsOneWidget);
     expect(api.last('POST', 'auth/otp').json, {'phone': '+201012345678'});
     expect(find.textContaining('Resend code in'), findsOneWidget);
@@ -257,16 +257,16 @@ void main() {
     await finish(tester);
   });
 
-  testWidgets('SMS code needs a phone number', (tester) async {
+  testWidgets('WhatsApp code needs a phone number', (tester) async {
     await start(tester);
     await run(tester);
 
     await typeIdentifier(tester, 'guard@lamer.com');
-    await tapText(tester, 'Sign in with SMS code');
+    await tapText(tester, 'Sign in with WhatsApp code');
 
     expect(
       find.text(
-        'Enter your phone number first. SMS codes go to phone numbers.',
+        'Enter your phone number first. WhatsApp codes go to phone numbers.',
       ),
       findsOneWidget,
     );
@@ -274,7 +274,7 @@ void main() {
     await finish(tester);
   });
 
-  testWidgets('password_not_set offers to text a code', (tester) async {
+  testWidgets('password_not_set offers to send a code', (tester) async {
     api.on(
       'POST',
       'auth/login',
@@ -290,12 +290,12 @@ void main() {
 
     expect(
       find.text(
-        "You haven't set a password yet. We'll text you a code so you can "
-        'set one.',
+        "You haven't set a password yet. We'll send you a code on WhatsApp "
+        'so you can set one.',
       ),
       findsOneWidget,
     );
-    // Nothing is texted until the resident agrees.
+    // Nothing is sent until the resident agrees.
     expect(api.sent('POST', 'auth/otp'), isEmpty);
     await tapText(tester, 'Send code');
 
@@ -304,7 +304,7 @@ void main() {
     await finish(tester);
   });
 
-  testWidgets('forgot password: a phone number resets by SMS', (tester) async {
+  testWidgets('forgot password: a phone number resets by WhatsApp code', (tester) async {
     api.on('POST', 'auth/otp', body: apiOk({'resend_in': 60}));
     await start(tester);
     await run(tester);
@@ -332,7 +332,7 @@ void main() {
     await finish(tester);
   });
 
-  testWidgets('an unregistered number on SMS code: offer to sign up', (
+  testWidgets('an unregistered number on WhatsApp code: offer to sign up', (
     tester,
   ) async {
     api.on(
@@ -345,7 +345,7 @@ void main() {
     await run(tester);
 
     await typeIdentifier(tester, '01012345678');
-    await tapText(tester, 'Sign in with SMS code');
+    await tapText(tester, 'Sign in with WhatsApp code');
 
     expect(find.text('Number not registered'), findsOneWidget);
     await tapText(tester, 'Sign Up');
@@ -602,7 +602,7 @@ void main() {
 
     expect(find.text('ساكن'), findsOneWidget);
     expect(find.text('فريق الأمن'), findsOneWidget);
-    expect(find.text('الدخول برمز SMS'), findsOneWidget);
+    expect(find.text('الدخول برمز واتساب'), findsOneWidget);
     expect(find.text('تسجيل الدخول'), findsWidgets);
     await finish(tester);
   });

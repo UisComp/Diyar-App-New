@@ -248,8 +248,8 @@ final GoRouter router = GoRouter(
           buildAnimatedPage(child: const HomeScreen(), transition: fadeIn),
     ),
     //! One login for everyone: phone (residents) or email (security staff)
-    //! + password. SMS codes only via "Sign in with SMS code" and
-    //! "Forgot password?".
+    //! + password. WhatsApp codes only via "Sign in with WhatsApp code";
+    //! "Forgot password?" emails a code to security staff.
     GoRoute(
       name: RoutesName.login,
       path: RoutesName.login,

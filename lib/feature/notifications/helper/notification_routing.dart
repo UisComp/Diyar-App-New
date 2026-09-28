@@ -35,26 +35,54 @@ class PhoneNumbersTarget extends NotificationTarget {
 abstract class NotificationRouting {
   static const String paymentType = 'payment';
   static const String overdueType = 'overdue';
+  static const String installmentDueType = 'installment_due';
+  static const String paymentPlanType = 'payment_plan';
+  static const String lateTaxType = 'late_tax';
   static const String phoneRequestType = 'phone_request';
 
-  /// Payment and overdue notifications concern the customer's finances.
-  static bool isFinancial({String? type, String? entityType}) =>
-      type == paymentType ||
-      type == overdueType ||
+  /// Types whose `entity_id` is an installment, so a tap can deep-link
+  /// straight to that installment's payment plan.
+  static const Set<String> _installmentTypes = {
+    paymentType,
+    overdueType,
+    installmentDueType,
+  };
+
+  /// Financial types whose entity is not an installment (a plan, a tax
+  /// record); a tap lands on the payments overview instead.
+  static const Set<String> _financeOverviewTypes = {
+    paymentPlanType,
+    lateTaxType,
+  };
+
+  static bool _isInstallmentLinked({String? type, String? entityType}) =>
+      _installmentTypes.contains(type) ||
       entityType == NotificationEntityType.payment ||
-      entityType == NotificationEntityType.overdue;
+      entityType == NotificationEntityType.overdue ||
+      entityType == NotificationEntityType.installmentDue;
+
+  /// Notifications that concern the customer's finances, so the finance
+  /// screens refresh when one arrives.
+  static bool isFinancial({String? type, String? entityType}) =>
+      _isInstallmentLinked(type: type, entityType: entityType) ||
+      _financeOverviewTypes.contains(type);
 
   /// Target for a financial notification, or null if it isn't one.
   /// - `payment` (entity 4) → the plan of the installment it was applied to.
   /// - manual `overdue` reminder (entity 3 + id) → that installment's plan.
+  /// - `installment_due` reminder (entity 5) → that installment's plan.
   /// - nightly `overdue` summary (no id) → the payments overview.
+  /// - `payment_plan` / `late_tax` → the payments overview; their entity_id
+  ///   is not an installment, so it must not be parsed as one.
   static NotificationTarget? financialTarget({
     String? type,
     String? entityType,
     String? entityId,
   }) {
     if (!isFinancial(type: type, entityType: entityType)) return null;
-    final installmentId = int.tryParse(entityId ?? '');
+    final installmentId = _isInstallmentLinked(type: type, entityType: entityType)
+        ? int.tryParse(entityId ?? '')
+        : null;
     return installmentId == null
         ? const FinanceTabTarget()
         : UnitPaymentPlanTarget(installmentId);
