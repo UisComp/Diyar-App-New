@@ -17,7 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-/// Registration, step 1: the phone number, proved by an SMS code on the
+/// Registration, step 1: the phone number, proved by a WhatsApp code on the
 /// next screen.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key, this.initialPhone});
@@ -67,55 +67,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final surface = AppSurface.of(context);
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Form(
-                key: formKey,
-                child: AuthScrollColumn(
+        child: Form(
+          key: formKey,
+          child: AuthScrollColumn(
+            children: [
+              // Header and the short form stay together at the top; only the
+              // sign-in link is pushed to the bottom.
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AuthHeader(
+                    title: LocaleKeys.create_account.tr(),
+                    subtitle: LocaleKeys.register_phone_message.tr(),
+                    leading: const AuthHeaderBackButton(),
+                    step: const AuthStepIndicator(current: 1, total: 3),
+                  ),
+                  28.ph,
+                  AuthFieldLabel(
+                    title: LocaleKeys.register_phone_title.tr(),
+                    hint: LocaleKeys.register_phone_hint.tr(),
+                  ),
+                  CustomPhoneField(
+                    controller: phoneController,
+                    hintText: LocaleKeys.login_phone_placeholder.tr(),
+                  ),
+                  20.ph,
+                  CustomButton(
+                    buttonHeight: 52.h,
+                    buttonText: LocaleKeys.verify_number.tr(),
+                    buttonColor: AppColors.primaryColor,
+                    onPressed: _continue,
+                  ).paddingSymmetric(horizontal: 16.w),
+                  14.ph,
+                  AppText(
+                    LocaleKeys.by_continue.tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: surface.textSecondary,
+                      height: 1.4,
+                    ),
+                  ).paddingSymmetric(horizontal: 32.w),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20.h),
+                child: const Column(
                   children: [
-                    AuthHeader(
-                      title: LocaleKeys.create_account.tr(),
-                      subtitle: LocaleKeys.register_phone_message.tr(),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        AuthFieldLabel(
-                          title: LocaleKeys.register_phone_title.tr(),
-                          hint: LocaleKeys.register_phone_hint.tr(),
-                        ),
-                        CustomPhoneField(
-                          controller: phoneController,
-                          hintText: LocaleKeys.login_phone_placeholder.tr(),
-                        ),
-                        18.ph,
-                        CustomButton(
-                          buttonHeight: 52.h,
-                          buttonText: LocaleKeys.verify_number.tr(),
-                          buttonColor: AppColors.primaryColor,
-                          onPressed: _continue,
-                        ).paddingSymmetric(horizontal: 16.w),
-                        14.ph,
-                        AppText(
-                          LocaleKeys.by_continue.tr(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: surface.textSecondary,
-                            height: 1.4,
-                          ),
-                        ).paddingSymmetric(horizontal: 32.w),
-                      ],
-                    ),
-                    6.ph,
+                    AlreadyHaveAccountWithSignIn(),
+                    DesignedByFooter(compact: true),
                   ],
                 ),
               ),
-            ),
-            const AlreadyHaveAccountWithSignIn(),
-            const DesignedByFooter(compact: true),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:diyar_app/core/api/api_paths.dart';
 import 'package:diyar_app/core/constants/app_variable.dart';
 import 'package:diyar_app/core/constants/custom_logger.dart';
@@ -35,7 +36,10 @@ class DioHelper {
 
     dio!.interceptors.add(
       PrettyDioLogger(
-        enabled: true,
+        // Debug only: it prints every request and response — passwords and
+        // Authorization headers included — which must never reach a release
+        // device's log, and the pretty-printing itself is costly.
+        enabled: kDebugMode,
         requestHeader: true,
         requestBody: true,
         responseBody: true,

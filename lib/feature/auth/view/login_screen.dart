@@ -10,10 +10,8 @@ import 'package:diyar_app/core/helper/hive_helper.dart';
 import 'package:diyar_app/core/helper/validator_helper.dart';
 import 'package:diyar_app/core/routes/routes_name.dart';
 import 'package:diyar_app/core/style/app_color.dart';
-import 'package:diyar_app/core/style/app_style.dart';
 import 'package:diyar_app/core/style/app_surface.dart';
 import 'package:diyar_app/core/widgets/app_text.dart';
-import 'package:diyar_app/core/widgets/brand_logo_header.dart';
 import 'package:diyar_app/core/widgets/custom_button.dart';
 import 'package:diyar_app/core/widgets/custom_phone_field.dart';
 import 'package:diyar_app/core/widgets/custom_text_form_field.dart';
@@ -37,9 +35,8 @@ import 'package:go_router/go_router.dart';
 /// The one login for everyone: residents with their phone number, security
 /// staff with their work email, both with a password.
 ///
-/// SMS codes cost money, so a code is only sent when asked for: "Sign in
-/// with SMS code" (accounts created by staff, first login) and "Forgot
-/// password?".
+/// A WhatsApp code is only sent when asked for: "Sign in with WhatsApp code"
+/// (accounts created by staff, first login) and "Forgot password?".
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -72,8 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
     _controller.login();
   }
 
-  /// First login of an account created by staff: text a code, then the
-  /// resident sets a password.
+  /// First login of an account created by staff: send a WhatsApp code, then
+  /// the resident sets a password.
   void _signInWithCode() {
     final controller = _controller;
     final id = controller.identifier;
@@ -89,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
     _openCode(id.value, OtpPurpose.login);
   }
 
-  /// A phone number resets by SMS; an email (security staff) by email.
+  /// A phone number resets by WhatsApp code; an email (security staff)
+  /// by email.
   void _forgotPassword() {
     final id = _controller.identifier;
     if (id == null) {
@@ -190,198 +188,208 @@ class _LoginScreenState extends State<LoginScreen> {
           listener: _onState,
           builder: (context, state) {
             final loading = state is SignInLoadingState;
-            return Column(
-              children: [
-                Expanded(
-                  child: Form(
-                    key: formKey,
-                    child: AuthScrollColumn(
+            return Form(
+              key: formKey,
+              child: AuthScrollColumn(
+                children: [
+                  AuthHeader(
+                    title: LocaleKeys.login_title.tr(),
+                    subtitle: LocaleKeys.login_subtitle.tr(),
+                    trailing: AuthHeaderChip(
+                      label: LocaleKeys.guest_mode.tr(),
+                      onTap: () => context.go(RoutesName.homeLayout),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            BrandLogoHeader(
-                              height: 196.h,
-                              logoHeight: 118.h,
-                              borderRadius: 26,
+                        // Residents sign in with a phone number, security
+                        // staff with their work email.
+                        AuthSegmentedControl(
+                          labels: [
+                            LocaleKeys.login_as_resident.tr(),
+                            LocaleKeys.login_as_staff.tr(),
+                          ],
+                          icons: const [
+                            Icons.phone_iphone_rounded,
+                            Icons.badge_outlined,
+                          ],
+                          selected: controller.usesEmail ? 1 : 0,
+                          onChanged: loading
+                              ? (_) {}
+                              : (index) => controller.setUseEmail(index == 1),
+                        ).paddingSymmetric(horizontal: 16.w),
+                        16.ph,
+                        if (controller.usesEmail)
+                          CustomTextFormField(
+                            controller: controller.emailController,
+                            hintText: LocaleKeys.login_email_title.tr(),
+                            keyboardType: TextInputType.emailAddress,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (email) => ValidatorHelper.validateEmail(
+                              email?.trim(),
+                              emptyMessage: LocaleKeys.please_enter_your_email
+                                  .tr(),
+                              invalidMessage: LocaleKeys
+                                  .please_enter_a_valid_email
+                                  .tr(),
                             ),
-                            14.ph,
-                            AppText(
-                              LocaleKeys.login_title.tr(),
-                              textAlign: TextAlign.center,
-                              style: AppStyle.fontSize22Bold(context).copyWith(
-                                fontSize: 21.sp,
-                                fontWeight: FontWeight.w800,
-                                color: surface.textPrimary,
+                            prefixIcon: const Icon(Icons.mail_outline_rounded),
+                          )
+                        else
+                          CustomPhoneField(
+                            controller: controller.phoneController,
+                            hintText: LocaleKeys.login_phone_placeholder.tr(),
+                            textInputAction: TextInputAction.next,
+                          ),
+                        12.ph,
+                        AuthPasswordField(
+                          controller: controller.passwordController,
+                          hintText: LocaleKeys.password.tr(),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton(
+                            onPressed: loading ? null : _forgotPassword,
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 8.h,
                               ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
-                            4.ph,
-                            AppText(
-                              LocaleKeys.login_subtitle.tr(),
-                              textAlign: TextAlign.center,
+                            child: AppText(
+                              LocaleKeys.forget_password.tr(),
                               style: TextStyle(
                                 fontSize: 13.sp,
-                                height: 1.4,
-                                color: surface.textSecondary,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700,
                               ),
-                            ).paddingSymmetric(horizontal: 32.w),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Residents sign in with a phone number, security
-                            // staff with their work email.
-                            AuthSegmentedControl(
-                              labels: [
-                                LocaleKeys.login_as_resident.tr(),
-                                LocaleKeys.login_as_staff.tr(),
-                              ],
-                              icons: const [
-                                Icons.phone_iphone_rounded,
-                                Icons.badge_outlined,
-                              ],
-                              selected: controller.usesEmail ? 1 : 0,
-                              onChanged: loading
-                                  ? (_) {}
-                                  : (index) =>
-                                        controller.setUseEmail(index == 1),
-                            ).paddingSymmetric(horizontal: 16.w),
-                            12.ph,
-                            if (controller.usesEmail)
-                              CustomTextFormField(
-                                controller: controller.emailController,
-                                hintText: LocaleKeys.login_email_title.tr(),
-                                keyboardType: TextInputType.emailAddress,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (email) =>
-                                    ValidatorHelper.validateEmail(
-                                      email?.trim(),
-                                      emptyMessage: LocaleKeys
-                                          .please_enter_your_email
-                                          .tr(),
-                                      invalidMessage: LocaleKeys
-                                          .please_enter_a_valid_email
-                                          .tr(),
-                                    ),
-                                prefixIcon: const Icon(
-                                  Icons.mail_outline_rounded,
-                                ),
-                              )
-                            else
-                              CustomPhoneField(
-                                controller: controller.phoneController,
-                                hintText: LocaleKeys.login_phone_placeholder
-                                    .tr(),
-                                textInputAction: TextInputAction.next,
-                              ),
-                            10.ph,
-                            AuthPasswordField(
-                              controller: controller.passwordController,
-                              hintText: LocaleKeys.password.tr(),
                             ),
-                            Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: TextButton(
-                                onPressed: loading ? null : _forgotPassword,
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w,
-                                    vertical: 4.h,
-                                  ),
-                                  minimumSize: Size.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                child: AppText(
-                                  LocaleKeys.forget_password.tr(),
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: AppColors.primaryColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
+                          ),
+                        ).paddingSymmetric(horizontal: 8.w),
+                        4.ph,
+                        // Biometrics sits beside the main action instead of
+                        // taking a full-width row of its own.
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                buttonHeight: 52.h,
+                                buttonText: LocaleKeys.sign_in.tr(),
+                                isLoading: loading,
+                                buttonColor: AppColors.primaryColor,
+                                onPressed: _signIn,
                               ),
-                            ).paddingSymmetric(horizontal: 16.w),
-                            8.ph,
-                            CustomButton(
-                              buttonHeight: 52.h,
-                              buttonText: LocaleKeys.sign_in.tr(),
-                              isLoading: loading,
-                              buttonColor: AppColors.primaryColor,
-                              onPressed: _signIn,
-                            ).paddingSymmetric(horizontal: 16.w),
-                            14.ph,
-                            const AuthOrDivider(),
-                            14.ph,
-                            AuthOutlinedButton(
-                              text: LocaleKeys.sign_in_with_code.tr(),
-                              icon: Icons.sms_outlined,
-                              onPressed: loading ? null : _signInWithCode,
-                            ).paddingSymmetric(horizontal: 16.w),
+                            ),
                             if (enableBiometric == true) ...[
-                              8.ph,
-                              BlocBuilder<SettingsController, SettingsState>(
-                                builder: (context, settingsState) =>
-                                    AuthOutlinedButton(
-                                      text: LocaleKeys.loginWithBiometric.tr(),
-                                      icon: Icons.fingerprint_rounded,
-                                      isLoading:
-                                          loading ||
-                                          settingsState is BiometricLoading,
-                                      onPressed: _loginWithBiometrics,
-                                    ),
-                              ).paddingSymmetric(horizontal: 16.w),
-                            ],
-                            8.ph,
-                            AppText(
-                              LocaleKeys.sign_in_with_code_hint.tr(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 11.5.sp,
-                                color: surface.textSecondary,
-                                height: 1.4,
+                              10.pw,
+                              _BiometricButton(
+                                busy: loading,
+                                onPressed: _loginWithBiometrics,
                               ),
-                            ).paddingSymmetric(horizontal: 28.w),
+                            ],
                           ],
-                        ),
+                        ).paddingSymmetric(horizontal: 16.w),
+                        16.ph,
+                        const AuthOrDivider(),
+                        16.ph,
+                        AuthOutlinedButton(
+                          text: LocaleKeys.sign_in_with_code.tr(),
+                          icon: Icons.chat_outlined,
+                          onPressed: loading ? null : _signInWithCode,
+                        ).paddingSymmetric(horizontal: 16.w),
                         8.ph,
+                        AppText(
+                          LocaleKeys.sign_in_with_code_hint.tr(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 11.5.sp,
+                            color: surface.textSecondary,
+                            height: 1.4,
+                          ),
+                        ).paddingSymmetric(horizontal: 28.w),
                       ],
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () => context.go(RoutesName.homeLayout),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 4.h),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: AppText(
-                    LocaleKeys.guest_mode.tr(),
-                    style: TextStyle(
-                      fontSize: 13.5.sp,
-                      color: surface.textSecondary,
-                      decoration: TextDecoration.underline,
+                  // Inside the scroll: pinned to the bottom on tall phones,
+                  // scrolls on short ones instead of piling onto the form.
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.h),
+                    child: Column(
+                      children: [
+                        const DontHaveAccountWithSignUp(),
+                        DesignedByFooter(
+                          compact: true,
+                          showLogo: true,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 6.h,
+                            horizontal: 16.w,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                6.ph,
-                const DontHaveAccountWithSignUp(),
-                DesignedByFooter(
-                  compact: true,
-                  showLogo: true,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 6.h,
-                    horizontal: 16.w,
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
       ),
+    );
+  }
+}
+
+/// A square fingerprint button beside "Sign in".
+class _BiometricButton extends StatelessWidget {
+  const _BiometricButton({required this.busy, required this.onPressed});
+
+  final bool busy;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsController, SettingsState>(
+      builder: (context, settingsState) {
+        final working = busy || settingsState is BiometricLoading;
+        return Tooltip(
+          message: LocaleKeys.loginWithBiometric.tr(),
+          child: SizedBox.square(
+            dimension: 52.h,
+            child: OutlinedButton(
+              onPressed: working ? null : onPressed,
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                foregroundColor: AppColors.primaryColor,
+                side: const BorderSide(
+                  color: AppColors.primaryColor,
+                  width: 1.4,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+              ),
+              child: working
+                  ? SizedBox.square(
+                      dimension: 20.r,
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.primaryColor,
+                      ),
+                    )
+                  : Icon(
+                      Icons.fingerprint_rounded,
+                      size: 28.sp,
+                      semanticLabel: LocaleKeys.loginWithBiometric.tr(),
+                    ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

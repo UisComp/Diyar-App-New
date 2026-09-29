@@ -596,7 +596,8 @@ class CodegenLoader extends AssetLoader{
   "loading_units": "Loading your units…",
   "no_linked_units": "No linked units found",
   "unit_photos": "Unit photos",
-  "tap_to_zoom": "Tap a photo to open it full screen and zoom"
+  "tap_to_zoom": "Tap a photo to open it full screen and zoom",
+  "step_of": "Step {} of {}"
 };
 static const Map<String,dynamic> _ar = {
   "diyar": "LA'MER",
@@ -1198,7 +1199,8 @@ static const Map<String,dynamic> _ar = {
   "loading_units": "جارٍ تحميل وحداتك…",
   "no_linked_units": "لا توجد وحدات مرتبطة",
   "unit_photos": "صور الوحدة",
-  "tap_to_zoom": "اضغط على الصورة لعرضها بالحجم الكامل والتكبير"
+  "tap_to_zoom": "اضغط على الصورة لعرضها بالحجم الكامل والتكبير",
+  "step_of": "الخطوة {} من {}"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "ar": _ar};
 }

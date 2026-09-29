@@ -6,7 +6,7 @@ class ApiPaths {
   static Duration sendTimeOutDuration = const Duration(seconds: 20);
   static const String baseUrl = "https://diyar.uisdevs.com/api/";
 
-  //! Residents: phone + password. SMS codes only for registration, the
+  //! Residents: phone + password. WhatsApp codes only for registration, the
   //! first login of accounts created by staff, and a forgotten password.
   static const String loginOtp = "auth/otp";
   static const String loginOtpVerify = "auth/otp/verify";

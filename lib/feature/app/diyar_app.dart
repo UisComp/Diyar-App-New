@@ -61,10 +61,17 @@ class DiyarApp extends StatelessWidget {
                     theme: AppThemes.lightTheme,
                     darkTheme: AppThemes.darkTheme,
                     builder: (context, child) {
-                      // if (!isConnected) {
-                      //   return const NoInternetConnection();
-                      // }
-                      return child ?? const SizedBox.shrink();
+                      // Honor the system text size, but cap it: past ~130%
+                      // the fixed-height fields and buttons clip or overflow.
+                      final mediaQuery = MediaQuery.of(context);
+                      return MediaQuery(
+                        data: mediaQuery.copyWith(
+                          textScaler: mediaQuery.textScaler.clamp(
+                            maxScaleFactor: 1.3,
+                          ),
+                        ),
+                        child: child ?? const SizedBox.shrink(),
+                      );
                     },
                   );
                 },

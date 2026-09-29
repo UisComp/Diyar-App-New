@@ -95,148 +95,172 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
+                      padding: EdgeInsets.only(top: 12.h, bottom: 16.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          16.ph,
+                          const AuthStepIndicator(current: 3, total: 3),
+                          14.ph,
                           AppText(
                             LocaleKeys.register_details_message.tr(),
-                            style: AppStyle.fontSize14Regular(
-                              context,
-                            ).copyWith(color: surface.textSecondary),
-                          ).paddingSymmetric(horizontal: 16.w),
+                            textAlign: TextAlign.center,
+                            style: AppStyle.fontSize14Regular(context).copyWith(
+                              color: surface.textSecondary,
+                              height: 1.4,
+                            ),
+                          ).paddingSymmetric(horizontal: 24.w),
                           16.ph,
-                          AppText(
-                            LocaleKeys.verified_number.tr(),
-                            style: AppStyle.fontSize14Bold(context),
-                          ).paddingSymmetric(horizontal: 16.w),
-                          8.ph,
                           PhoneNumberChip(
                             phone: _controller.args.phone,
                             verified: true,
                           ).paddingSymmetric(horizontal: 16.w),
-                          24.ph,
-                          AuthFieldLabel(
-                            title: LocaleKeys.reg_name_title.tr(),
-                            hint: LocaleKeys.reg_name_hint.tr(),
-                          ),
-                          CustomTextFormField(
-                            controller: _controller.nameController,
-                            hintText: LocaleKeys.reg_name_placeholder.tr(),
-                            keyboardType: TextInputType.name,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (name) =>
-                                _controller.fieldErrors['name'] ??
-                                ((name ?? '').trim().isEmpty
-                                    ? LocaleKeys.please_enter_valid_name.tr()
-                                    : null),
-                            prefixIcon: const Icon(Icons.person_outline),
-                          ),
                           16.ph,
-                          AuthFieldLabel(
-                            title: LocaleKeys.email_optional.tr(),
-                            hint: LocaleKeys.reg_email_hint.tr(),
+                          // Who you are.
+                          AuthSectionCard(
+                            children: [
+                              AuthFieldLabel(
+                                title: LocaleKeys.reg_name_title.tr(),
+                                hint: LocaleKeys.reg_name_hint.tr(),
+                              ),
+                              CustomTextFormField(
+                                controller: _controller.nameController,
+                                hintText: LocaleKeys.reg_name_placeholder.tr(),
+                                keyboardType: TextInputType.name,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (name) =>
+                                    _controller.fieldErrors['name'] ??
+                                    ((name ?? '').trim().isEmpty
+                                        ? LocaleKeys.please_enter_valid_name
+                                              .tr()
+                                        : null),
+                                prefixIcon: const Icon(Icons.person_outline),
+                              ),
+                              18.ph,
+                              AuthFieldLabel(
+                                title: LocaleKeys.email_optional.tr(),
+                                hint: LocaleKeys.reg_email_hint.tr(),
+                              ),
+                              CustomTextFormField(
+                                controller: _controller.emailController,
+                                hintText: LocaleKeys.reg_email_placeholder.tr(),
+                                keyboardType: TextInputType.emailAddress,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (email) =>
+                                    _controller.fieldErrors['email'] ??
+                                    _validateOptionalEmail(email),
+                                prefixIcon: const Icon(Icons.email_outlined),
+                              ),
+                            ],
                           ),
-                          CustomTextFormField(
-                            controller: _controller.emailController,
-                            hintText: LocaleKeys.reg_email_placeholder.tr(),
-                            keyboardType: TextInputType.emailAddress,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (email) =>
-                                _controller.fieldErrors['email'] ??
-                                _validateOptionalEmail(email),
-                            prefixIcon: const Icon(Icons.email_outlined),
-                          ),
-                          16.ph,
-                          AuthFieldLabel(
-                            title: LocaleKeys.reg_units_title.tr(),
-                            hint: LocaleKeys.reg_units_hint.tr(),
-                          ),
-                          for (final (i, unit) in _controller.units.indexed)
-                            _UnitCodeRow(
-                              key: ObjectKey(unit),
-                              index: i,
-                              entry: unit,
-                              onRemove: _controller.units.length > 1
-                                  ? () => _controller.removeUnit(unit)
-                                  : null,
-                            ),
-                          if (_controller.canAddUnit)
-                            Align(
-                              alignment: AlignmentDirectional.centerStart,
-                              child: TextButton.icon(
-                                onPressed: _controller.addUnit,
-                                icon: const Icon(
-                                  Icons.add_circle_outline,
-                                  color: AppColors.primaryColor,
+                          14.ph,
+                          // The units they own.
+                          AuthSectionCard(
+                            children: [
+                              AuthFieldLabel(
+                                title: LocaleKeys.reg_units_title.tr(),
+                                hint: LocaleKeys.reg_units_hint.tr(),
+                              ),
+                              for (final (i, unit) in _controller.units.indexed)
+                                _UnitCodeRow(
+                                  key: ObjectKey(unit),
+                                  index: i,
+                                  entry: unit,
+                                  onRemove: _controller.units.length > 1
+                                      ? () => _controller.removeUnit(unit)
+                                      : null,
                                 ),
-                                label: AppText(
-                                  LocaleKeys.add_another_unit.tr(),
-                                  style: const TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontWeight: FontWeight.w700,
+                              if (_controller.canAddUnit)
+                                Align(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: TextButton.icon(
+                                    onPressed: _controller.addUnit,
+                                    icon: const Icon(
+                                      Icons.add_circle_outline,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    label: AppText(
+                                      LocaleKeys.add_another_unit.tr(),
+                                      style: const TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ).paddingSymmetric(horizontal: 8.w)
+                              else
+                                AppText(
+                                  LocaleKeys.reg_units_limit.tr(
+                                    args: ['${RegisterController.maxUnits}'],
+                                  ),
+                                  style: AppStyle.fontSize12Regular(
+                                    context,
+                                  ).copyWith(color: surface.textSecondary),
+                                ).paddingSymmetric(horizontal: 16.w),
+                            ],
+                          ),
+                          14.ph,
+                          // How they'll sign in once approved.
+                          AuthSectionCard(
+                            children: [
+                              AuthFieldLabel(
+                                title: LocaleKeys.password.tr(),
+                                hint: LocaleKeys.reg_password_hint.tr(),
                               ),
-                            ).paddingSymmetric(horizontal: 8.w)
-                          else
-                            AppText(
-                              LocaleKeys.reg_units_limit.tr(
-                                args: ['${RegisterController.maxUnits}'],
+                              AuthPasswordField(
+                                controller: _controller.passwordController,
+                                hintText: LocaleKeys.password.tr(),
+                                validator: (value) =>
+                                    _controller.fieldErrors['password'] ??
+                                    AuthPasswordField.validatePassword(value),
                               ),
-                              style: AppStyle.fontSize12Regular(
-                                context,
-                              ).copyWith(color: surface.textSecondary),
-                            ).paddingSymmetric(horizontal: 16.w),
-                          16.ph,
-                          AuthFieldLabel(
-                            title: LocaleKeys.password.tr(),
-                            hint: LocaleKeys.reg_password_hint.tr(),
+                              12.ph,
+                              AuthPasswordField(
+                                controller: _controller.confirmationController,
+                                hintText: LocaleKeys.password_confirmation.tr(),
+                                validator: (value) =>
+                                    ValidatorHelper.validatePasswordConfirmation(
+                                      value,
+                                      originalPassword:
+                                          _controller.passwordController.text,
+                                      emptyMessage: LocaleKeys
+                                          .please_enter_your_password
+                                          .tr(),
+                                      notMatchMessage: LocaleKeys
+                                          .passwords_do_not_match
+                                          .tr(),
+                                    ),
+                              ),
+                            ],
                           ),
-                          AuthPasswordField(
-                            controller: _controller.passwordController,
-                            hintText: LocaleKeys.password.tr(),
-                            validator: (value) =>
-                                _controller.fieldErrors['password'] ??
-                                AuthPasswordField.validatePassword(value),
-                          ),
-                          12.ph,
-                          AuthPasswordField(
-                            controller: _controller.confirmationController,
-                            hintText: LocaleKeys.password_confirmation.tr(),
-                            validator: (value) =>
-                                ValidatorHelper.validatePasswordConfirmation(
-                                  value,
-                                  originalPassword:
-                                      _controller.passwordController.text,
-                                  emptyMessage: LocaleKeys
-                                      .please_enter_your_password
-                                      .tr(),
-                                  notMatchMessage: LocaleKeys
-                                      .passwords_do_not_match
-                                      .tr(),
-                                ),
-                          ),
-                          16.ph,
+                          8.ph,
+                          const DesignedByFooter(compact: true),
                         ],
                       ),
                     ),
                   ),
-                  CustomButton(
-                    buttonHeight: 52.h,
-                    buttonText: LocaleKeys.submit_registration.tr(),
-                    isLoading: isLoading,
-                    buttonColor: AppColors.primaryColor,
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        FocusScope.of(context).unfocus();
-                        _controller.submit(locale: context.locale.languageCode);
-                      }
-                    },
-                  ).paddingAll(16.sp),
-                  const DesignedByFooter(compact: true),
+                  // Always reachable, however long the unit list grows.
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: surface.card,
+                      border: Border(top: BorderSide(color: surface.border)),
+                    ),
+                    child: CustomButton(
+                      buttonHeight: 52.h,
+                      buttonText: LocaleKeys.submit_registration.tr(),
+                      isLoading: isLoading,
+                      buttonColor: AppColors.primaryColor,
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          _controller.submit(
+                            locale: context.locale.languageCode,
+                          );
+                        }
+                      },
+                    ).paddingSymmetric(horizontal: 16.w, vertical: 12.h),
+                  ),
                 ],
               ),
             );

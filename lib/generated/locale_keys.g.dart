@@ -566,5 +566,6 @@ abstract class  LocaleKeys {
   static const no_linked_units = 'no_linked_units';
   static const unit_photos = 'unit_photos';
   static const tap_to_zoom = 'tap_to_zoom';
+  static const step_of = 'step_of';
 
 }

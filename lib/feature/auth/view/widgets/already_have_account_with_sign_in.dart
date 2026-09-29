@@ -10,9 +10,11 @@ class AlreadyHaveAccountWithSignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // context.tr (not .tr()) so a language switch rebuilds this even
+    // when it's built const.
     return AuthLinkRow(
-      prompt: LocaleKeys.already_have_account.tr(),
-      action: LocaleKeys.sign_in.tr(),
+      prompt: context.tr(LocaleKeys.already_have_account),
+      action: context.tr(LocaleKeys.sign_in),
       onTap: () =>
           context.canPop() ? context.pop() : context.go(RoutesName.login),
     );

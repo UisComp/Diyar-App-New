@@ -10,9 +10,11 @@ class DontHaveAccountWithSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // context.tr (not .tr()) so a language switch rebuilds this even
+    // when it's built const.
     return AuthLinkRow(
-      prompt: LocaleKeys.donnot_have_account.tr(),
-      action: LocaleKeys.sign_up.tr(),
+      prompt: context.tr(LocaleKeys.donnot_have_account),
+      action: context.tr(LocaleKeys.sign_up),
       onTap: () => context.push(RoutesName.register),
     );
   }

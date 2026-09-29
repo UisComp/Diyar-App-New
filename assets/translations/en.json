@@ -580,5 +580,6 @@
   "loading_units": "Loading your units…",
   "no_linked_units": "No linked units found",
   "unit_photos": "Unit photos",
-  "tap_to_zoom": "Tap a photo to open it full screen and zoom"
+  "tap_to_zoom": "Tap a photo to open it full screen and zoom",
+  "step_of": "Step {} of {}"
 }

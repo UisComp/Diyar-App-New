@@ -16,34 +16,68 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 /// Brand header with a title and a short explanation, at the top of the
 /// login and registration screens.
+///
+/// The brand block is a compact floating card, so the form below gets the
+/// room. [leading] and [trailing] sit in its top corners (a back button, the
+/// guest shortcut); [step] goes between the card and the title.
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({super.key, required this.title, required this.subtitle});
+  const AuthHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.leading,
+    this.trailing,
+    this.step,
+  });
 
   final String title;
   final String subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final Widget? step;
 
   @override
   Widget build(BuildContext context) {
     final surface = AppSurface.of(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        BrandLogoHeader(height: 168.h, logoHeight: 104.h, borderRadius: 26),
-        16.ph,
+        Padding(
+          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24.r),
+            child: Stack(
+              children: [
+                BrandLogoHeader(height: 140.h, logoHeight: 116.h),
+                if (leading != null)
+                  PositionedDirectional(
+                    top: 10.h,
+                    start: 10.w,
+                    child: leading!,
+                  ),
+                if (trailing != null)
+                  PositionedDirectional(top: 10.h, end: 10.w, child: trailing!),
+              ],
+            ),
+          ),
+        ),
+        20.ph,
+        if (step != null) ...[step!, 12.ph],
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: AppText(
             title,
             textAlign: TextAlign.center,
             style: AppStyle.fontSize22Bold(context).copyWith(
-              fontSize: 21.sp,
+              fontSize: 22.sp,
               fontWeight: FontWeight.w800,
               color: surface.textPrimary,
             ),
           ),
         ),
-        4.ph,
+        6.ph,
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: AppText(
             subtitle,
             textAlign: TextAlign.center,
@@ -55,6 +89,155 @@ class AuthHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// A frosted pill over the brand header, e.g. "Continue as Guest →".
+class AuthHeaderChip extends StatelessWidget {
+  const AuthHeaderChip({
+    super.key,
+    required this.label,
+    required this.onTap,
+    this.icon = Icons.arrow_forward_rounded,
+  });
+
+  final String label;
+  final VoidCallback onTap;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final shape = StadiumBorder(
+      side: BorderSide(color: AppColors.whiteColor.withValues(alpha: 0.28)),
+    );
+    return Material(
+      color: AppColors.whiteColor.withValues(alpha: 0.14),
+      shape: shape,
+      child: InkWell(
+        customBorder: shape,
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppText(
+                label,
+                style: TextStyle(
+                  fontSize: 12.5.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.whiteColor,
+                ),
+              ),
+              4.pw,
+              Icon(icon, size: 15.sp, color: AppColors.whiteColor),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A round frosted back button over the brand header. Hidden when there is
+/// nothing to go back to.
+class AuthHeaderBackButton extends StatelessWidget {
+  const AuthHeaderBackButton({super.key, this.onPressed});
+
+  /// Defaults to popping the current route.
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+    if (onPressed == null && !navigator.canPop()) {
+      return const SizedBox.shrink();
+    }
+    return Material(
+      color: AppColors.whiteColor.withValues(alpha: 0.14),
+      shape: CircleBorder(
+        side: BorderSide(color: AppColors.whiteColor.withValues(alpha: 0.28)),
+      ),
+      child: IconButton(
+        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+        onPressed: onPressed ?? navigator.maybePop,
+        visualDensity: VisualDensity.compact,
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          size: 20.sp,
+          color: AppColors.whiteColor,
+        ),
+      ),
+    );
+  }
+}
+
+/// "Step 1 of 3" with a segmented progress bar.
+class AuthStepIndicator extends StatelessWidget {
+  const AuthStepIndicator({
+    super.key,
+    required this.current,
+    required this.total,
+  });
+
+  final int current;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final surface = AppSurface.of(context);
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (var i = 1; i <= total; i++) ...[
+              if (i > 1) 6.pw,
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: i == current ? 28.w : 16.w,
+                height: 5.h,
+                decoration: BoxDecoration(
+                  color: i <= current ? AppColors.primaryColor : surface.border,
+                  borderRadius: BorderRadius.circular(3.r),
+                ),
+              ),
+            ],
+          ],
+        ),
+        6.ph,
+        AppText(
+          LocaleKeys.step_of.tr(args: ['$current', '$total']),
+          style: TextStyle(
+            fontSize: 11.5.sp,
+            fontWeight: FontWeight.w600,
+            color: surface.textSecondary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Groups related fields on a card. The fields keep their own 16 pt side
+/// padding, so the card only adds vertical room.
+class AuthSectionCard extends StatelessWidget {
+  const AuthSectionCard({super.key, required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final surface = AppSurface.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      decoration: surface.cardDecoration(radius: 20.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
     );
   }
 }
