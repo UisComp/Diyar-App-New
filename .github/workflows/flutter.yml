@@ -36,6 +36,10 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          # Pinned to the version the app is built and tested with locally.
+          # Floating "stable" raised the minimum AGP/Kotlin versions under
+          # us and broke release builds; bump this deliberately instead.
+          flutter-version: 3.38.5
           channel: stable
           cache: true
 
@@ -130,6 +134,10 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          # Pinned to the version the app is built and tested with locally.
+          # Floating "stable" raised the minimum AGP/Kotlin versions under
+          # us and broke release builds; bump this deliberately instead.
+          flutter-version: 3.38.5
           channel: stable
           cache: true
 
