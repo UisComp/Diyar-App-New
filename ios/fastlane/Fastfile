@@ -116,6 +116,17 @@ platform :ios do
     )
   end
 
+  # "What's New" for the App Store, required for every update. Override per
+  # release with the RELEASE_NOTES env var; "default" applies to every
+  # language the app already has, without adding new ones.
+  def whats_new
+    ENV["RELEASE_NOTES"] || "Refreshed sign-in and registration screens, " \
+      "WhatsApp verification codes, more reliable notifications, and " \
+      "performance and security improvements.\n\n" \
+      "تصميم محسّن لشاشات الدخول والتسجيل، ورموز التحقق عبر واتساب، " \
+      "وإشعارات أكثر موثوقية، وتحسينات في الأداء والأمان."
+  end
+
   desc "Build and upload the IPA to TestFlight"
   lane :testflight do
     build
@@ -133,8 +144,12 @@ platform :ios do
     upload_to_app_store(
       api_key: asc_api_key,
       ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
-      # Apple REQUIRES human-reviewed metadata; we only push the binary here.
-      skip_metadata: true,
+      # Only the "What's New" text is sent: Apple refuses to submit an update
+      # without it. Every other field is left as it is in App Store Connect,
+      # because deliver only updates the values it's given.
+      skip_metadata: false,
+      release_notes: { "default" => whats_new },
+      run_precheck_before_submit: false,
       skip_screenshots: true,
       precheck_include_in_app_purchases: false,
       submit_for_review: true,
@@ -161,7 +176,9 @@ platform :ios do
     upload_to_app_store(
       api_key: asc_api_key,
       ipa: "#{flutter_root}/build/ios/ipa/#{OUTPUT_IPA}",
-      skip_metadata: true,
+      skip_metadata: false, # "What's New" only; see the release lane
+      release_notes: { "default" => whats_new },
+      run_precheck_before_submit: false,
       skip_screenshots: true,
       precheck_include_in_app_purchases: false,
       submit_for_review: true,
