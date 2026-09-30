@@ -52,6 +52,7 @@ ci/_local_secrets/
 **/fastlane/report.xml
 **/fastlane/Preview.html
 **/fastlane/test_output/
+**/fastlane/screenshots_upload/
 android/key.properties
 android/app/upload-keystore.jks
 **/*.keystore
