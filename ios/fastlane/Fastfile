@@ -120,11 +120,8 @@ platform :ios do
   # "What's New" for the App Store, required for every update. Set
   # RELEASE_NOTES to use one text for every language this release.
   WHATS_NEW = {
-    "en" => "Refreshed sign-in and registration screens, WhatsApp " \
-            "verification codes, more reliable notifications, and " \
-            "performance and security improvements.",
-    "ar" => "تصميم محسّن لشاشات الدخول والتسجيل، ورموز التحقق عبر واتساب، " \
-            "وإشعارات أكثر موثوقية، وتحسينات في الأداء والأمان."
+    "en" => "Bug fixes and performance improvements.",
+    "ar" => "إصلاحات للأخطاء وتحسينات في الأداء."
   }.freeze
 
   # Release notes keyed by every language the App Store listing already has.
